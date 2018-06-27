@@ -13,10 +13,10 @@ const PORT = process.env.PORT || 5001;
   
 // app.use(forceSSL());
 
-app.use(express.static(__dirname + '/client/dist/mb-shop'));
+app.use(express.static(__dirname + '/dist/mb-shop'));
 
 app.get('/*', function(req, res) {
-    res.sendFile(__dirname + '/client/dist/mb-shop/index.html');
+    res.sendFile(__dirname + '/dist/mb-shop/index.html');
 });
 
 app.get('/hello', (req, res) => res.send('Hello Node and Heroku, Maridalen Brenneri is coming up!'))
