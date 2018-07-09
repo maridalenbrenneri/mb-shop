@@ -6,7 +6,7 @@ import { PRODUCTS } from '../mock-products';
   providedIn: 'root'
 })
 export class ProductService {
-  
+
   constructor() { }
 
   getAllProducts() {

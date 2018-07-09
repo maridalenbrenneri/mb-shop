@@ -1,2 +1,24 @@
-{{product.id}} {{product.name}} <br />
+<h3>{{product.name}}</h3>
+
+<div>
+    {{product.shortDescription}}
+</div>
+
+<p>
+    Bringebær | Nektarin | Pasjonsfrukt | Floral
+</p>
+
+<p>
+    Poser med 250 g hele bønner.
+</p>
+
+<p>
+    Kaffe sender vi ut av brenneriet på tirsdager.  Les mer om produsent og kaffen her.
+</p>
+
+<app-buy-product [product]="product"></app-buy-product>
+
+<p>
+    <small>Product id: {{product.id}}</small>
+</p>
 

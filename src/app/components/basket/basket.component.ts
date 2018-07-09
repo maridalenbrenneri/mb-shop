@@ -9,14 +9,19 @@ import { BasketService } from '../../services/basket.service';
 })
 export class BasketComponent implements OnInit {
 
-  productItems: Array<ProductItem> = [];
+  items: Array<ProductItem> = [];
 
-  constructor(private basketService: BasketService) {
-    
-   }
+  constructor(private basketService: BasketService) { }
 
   ngOnInit() {
-    console.log("count: " + this.productItems.length)
+    console.log("basket init, basketService random: " + this.basketService.random);
+
+    this.basketService.getItems().subscribe(items => this.items = items);
+
+    console.log("count: " + this.items.length)
   }
 
+  add() {
+   
+  }
 }

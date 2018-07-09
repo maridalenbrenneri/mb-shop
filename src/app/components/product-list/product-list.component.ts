@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
+import { BasketService } from '../../services/basket.service';
 
 @Component({
   selector: 'app-product-list',
@@ -9,7 +10,7 @@ import { ProductService } from '../../services/product.service';
   providers: [ProductService]
 })
 export class ProductListComponent implements OnInit {
-
+  text: string;
   products: Array<Product>;
 
   constructor(private productService: ProductService) { }
