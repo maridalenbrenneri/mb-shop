@@ -1,0 +1,15 @@
+<div>{{item.product.name}}</div>
+
+<div>{{item.product.price}}</div>
+
+<div>{{item.product.price * item.quantity}}</div>
+
+<input
+    *ngIf="!isCheckoutModel"
+    type="number" 
+    class="form-control"
+    id="quantity"
+    required
+    [(ngModel)]="item.quantity" name="quantity">
+
+<div *ngIf="isCheckoutModel">{{item.quantity}}</div>

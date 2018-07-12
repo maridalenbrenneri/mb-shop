@@ -3,6 +3,9 @@ export class Product {
     name: string;
     shortDescription: string;
     price: number;
+
+    // singleQuantityOnly
+    // type - coffee, subscription
 }
 
 export class ProductItem {

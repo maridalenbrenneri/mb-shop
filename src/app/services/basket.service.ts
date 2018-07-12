@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ProductItem } from '../models/product.model';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { ProductItem, Product } from '../models/product.model';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,35 +18,34 @@ export class BasketService {
     return of(this.items);
   }
 
-  addItem(item: ProductItem) {
+  add(product: Product, quantity: number) {
 
-    if(!this.validateItem(item, false)) {
+    if(!this.validateItem(product, quantity, false)) {
       return;
     }
 
-    let existingItem = this.items.find(p => p.product.id == item.product.id);
+    let existingItem = this.items.find(p => p.product.id == product.id);
 
-    if(existingItem) {
-      existingItem.quantity += item.quantity;
-      
+    if(!existingItem) {
+      this.items.push({
+        product: product, 
+        quantity: quantity
+      });
+
     } else {
-      this.items.push(item);
+      existingItem.quantity += quantity;      
     }
 
-    console.log("[DEBUG]: Product added to basket service, " + item.product.name + " item count " + this.items.length);
+    console.log("[DEBUG]: Product added to basket service, " + product.name + " item count " + this.items.length);
   }
 
-  updateItemQuantity(item: ProductItem) {
-
-  }
-
-  private validateItem(item: ProductItem, allowZero: boolean) : boolean {
-    if(!item.product || item.product == undefined) {
+  private validateItem(product: Product, quantity: number, allowZero: boolean) : boolean {
+    if(!product) {
       console.log("WARNING: Trying to add a ProductItem with no product to basket.");
       return false;
     }
 
-    if(!allowZero && item.quantity == 0) {
+    if(!allowZero && quantity == 0) {
       console.log("WARNING: Trying to add a non-existing item with quantity 0");
       return false;
     }

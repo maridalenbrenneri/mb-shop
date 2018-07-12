@@ -27,7 +27,6 @@
   "homepage": "https://github.com/maridalenbrenneri/mb-shop#readme",
   "private": true,
   "dependencies": {
-    "express": "^4.16.3",
     "@angular/animations": "^6.0.3",
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
@@ -37,7 +36,11 @@
     "@angular/platform-browser": "^6.0.3",
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
+    "bootstrap": "^4.0.0-beta.2",
     "core-js": "^2.5.4",
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

@@ -1,6 +1,6 @@
 <form [formGroup]="buyProductForm">
     <input formControlName="quantity" type="number">
-    <button (click)="buyProduct()">Buy</button>
+    <button type="button" class="btn btn-primary" (click)="buyProduct()">Buy</button>
 </form>
 
 <p>Form value: {{ buyProductForm.value | json }}</p>

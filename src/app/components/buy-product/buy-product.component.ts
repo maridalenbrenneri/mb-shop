@@ -23,16 +23,13 @@ export class BuyProductComponent implements OnInit {
 
   createForm() {
     this.buyProductForm = this.fb.group({
-      quantity: [1, Validators.required],
+      quantity: [1, Validators.required]
     });
   }
 
   buyProduct() {
     console.log("[DEBUG] buy-product-component - Adding product " + this.product.name);
     
-    this.basketService.addItem({
-      product: this.product, 
-      quantity: this.buyProductForm.value.quantity
-    });
+    this.basketService.add(this.product, this.buyProductForm.value.quantity);
   }
 }

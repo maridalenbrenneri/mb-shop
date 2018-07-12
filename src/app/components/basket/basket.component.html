@@ -1,15 +1,19 @@
-<h2>Basket</h2>
-
-<div>
-DEBUG: {{items.length}} {{ text }} <button (click)="add()">Check item count</button>
-</div>
+<h2 *ngIf="!isCheckoutModel">Basket</h2>
 
 <div *ngIf="items.length === 0">No items in basket</div>
 
 <ul>
     <li *ngFor="let item of items">
-    {{item.quantity}} {{item.product.name}}
+        <app-basket-item [item]="item" [isCheckoutModel]="isCheckoutModel"></app-basket-item>
     </li>
 </ul>
 
-<a>Go to checkout</a>
+Price: {{ getTotalPriceWithoutMva() }} <br />
+MVA: {{ getTotalMva() }} <br />
+---- <br />
+Total: {{ getTotalPrice() }} <br />
+
+<div *ngIf="!isCheckoutModel">
+    <br /><br />
+    <a routerLink="/checkout">Fortsett til kassen</a>
+</div>
