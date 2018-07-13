@@ -9,15 +9,14 @@ import { OrderService } from '../../services/order.service';
 })
 export class CheckoutComponent implements OnInit {
 
-  private PAYMENT_NOT_STARTED: number = 1;
-  private PAYMENT_IN_PROGRESS: number = 2;
-  private PAYMENT_COMPLETED: number = 3;
-  private PAYMENT_FAILED: number = 4;
+  PAYMENT_NOT_STARTED: number = 1;
+  PAYMENT_IN_PROGRESS: number = 2;
+  PAYMENT_COMPLETED: number = 3;
+  PAYMENT_FAILED: number = 4;
 
   status: number = this.PAYMENT_NOT_STARTED;
 
-  private order: Order;
-  paymentInProgress: boolean;
+  order: Order;
 
   constructor(private orderService: OrderService) {  }
 
@@ -27,10 +26,10 @@ export class CheckoutComponent implements OnInit {
   sendOrder() {
     this.status = this.PAYMENT_IN_PROGRESS;
 
-    this.orderService.createOrder.subscribe((orderId) => {
+    this.orderService.createOrder(this.order).subscribe((orderId) => {
       console.log('[DEBUG] Order created, id: ' + orderId);
 
-      this.orderService.payOrder.subscribe((paymentSuccess) => {
+      this.orderService.payOrder(this.order).subscribe((paymentSuccess) => {
         this.status = paymentSuccess ? this.PAYMENT_COMPLETED : this.PAYMENT_FAILED;
       },
       err => {

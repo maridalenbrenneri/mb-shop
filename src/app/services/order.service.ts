@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,13 @@ export class OrderService {
 
   constructor() { }
 
-  public createOrder = new Observable((observer) => {
+  createOrder(order: Order): Observable<number> {
     let orderId = 1;
-    observer.next(orderId);
-  });
+    return of(orderId);
+  }
 
-  public payOrder = new Observable((observer) => {
-    let v = true;
-    observer.next(v);
-  });
+  payOrder(order: Order): Observable<boolean> {
+    let success = true;
+    return of(success);
+  }
 }
