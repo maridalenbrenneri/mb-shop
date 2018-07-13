@@ -14,11 +14,7 @@ export class BasketComponent implements OnInit {
   constructor(private basketService: BasketService) { }
 
   ngOnInit() {
-    console.log("basket init, basketService random: " + this.basketService.random);
-
     this.basketService.getItems().subscribe(items => this.items = items);
-
-    console.log("count: " + this.items.length)
   }
 
   getTotalPrice() : number {

@@ -1,10 +1,22 @@
-<h3>Faktureringsdetaljer</h3>
-<app-checkout-customer-details></app-checkout-customer-details>
+<div *ngIf="status === PAYMENT_FAILED">Payment failed... :(</div>
 
-<h3>Ordren din</h3>
-<app-basket [isCheckoutModel]="true"></app-basket>
+<div *ngIf="status === PAYMENT_IN_PROGRESS">
+  PAYMENT IN PROGRESS
+</div>
 
-<h3>Betalning</h3>
-<app-checkout-payment></app-checkout-payment>
+<div *ngIf="status === PAYMENT_COMPLETED">
+  THANKS FOR YOUR ORDER, ENJOY THE COFFEE!
+</div>
 
-<button type="button" class="btn btn-primary">Send ordre</button>
+<div *ngIf="status === 1">
+  <h3>Faktureringsdetaljer</h3>
+  <app-checkout-customer-details></app-checkout-customer-details>
+  
+  <h3>Ordren din</h3>
+  <app-basket [isCheckoutModel]="true"></app-basket>
+  
+  <h3>Betalning</h3>
+  <app-checkout-payment></app-checkout-payment>
+  
+  <button type="button" class="btn btn-primary" (click)="sendOrder()">Send ordre</button>
+</div>

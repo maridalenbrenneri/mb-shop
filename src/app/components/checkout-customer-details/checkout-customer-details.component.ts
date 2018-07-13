@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { OrderCustomer } from '../../models/order.model';
 
 @Component({
   selector: 'app-checkout-customer-details',
@@ -7,9 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutCustomerDetailsComponent implements OnInit {
 
-  constructor() { }
+  detailsForm: FormGroup;
+  customer: OrderCustomer;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.createForm();
   }
 
+  createForm() {
+    this.detailsForm = this.fb.group({
+      givenName: ['', Validators.required],
+      familyName: ['', Validators.required],
+      company: ['', Validators.required],
+      street1: [''],
+      street2: [''],
+      zipCode: ['', Validators.required],
+      place: ['', Validators.required],
+      country: ['Norge', Validators.required],
+      phone: ['', Validators.required],
+      email: ['', Validators.required],
+      note: [''] 
+    });
+  }
 }
