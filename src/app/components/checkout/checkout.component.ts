@@ -9,10 +9,12 @@ import { OrderService } from '../../services/order.service';
 })
 export class CheckoutComponent implements OnInit {
 
-  private status: number = 1;
+  private PAYMENT_NOT_STARTED: number = 1;
   private PAYMENT_IN_PROGRESS: number = 2;
   private PAYMENT_COMPLETED: number = 3;
   private PAYMENT_FAILED: number = 4;
+
+  status: number = this.PAYMENT_NOT_STARTED;
 
   private order: Order;
   paymentInProgress: boolean;

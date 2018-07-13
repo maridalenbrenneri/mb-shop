@@ -8,7 +8,7 @@
   THANKS FOR YOUR ORDER, ENJOY THE COFFEE!
 </div>
 
-<div *ngIf="status === 1">
+<div *ngIf="status === PAYMENT_NOT_STARTED || status === PAYMENT_FAILED">
   <h3>Faktureringsdetaljer</h3>
   <app-checkout-customer-details></app-checkout-customer-details>
   
