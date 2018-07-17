@@ -1,4 +1,4 @@
-<div *ngIf="!authService.isSignedIn()">
+<div *ngIf="!isSignedIn()">
   <form [formGroup]="signInForm">
     <div class="form-group">
       <label class="center-block">E-post:
@@ -16,7 +16,7 @@
   </form>
 </div>
 
-<p *ngIf="authService.isSignedIn()">
-  Logget inn som {{authService.username}}
+<p *ngIf="isSignedIn()">
+  Logget inn som {{signedInUserName}}
   <button  (click)="signOut()">Logg ut</button>
 </p> 

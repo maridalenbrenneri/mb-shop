@@ -32,4 +32,11 @@ export class SignInComponent implements OnInit {
     this.authService.signOut();
   }
 
+  isSignedIn() {
+    return this.authService.isSignedIn();
+  }
+
+  signedInUserName() {
+    return this.authService.username;
+  }
 }
