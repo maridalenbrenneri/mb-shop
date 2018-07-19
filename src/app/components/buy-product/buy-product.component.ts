@@ -11,6 +11,7 @@ import { BasketService } from '../../services/basket.service';
 export class BuyProductComponent implements OnInit {
 
   @Input() product: Product;
+  @Input() quantityVisible: boolean = false;
   buyProductForm: FormGroup;
 
   constructor(private basketService: BasketService, private fb: FormBuilder) { 
@@ -27,9 +28,7 @@ export class BuyProductComponent implements OnInit {
     });
   }
 
-  buyProduct() {
-    console.log("[DEBUG] buy-product-component - Adding product " + this.product.name);
-    
+  buyProduct() {  
     this.basketService.add(this.product, this.buyProductForm.value.quantity);
   }
 }

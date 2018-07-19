@@ -4,6 +4,8 @@ export class Product {
     shortDescription: string;
     price: number;
 
+    image: string;
+    
     // singleQuantityOnly
     // type - coffee, subscription
 }

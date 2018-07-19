@@ -1,2 +1,11 @@
 @import 'variables';
 @import '../node_modules/bootstrap/scss/bootstrap';
+
+.navbar-brand img {
+    max-width: 50px;
+}
+
+button.add_to_cart {
+    text-transform: uppercase;
+    padding: 20px 45px!important;
+}

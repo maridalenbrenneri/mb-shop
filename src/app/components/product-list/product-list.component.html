@@ -1,8 +1,11 @@
 <h2>Products</h2>
 <ul>
   <li *ngFor="let product of products">
-      {{product.id}} <a routerLink="/product/{{product.id}}">{{product.name}}</a> <br />
-      {{product.shortDescription}}
+      <a routerLink="/product/{{product.id}}">
+        <img src="../../../assets/product_default.jpg" />
+      </a>
+      <h2>{{product.name}}</h2>
+      <div>{{product.price}} kr</div>
       <app-buy-product [product]="product"></app-buy-product>
   </li>
 </ul>

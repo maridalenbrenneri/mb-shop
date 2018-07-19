@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -14,6 +14,9 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';
 import { CheckoutCustomerDetailsComponent } from './components/checkout-customer-details/checkout-customer-details.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
+import { LoaderComponent } from './core/loader/loader/loader.component';
+import { LoaderInterceptor } from './core/loader-interceptor';
+import { TokenInterceptor } from './core/token-interceptor';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/product-list', pathMatch: 'full' },
@@ -35,7 +38,8 @@ const appRoutes: Routes = [
     CheckoutComponent,
     CheckoutPaymentComponent,
     CheckoutCustomerDetailsComponent,
-    SignInComponent
+    SignInComponent,
+    LoaderComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -47,7 +51,10 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

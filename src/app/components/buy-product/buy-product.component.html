@@ -1,6 +1,6 @@
 <form [formGroup]="buyProductForm">
-    <input formControlName="quantity" type="number">
-    <button type="button" class="btn btn-primary" (click)="buyProduct()">Buy</button>
+    <input *ngIf="quantityVisible" formControlName="quantity" type="number">
+    <button type="submit" class="btn btn-primary add_to_cart" (click)="buyProduct()">Kjøp</button>
 </form>
 
-<p>Form value: {{ buyProductForm.value | json }}</p>
+<!-- <p>Form value: {{ buyProductForm.value | json }}</p> -->

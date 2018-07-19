@@ -45,6 +45,10 @@ export class AuthService {
 
     this.token = null;
   }
+
+  getToken() {
+    return this.token;
+  }
 }
 
 export class SignInResponse {
