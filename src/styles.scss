@@ -1,11 +1,45 @@
 @import 'variables';
 @import '../node_modules/bootstrap/scss/bootstrap';
 
+// @font-face {    
+//     font-family:'Open Sans';     
+//     src:url('assets/fonts/OpenSans-Light-webfont.eot');     
+//     src:url('assets/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),         
+//     url('assets/fonts/OpenSans-Light-webfont.woff') format('woff'),         
+//     url('assets/fonts/OpenSans-Light-webfont.ttf') format('truetype'),         
+//     url('assets/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');     
+//     font-weight:300;     
+//     font-style:normal
+// }
+
+// @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSans-Regular-webfont.eot');     src:url('css/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSans-Regular-webfont.woff') format('woff'),         url('css/fonts/OpenSans-Regular-webfont.ttf') format('truetype'),         url('css/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');     font-weight:400;     font-style:normal}
+// @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSans-Semibold-webfont.eot');     src:url('css/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSans-Semibold-webfont.woff') format('woff'),         url('css/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'),         url('css/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');     font-weight:600;     font-style:normal}
+// @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSansBold-webfont.eot');     src:url('css/fonts/OpenSansBold-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSansBold-webfont.woff') format('woff'),         url('css/fonts/OpenSansBold-webfont.ttf') format('truetype'),         url('css/fonts/OpenSansBold-webfont.svg#OpenSansBold') format('svg');  font-weight:700;  font-style:normal}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.btn {
+    text-transform: uppercase;
+    padding: 1em 1.5em !important;
+
+    &.btn-primary {
+        color: #fff;
+    }
+
+    &:hover {
+        background-color: darken($primary, 10%);
+        cursor: pointer;
+    }
+}
+
 .navbar-brand img {
     max-width: 50px;
 }
 
-button.add_to_cart {
-    text-transform: uppercase;
-    padding: 20px 45px!important;
+.price-label {
+    color: $primary;
+    font-weight: 600;
+    font-size: 1.2em;
 }

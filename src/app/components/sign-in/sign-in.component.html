@@ -11,12 +11,12 @@
       </label>
     </div>
     <div class="form-group">
-      <button (click)="signIn()">Logg inn</button>
+      <button class="btn btn-primary" (click)="signIn()">Logg inn</button>
     </div>
   </form>
 </div>
 
 <p *ngIf="isSignedIn()">
   Logget inn som {{signedInUserName()}}
-  <button (click)="signOut()">Logg ut</button>
+  <button class="btn btn-primary" (click)="signOut()">Logg ut</button>
 </p> 
