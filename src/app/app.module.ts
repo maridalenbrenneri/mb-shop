@@ -17,13 +17,15 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { LoaderComponent } from './core/loader/loader/loader.component';
 import { LoaderInterceptor } from './core/loader-interceptor';
 import { TokenInterceptor } from './core/token-interceptor';
+import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/product-list', pathMatch: 'full' },
   { path: 'product/:id', component: ProductComponent },
   { path: 'product-list', component: ProductListComponent },
   { path: 'basket', component: BasketComponent },
-  { path: 'checkout', component: CheckoutComponent }
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'wp-viewer', component: WpViewerComponent }
  // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -39,7 +41,8 @@ const appRoutes: Routes = [
     CheckoutPaymentComponent,
     CheckoutCustomerDetailsComponent,
     SignInComponent,
-    LoaderComponent
+    LoaderComponent,
+    WpViewerComponent
   ],
   imports: [
     RouterModule.forRoot(

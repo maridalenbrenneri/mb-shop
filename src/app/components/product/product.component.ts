@@ -10,7 +10,7 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductComponent implements OnInit {
   product: Product;
-
+  url: string;
   constructor(private route: ActivatedRoute, private productService: ProductService) { }
 
   ngOnInit() {
@@ -18,6 +18,7 @@ export class ProductComponent implements OnInit {
       let id = +params['id']; // (+) converts string 'id' to a number
       
       this.product = this.productService.getProduct(id);
+      this.url = "honduras-ho-danny-moreno";
    });
   }
 

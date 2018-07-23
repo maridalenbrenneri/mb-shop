@@ -13,7 +13,8 @@
 </p>
 
 <p>
-    Kaffe sender vi ut av brenneriet på tirsdager.  Les mer om produsent og kaffen her.
+    Kaffe sender vi ut av brenneriet på tirsdager. Les mer om produsent og kaffen 
+    <a routerLink="/wp-viewer" [queryParams]="{page: url}">her</a>.
 </p>
 
 <app-buy-product [product]="product"></app-buy-product>
@@ -22,5 +23,5 @@
     <small>Product id: {{product.id}}</small>
 </p>
 
-<iframe src="https://maridalenbrenneri.no/testside/"></iframe>
 
+<app-wp-viewer [page]="url"></app-wp-viewer>
