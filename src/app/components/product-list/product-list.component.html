@@ -4,8 +4,8 @@
       <a routerLink="/product/{{product.id}}">
         <img src="../../../assets/product_default.jpg" />
       </a>
-      <h2>{{product.name}}</h2>
-      <div>{{product.price}} kr</div>
+      <div>{{product.name}}</div>
+      <div class="price-label">{{product.price}} kr</div>
       <app-buy-product [product]="product"></app-buy-product>
   </li>
 </ul>
