@@ -20,12 +20,12 @@ import { TokenInterceptor } from './core/token-interceptor';
 import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/product-list', pathMatch: 'full' },
+  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductComponent },
-  { path: 'product-list', component: ProductListComponent },
+  { path: 'about', component: WpViewerComponent },
   { path: 'basket', component: BasketComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'wp-viewer', component: WpViewerComponent }
  // { path: '**', component: PageNotFoundComponent }
 ];
 

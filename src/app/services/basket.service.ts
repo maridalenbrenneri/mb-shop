@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
-import { ProductItem, Product } from '../models/product.model';
+import { Product } from '../models/product.model';
 import { Observable, of } from 'rxjs';
+import { OrderItem, SubscriptionOrderOptions } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketService {
 
-  public items: Array<ProductItem> = [];
+  public items: Array<OrderItem> = [];
   random: string;
 
   constructor() { 
     this.random = Math.random().toString();
   }
 
-  getItems() : Observable<ProductItem[]> {
+  getItems() : Observable<OrderItem[]> {
     return of(this.items);
   }
 
-  add(product: Product, quantity: number) {
+  add(product: Product, quantity: number, options: SubscriptionOrderOptions) {
 
     if(!this.validateItem(product, quantity, false)) {
       return;
@@ -29,7 +30,8 @@ export class BasketService {
     if(!existingItem) {
       this.items.push({
         product: product, 
-        quantity: quantity
+        quantity: quantity,
+        subscriptionOptions: options
       });
 
     } else {

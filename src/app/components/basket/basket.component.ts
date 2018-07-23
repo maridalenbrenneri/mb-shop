@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductItem } from '../../models/product.model';
+import { OrderItem } from '../../models/order.model';
 import { BasketService } from '../../services/basket.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { BasketService } from '../../services/basket.service';
 })
 export class BasketComponent implements OnInit {
   @Input() isCheckoutModel: boolean = false;
-  items: Array<ProductItem> = [];
+  items: Array<OrderItem> = [];
 
   constructor(private basketService: BasketService) { }
 
@@ -30,6 +30,6 @@ export class BasketComponent implements OnInit {
   }
 
   getTotalMva() : number {
-    return this.getTotalPrice() * 0.25;
+    return this.getTotalPrice() * 0.125;
   }
 }

@@ -1,27 +1,63 @@
-<h3>{{product.name}}</h3>
+<h1>{{product.name}}</h1>
 
-<div>
-    {{product.shortDescription}}
+<div *ngIf="isSubscription()">
+    <h2>Fra {{product.price}} kr + frakt / måned</h2>
+    <p>
+        Få nybrent kaffe levert på døra med vårt kaffeabonnement.
+        Vi velger den beste kaffen ut i fra variasjon, utvalg og brenninger.
+        Så kan du selvfølgelig komme med egne ønsker og endre abonnementet underveis.
+    </p>
+    <p>
+        Nybrent kaffe sender vi ut av brenneriet første og, om du velger levering annenhver uke, tredje tirsdag i måneden.
+        Betalingen trekker vi 4 dager før utsendelse. Det er selvsagt ingen bindingstid, og abonnementet kan sies opp, endres eller pauses enkelt fra «Min konto». 
+    </p>
+    <p>
+        Frakt 30 kr uansett antall poser.
+    </p>
+
+    <form>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="inputQuantity">Antall påser</label>
+                <input type="number" id="inputQuantity" class="form-control" />
+            </div>            
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="inputDelivery">Levering</label>
+                <select id="inputDelivery" class="form-control">
+                    <option selected>Annenhver uke</option>
+                    <option>Månedlig</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="inputFirstDelivery">Første levering</label>
+                <input type="date" id="inputFirstDelivery" />
+            </div>
+        </div>    
+        <div class="form-row">
+            <div class="form-group col-lg-12">
+                <label for="inputDirectDelivery">Send en påse på direkte!</label>
+                <input type="checkbox" id="inputDirectDelivery" />
+            </div>
+        </div>              
+    </form>
 </div>
 
-<p>
-    Bringebær | Nektarin | Pasjonsfrukt | Floral
-</p>
+<div *ngIf="isGiftSubscription()">
+    GAVEABO!!!
+</div>
 
-<p>
-    Poser med 250 g hele bønner.
-</p>
-
-<p>
-    Kaffe sender vi ut av brenneriet på tirsdager. Les mer om produsent og kaffen 
-    <a routerLink="/wp-viewer" [queryParams]="{page: url}">her</a>.
-</p>
+<div *ngIf="isCoffeeNormal()">
+    <p>{{product.shortDescription}}</p>
+    <p>{{product.tastes}}</p>
+    <p>Poser med 250 g hele bønner.</p>
+    <p>
+        Kaffe sender vi ut av brenneriet på tirsdager. Les mer om produsent og kaffen 
+        <a routerLink="/about" [queryParams]="{page: url}">her</a>.
+    </p>
+</div>
 
 <app-buy-product [product]="product"></app-buy-product>
-
-<p>
-    <small>Product id: {{product.id}}</small>
-</p>
-
-
-<app-wp-viewer [page]="url"></app-wp-viewer>
