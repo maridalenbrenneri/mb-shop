@@ -18,16 +18,17 @@ import { LoaderComponent } from './core/loader/loader/loader.component';
 import { LoaderInterceptor } from './core/loader-interceptor';
 import { TokenInterceptor } from './core/token-interceptor';
 import { MyAccountComponent } from './components/my-account/my-account.component';
+import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/product-list', pathMatch: 'full' },
+  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: 'products', component: ProductListComponent },
   { path: 'product/:id', component: ProductComponent },
-  { path: 'product-list', component: ProductListComponent },
+  { path: 'about', component: WpViewerComponent },
   { path: 'basket', component: BasketComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'account', component: MyAccountComponent }
-
- // { path: '**', component: PageNotFoundComponent }
+  // { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
     CheckoutCustomerDetailsComponent,
     SignInComponent,
     LoaderComponent,
-    MyAccountComponent
+    MyAccountComponent,
+    WpViewerComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -3,7 +3,7 @@
 <ul>
   <li *ngFor="let product of products">
       <a routerLink="/product/{{product.id}}">
-        <img src="../../../assets/product_default.jpg" />
+        <img src="../../../assets/{{product.image}}" />
       </a>
       <div>{{product.name}}</div>
       <div class="price-label">{{product.price}} kr</div>

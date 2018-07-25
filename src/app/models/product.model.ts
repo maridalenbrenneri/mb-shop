@@ -1,16 +1,25 @@
 export class Product {
     id: number;
+    type: string;
     name: string;
-    shortDescription: string;
     price: number;
-
     image: string;
-    
-    // singleQuantityOnly
-    // type - coffee, subscription
+
+    isSubscription() {
+       return this instanceof SubscriptionProduct; 
+    }
 }
 
-export class ProductItem {
-    product: Product;
-    quantity: number;
+export class CoffeeNormalProduct extends Product {
+    shortDescription: string;
+    tastes: string;
 }
+
+export class SubscriptionProduct extends Product {
+    
+}
+
+export class GiftSubscriptionProduct extends SubscriptionProduct {
+
+}
+

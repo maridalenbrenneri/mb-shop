@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Router} from '@angular/router';
 import { Product } from '../../models/product.model';
 import { BasketService } from '../../services/basket.service';
 import { quantityValidator } from '../../core/validators';
@@ -30,6 +31,11 @@ export class BuyProductComponent implements OnInit {
   }
 
   buyProduct() {
-    this.basketService.add(this.product, this.buyProductForm.value.quantity);
+    if (this.product.isSubscription()) {
+      // todo: route to product page
+      console.log('Subscription, should navigate to product page');
+      return;
+    }
+    this.basketService.add(this.product, this.buyProductForm.value.quantity, null);
   }
 }

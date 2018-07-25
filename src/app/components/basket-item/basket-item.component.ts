@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ProductItem } from '../../models/product.model';
+import { OrderItem } from '../../models/order.model';
 import { BasketService } from '../../services/basket.service';
 import { quantityValidator } from '../../core/validators';
 
@@ -10,7 +10,8 @@ import { quantityValidator } from '../../core/validators';
   styleUrls: ['./basket-item.component.scss']
 })
 export class BasketItemComponent implements OnInit {
-  @Input() item: ProductItem;
+
+  @Input() item: OrderItem;
   @Input() isCheckoutModel = false;
   quantityForm: FormGroup;
 
@@ -21,7 +22,7 @@ export class BasketItemComponent implements OnInit {
   }
 
   add() {
-    this.basketService.add(this.item.product, 1);
+    this.basketService.add(this.item.product, 1, null);
   }
 
   remove() {
