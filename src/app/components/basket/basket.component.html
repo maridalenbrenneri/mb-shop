@@ -1,19 +1,56 @@
-<h2 *ngIf="!isCheckoutModel">Basket</h2>
+<div *ngIf="items.length === 0">
+    Ingen produkter i handlekurven. <a routerLink="/products">Til butikken</a>
+</div>
 
-<div *ngIf="items.length === 0">No items in basket</div>
+<div *ngIf="items.length > 0">
+ <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Produkt</th>
+                <th scope="col">Pris</th>
+                <th scope="col">Antall</th>
+                <th scope="col">Totalt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items">
+                <td>{{item.product.name}}</td>
+                <td>{{item.product.price}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.product.price * item.quantity}}</td>
+            </tr>
+        </tbody>
+    
+    </table>
+    
+    <div>
+        <h3>Totalt i handlekurven</h3>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>Handlesum</td>
+                    <td>{{ getTotalPriceWithoutMva() }}</td>
+                </tr>
+                <tr>
+                    <td>MVA</td>
+                    <td>{{ getTotalMva() }}</td>
+                </tr>
+                <tr>
+                    <td>Frakt</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Totalt</td>
+                    <td>{{ getTotalPrice() }}</td>
+                </tr>
+            </tbody>
+        
+        </table>
+    </div>
+    
+    <div *ngIf="!isCheckoutModel">
+        <br /><br />
+        <button class="btn btn-primary float-right" routerLink="/checkout">Fortsett til kassen</button>
+    </div>
 
-<ul>
-    <li *ngFor="let item of items">
-        <app-basket-item [item]="item" [isCheckoutModel]="isCheckoutModel"></app-basket-item>
-    </li>
-</ul>
-
-Price: {{ getTotalPriceWithoutMva() }} <br />
-MVA: {{ getTotalMva() }} <br />
----- <br />
-Total: {{ getTotalPrice() }} <br />
-
-<div *ngIf="!isCheckoutModel">
-    <br /><br />
-    <a routerLink="/checkout">Fortsett til kassen</a>
 </div>
