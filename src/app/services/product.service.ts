@@ -14,6 +14,6 @@ export class ProductService {
   }
 
   getProduct(productId: number): Product {
-    return PRODUCTS.find(p => p.id == productId);
-  }  
+    return PRODUCTS.find(p => p.id === productId);
+  }
 }

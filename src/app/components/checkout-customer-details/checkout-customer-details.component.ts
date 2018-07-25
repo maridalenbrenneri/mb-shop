@@ -22,15 +22,15 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
     this.detailsForm = this.fb.group({
       givenName: ['', Validators.required],
       familyName: ['', Validators.required],
-      company: ['', Validators.required],
-      street1: [''],
+      company: [''],
+      street1: ['', Validators.required],
       street2: [''],
-      zipCode: ['', Validators.required],
+      zipCode: ['', [Validators.required, Validators.pattern('[0-9]')]],
       place: ['', Validators.required],
       country: ['Norge', Validators.required],
       phone: ['', Validators.required],
-      email: ['', Validators.required],
-      note: [''] 
+      email: ['', [Validators.required, Validators.email]],
+      note: ['']
     });
   }
 }

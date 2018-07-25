@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -17,13 +17,16 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { LoaderComponent } from './core/loader/loader/loader.component';
 import { LoaderInterceptor } from './core/loader-interceptor';
 import { TokenInterceptor } from './core/token-interceptor';
+import { MyAccountComponent } from './components/my-account/my-account.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/product-list', pathMatch: 'full' },
   { path: 'product/:id', component: ProductComponent },
   { path: 'product-list', component: ProductListComponent },
   { path: 'basket', component: BasketComponent },
-  { path: 'checkout', component: CheckoutComponent }
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'account', component: MyAccountComponent }
+
  // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -39,7 +42,8 @@ const appRoutes: Routes = [
     CheckoutPaymentComponent,
     CheckoutCustomerDetailsComponent,
     SignInComponent,
-    LoaderComponent
+    LoaderComponent,
+    MyAccountComponent
   ],
   imports: [
     RouterModule.forRoot(

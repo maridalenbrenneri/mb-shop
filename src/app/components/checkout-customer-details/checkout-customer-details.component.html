@@ -1,12 +1,12 @@
 <form [formGroup]="detailsForm">
   <div class="form-group">
     <label class="center-block">Fornavn:
-      <input class="form-control" formControlName="givenName">
+      <input class="form-control" required formControlName="givenName">
     </label>
   </div>
   <div class="form-group">
     <label class="center-block">Etternavn:
-      <input class="form-control" formControlName="familyName">
+      <input class="form-control" required formControlName="familyName">
     </label>    
   </div>
   <div class="form-group">
@@ -16,28 +16,28 @@
   </div>  
   <div class="form-group">
     <label class="center-block">Gateadresse:
-      <input class="form-control" formControlName="street1"> <br />
+      <input class="form-control" required formControlName="street1"> <br />
       <input class="form-control" formControlName="street2">
     </label>
   </div>  
   <div class="form-group">
     <label class="center-block">Postnummer:
-      <input class="form-control" formControlName="zipCode">
+      <input class="form-control" required formControlName="zipCode">
     </label>
   </div>
   <div class="form-group">
     <label class="center-block">Sted:
-      <input class="form-control" formControlName="place">
+      <input class="form-control" required formControlName="place">
     </label>
   </div>
   <div class="form-group">
     <label class="center-block">Mobiltelefon:
-      <input class="form-control" formControlName="phone">
+      <input class="form-control" required formControlName="phone">
     </label>
   </div>  
   <div class="form-group">
     <label class="center-block">E-postadresse:
-      <input class="form-control" formControlName="email">
+      <input class="form-control" required formControlName="email">
     </label>
   </div>  
   <div class="form-group">

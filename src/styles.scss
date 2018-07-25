@@ -18,6 +18,15 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
+    color: #676767;
+}
+
+.router-outlet {
+    background-color: #f6f6f6;
+}
+
+.navbar {
+    background-color: #fff;
 }
 
 .btn {
@@ -42,4 +51,12 @@ body {
     color: $primary;
     font-weight: 600;
     font-size: 1.2em;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 4px solid #42A948 !important;
+}
+  
+.ng-invalid:not(form)  {
+    border-left: 4px solid #d81939;
 }

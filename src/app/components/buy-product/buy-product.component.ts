@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Product } from '../../models/product.model';
 import { BasketService } from '../../services/basket.service';
+import { quantityValidator } from '../../core/validators';
 
 @Component({
   selector: 'app-buy-product',
@@ -11,24 +12,24 @@ import { BasketService } from '../../services/basket.service';
 export class BuyProductComponent implements OnInit {
 
   @Input() product: Product;
-  @Input() quantityVisible: boolean = false;
+  @Input() quantityVisible = false;
   buyProductForm: FormGroup;
 
-  constructor(private basketService: BasketService, private fb: FormBuilder) { 
+  constructor(private basketService: BasketService, private fb: FormBuilder) {
     this.createForm();
   }
 
   ngOnInit() {
-    console.log("[DEBUG] buy-product init, basketService random: " + this.basketService.random);
+    console.log('[DEBUG] buy-product init, basketService random: ' + this.basketService.random);
   }
 
   createForm() {
     this.buyProductForm = this.fb.group({
-      quantity: [1, Validators.required]
+      quantity: [1, [Validators.required, quantityValidator()]]
     });
   }
 
-  buyProduct() {  
+  buyProduct() {
     this.basketService.add(this.product, this.buyProductForm.value.quantity);
   }
 }

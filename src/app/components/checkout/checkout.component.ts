@@ -9,10 +9,10 @@ import { OrderService } from '../../services/order.service';
 })
 export class CheckoutComponent implements OnInit {
 
-  PAYMENT_NOT_STARTED: number = 1;
-  PAYMENT_IN_PROGRESS: number = 2;
-  PAYMENT_COMPLETED: number = 3;
-  PAYMENT_FAILED: number = 4;
+  PAYMENT_NOT_STARTED = 1;
+  PAYMENT_IN_PROGRESS = 2;
+  PAYMENT_COMPLETED = 3;
+  PAYMENT_FAILED = 4;
 
   status: number = this.PAYMENT_NOT_STARTED;
 
@@ -44,5 +44,5 @@ export class CheckoutComponent implements OnInit {
   private setError(err: Error) {
     console.log('Error when creating order: ' + err.message);
     this.status = this.PAYMENT_FAILED;
-  } 
+  }
 }

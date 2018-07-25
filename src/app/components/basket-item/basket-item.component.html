@@ -4,12 +4,8 @@
 
 <div>{{item.product.price * item.quantity}}</div>
 
-<input
-    *ngIf="!isCheckoutModel"
-    type="number" 
-    class="form-control"
-    id="quantity"
-    required
-    [(ngModel)]="item.quantity" name="quantity">
+<form [formGroup]="quantityForm" *ngIf="!isCheckoutModel">
+    <input class="form-control" formControlName="quantity">
+</form>
 
 <div *ngIf="isCheckoutModel">{{item.quantity}}</div>
