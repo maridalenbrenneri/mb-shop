@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  wpBaseUrl: "https://maridalenbrenneri.no/wp-json/"
+  wpBaseUrl: 'https://maridalenbrenneri.no/wp-json/',
+  mbApiBaseUrl: 'http://localhost:5002/api/'
 };
 
 /*

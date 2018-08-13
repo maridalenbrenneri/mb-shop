@@ -14,13 +14,13 @@ export class SignInComponent implements OnInit {
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.createForm();
+    this.createForms();
   }
 
-  createForm() {
+  createForms() {
     this.signInForm = this.fb.group({
-      email: ['bjodadev@gmail.com', Validators.required],
-      password: ['', Validators.required]
+      email: ['bjoda@kaffe.nu', Validators.required],
+      password: ['bjodas', Validators.required]
     });
   }
 

@@ -18,8 +18,12 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-    color: #676767;
+    color: #9e9e9e;
     background-color: #f6f6f6;
+}
+
+p {
+    margin: 1em 0.5em;
 }
 
 .navbar {
@@ -35,8 +39,31 @@ body {
     }
 
     &:hover {
-        background-color: darken($primary, 10%);
+        background-color: darken($primary, 15%);
         cursor: pointer;
+    }
+
+    &[disabled] {
+        background-color: lighten($primary, 15%);
+        cursor: default;
+    }
+}
+
+.card {
+    padding-bottom: 0.5em;
+
+    .btn {
+        font-size: 0.75em;
+        padding: 0.75em 1em !important;
+    }
+}
+form {
+    label {
+        display: block;    
+    }
+
+    .form-control {
+        border-radius: 0;
     }
 }
 
@@ -51,9 +78,9 @@ body {
 }
 
 .ng-valid[required], .ng-valid.required  {
-    border-left: 4px solid #42A948 !important;
+    border-left: 4px solid $primary !important;
 }
   
 .ng-invalid:not(form)  {
-    border-left: 4px solid #d81939;
+    border-left: 4px solid darken(#d81939, 10%);
 }

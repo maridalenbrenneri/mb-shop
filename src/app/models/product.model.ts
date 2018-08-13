@@ -1,25 +1,13 @@
 export class Product {
     id: number;
     type: string;
+    code: string;
     name: string;
+    description: string;
+    description2: string;
     price: number;
-    image: string;
-
-    isSubscription() {
-       return this instanceof SubscriptionProduct; 
-    }
+    taxClass: string;
+    imageKey: string;
+    isActive: boolean;
+    isInStock: boolean;
 }
-
-export class CoffeeNormalProduct extends Product {
-    shortDescription: string;
-    tastes: string;
-}
-
-export class SubscriptionProduct extends Product {
-    
-}
-
-export class GiftSubscriptionProduct extends SubscriptionProduct {
-
-}
-

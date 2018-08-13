@@ -1,0 +1,28 @@
+<div>
+  <form [formGroup]="registerForm">    
+    <div class="form-group">
+      <label class="center-block">Navn:
+        <input type="text" required class="form-control" formControlName="name">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">E-post:
+        <input class="form-control" required formControlName="email">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Passord:
+        <input type="password" required class="form-control" formControlName="password">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Gjenta passord:
+        <input type="password" required class="form-control" formControlName="confirmPassword">
+      </label>
+    </div>     
+    <div class="form-group">
+      <button class="btn btn-primary" (click)="register()" [disabled]="!registerForm.valid">Registrer</button>
+    </div>
+  </form>
+</div>
+  

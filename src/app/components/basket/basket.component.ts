@@ -25,11 +25,8 @@ export class BasketComponent implements OnInit {
     return total;
   }
 
-  getTotalPriceWithoutMva() : number {
-    return this.getTotalPrice() - this.getTotalMva();
-  }
-
-  getTotalMva() : number {
+  getTotalMva(): number {
+    
     return this.getTotalPrice() * 0.125;
   }
 }

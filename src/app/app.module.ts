@@ -19,11 +19,16 @@ import { LoaderInterceptor } from './core/loader-interceptor';
 import { TokenInterceptor } from './core/token-interceptor';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
+import { MyDetailsComponent } from './components/my-account/my-details/my-details.component';
+import { MySubscriptionsComponent } from './components/my-account/my-subscriptions/my-subscriptions.component';
+import { MyOrdersComponent } from './components/my-account/my-orders/my-orders.component';
+import { MyAddressesComponent } from './components/my-account/my-addresses/my-addresses.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: 'products', component: ProductListComponent },
-  { path: 'product/:id', component: ProductComponent },
+  { path: 'products/:id', component: ProductComponent },
   { path: 'about', component: WpViewerComponent },
   { path: 'basket', component: BasketComponent },
   { path: 'checkout', component: CheckoutComponent },
@@ -45,7 +50,12 @@ const appRoutes: Routes = [
     SignInComponent,
     LoaderComponent,
     MyAccountComponent,
-    WpViewerComponent
+    WpViewerComponent,
+    RegisterUserComponent,
+    MyDetailsComponent,
+    MySubscriptionsComponent,
+    MyOrdersComponent,
+    MyAddressesComponent
   ],
   imports: [
     RouterModule.forRoot(

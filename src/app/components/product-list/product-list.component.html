@@ -4,8 +4,8 @@
 <div class="row">
   <div class="col-6 col-md-3 col-xl-2" *ngFor="let product of products">
     <div class="product-item-box">
-      <a routerLink="/product/{{product.id}}">
-        <img src="../../../assets/{{product.image}}" />
+      <a routerLink="/products/{{product.id}}">
+        <img src="../../../assets/{{getProductImageOrDefault(product)}}" />
       </a>
       <div>{{product.name}}</div>
       <div class="price-label">{{product.price}} kr</div>

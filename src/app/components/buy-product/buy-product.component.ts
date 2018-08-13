@@ -31,7 +31,7 @@ export class BuyProductComponent implements OnInit {
   }
 
   buyProduct() {
-    if (this.product.isSubscription()) {
+    if (this.product.type === 'subscription') {
       // todo: route to product page
       console.log('Subscription, should navigate to product page');
       return;
