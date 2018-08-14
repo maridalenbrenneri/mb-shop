@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
+import { Observable } from '../../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  authenticateEndpoint = 'authenticate';
   private token: string = null;
 
   userId: number;
   username: string;
-  user: any;
+  email: string;
 
   constructor(private http: HttpClient) { }
 
@@ -21,25 +21,28 @@ export class AuthService {
     return this.token != null;
   }
 
-  getUser() {
-    return this.user;
+  getUser(): Observable<User> {
+    const obs = this.http.get<any>(environment.mbApiBaseUrl + 'users/me');
+
+    obs.subscribe(user => {}, err => {
+      console.error(err);
+    });
+
+    return obs;
   }
 
-  signIn(email: string, password: string) {
-    this.http.post<SignInResponse>(environment.mbApiBaseUrl + this.authenticateEndpoint, {
+  signIn(email: string, password: string): Observable<any> {
+    const obs = this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
       email: email,
       password: password
+    });
 
-    }).subscribe(response => {
+    obs.subscribe(response => {
       // todo: save token in cookie
 
       this.token = response.token;
-      this.username = email;
-      this.user = new User();
-      this.user.email = response.user.email;
-      this.user.givenName = response.user.givenName;
-      this.user.familyName = response.user.familyName;
-      this.user.role = response.user.role;
+      this.email = response.email;
+      this.username = response.givenName;
 
     }, err => {
       if (err.status === 401) {
@@ -49,6 +52,8 @@ export class AuthService {
         console.log('[DEBUG] Error when signing in: ' + err.message);
       }
     });
+
+    return obs;
   }
 
   signIn_Wordpress(username: string, password: string) {
@@ -78,18 +83,13 @@ export class AuthService {
     // todo: remove token from cookie
 
     this.token = null;
+    this.email = null;
     this.username = null;
-    this.user = null;
   }
 
   getToken() {
     return this.token;
   }
-}
-
-export class SignInResponse {
-  token: string;
-  user: any;
 }
 
 export class WordpressSignInResponse {

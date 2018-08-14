@@ -10,15 +10,26 @@ import { User } from '../../models/user.model';
 export class MyAccountComponent implements OnInit {
 
   user: User;
+  tested: string;
 
   constructor(private authService: AuthService) {
     this.user = new User();
   }
 
   ngOnInit() {
-    if (this.isSignedIn()) {
-      this.user = this.authService.getUser();
+    if (!this.isSignedIn()) {
+      return;
     }
+
+    this.authService.getUser().subscribe(user => {
+        this.user = user;
+    });
+  }
+
+  onSignedIn(signedIn: boolean) {
+    this.authService.getUser().subscribe(user => {
+      this.user = user;
+    });
   }
 
   isSignedIn() {

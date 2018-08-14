@@ -1,6 +1,6 @@
-<div class="row justify-content-center" *ngIf="!isSignedIn()">
+<div class="row justify-content-center" [hidden]="isSignedIn()">
     <div class="col-12 col-md-6 col-lg-4">
-        <app-sign-in></app-sign-in>
+        <app-sign-in (signedIn)="onSignedIn($event)"></app-sign-in>
     </div>
 </div>
 

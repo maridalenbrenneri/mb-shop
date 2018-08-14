@@ -13,13 +13,25 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(public auth: AuthService) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = request.clone({
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const token = this.auth.getToken() != null ? this.auth.getToken() : '';
+
+    req = (req as HttpRequest<any>).clone({
       setHeaders: {
-        Authorization: `Bearer ${this.auth.getToken()}`
+        'x-access-token': token
       }
     });
 
-    return next.handle(request);
+    return next.handle(req);
   }
+
+  // intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  //   request = request.clone({
+  //     setHeaders: {
+  //       Authorization: `Bearer ${this.auth.getToken()}`
+  //     }s
+  //   });
+
+  //   return next.handle(request);
+  // }
 }

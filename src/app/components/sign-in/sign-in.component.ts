@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -10,6 +10,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class SignInComponent implements OnInit {
 
   signInForm: FormGroup;
+  @Output() signedIn = new EventEmitter<boolean>();
+  @Output() tested = new EventEmitter<boolean>();
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
@@ -25,7 +27,13 @@ export class SignInComponent implements OnInit {
   }
 
   signIn() {
-    this.authService.signIn(this.signInForm.value.email, this.signInForm.value.password);
+    this.authService.signIn(this.signInForm.value.email, this.signInForm.value.password).subscribe(() => {
+      this.signedIn.emit(true);
+    });
+  }
+
+  test() {
+    this.tested.emit(true);
   }
 
   signOut() {

@@ -2,6 +2,7 @@ export class User {
     id: number;
     email: string;
     givenName: string;
-    lastName: string;
+    familyName: string;
     role: string;
+    phone: string;
 }
