@@ -27,13 +27,10 @@ export class SignInComponent implements OnInit {
   }
 
   signIn() {
-    this.authService.signIn(this.signInForm.value.email, this.signInForm.value.password).subscribe(() => {
+    this.authService.signIn(this.signInForm.value.email, this.signInForm.value.password).subscribe(result => {
+      this.authService.setSignedIn(result);
       this.signedIn.emit(true);
     });
-  }
-
-  test() {
-    this.tested.emit(true);
   }
 
   signOut() {

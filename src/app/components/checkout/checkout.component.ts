@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Order } from '../../models/order.model';
+import { Order, OrderCustomer } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
+import { BasketService } from '../../services/basket.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -17,32 +19,61 @@ export class CheckoutComponent implements OnInit {
   status: number = this.PAYMENT_NOT_STARTED;
 
   order: Order;
+  customer: OrderCustomer;
 
-  constructor(private orderService: OrderService) {  }
+  constructor(private orderService: OrderService, private basketService: BasketService, private authService: AuthService) {
+    this.customer = new OrderCustomer();
+  }
 
   ngOnInit() {
+    this.createOrderCustomerFromUser();
   }
 
   sendOrder() {
     this.status = this.PAYMENT_IN_PROGRESS;
 
-    this.orderService.createOrder(this.order).subscribe((orderId) => {
-      console.log('[DEBUG] Order created, id: ' + orderId);
+    const order = new Order();
+    order.items = this.basketService.items;
+    order.customer = this.customer;
 
-      this.orderService.payOrder(this.order).subscribe((paymentSuccess) => {
-        this.status = paymentSuccess ? this.PAYMENT_COMPLETED : this.PAYMENT_FAILED;
-      },
-      err => {
-        this.setError(err);
-      });
-    },
-    err => {
-      this.setError(err);
+    this.orderService.createOrder(order).subscribe((createdOrder) => {
+      console.log('[DEBUG] Order created, id: ' + createdOrder.id);
+
+      this.status = this.PAYMENT_COMPLETED;
+
+    }, () => {
+        this.status = this.PAYMENT_FAILED; // todo: do something else... :P Make customized errors, payment_failed/etc.
     });
   }
 
-  private setError(err: Error) {
-    console.log('Error when creating order: ' + err.message);
-    this.status = this.PAYMENT_FAILED;
+  onSignedIn() {
+    this.createOrderCustomerFromUser();
+  }
+
+  onCustomerUpdated(customer) {
+    this.customer = customer;
+  }
+
+  isSignedIn() {
+    return this.authService.isSignedIn();
+  }
+
+  private createOrderCustomerFromUser() {
+    if (!this.authService.isSignedIn()) {
+      return;
+    }
+
+    this.authService.getUser().subscribe(user => {
+
+      const customer = new OrderCustomer();
+
+      customer.userId = user.id;
+      customer.givenName = user.givenName;
+      customer.familyName = user.familyName;
+      customer.email = user.email;
+      customer.phone = user.phone;
+
+      this.customer = customer;
+    });
   }
 }

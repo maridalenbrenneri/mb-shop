@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../models/user.model';
-import { Observable } from '../../../node_modules/rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,38 +22,33 @@ export class AuthService {
   }
 
   getUser(): Observable<User> {
-    const obs = this.http.get<any>(environment.mbApiBaseUrl + 'users/me');
+    // todo: "cache" user. how to "intercept" rxjs properly?
 
-    obs.subscribe(user => {}, err => {
-      console.error(err);
-    });
-
-    return obs;
+    return this.http.get<any>(environment.mbApiBaseUrl + 'users/me');
   }
 
   signIn(email: string, password: string): Observable<any> {
-    const obs = this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
+    return this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
       email: email,
       password: password
     });
+  }
 
-    obs.subscribe(response => {
-      // todo: save token in cookie
+  signOut() {
+    // todo: remove token from cookie
 
-      this.token = response.token;
-      this.email = response.email;
-      this.username = response.givenName;
+    this.token = null;
+    this.email = null;
+    this.username = null;
+  }
 
-    }, err => {
-      if (err.status === 401) {
-        console.log('[DEBUG] Not authorized');
 
-      } else {
-        console.log('[DEBUG] Error when signing in: ' + err.message);
-      }
-    });
+  setSignedIn(authResponse) {
+    // todo: save token in cookie
 
-    return obs;
+    this.token = authResponse.token;
+    this.email = authResponse.email;
+    this.username = authResponse.givenName;
   }
 
   signIn_Wordpress(username: string, password: string) {
@@ -77,14 +72,6 @@ export class AuthService {
         console.log('[DEBUG] Error when signing in: ' + err.message);
       }
     });
-  }
-
-  signOut() {
-    // todo: remove token from cookie
-
-    this.token = null;
-    this.email = null;
-    this.username = null;
   }
 
   getToken() {

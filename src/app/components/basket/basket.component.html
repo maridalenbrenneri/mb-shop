@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="items.length > 0">
- <table class="table table-striped">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">Produkt</th>
@@ -29,7 +29,7 @@
             <tbody>
                 <tr>
                     <td>Handlesum</td>
-                    <td>{{ item.price }}</td>
+                    <td>{{ getTotalPrice() }}</td>
                 </tr>
                 <tr>
                     <td>MVA</td>

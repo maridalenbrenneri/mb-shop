@@ -21,18 +21,20 @@ export class MyAccountComponent implements OnInit {
       return;
     }
 
-    this.authService.getUser().subscribe(user => {
-        this.user = user;
-    });
+    this.getUser();
   }
 
   onSignedIn(signedIn: boolean) {
-    this.authService.getUser().subscribe(user => {
-      this.user = user;
-    });
+    this.getUser();
   }
 
   isSignedIn() {
     return this.authService.isSignedIn();
+  }
+
+  getUser() {
+    this.authService.getUser().subscribe(user => {
+      this.user = user;
+    });
   }
 }

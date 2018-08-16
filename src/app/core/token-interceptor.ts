@@ -3,10 +3,12 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -22,7 +24,19 @@ export class TokenInterceptor implements HttpInterceptor {
       }
     });
 
-    return next.handle(req);
+    return next.handle(req).pipe(catchError((err, caugth) => {
+      this.handleError(err);
+      return caugth;
+    }));
+  }
+
+  handleError(err) {
+    if (err instanceof HttpErrorResponse) {
+      console.error(err.message);
+
+    } else {
+      console.error('Oops, an error occured when calling a service. ' + err);
+    }
   }
 
   // intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

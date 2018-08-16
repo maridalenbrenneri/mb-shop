@@ -11,12 +11,13 @@ import { BasketComponent } from './components/basket/basket.component';
 import { BuyProductComponent } from './components/buy-product/buy-product.component';
 import { BasketItemComponent } from './components/basket-item/basket-item.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';
-import { CheckoutCustomerDetailsComponent } from './components/checkout-customer-details/checkout-customer-details.component';
+import { CheckoutPaymentComponent } from './components/checkout/checkout-payment/checkout-payment.component';
+import { CheckoutCustomerDetailsComponent } from './components/checkout/checkout-customer-details/checkout-customer-details.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { LoaderComponent } from './core/loader/loader/loader.component';
 import { LoaderInterceptor } from './core/loader-interceptor';
 import { TokenInterceptor } from './core/token-interceptor';
+import { HttpRequestErrorInterceptor } from './core/http-request-error-interceptor';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
@@ -24,6 +25,7 @@ import { MyDetailsComponent } from './components/my-account/my-details/my-detail
 import { MySubscriptionsComponent } from './components/my-account/my-subscriptions/my-subscriptions.component';
 import { MyOrdersComponent } from './components/my-account/my-orders/my-orders.component';
 import { MyAddressesComponent } from './components/my-account/my-addresses/my-addresses.component';
+import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -32,7 +34,8 @@ const appRoutes: Routes = [
   { path: 'about', component: WpViewerComponent },
   { path: 'basket', component: BasketComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'account', component: MyAccountComponent }
+  { path: 'account', component: MyAccountComponent },
+  { path: 'admin/orders', component: AdminOrdersComponent }
   // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -55,7 +58,8 @@ const appRoutes: Routes = [
     MyDetailsComponent,
     MySubscriptionsComponent,
     MyOrdersComponent,
-    MyAddressesComponent
+    MyAddressesComponent,
+    AdminOrdersComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -8,7 +8,7 @@ import { BasketService } from '../../services/basket.service';
   styleUrls: ['./basket.component.scss']
 })
 export class BasketComponent implements OnInit {
-  @Input() isCheckoutModel: boolean = false;
+  @Input() isCheckoutModel = false;
   items: Array<OrderItem> = [];
 
   constructor(private basketService: BasketService) { }
@@ -17,7 +17,7 @@ export class BasketComponent implements OnInit {
     this.basketService.getItems().subscribe(items => this.items = items);
   }
 
-  getTotalPrice() : number {
+  getTotalPrice(): number {
     let total = 0;
     this.items.forEach(i => {
       total += i.product.price * i.quantity;
@@ -26,7 +26,6 @@ export class BasketComponent implements OnInit {
   }
 
   getTotalMva(): number {
-    
     return this.getTotalPrice() * 0.125;
   }
 }

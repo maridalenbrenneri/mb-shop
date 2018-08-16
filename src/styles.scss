@@ -33,6 +33,7 @@ p {
 .btn {
     text-transform: uppercase;
     padding: 1em 1.5em !important;
+    border-radius: 0;
 
     &.btn-primary {
         color: #fff;
@@ -50,8 +51,24 @@ p {
 }
 
 .card {
-    padding-bottom: 0.5em;
+    margin-bottom: 1em;
 
+    .card-header {
+        background: $primary;
+        color: #fff;
+
+        .btn {
+            color: #fff;
+            &:hover {
+                background: $primary;
+            }
+        }
+    }
+
+    .card-body {
+        padding-bottom: 0.5em;
+    }
+    
     .btn {
         font-size: 0.75em;
         padding: 0.75em 1em !important;

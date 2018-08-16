@@ -29,7 +29,7 @@ export class MyDetailsComponent implements OnInit {
   set user(user: User) {
     this._user = user;
     this.updateDetailsForm();
-}
+  }
 
   canDetailsUpdate() {
     return this.detailsForm.valid && this.detailsForm.touched;
