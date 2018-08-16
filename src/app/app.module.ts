@@ -19,7 +19,6 @@ import { LoaderInterceptor } from './core/loader-interceptor';
 import { TokenInterceptor } from './core/token-interceptor';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
-import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { MyDetailsComponent } from './components/my-account/my-details/my-details.component';
 import { MySubscriptionsComponent } from './components/my-account/my-subscriptions/my-subscriptions.component';
 import { MyOrdersComponent } from './components/my-account/my-orders/my-orders.component';
@@ -53,7 +52,6 @@ const appRoutes: Routes = [
     LoaderComponent,
     MyAccountComponent,
     WpViewerComponent,
-    RegisterUserComponent,
     MyDetailsComponent,
     MySubscriptionsComponent,
     MyOrdersComponent,

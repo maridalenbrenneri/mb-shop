@@ -39,6 +39,14 @@ export class MyDetailsComponent implements OnInit {
     return this.changePasswordForm.valid && this.detailsForm.touched;
   }
 
+  saveDetails() {
+
+  }
+
+  changePassword() {
+
+  }
+
   updateDetailsForm() {
     if (!this.detailsForm) {
       return;
