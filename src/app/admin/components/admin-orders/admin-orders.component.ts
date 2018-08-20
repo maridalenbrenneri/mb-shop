@@ -9,13 +9,18 @@ import { Order } from '../../../models/order.model';
 })
 export class AdminOrdersComponent implements OnInit {
 
-  orders: Array<Order>;
+  orders: Array<any>;
 
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
     this.orderService.getOrders().subscribe(orders => {
-      console.log('orders: ' + orders.length);
+
+      for (const order of orders) {
+        order.customer = JSON.parse(order.customer);
+        order.items = JSON.parse(order.items);
+      }
+
       this.orders = orders;
     } );
   }

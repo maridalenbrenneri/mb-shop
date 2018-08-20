@@ -17,7 +17,7 @@
 // @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSansBold-webfont.eot');     src:url('css/fonts/OpenSansBold-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSansBold-webfont.woff') format('woff'),         url('css/fonts/OpenSansBold-webfont.ttf') format('truetype'),         url('css/fonts/OpenSansBold-webfont.svg#OpenSansBold') format('svg');  font-weight:700;  font-style:normal}
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', 'Open Sans', sans-serif;
     color: #9e9e9e;
     background-color: #f6f6f6;
 }
@@ -82,6 +82,14 @@ form {
     .form-control {
         border-radius: 0;
     }
+
+    [type=checkbox].form-check-input {
+        margin-left: 0;
+    }
+}
+
+h2, h3, h4 {
+    font-weight: 300;
 }
 
 .navbar-brand img {

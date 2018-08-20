@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { Product } from '../../models/product.model';
-import { environment } from '../../../environments/environment';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product',
@@ -13,7 +12,7 @@ export class ProductComponent implements OnInit {
   product: Product;
   url: string;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {
+  constructor(private route: ActivatedRoute, private productService: ProductService) {
     this.product = new Product();
    }
 
@@ -21,15 +20,14 @@ export class ProductComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = +params['id']; // (+) converts string 'id' to a number
 
-      this.http.get<Product>(`${environment.mbApiBaseUrl}products/${id}`).subscribe(product => {
-
-        console.log(product);
+      this.productService.getProduct(id).subscribe(product => {
         this.product = product;
 
       }, err => {
         console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
       });
 
+      // todo: ...
       this.url = 'honduras-ho-danny-moreno';
    });
   }

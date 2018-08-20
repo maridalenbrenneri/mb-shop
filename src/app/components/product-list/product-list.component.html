@@ -1,8 +1,45 @@
 <h2>Butikk</h2>
-<h3>Her kan du bestille kaffe og få den levert på døra.</h3>
+<p>Her kan du bestille kaffe og få den levert på døra.</p>
 
+<h3>Abonnementer</h3>
 <div class="row">
-  <div class="col-6 col-md-3 col-xl-2" *ngFor="let product of products">
+  <div class="col-12 col-lg-6">
+    <table>
+        <tr>
+          <td>
+              <a routerLink="/products/{{subscriptionProduct.id}}">
+                <img src="../../../assets/{{getProductImageOrDefault(subscriptionProduct)}}" />
+              </a>
+          </td>
+          <td>
+              <h4>{{subscriptionProduct.name}}</h4>
+              <div class="price-label">{{subscriptionProduct.price}} kr</div>
+              <app-buy-product [product]="subscriptionProduct"></app-buy-product>
+          </td>
+        </tr>
+      </table>
+  </div>
+  <div class="col-12 col-lg-6">
+    <table>
+      <tr>
+        <td>
+            <a routerLink="/products/{{giftSubscriptionProduct.id}}">
+              <img src="../../../assets/{{getProductImageOrDefault(giftSubscriptionProduct)}}" />
+            </a>
+        </td>
+        <td>
+            <h4>{{giftSubscriptionProduct.name}}</h4>
+            <div class="price-label">{{giftSubscriptionProduct.price}} kr</div>
+            <app-buy-product [product]="giftSubscriptionProduct"></app-buy-product>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<h3>Kaffe</h3>
+<div class="row">
+  <div class="col-6 col-lg-3" *ngFor="let product of coffeeProducts">
     <div class="product-item-box">
       <a routerLink="/products/{{product.id}}">
         <img src="../../../assets/{{getProductImageOrDefault(product)}}" />

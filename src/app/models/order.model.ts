@@ -18,7 +18,6 @@ export class OrderCustomer {
 export class OrderItem {
     product: Product;
     quantity: number;
-    subscriptionOptions: SubscriptionOrderOptions;
 }
 
 export class SubscriptionOrderOptions {

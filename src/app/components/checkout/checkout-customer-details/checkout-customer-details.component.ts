@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { OrderCustomer } from '../../../models/order.model';
 import { User } from '../../../models/user.model';
 
@@ -41,7 +41,7 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
       zipCode: ['', [Validators.required, Validators.pattern('[0-9]')]],
       place: ['', Validators.required],
       country: ['Norge', Validators.required],
-      phone: ['', Validators.required],
+      phone: [''],
       email: ['', [Validators.required, Validators.email]],
       note: [''],
       createAccount: [true],
@@ -77,4 +77,9 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
       this.customerUpdated.emit(this.customer);
     });
   }
+
+  // equalPasswordValidator: ValidatorFn = (fg: FormGroup) => {
+  //   const valid = Validator.validateEqualPasswords(fg.get('password').value, fg.get('confirmPassword').value);
+  //   return !valid ? {'invalidPasswords': {value: 'Passwords doesnt match'}} : null;
+  // }
 }

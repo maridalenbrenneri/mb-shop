@@ -30,8 +30,7 @@ export class BasketService {
     if (!existingItem) {
       this.items.push({
         product: product,
-        quantity: quantity,
-        subscriptionOptions: options
+        quantity: quantity
       });
 
     } else {

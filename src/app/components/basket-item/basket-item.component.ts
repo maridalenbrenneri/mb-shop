@@ -15,7 +15,7 @@ export class BasketItemComponent implements OnInit {
   @Input() isCheckoutModel = false;
   quantityForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private basketService: BasketService, ) { }
+  constructor(private fb: FormBuilder, private basketService: BasketService) { }
 
   ngOnInit() {
     this.createForm();

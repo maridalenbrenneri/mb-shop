@@ -16,7 +16,7 @@ export class BuyProductComponent implements OnInit {
   @Input() quantityVisible = false;
   buyProductForm: FormGroup;
 
-  constructor(private basketService: BasketService, private fb: FormBuilder) {
+  constructor(private basketService: BasketService, private fb: FormBuilder, private router: Router) {
     this.createForm();
   }
 
@@ -31,11 +31,11 @@ export class BuyProductComponent implements OnInit {
   }
 
   buyProduct() {
-    if (this.product.type === 'subscription') {
-      // todo: route to product page
-      console.log('Subscription, should navigate to product page');
+    if (this.product.type === 'coffee-subscription' || this.product.type === 'coffee-gift-subscription' ) {
+      this.router.navigateByUrl(`products/${this.product.id}`);
       return;
     }
+
     this.basketService.add(this.product, this.buyProductForm.value.quantity, null);
   }
 }

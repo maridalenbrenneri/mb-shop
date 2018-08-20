@@ -20,7 +20,7 @@ export class OrderService {
     return of(true);
   }
 
-  getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(environment.mbApiBaseUrl + 'orders');
+  getOrders(): Observable<any[]> {
+    return this.http.get<any[]>(environment.mbApiBaseUrl + 'orders');
   }
 }
