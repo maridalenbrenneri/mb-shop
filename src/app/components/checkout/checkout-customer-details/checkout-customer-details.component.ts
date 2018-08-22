@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
 import { OrderCustomer } from '../../../models/order.model';
 import { User } from '../../../models/user.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-checkout-customer-details',
@@ -14,7 +15,7 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
   @Output() customerUpdated = new EventEmitter<OrderCustomer>();
   detailsForm: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private authService: AuthService) { }
 
   ngOnInit() {
     this.createForm();
@@ -38,7 +39,7 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
       company: [''],
       street1: ['', Validators.required],
       street2: [''],
-      zipCode: ['', [Validators.required, Validators.pattern('[0-9]')]],
+      zipCode: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       place: ['', Validators.required],
       country: ['Norge', Validators.required],
       phone: [''],
@@ -59,7 +60,9 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
       givenName: this.customer.givenName,
       familyName: this.customer.familyName,
       email: this.customer.email,
-      phone: this.customer.phone
+      phone: this.customer.phone,
+      password: this.customer.password,
+      passwordConfirm: this.customer.passwordConfirm
     });
   }
 
@@ -67,15 +70,17 @@ export class CheckoutCustomerDetailsComponent implements OnInit {
     this.detailsForm.valueChanges.subscribe(val => {
 
       this.customer.givenName = val.givenName;
-
-      // familyName: this.customer.familyName,
-      // email: this.customer.email,
-      // phone: this.customer.phone
-
-      console.log(`Hello,  ${val.givenName}`);
+      this.customer.familyName = val.familyName;
+      this.customer.email = val.email;
+      this.customer.phone = val.phone;
+      this.customer.password = val.password;
 
       this.customerUpdated.emit(this.customer);
     });
+  }
+
+  isSignedIn() {
+    return this.authService.isSignedIn();
   }
 
   // equalPasswordValidator: ValidatorFn = (fg: FormGroup) => {

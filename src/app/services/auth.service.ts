@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { User } from '../models/user.model';
-import { Observable, of } from 'rxjs';
+import { User, RegisterUserModel } from '../models/user.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  isSignedIn(): boolean {
-    return this.token != null;
-  }
-
-  getUser(): Observable<User> {
-    // todo: "cache" user. how to "intercept" rxjs properly?
-
-    return this.http.get<any>(environment.mbApiBaseUrl + 'users/me');
+  registerUser(user: RegisterUserModel) {
+    return this.http.post<any>(environment.mbApiBaseUrl + 'users', user);
   }
 
   signIn(email: string, password: string): Observable<any> {
@@ -42,6 +36,15 @@ export class AuthService {
     this.username = null;
   }
 
+  isSignedIn(): boolean {
+    return this.token != null;
+  }
+
+  getUser(): Observable<User> {
+    // todo: "cache" user. how to "intercept" rxjs properly?
+
+    return this.http.get<any>(environment.mbApiBaseUrl + 'users/me');
+  }
 
   setSignedIn(authResponse) {
     // todo: save token in cookie
@@ -49,6 +52,14 @@ export class AuthService {
     this.token = authResponse.token;
     this.email = authResponse.email;
     this.username = authResponse.givenName;
+  }
+
+  getToken() {
+    return this.token;
+  }
+
+  getUserId() {
+    return this.userId;
   }
 
   signIn_Wordpress(username: string, password: string) {
@@ -72,10 +83,6 @@ export class AuthService {
         console.log('[DEBUG] Error when signing in: ' + err.message);
       }
     });
-  }
-
-  getToken() {
-    return this.token;
   }
 }
 

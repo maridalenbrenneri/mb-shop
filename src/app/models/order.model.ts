@@ -13,6 +13,8 @@ export class OrderCustomer {
     familyName: string;
     email: string;
     phone: string;
+    password: string;
+    passwordConfirm: string;
 }
 
 export class OrderItem {

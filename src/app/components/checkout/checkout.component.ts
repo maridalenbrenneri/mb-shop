@@ -3,6 +3,7 @@ import { Order, OrderCustomer } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
 import { BasketService } from '../../services/basket.service';
 import { AuthService } from '../../services/auth.service';
+import { User, RegisterUserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-checkout',
@@ -26,7 +27,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createOrderCustomerFromUser();
+    this.createOrderCustomerFromCurrentUser();
   }
 
   sendOrder() {
@@ -34,20 +35,17 @@ export class CheckoutComponent implements OnInit {
 
     const order = new Order();
     order.items = this.basketService.items;
-    order.customer = this.customer;
 
-    this.orderService.createOrder(order).subscribe((createdOrder) => {
-      console.log('[DEBUG] Order created, id: ' + createdOrder.id);
+    if (this.authService.isSignedIn()) {
+      this.sendCreateOrder(order, this.customer);
 
-      this.status = this.PAYMENT_COMPLETED;
-
-    }, () => {
-        this.status = this.PAYMENT_FAILED; // todo: do something else... :P Make customized errors, payment_failed/etc.
-    });
+    } else {
+      this.registerAndSignInUserBeforeSendingOrder(order);
+    }
   }
 
   onSignedIn() {
-    this.createOrderCustomerFromUser();
+    this.createOrderCustomerFromCurrentUser();
   }
 
   onCustomerUpdated(customer) {
@@ -58,22 +56,60 @@ export class CheckoutComponent implements OnInit {
     return this.authService.isSignedIn();
   }
 
-  private createOrderCustomerFromUser() {
+  private registerAndSignInUserBeforeSendingOrder(order) {
+    const user = this.customerToRegisterUser(this.customer);
+
+    this.authService.registerUser(user).subscribe(registeredUser => {
+
+      this.authService.signIn(user.email, user.password).subscribe(result => {
+        this.authService.setSignedIn(result);
+
+        this.customer = this.userToCustomer(registeredUser);
+        this.sendCreateOrder(order, this.customer);
+      });
+
+    });
+  }
+
+  private sendCreateOrder(order: Order, customer: OrderCustomer) {
+    order.customer = customer;
+
+    this.orderService.createOrder(order).subscribe((createdOrder) => {
+
+      this.status = this.PAYMENT_COMPLETED;
+
+    }, () => {
+        this.status = this.PAYMENT_FAILED; // todo: do something else... :P Make customized errors, payment_failed/etc.
+    });
+  }
+
+  private userToCustomer(user) {
+    const customer = new OrderCustomer();
+    customer.userId = user.id;
+    customer.givenName = user.givenName;
+    customer.familyName = user.familyName;
+    customer.email = user.email;
+    customer.phone = user.phone;
+    return customer;
+  }
+
+  private customerToRegisterUser(customer: OrderCustomer) {
+    const user = new RegisterUserModel();
+    user.email = customer.email;
+    user.givenName = customer.givenName;
+    user.familyName = customer.familyName;
+    user.phone = customer.phone;
+    user.password = customer.password;
+    return user;
+  }
+
+  private createOrderCustomerFromCurrentUser() {
     if (!this.authService.isSignedIn()) {
       return;
     }
 
     this.authService.getUser().subscribe(user => {
-
-      const customer = new OrderCustomer();
-
-      customer.userId = user.id;
-      customer.givenName = user.givenName;
-      customer.familyName = user.familyName;
-      customer.email = user.email;
-      customer.phone = user.phone;
-
-      this.customer = customer;
+      this.customer = this.userToCustomer(user);
     });
   }
 }

@@ -7,11 +7,11 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
+export class HttpStuffInterceptor implements HttpInterceptor {
 
   constructor(public auth: AuthService) {}
 
@@ -24,9 +24,9 @@ export class TokenInterceptor implements HttpInterceptor {
       }
     });
 
-    return next.handle(req).pipe(catchError((err, caugth) => {
+    return next.handle(req).pipe(catchError((err) => {
       this.handleError(err);
-      return caugth;
+      throw err;
     }));
   }
 

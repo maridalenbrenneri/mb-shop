@@ -24,20 +24,17 @@ export class ProductListComponent implements OnInit {
     this.productService.getProducts().subscribe(products => {
 
       this.coffeeProducts = products.filter(product => product.type === ProductTypes.coffee);
-
-      const subscriptions = products.filter(product => product.type === ProductTypes.coffeeSubscription);
-      this.subscriptionProduct = subscriptions.length > 0
-        ? products.filter(product => product.type === ProductTypes.coffeeSubscription)[0]
-        : null;
-
-      const giftSubscriptions = products.filter(product => product.type === ProductTypes.coffeeGiftSubscription);
-      this.giftSubscriptionProduct = giftSubscriptions.length > 0
-        ? products.filter(product => product.type === ProductTypes.coffeeGiftSubscription)[0]
-        : null;
+      this.subscriptionProduct = this.getFirstProductOfType(products, ProductTypes.coffeeSubscription);
+      this.giftSubscriptionProduct = this.getFirstProductOfType(products, ProductTypes.coffeeGiftSubscription);
 
     }, err => {
       console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
     });
+  }
+
+  getFirstProductOfType(products: Array<Product>, type: String) {
+    const items = products.filter(p => p.type === type);
+    return items.length > 0 ? products.filter(p => p.type === type)[0] : null;
   }
 
   getProductImageOrDefault(product: Product): string {

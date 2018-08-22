@@ -9,12 +9,27 @@ import { Order } from '../../../models/order.model';
 })
 export class AdminOrdersComponent implements OnInit {
 
-  orders: Array<any>;
+  orders: Array<Order>;
 
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
-    this.orderService.getOrders().subscribe(orders => {
+    this.loadOrders();
+  }
+
+  complete(orderId: Number, completeAndShip: Boolean) {
+
+    this.orderService.completeOrder(orderId, completeAndShip).subscribe(updatedOrder => {
+      // todo: update order in ui instead of reloading all...
+
+      this.loadOrders();
+    });
+  }
+
+  private loadOrders() {
+    const filter = {};
+
+    this.orderService.getOrders(filter).subscribe(orders => {
 
       for (const order of orders) {
         order.customer = JSON.parse(order.customer);
@@ -22,7 +37,6 @@ export class AdminOrdersComponent implements OnInit {
       }
 
       this.orders = orders;
-    } );
+    });
   }
-
 }

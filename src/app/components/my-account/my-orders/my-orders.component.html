@@ -1,3 +1,30 @@
-<p>
-  my-orders works!
-</p>
+<h2>My orders</h2>
+
+<div *ngIf="orders.length === 0">
+  Du har ingen ordere. <a routerLink="/products">Til butikken</a>
+</div>
+
+<div  *ngIf="orders.length > 0">
+  <table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Order #</th>
+            <th scope="col">Status</th>
+            <th scope="col">Order date</th>
+            <th scope="col">Items</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let order of orders">
+            <td>{{order.id}}</td>
+            <td>{{order.status}}</td>
+            <td>{{order.createdAt | date:'short'}}</td>
+            <td>
+                <div *ngFor="let item of order.items">
+                  {{item.quantity}} {{item.product.code}}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+</div>

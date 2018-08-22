@@ -16,7 +16,7 @@ import { CheckoutCustomerDetailsComponent } from './components/checkout/checkout
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { LoaderComponent } from './core/loader/loader/loader.component';
 import { LoaderInterceptor } from './core/loader-interceptor';
-import { TokenInterceptor } from './core/token-interceptor';
+import { HttpStuffInterceptor } from './core/http-stuff-interceptor';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
 import { MyDetailsComponent } from './components/my-account/my-details/my-details.component';
@@ -70,7 +70,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

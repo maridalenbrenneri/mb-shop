@@ -49,14 +49,17 @@
     <input type="checkbox" class="form-check-input" id="createAccountCheckbox" formControlName="createAccount">
     <label class="form-check-label" for="createAccountCheckbox">Opprett en konto</label>
   </div> -->
-  <div class="form-group">
-    <label class="center-block">Passord
-      <input class="form-control" type="password" formControlName="password">
-    </label>
-  </div> 
-  <div class="form-group">
-    <label class="center-block">Gjenta passord
-      <input class="form-control" type="password" formControlName="confirmPassword">
-    </label>
-  </div>  
+  
+  <div *ngIf="!isSignedIn()">
+    <div class="form-group">
+      <label class="center-block">Passord
+        <input class="form-control" type="password" formControlName="password">
+      </label>
+    </div> 
+    <div class="form-group">
+      <label class="center-block">Gjenta passord
+        <input class="form-control" type="password" formControlName="confirmPassword">
+      </label>
+    </div>  
+  </div>
 </form>

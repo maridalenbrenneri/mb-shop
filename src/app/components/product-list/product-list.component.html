@@ -1,39 +1,41 @@
-<h2>Butikk</h2>
+<h1>Butikk</h1>
 <p>Her kan du bestille kaffe og få den levert på døra.</p>
 
-<h3>Abonnementer</h3>
+<h2>Abonnementer</h2>
 <div class="row">
   <div class="col-12 col-lg-6">
-    <table>
-        <tr>
-          <td>
-              <a routerLink="/products/{{subscriptionProduct.id}}">
-                <img src="../../../assets/{{getProductImageOrDefault(subscriptionProduct)}}" />
-              </a>
-          </td>
-          <td>
-              <h4>{{subscriptionProduct.name}}</h4>
-              <div class="price-label">{{subscriptionProduct.price}} kr</div>
-              <app-buy-product [product]="subscriptionProduct"></app-buy-product>
-          </td>
-        </tr>
-      </table>
+    <div class="row">
+        <div class="col-12 col-sm-6">
+            <a routerLink="/products/{{subscriptionProduct.id}}">
+              <img src="../../../assets/{{getProductImageOrDefault(subscriptionProduct)}}" />
+            </a>      
+        </div>
+        <div class="col-12 col-sm-6">
+            <h4>{{subscriptionProduct.name}}</h4>
+            <p>
+                Få nybrent kaffe levert på døra med vårt kaffeabonnement.
+            </p>
+            <div class="price-label">{{subscriptionProduct.price}} kr per 250g påse</div>
+            <app-buy-product class="float-right" [product]="subscriptionProduct"></app-buy-product>      
+          </div>
+    </div>
   </div>
   <div class="col-12 col-lg-6">
-    <table>
-      <tr>
-        <td>
-            <a routerLink="/products/{{giftSubscriptionProduct.id}}">
-              <img src="../../../assets/{{getProductImageOrDefault(giftSubscriptionProduct)}}" />
-            </a>
-        </td>
-        <td>
-            <h4>{{giftSubscriptionProduct.name}}</h4>
-            <div class="price-label">{{giftSubscriptionProduct.price}} kr</div>
-            <app-buy-product [product]="giftSubscriptionProduct"></app-buy-product>
-        </td>
-      </tr>
-    </table>
+      <div class="row">
+          <div class="col-12 col-sm-6">
+              <a routerLink="/products/{{giftSubscriptionProduct.id}}">
+                <img src="../../../assets/{{getProductImageOrDefault(giftSubscriptionProduct)}}" />
+              </a>      
+          </div>
+          <div class="col-12 col-sm-6">
+              <h4>{{giftSubscriptionProduct.name}}</h4>
+              <p>
+                  Få nybrent kaffe levert på døra med vårt kaffeabonnement.
+              </p>
+              <div class="price-label">{{giftSubscriptionProduct.price}} kr per 250g påse</div>
+              <app-buy-product class="float-right" [product]="giftSubscriptionProduct"></app-buy-product>      
+          </div>
+      </div>
   </div>
 </div>
 
@@ -44,9 +46,10 @@
       <a routerLink="/products/{{product.id}}">
         <img src="../../../assets/{{getProductImageOrDefault(product)}}" />
       </a>
-      <div>{{product.name}}</div>
+      <h4>{{product.name}}</h4>
+      <div>250 g hele bønner.</div>
       <div class="price-label">{{product.price}} kr</div>
-      <app-buy-product [product]="product"></app-buy-product>
+      <app-buy-product class="float-right" [product]="product"></app-buy-product>
     </div>
   </div>
 </div>

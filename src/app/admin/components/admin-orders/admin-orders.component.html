@@ -7,8 +7,8 @@
           <th scope="col">Status</th>
           <th scope="col">Order date</th>
           <th scope="col">Customer</th>
-          <th scope="col">Items</th
-          >
+          <th scope="col">Items</th>
+          <th scope="col">Actions</th>
       </tr>
   </thead>
   <tbody>
@@ -21,7 +21,11 @@
               <div *ngFor="let item of order.items">
                 {{item.quantity}} {{item.product.code}}
               </div>
-            </td>
+          </td>
+          <td>
+              <button (click)="complete(order.id, true)">S</button>
+              <button (click)="complete(order.id, false)">C</button>
+          </td>
       </tr>
   </tbody>
 
