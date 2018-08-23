@@ -10,13 +10,22 @@ export class BasketService {
 
   public items: Array<OrderItem> = [];
   random: string;
+  public totaltCount = 0;
 
   constructor() {
     this.random = Math.random().toString();
   }
 
+  simpleObservable = new Observable<number>((observer) => {
+    observer.next(this.totaltCount);
+  });
+
   getItems(): Observable<OrderItem[]> {
     return of(this.items);
+  }
+
+  getTotalItemCount(): Observable<number> {
+    return of(this.totaltCount);
   }
 
   add(product: Product, quantity: number, options: SubscriptionOrderOptions) {
@@ -37,7 +46,9 @@ export class BasketService {
       existingItem.quantity += quantity;
     }
 
-    console.log('[DEBUG]: Product added to basket service, ' + product.name + ' item count ' + this.items.length);
+    this.totaltCount += quantity;
+
+    console.log('[DEBUG]: Product added to basket service, ' + product.name + ' item count ' + this.items.length + ' ' + this.totaltCount);
   }
 
   private validateItem(product: Product, quantity: number, allowZero: boolean): boolean {

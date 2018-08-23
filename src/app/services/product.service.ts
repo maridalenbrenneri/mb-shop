@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Product } from '../models/product.model';
 import { environment } from '../../environments/environment';
 
@@ -9,13 +11,24 @@ import { environment } from '../../environments/environment';
 })
 export class ProductService {
 
-  constructor(private http: HttpClient) { }
+  products: Array<Product>;
+
+  constructor(private http: HttpClient) {
+    this.products = new Array<Product>();
+   }
 
   getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(`${environment.mbApiBaseUrl}products/${id}`);
   }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(environment.mbApiBaseUrl + 'products');
+    if (this.products.length > 0) {
+      return of(this.products);
+    }
+
+    return this.http.get<Product[]>(environment.mbApiBaseUrl + 'products').pipe(map(products => {
+      this.products = products;
+      return this.products;
+    }));
   }
 }

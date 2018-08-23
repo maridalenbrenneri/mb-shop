@@ -9,7 +9,7 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ProductComponent } from './components/product/product.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { BuyProductComponent } from './components/buy-product/buy-product.component';
-import { BasketItemComponent } from './components/basket-item/basket-item.component';
+import { BasketItemComponent } from './components/basket/basket-item/basket-item.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CheckoutPaymentComponent } from './components/checkout/checkout-payment/checkout-payment.component';
 import { CheckoutCustomerDetailsComponent } from './components/checkout/checkout-customer-details/checkout-customer-details.component';
@@ -24,6 +24,7 @@ import { MySubscriptionsComponent } from './components/my-account/my-subscriptio
 import { MyOrdersComponent } from './components/my-account/my-orders/my-orders.component';
 import { MyAddressesComponent } from './components/my-account/my-addresses/my-addresses.component';
 import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
+import { MiniBasketComponent } from './components/basket/mini-basket/mini-basket.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -56,7 +57,8 @@ const appRoutes: Routes = [
     MySubscriptionsComponent,
     MyOrdersComponent,
     MyAddressesComponent,
-    AdminOrdersComponent
+    AdminOrdersComponent,
+    MiniBasketComponent
   ],
   imports: [
     RouterModule.forRoot(

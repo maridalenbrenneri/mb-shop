@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { OrderItem } from '../../models/order.model';
-import { BasketService } from '../../services/basket.service';
-import { quantityValidator } from '../../core/validators';
+import { OrderItem } from '../../../models/order.model';
+import { BasketService } from '../../../services/basket.service';
+import { quantityValidator } from '../../../core/validators';
 
 @Component({
   selector: 'app-basket-item',

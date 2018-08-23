@@ -1,0 +1,24 @@
+%toolbar-icon-base {
+    position: fixed;
+    width: 2em;
+    height: 2m;
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: lightgray;
+    top: 1.5em;
+}
+
+.account {
+    @extend %toolbar-icon-base;
+    right: 4em;
+}
+
+.basket {
+    @extend %toolbar-icon-base;
+    right: 2em;
+    transition: transform .2s; /* Animation */
+
+    &.zoom {
+        transform: scale(2); 
+    }
+}

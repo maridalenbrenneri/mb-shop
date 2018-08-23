@@ -6,8 +6,7 @@ import { ProductTypes } from '../../constants';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss'],
-  providers: [ProductService]
+  styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
   text: string;
