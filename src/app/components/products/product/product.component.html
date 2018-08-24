@@ -1,0 +1,22 @@
+<h1>{{product.name}}</h1>
+
+<div *ngIf="isSubscription()">
+    <app-subscription-product [product]="product"></app-subscription-product>
+</div>
+
+<div *ngIf="isGiftSubscription()">
+    Overraske en venn med nybrent kaffe fra Maridalen Brenneri levert helt hjem.
+</div>
+
+<div *ngIf="isCoffeeNormal()">
+    <p>{{product.shortDescription}}</p>
+    <p>{{product.tastes}}</p>
+    <p>Poser med 250 g hele bønner.</p>
+    <p>
+        Kaffe sender vi ut av brenneriet på tirsdager. Les mer om produsent og kaffen 
+        <a routerLink="/about" [queryParams]="{page: url}">her</a>.
+    </p>
+</div>
+
+<a routerLink="/products">Tilbake</a>
+<app-buy-product class="float-right" [product]="product"></app-buy-product>

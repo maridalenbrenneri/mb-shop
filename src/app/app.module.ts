@@ -5,8 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { ProductComponent } from './components/product/product.component';
+import { ProductsComponent } from './components/products/products.component';
+import { ProductComponent } from './components/products/product/product.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { BuyProductComponent } from './components/buy-product/buy-product.component';
 import { BasketItemComponent } from './components/basket/basket-item/basket-item.component';
@@ -25,10 +25,12 @@ import { MyOrdersComponent } from './components/my-account/my-orders/my-orders.c
 import { MyAddressesComponent } from './components/my-account/my-addresses/my-addresses.component';
 import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orders.component';
 import { MiniBasketComponent } from './components/basket/mini-basket/mini-basket.component';
+import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { SubscriptionProductComponent } from './components/products/subscription-product/subscription-product.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
-  { path: 'products', component: ProductListComponent },
+  { path: 'products', component: ProductsComponent },
   { path: 'products/:id', component: ProductComponent },
   { path: 'about', component: WpViewerComponent },
   { path: 'basket', component: BasketComponent },
@@ -41,7 +43,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent,
+    ProductsComponent,
     ProductComponent,
     BasketComponent,
     BuyProductComponent,
@@ -58,7 +60,9 @@ const appRoutes: Routes = [
     MyOrdersComponent,
     MyAddressesComponent,
     AdminOrdersComponent,
-    MiniBasketComponent
+    MiniBasketComponent,
+    BreadcrumbComponent,
+    SubscriptionProductComponent
   ],
   imports: [
     RouterModule.forRoot(

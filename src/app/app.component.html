@@ -1,34 +1,11 @@
 <div class="container">
     <app-loader></app-loader>
 
-    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" routerLink="/product-list">
-        <img src="../assets/mb-logo-gray.png" alt="Maridalen Brenneri logo" />
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" routerLink="/products">Produkter <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-              <a class="nav-link" routerLink="/basket">Handlekurv</a>
-          </li>
-          <li class="nav-item active">
-              <a class="nav-link" routerLink="/account">Min konto</a>
-          </li>          
-        </ul>
-      </div>
-    </nav> -->
-    
     <div class="router-outlet">
+        <app-breadcrumb></app-breadcrumb>
         <app-mini-basket></app-mini-basket>
         <router-outlet></router-outlet>
     </div>
-    
     
     <!-- <br/><br/> <hr/>DEBUG BASKET<hr/>
     <app-basket></app-basket> -->

@@ -4,11 +4,11 @@ import { ProductService } from '../../services/product.service';
 import { ProductTypes } from '../../constants';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./productS.component.scss']
 })
-export class ProductListComponent implements OnInit {
+export class ProductsComponent implements OnInit {
   text: string;
   coffeeProducts: Array<Product>;
   subscriptionProduct: Product;

@@ -1,6 +1,3 @@
-<h1>Butikk</h1>
-<p>Her kan du bestille kaffe og få den levert på døra.</p>
-
 <h2>Abonnementer</h2>
 <div class="row">
   <div class="col-12 col-lg-6">
@@ -16,7 +13,7 @@
                 Få nybrent kaffe levert på døra med vårt kaffeabonnement.
             </p>
             <div class="price-label">{{subscriptionProduct.price}} kr per 250g påse</div>
-            <app-buy-product class="float-right" [product]="subscriptionProduct"></app-buy-product>      
+            <button type="submit" class="btn btn-primary add_to_cart float-right" routerLink="/products/{{subscriptionProduct.id}}">Kjøp</button>
           </div>
     </div>
   </div>
@@ -33,7 +30,7 @@
                   Få nybrent kaffe levert på døra med vårt kaffeabonnement.
               </p>
               <div class="price-label">{{giftSubscriptionProduct.price}} kr per 250g påse</div>
-              <app-buy-product class="float-right" [product]="giftSubscriptionProduct"></app-buy-product>      
+              <button type="submit" class="btn btn-primary add_to_cart float-right" routerLink="/products/{{giftSubscriptionProduct.id}}">Kjøp</button>
           </div>
       </div>
   </div>

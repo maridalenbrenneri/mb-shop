@@ -31,11 +31,6 @@ export class BuyProductComponent implements OnInit {
   }
 
   buyProduct() {
-    if (this.product.type === 'coffee-subscription' || this.product.type === 'coffee-gift-subscription' ) {
-      this.router.navigateByUrl(`products/${this.product.id}`);
-      return;
-    }
-
     this.basketService.add(this.product, this.buyProductForm.value.quantity, null);
   }
 }
