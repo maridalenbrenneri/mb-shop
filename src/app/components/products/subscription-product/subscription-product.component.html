@@ -14,30 +14,43 @@
 
 <form>
     <div class="form-row">
-        <div class="form-group col-lg-12">
+        <div class="form-group col-lg-6">
             <label for="inputQuantity">Antall påser</label>
-            <input type="number" id="inputQuantity" class="form-control" />
+            <mat-select placeholder="Antall påser" [(ngModel)]="selectedQuantity" name="inputQuantity">
+                <mat-option *ngFor="let quantity of quantities" [value]="quantity">
+                    {{quantity}}
+                </mat-option>
+            </mat-select>
         </div>            
     </div>
     <div class="form-row">
-        <div class="form-group col-lg-12">
-            <label for="inputDelivery">Levering</label>
-            <select id="inputDelivery" class="form-control">
-                <option selected>Annenhver uke</option>
-                <option>Månedlig</option>
-            </select>
+        <div class="form-group col-lg-6">
+            <label for="inputFrequence">Levering</label>
+            <mat-select placeholder="Levering" [(ngModel)]="selectedFrequence" name="inputFrequence">
+                <mat-option [value]=2>Annenhver uke</mat-option>
+                <mat-option [value]=1>Månedlig</mat-option>
+            </mat-select>
         </div>
     </div>
     <div class="form-row">
-        <div class="form-group col-lg-12">
+        <div class="form-group col-lg-6">
             <label for="inputFirstDelivery">Første levering</label>
-            <input type="date" id="inputFirstDelivery" />
+            <mat-select placeholder="Første levering" [(ngModel)]="selectedFirstDeliveryDate" name="inputFirstDelivery">
+                <mat-option *ngFor="let date of nextDeliveryDates" [value]="date">
+                    {{date | date: 'EEEE d. MMM'}}
+                </mat-option>
+            </mat-select>
         </div>
     </div>    
     <div class="form-row">
-        <div class="form-group col-lg-12">
-            <label for="inputDirectDelivery">Send en påse på direkte!</label>
-            <input type="checkbox" id="inputDirectDelivery" />
+        <div class="form-group col-lg-6">
+            <mat-checkbox>Send kaffe på direkte!</mat-checkbox>
         </div>
     </div>              
 </form>
+
+<div>
+    <a routerLink="/products">Tilbake</a>
+    <button type="submit" class="btn btn-primary add_to_cart float-right" (click)="buyProduct()">Kjøp</button>
+</div>
+

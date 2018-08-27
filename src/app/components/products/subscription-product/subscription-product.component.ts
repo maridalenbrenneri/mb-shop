@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../../models/product.model';
+import { SubscriptionService } from '../../../services/subscription.service';
+import { BasketService } from '../../../services/basket.service';
+import { SubscriptionData } from '../../../constants';
 
 @Component({
   selector: 'app-subscription-product',
@@ -10,9 +13,34 @@ export class SubscriptionProductComponent implements OnInit {
 
   @Input() product: Product;
 
-  constructor() { }
+  nextDeliveryDates: Array<Date>;
+  quantities: Array<number>;
+  selectedQuantity: number;
+  selectedFrequence: number;
+  selectedFirstDeliveryDate: Date;
+
+  constructor(private subscriptionService: SubscriptionService, private basketService: BasketService) {
+    this.nextDeliveryDates = new Array<Date>();
+    this.quantities = [1, 2, 3, 4, 5, 6];
+    this.selectedQuantity = 2;
+    this.selectedFrequence = SubscriptionData.fortnightlyFrequence;
+  }
 
   ngOnInit() {
+    this.subscriptionService.getNextDeliveryDates().subscribe(dates => {
+      this.nextDeliveryDates = dates.nextFortnightlyList;
+      this.selectedFirstDeliveryDate = this.nextDeliveryDates[0];
+    });
+  }
+
+  buyProduct() {
+    this.product.data = {
+      selectedQuantity: this.selectedQuantity,
+      selectedFrequence: this.selectedFrequence,
+      firstDeliveryDate: this.selectedFirstDeliveryDate
+    };
+
+    this.basketService.add(this.product, 1, null);
   }
 
 }

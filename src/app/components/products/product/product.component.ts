@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../../../models/product.model';
 import { ProductService } from '../../../services/product.service';
-import { ProductTypes } from '../../../constants';
+import { ProductCategories } from '../../../constants';
 
 @Component({
   selector: 'app-product',
@@ -34,14 +34,14 @@ export class ProductComponent implements OnInit {
   }
 
   isSubscription() {
-    return this.product.type === ProductTypes.coffeeSubscription;
+    return this.product.category === ProductCategories.coffeeSubscription;
   }
 
   isGiftSubscription() {
-    return this.product.type === ProductTypes.coffeeGiftSubscription;
+    return this.product.category === ProductCategories.coffeeGiftSubscription;
   }
 
   isCoffeeNormal() {
-    return this.product.type === ProductTypes.coffee;
+    return this.product.category === ProductCategories.coffee;
   }
 }

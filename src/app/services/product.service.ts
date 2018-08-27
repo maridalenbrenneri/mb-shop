@@ -18,6 +18,11 @@ export class ProductService {
    }
 
   getProduct(id: number): Observable<Product> {
+    const product = this.products.find(p => p.id === id);
+    if (!product) {
+      return of(product);
+    }
+
     return this.http.get<Product>(`${environment.mbApiBaseUrl}products/${id}`);
   }
 

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
-import { ProductTypes } from '../../constants';
+import { ProductCategories } from '../../constants';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./productS.component.scss']
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
   text: string;
@@ -22,29 +22,29 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.productService.getProducts().subscribe(products => {
 
-      this.coffeeProducts = products.filter(product => product.type === ProductTypes.coffee);
-      this.subscriptionProduct = this.getFirstProductOfType(products, ProductTypes.coffeeSubscription);
-      this.giftSubscriptionProduct = this.getFirstProductOfType(products, ProductTypes.coffeeGiftSubscription);
+      this.coffeeProducts = products.filter(product => product.category === ProductCategories.coffee);
+      this.subscriptionProduct = this.getFirstProductOfType(products, ProductCategories.coffeeSubscription);
+      this.giftSubscriptionProduct = this.getFirstProductOfType(products, ProductCategories.coffeeGiftSubscription);
 
     }, err => {
       console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
     });
   }
 
-  getFirstProductOfType(products: Array<Product>, type: String) {
-    const items = products.filter(p => p.type === type);
-    return items.length > 0 ? products.filter(p => p.type === type)[0] : null;
+  getFirstProductOfType(products: Array<Product>, category: String) {
+    const items = products.filter(p => p.category === category);
+    return items.length > 0 ? products.filter(p => p.category === category)[0] : null;
   }
 
   getProductImageOrDefault(product: Product): string {
-    if (product.type === ProductTypes.coffeeSubscription) {
+    if (product.category === ProductCategories.coffeeSubscription) {
       return 'product_abo.jpg';
     }
 
-    if (product.type === ProductTypes.coffeeGiftSubscription) {
+    if (product.category === ProductCategories.coffeeGiftSubscription) {
       return 'product_gave_abo.png';
     }
 
-    return !product.imageKey ? 'product_default.jpg' : product.imageKey;
+    return !product.portfolioImageKey ? 'product_default.jpg' : product.portfolioImageKey;
   }
 }

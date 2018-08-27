@@ -3,6 +3,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LOCALE_ID } from '@angular/core';
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSelectModule, MatCheckboxModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { ProductsComponent } from './components/products/products.component';
@@ -27,6 +31,11 @@ import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orde
 import { MiniBasketComponent } from './components/basket/mini-basket/mini-basket.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { SubscriptionProductComponent } from './components/products/subscription-product/subscription-product.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/nb';
+
+// the second parameter 'fr' is optional
+registerLocaleData(localeFr, 'nb');
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -70,13 +79,17 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     ),
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'nb' }
   ],
   bootstrap: [AppComponent]
 })
