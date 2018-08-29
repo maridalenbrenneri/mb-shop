@@ -10,6 +10,10 @@ export class SubscriptionService {
 
   constructor(private http: HttpClient) { }
 
+  getSubscriptions(filter: any) {
+    return this.http.get<any>(`${environment.mbApiBaseUrl}subscriptions`);
+  }
+
   getNextDeliveryDates(): Observable<any> {
     return this.http.get<any>(`${environment.mbApiBaseUrl}subscriptions/data/delivery-dates`);
   }

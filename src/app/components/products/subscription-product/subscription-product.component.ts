@@ -34,13 +34,13 @@ export class SubscriptionProductComponent implements OnInit {
   }
 
   buyProduct() {
-    this.product.data = {
-      selectedQuantity: this.selectedQuantity,
-      selectedFrequence: this.selectedFrequence,
+    const subscriptionOptions = {
+      quantity: this.selectedQuantity,
+      frequence: this.selectedFrequence,
       firstDeliveryDate: this.selectedFirstDeliveryDate
     };
 
-    this.basketService.add(this.product, 1, null);
+    this.basketService.add(this.product, 1, subscriptionOptions);
   }
 
 }

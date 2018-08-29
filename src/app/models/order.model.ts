@@ -19,10 +19,11 @@ export class OrderCustomer {
 
 export class OrderItem {
     product: Product;
+    productOptions: any;
     quantity: number;
 }
 
-export class SubscriptionOrderOptions {
+export class SubscriptionProductOptions {
     frequence: string;
     quantity: number;
     firstDelivery: Date;

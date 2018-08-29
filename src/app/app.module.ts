@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeNb from '@angular/common/locales/nb';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSelectModule, MatCheckboxModule} from '@angular/material';
@@ -19,7 +21,7 @@ import { CheckoutPaymentComponent } from './components/checkout/checkout-payment
 import { CheckoutCustomerDetailsComponent } from './components/checkout/checkout-customer-details/checkout-customer-details.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { LoaderComponent } from './core/loader/loader/loader.component';
-import { LoaderInterceptor } from './core/loader-interceptor';
+// import { LoaderInterceptor } from './core/loader-interceptor';
 import { HttpStuffInterceptor } from './core/http-stuff-interceptor';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { WpViewerComponent } from './components/wp-viewer/wp-viewer.component';
@@ -31,11 +33,11 @@ import { AdminOrdersComponent } from './admin/components/admin-orders/admin-orde
 import { MiniBasketComponent } from './components/basket/mini-basket/mini-basket.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { SubscriptionProductComponent } from './components/products/subscription-product/subscription-product.component';
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/nb';
+import { AdminComponent } from './admin/admin.component';
+import { AdminSubscriptionsComponent } from './admin/components/admin-subscriptions/admin-subscriptions.component';
 
 // the second parameter 'fr' is optional
-registerLocaleData(localeFr, 'nb');
+registerLocaleData(localeNb, 'nb');
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/products', pathMatch: 'full' },
@@ -45,7 +47,7 @@ const appRoutes: Routes = [
   { path: 'basket', component: BasketComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'account', component: MyAccountComponent },
-  { path: 'admin/orders', component: AdminOrdersComponent }
+  { path: 'admin', component: AdminComponent }
   // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -71,7 +73,9 @@ const appRoutes: Routes = [
     AdminOrdersComponent,
     MiniBasketComponent,
     BreadcrumbComponent,
-    SubscriptionProductComponent
+    SubscriptionProductComponent,
+    AdminComponent,
+    AdminSubscriptionsComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -87,7 +91,7 @@ const appRoutes: Routes = [
     MatCheckboxModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+  //  { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'nb' }
   ],

@@ -1,0 +1,15 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let subscription of subscriptions">
+            <td>{{subscription.id}}</td>
+            <td>{{subscription.status}}</td>
+        </tr>
+    </tbody>
+  
+  </table>

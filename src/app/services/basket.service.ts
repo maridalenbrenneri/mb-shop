@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.model';
 import { Observable, of } from 'rxjs';
-import { OrderItem, SubscriptionOrderOptions } from '../models/order.model';
+import { OrderItem } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class BasketService {
     return of(this.totaltCount);
   }
 
-  add(product: Product, quantity: number, options: SubscriptionOrderOptions) {
+  add(product: Product, quantity: number, productOptions: any) {
 
     if (!this.validateItem(product, quantity, false)) {
       return;
@@ -39,6 +39,7 @@ export class BasketService {
     if (!existingItem) {
       this.items.push({
         product: product,
+        productOptions: productOptions,
         quantity: quantity
       });
 

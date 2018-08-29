@@ -1,0 +1,22 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-dashboard" role="tab" aria-controls="nav-profile" aria-selected="false">Dashboard</a>
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-orders" role="tab" aria-controls="nav-home" aria-selected="true">Orders</a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-subscriptions" role="tab" aria-controls="nav-profile" aria-selected="false">Subscriptions</a>
+      <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-users" role="tab" aria-controls="nav-contact" aria-selected="false">Users</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade" id="nav-dashboard" role="tabpanel" aria-labelledby="nav-profile-tab">
+        Dashboard. Not yet implemented...
+    </div>
+    <div class="tab-pane fade show active" id="nav-orders" role="tabpanel" aria-labelledby="nav-home-tab">
+      <app-admin-orders></app-admin-orders>
+    </div>
+    <div class="tab-pane fade" id="nav-subscriptions" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <app-admin-subscriptions></app-admin-subscriptions>
+    </div>
+    <div class="tab-pane fade" id="nav-users" role="tabpanel" aria-labelledby="nav-contact-tab">
+      Users. Not yet implemented...
+    </div>
+  </div>
