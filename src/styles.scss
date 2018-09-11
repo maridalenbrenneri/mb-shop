@@ -32,8 +32,11 @@ p {
     background-color: #fff;
 }
 
-.btn {
+button {
     text-transform: uppercase;
+}
+
+.btn {
     padding: 1em 1.5em !important;
     border-radius: 0;
     font-size: 0.9rem;
@@ -77,6 +80,17 @@ p {
         padding: 0.75em 1em !important;
     }
 }
+
+.mat-card-title {
+    font-size: 1.5em !important;
+}
+
+.mat-button {
+    background: $primary;
+    color: #fff;
+    padding: 0.5em;
+}
+
 form {
     label {
         display: block;    

@@ -9,6 +9,9 @@ import localeNb from '@angular/common/locales/nb';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSelectModule, MatCheckboxModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { AppComponent } from './app.component';
 import { ProductsComponent } from './components/products/products.component';
@@ -87,8 +90,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MatSelectModule,
-    MatCheckboxModule
+    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule
   ],
   providers: [
   //  { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

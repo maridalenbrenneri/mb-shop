@@ -3,6 +3,7 @@ import { Address } from './address.model';
 
 export class Order {
     id: number;
+    type: string;
     customer: OrderCustomer;
     items: Array<OrderItem>;
 }

@@ -3,13 +3,16 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Status</th>
+            <th scope="col">Customer</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let subscription of subscriptions">
             <td>{{subscription.id}}</td>
             <td>{{subscription.status}}</td>
+            <td>{{subscription.userId}}</td>
         </tr>
     </tbody>
   
   </table>
+

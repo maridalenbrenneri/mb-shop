@@ -1,52 +1,66 @@
-<h2>Abonnementer</h2>
 <div class="row">
   <div class="col-12 col-lg-6">
-    <div class="row">
-        <div class="col-12 col-sm-6">
-            <a routerLink="/products/{{subscriptionProduct.id}}">
-              <img src="../../../assets/{{getProductImageOrDefault(subscriptionProduct)}}" />
-            </a>      
-        </div>
-        <div class="col-12 col-sm-6">
-            <h4>{{subscriptionProduct.name}}</h4>
+      <mat-card class="product-card">
+          <mat-card-header>
+            <mat-card-title>{{subscriptionProduct.name}}</mat-card-title>
+            <mat-card-subtitle>{{subscriptionProduct.price}} kr per 250g påse</mat-card-subtitle>
+          </mat-card-header>
+          <a routerLink="/products/{{subscriptionProduct.id}}">
+            <img mat-card-image src="../../../assets/{{getProductImageOrDefault(subscriptionProduct)}}" alt="Produktbilde" />
+          </a>
+          <mat-card-content>
             <p>
-                Få nybrent kaffe levert på døra med vårt kaffeabonnement.
+                Få nybrent kaffe levert på døra med vårt kaffeabonnement. 
+                Vi velger den beste kaffen ut i fra variasjon, utvalg og brenninger. Så kan du selvfølgelig komme med egne ønsker og endre abonnementet underveis.
             </p>
-            <div class="price-label">{{subscriptionProduct.price}} kr per 250g påse</div>
-            <button type="submit" class="btn btn-primary add_to_cart float-right" routerLink="/products/{{subscriptionProduct.id}}">Kjøp</button>
-          </div>
-    </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button routerLink="/products/{{subscriptionProduct.id}}">Kjøp</button>
+          </mat-card-actions>
+        </mat-card>
   </div>
   <div class="col-12 col-lg-6">
-      <div class="row">
-          <div class="col-12 col-sm-6">
-              <a routerLink="/products/{{giftSubscriptionProduct.id}}">
-                <img src="../../../assets/{{getProductImageOrDefault(giftSubscriptionProduct)}}" />
-              </a>      
-          </div>
-          <div class="col-12 col-sm-6">
-              <h4>{{giftSubscriptionProduct.name}}</h4>
-              <p>
-                  Få nybrent kaffe levert på døra med vårt kaffeabonnement.
-              </p>
-              <div class="price-label">{{giftSubscriptionProduct.price}} kr per 250g påse</div>
-              <button type="submit" class="btn btn-primary add_to_cart float-right" routerLink="/products/{{giftSubscriptionProduct.id}}">Kjøp</button>
-          </div>
-      </div>
+      <mat-card class="product-card">
+          <mat-card-header>
+            <mat-card-title>{{giftSubscriptionProduct.name}}</mat-card-title>
+            <mat-card-subtitle>{{giftSubscriptionProduct.price}} kr per 250g påse</mat-card-subtitle>
+          </mat-card-header>
+          <a routerLink="/products/{{giftSubscriptionProduct.id}}">
+            <img mat-card-image src="../../../assets/{{getProductImageOrDefault(giftSubscriptionProduct)}}" alt="Produktbilde" />
+          </a>
+          <mat-card-content>
+            <p>
+                Overraske en venn med nybrent kaffe fra Maridalen Brenneri levert helt hjem. 
+                Vi velger den beste kaffen ut i fra variasjon, utvalg og brenninger. Så kan du selvfølgelig komme med egne ønsker og endre abonnementet underveis.
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button routerLink="/products/{{giftSubscriptionProduct.id}}">Kjøp</button>
+          </mat-card-actions>
+        </mat-card>
   </div>
 </div>
 
-<h3>Kaffe</h3>
+<p></p>
+
 <div class="row">
-  <div class="col-6 col-lg-3" *ngFor="let product of coffeeProducts">
-    <div class="product-item-box">
-      <a routerLink="/products/{{product.id}}">
-        <img src="../../../assets/{{getProductImageOrDefault(product)}}" />
-      </a>
-      <h4>{{product.name}}</h4>
-      <div>250 g hele bønner.</div>
-      <div class="price-label">{{product.price}} kr</div>
-      <app-buy-product class="float-right" [product]="product"></app-buy-product>
-    </div>
+  <div class="col-12 col-md-6 col-lg-3" *ngFor="let product of coffeeProducts">
+    <mat-card class="product-card">
+        <mat-card-header>
+          <mat-card-title>{{product.name}}</mat-card-title>
+          <mat-card-subtitle>{{product.price}} kr - 250g hele bønner.</mat-card-subtitle>
+        </mat-card-header>
+        <a routerLink="/products/{{product.id}}">
+          <img mat-card-image src="../../../assets/{{getProductImageOrDefault(product)}}" alt="Produktbilde" />
+        </a>
+        <mat-card-content>
+          <!-- <p>{{product.description}}</p> -->
+          <p>{{product.description2}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <!-- <button mat-button routerLink="/products/{{product.id}}">Kjøp</button> -->
+          <app-buy-product class="float-right" [product]="product"></app-buy-product>
+        </mat-card-actions>
+      </mat-card>
   </div>
 </div>

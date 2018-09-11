@@ -1,6 +1,6 @@
 import { User } from './user.model';
 
-export class Subscription {
+export interface Subscription {
     id: number;
     parentOrderId: number;
     customer: User;

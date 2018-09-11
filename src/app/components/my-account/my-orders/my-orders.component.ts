@@ -12,16 +12,16 @@ export class MyOrdersComponent implements OnInit {
 
   orders: Array<Order>;
 
-  constructor(private orderService: OrderService, private authService: AuthService) {
+  constructor(private orderService: OrderService) {
     this.orders = new Array<Order>();
   }
 
   ngOnInit() {
-    this.loadOrders();
+    this.getOrders();
   }
 
-  private loadOrders() {
-    this.orderService.getOrders({userId: this.authService.getUserId()}).subscribe(orders => {
+  private getOrders() {
+    this.orderService.getMyOrders().subscribe(orders => {
 
       for (const order of orders) {
         order.items = JSON.parse(order.items);

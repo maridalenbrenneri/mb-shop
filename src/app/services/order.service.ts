@@ -24,6 +24,10 @@ export class OrderService {
     return this.http.get<any[]>(environment.mbApiBaseUrl + 'orders');
   }
 
+  getMyOrders(): Observable<any[]> {
+    return this.http.get<any[]>(environment.mbApiBaseUrl + 'orders/mine');
+  }
+
   completeOrder(orderId: Number, completeAndShip: Boolean) {
     const endpoint = completeAndShip ? 'completeAndShip' : 'complete';
     return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/${endpoint}`, null);

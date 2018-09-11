@@ -14,6 +14,26 @@ export class SubscriptionService {
     return this.http.get<any>(`${environment.mbApiBaseUrl}subscriptions`);
   }
 
+  getMySubscriptions() {
+    return this.http.get<any>(`${environment.mbApiBaseUrl}subscriptions/mine`);
+  }
+
+  activateSubscription(subscriptionId: number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}subscriptions/${subscriptionId}/activate`, {});
+  }
+
+  pauseSubscription(subscriptionId: number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}subscriptions/${subscriptionId}/pause`, {});
+  }
+
+  cancelSubscription(subscriptionId: number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}subscriptions/${subscriptionId}/cancel`, {});
+  }
+
+  completeCancelSubscription(subscriptionId: number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}subscriptions/${subscriptionId}/complete-cancel`, {});
+  }
+
   getNextDeliveryDates(): Observable<any> {
     return this.http.get<any>(`${environment.mbApiBaseUrl}subscriptions/data/delivery-dates`);
   }

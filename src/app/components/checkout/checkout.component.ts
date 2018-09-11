@@ -34,6 +34,7 @@ export class CheckoutComponent implements OnInit {
     this.status = this.PAYMENT_IN_PROGRESS;
 
     const order = new Order();
+    order.type = 'normal';
     order.items = this.basketService.items;
 
     if (this.authService.isSignedIn()) {
