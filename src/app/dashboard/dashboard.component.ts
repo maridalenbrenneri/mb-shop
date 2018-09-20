@@ -22,6 +22,23 @@ export class DashboardComponent implements OnInit {
   orderProcessingCount = 0;
   orderPendingPaymentCount = 0;
 
+  bagCounter = {
+    fortnightly: {
+      one: 0,
+      two: 0,
+      three: 0,
+      four: 0,
+      five: 0
+    },
+    monthly: {
+      one: 0,
+      two: 0,
+      three: 0,
+      four: 0,
+      five: 0
+    }
+  };
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
@@ -42,11 +59,11 @@ export class DashboardComponent implements OnInit {
 
         if (item.name.includes('Annenhver uke')) {
           this.subscriptionFortnightlyCount++;
-          this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name) * 2;
+          this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name, true) * 2;
 
         } else  {
           this.subscriptionMonthlyCount++;
-          this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name);
+          this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name, false);
         }
 
       }
@@ -62,20 +79,58 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  private resolveNumberOfBags(name) {
+  private resolveNumberOfBags(name, isFortnigthly) {
+
     if (name.includes('- 1')) {
+      if (isFortnigthly) {
+        this.bagCounter.fortnightly.one += 1;
+      } else {
+        this.bagCounter.monthly.one += 1;
+      }
       return 1;
-    } else if (name.includes('- 2')) {
-      return 2;
-    } else if (name.includes('- 3')) {
-      return 3;
-    } else if (name.includes('- 4')) {
-      return 4;
-    } else if (name.includes('- 5')) {
-      return 5;
-    } else {
-      throw new Error('Not supported subscription item name');
+
     }
+
+    if (name.includes('- 2')) {
+      if (isFortnigthly) {
+        this.bagCounter.fortnightly.two += 1;
+      } else {
+        this.bagCounter.monthly.two += 1;
+      }
+      return 2;
+
+    }
+
+    if (name.includes('- 3')) {
+      if (isFortnigthly) {
+        this.bagCounter.fortnightly.three += 1;
+      } else {
+        this.bagCounter.monthly.three += 1;
+      }
+      return 3;
+
+    }
+
+    if (name.includes('- 4')) {
+      if (isFortnigthly) {
+        this.bagCounter.fortnightly.four += 1;
+      } else {
+        this.bagCounter.monthly.four += 1;
+      }
+      return 4;
+    }
+
+    if (name.includes('- 5')) {
+      if (isFortnigthly) {
+        this.bagCounter.fortnightly.five += 1;
+      } else {
+        this.bagCounter.monthly.five += 1;
+      }
+      return 5;
+
+    }
+
+    throw new Error('Not supported subscription item name');
   }
 
   private keySecretParams() {

@@ -19,6 +19,38 @@
 
               Abos på pause: {{subscriptionOnHoldCount }} <br>
             </p>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#påser</th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                  <th>5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Annenhver uke</td>
+                  <td>{{bagCounter.fortnightly.one}}</td>
+                  <td>{{bagCounter.fortnightly.two}}</td>
+                  <td>{{bagCounter.fortnightly.three}}</td>
+                  <td>{{bagCounter.fortnightly.four}}</td>
+                  <td>{{bagCounter.fortnightly.five}}</td>
+                </tr>
+                <tr>
+                    <td>Månetlig</td>
+                    <td>{{bagCounter.monthly.one}}</td>
+                    <td>{{bagCounter.monthly.two}}</td>
+                    <td>{{bagCounter.monthly.three}}</td>
+                    <td>{{bagCounter.monthly.four}}</td>
+                    <td>{{bagCounter.monthly.five}}</td>
+                  </tr>
+              </tbody>
+
+            </table>
           </mat-card-content>
         </mat-card>
   </div>
