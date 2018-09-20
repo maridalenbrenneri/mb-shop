@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { User, RegisterUserModel } from '../models/user.model';
 import { Observable } from 'rxjs';
 
@@ -22,10 +22,13 @@ export class AuthService {
   }
 
   signIn(email: string, password: string): Observable<any> {
-    return this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
-      email: email,
-      password: password
-    });
+
+    this.signIn_Wordpress(email, password);
+return null;
+    // return this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
+    //   email: email,
+    //   password: password
+    // });
   }
 
   signOut() {

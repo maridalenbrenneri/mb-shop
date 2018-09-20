@@ -1,0 +1,43 @@
+<h1>Maridalen Brenneri Dashboard</h1>
+
+<div class="row">
+  <div class="col-12 col-lg-6">
+      <mat-card class="product-card">
+          <mat-card-header>
+            <mat-card-title>#aboabo</mat-card-title>
+          </mat-card-header>
+          <h1>{{subscriptionActiveCount}} aktive abos</h1>
+          <p>
+            {{subscriptionFortnightlyCount}} annenhver uke, {{subscriptionMonthlyCount}} månedlig
+          </p>
+          <mat-card-content>
+            <p>
+              
+              Antall påser per måned: <strong>{{ subsciptionsBagsPerMonthCount }}</strong> <br>
+
+              Abo-coefficient: <strong>{{ subsciptionsBagsPerMonthCount / subscriptionActiveCount }}</strong> <br>
+
+              Abos på pause: {{subscriptionOnHoldCount }} <br>
+            </p>
+          </mat-card-content>
+        </mat-card>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <mat-card class="product-card">
+        <mat-card-header>
+          <mat-card-title>#orders</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            Processing: <strong>{{ orderProcessingCount }}</strong> <br>
+            Pending payment: <strong>{{ orderPendingPaymentCount }}</strong> <br>
+          </p>
+        </mat-card-content>
+      </mat-card>
+  </div>
+
+</div>
+<p>
+
+</p>

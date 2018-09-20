@@ -23,11 +23,11 @@ export class HttpStuffInterceptor implements HttpInterceptor {
 
     const token = this.auth.getToken() != null ? this.auth.getToken() : '';
 
-    req = (req as HttpRequest<any>).clone({
-      setHeaders: {
-        'x-access-token': token
-      }
-    });
+    // req = (req as HttpRequest<any>).clone({
+    //   setHeaders: {
+    //     'x-access-token': token
+    //   }
+    // });
 
     return next.handle(req).pipe(catchError((err) => {
       this.handleError(err);

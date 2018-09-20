@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from '../../../models/subscription.model';
-import { SubscriptionService } from '../../../services/subscription.service';
+import { Subscription } from '../../../shop/models/subscription.model';
+import { SubscriptionService } from '../../../shop/services/subscription.service';
 
 @Component({
   selector: 'app-admin-subscriptions',
