@@ -61,13 +61,15 @@ export class DashboardComponent implements OnInit {
 
         if (item.name.includes('Annenhver uke')) {
           this.subscriptionFortnightlyCount++;
-          this.subsciptionsBagsPerFortnightlyCount += this.resolveNumberOfBags(item.name, true);
-          this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name, true) * 2;
+          const numberOfBags = this.resolveNumberOfBags(item.name, true);
+          this.subsciptionsBagsPerFortnightlyCount += numberOfBags;
+          this.subsciptionsBagsPerMonthCount += numberOfBags * 2;
 
         } else  {
           this.subscriptionMonthlyCount++;
-          this.subsciptionsBagsPerMonthlyCount += this.resolveNumberOfBags(item.name, false);
-          this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name, false);
+          const numberOfBags = this.resolveNumberOfBags(item.name, false);
+          this.subsciptionsBagsPerMonthlyCount += numberOfBags;
+          this.subsciptionsBagsPerMonthCount += numberOfBags;
         }
 
       }
