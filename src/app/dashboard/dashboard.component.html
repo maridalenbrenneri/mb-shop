@@ -1,4 +1,4 @@
-<h1>Maridalen Brenneri Dashboard</h1>
+
 
 <div class="row">
   <div class="col-12 col-lg-6">
@@ -13,9 +13,9 @@
           <mat-card-content>
             <p>
               
-              Antall påser per måned: <strong>{{ subsciptionsBagsPerMonthCount }}</strong> <br>
+              Antall påser per måned: <strong>{{ subsciptionsBagsPerMonthCount }}</strong> ( {{subsciptionsBagsPerFortnightlyCount}} annenhver uke, {{subsciptionsBagsPerMonthlyCount}} månedlig ) <br>
 
-              Abo-coefficient: <strong>{{ subsciptionsBagsPerMonthCount / subscriptionActiveCount }}</strong> <br>
+              Abo-coefficient: <strong>{{ (subsciptionsBagsPerMonthCount / subscriptionActiveCount) | number:'1.1-1' }}</strong> <br>
 
               Abos på pause: {{subscriptionOnHoldCount }} <br>
             </p>

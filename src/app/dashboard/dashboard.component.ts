@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   subscriptionFortnightlyCount = 0;
   subscriptionMonthlyCount = 0;
   subsciptionsBagsPerMonthCount = 0;
+  subsciptionsBagsPerFortnightlyCount = 0;
+  subsciptionsBagsPerMonthlyCount = 0;
 
   orderProcessingCount = 0;
   orderPendingPaymentCount = 0;
@@ -59,10 +61,12 @@ export class DashboardComponent implements OnInit {
 
         if (item.name.includes('Annenhver uke')) {
           this.subscriptionFortnightlyCount++;
+          this.subsciptionsBagsPerFortnightlyCount += this.resolveNumberOfBags(item.name, true);
           this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name, true) * 2;
 
         } else  {
           this.subscriptionMonthlyCount++;
+          this.subsciptionsBagsPerMonthlyCount += this.resolveNumberOfBags(item.name, false);
           this.subsciptionsBagsPerMonthCount += this.resolveNumberOfBags(item.name, false);
         }
 
