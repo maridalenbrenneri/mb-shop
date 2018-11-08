@@ -6,18 +6,26 @@
           <mat-card-header>
             <mat-card-title>#aboabo</mat-card-title>
           </mat-card-header>
-          <h1>{{subscriptionActiveCount}} aktive abos</h1>
+          <h1>{{subscriptionActiveCount + giftSubscriptionCount}} aktive abos</h1>
+          
           <p>
-            {{subscriptionFortnightlyCount}} annenhver uke, {{subscriptionMonthlyCount}} månedlig
+            {{subscriptionFortnightlyCount + giftSubscriptionFortnightlyCount}} annenhver uke, {{subscriptionMonthlyCount + giftSubscriptionMonthlyCount}} månedlig
           </p>
+
           <mat-card-content>
             <p>
               
-              Antall påser per måned: <strong>{{ subsciptionsBagsPerMonthCount }}</strong> ( {{subsciptionsBagsPerFortnightlyCount}} annenhver uke, {{subsciptionsBagsPerMonthlyCount}} månedlig ) <br>
+              Antall poser per måned: <strong>{{ subsciptionsBagsPerMonthCount }}</strong> <br>
 
-              Abo-coefficient: <strong>{{ (subsciptionsBagsPerMonthCount / subscriptionActiveCount) | number:'1.1-1' }}</strong> <br>
+              Antall poser 1. tirsdag : <strong> {{ subsciptionsBagsPerMonthlyCount + subsciptionsBagsPerFortnightlyCount}} </strong> <br>
+
+              Antall poser 3. tirsdag: <strong> {{subsciptionsBagsPerFortnightlyCount}} </strong> <br>
+
+              Gyldne abosnittet: <strong>{{ (subsciptionsBagsPerMonthCount / (subscriptionActiveCount + giftSubscriptionCount)) | number:'1.1-1' }}</strong> <br>
 
               Abos på pause: {{subscriptionOnHoldCount }} <br>
+
+              Gaveabos: {{giftSubscriptionCount}}
             </p>
 
             <table class="table">
@@ -33,7 +41,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>Annenhver uke</td>
+                  <td>Annenhver uke ({{subsciptionsBagsPerFortnightlyCount}} poser)</td>
                   <td>{{bagCounter.fortnightly.one}}</td>
                   <td>{{bagCounter.fortnightly.two}}</td>
                   <td>{{bagCounter.fortnightly.three}}</td>
@@ -41,7 +49,7 @@
                   <td>{{bagCounter.fortnightly.five}}</td>
                 </tr>
                 <tr>
-                    <td>Månedlig</td>
+                    <td>Månedlig ({{subsciptionsBagsPerMonthlyCount}} poser)</td>
                     <td>{{bagCounter.monthly.one}}</td>
                     <td>{{bagCounter.monthly.two}}</td>
                     <td>{{bagCounter.monthly.three}}</td>
@@ -70,6 +78,3 @@
   </div>
 
 </div>
-<p>
-
-</p>

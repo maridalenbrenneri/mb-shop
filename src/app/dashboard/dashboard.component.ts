@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -10,6 +12,8 @@ export class DashboardComponent implements OnInit {
 
   wooApiBaseUrl = 'https://maridalenbrenneri.no/wp-json/wc/v2/';
   wooSubscriptionApiBaseUrl = 'https://maridalenbrenneri.no/wp-json/wc/v1/';
+
+  giftSubscriptionProductId = 968;
 
   subscriptions: Array<any>;
 
@@ -23,6 +27,10 @@ export class DashboardComponent implements OnInit {
 
   orderProcessingCount = 0;
   orderPendingPaymentCount = 0;
+
+  giftSubscriptionCount = 0;
+  giftSubscriptionFortnightlyCount = 0;
+  giftSubscriptionMonthlyCount = 0;
 
   bagCounter = {
     fortnightly: {
@@ -72,52 +80,51 @@ export class DashboardComponent implements OnInit {
           this.subsciptionsBagsPerMonthCount += numberOfBags;
         }
 
+        this.http.get<any>(this.wooApiBaseUrl + 'orders?' + this.keySecretParams() + '&status=processing').subscribe(orders => {
+          this.orderProcessingCount = orders.length;
+
+          this.http.get<any>(this.wooApiBaseUrl + 'orders?' + this.keySecretParams() + '&status=pending').subscribe(pendingOrders => {
+            this.orderPendingPaymentCount = pendingOrders.length;
+          });
+        });
       }
     });
 
-    this.http.get<any>(this.wooApiBaseUrl + 'orders?' + this.keySecretParams() + '&status=processing').subscribe(orders => {
-      this.orderProcessingCount = orders.length;
+    // tslint:disable-next-line:max-line-length
+    this.http.get<any>(this.wooApiBaseUrl + 'orders?' + this.keySecretParams() + '&product=' + this.giftSubscriptionProductId).subscribe(giftSubscriptionOrders => {
+      this.resolveActiveGiftSubscriptions (giftSubscriptionOrders);
     });
-
-    this.http.get<any>(this.wooApiBaseUrl + 'orders?' + this.keySecretParams() + '&status=pending').subscribe(orders => {
-      this.orderPendingPaymentCount = orders.length;
-    });
-
   }
 
-  private resolveNumberOfBags(name, isFortnigthly) {
-
-    if (name.includes('- 1')) {
+  private updateBagCounter(bagsToAdd: number, isFortnigthly: boolean) {
+    if (bagsToAdd === 1) {
       if (isFortnigthly) {
         this.bagCounter.fortnightly.one += 1;
       } else {
         this.bagCounter.monthly.one += 1;
       }
       return 1;
-
     }
 
-    if (name.includes('- 2')) {
+    if (bagsToAdd === 2) {
       if (isFortnigthly) {
         this.bagCounter.fortnightly.two += 1;
       } else {
         this.bagCounter.monthly.two += 1;
       }
       return 2;
-
     }
 
-    if (name.includes('- 3')) {
+    if (bagsToAdd === 3) {
       if (isFortnigthly) {
         this.bagCounter.fortnightly.three += 1;
       } else {
         this.bagCounter.monthly.three += 1;
       }
       return 3;
-
     }
 
-    if (name.includes('- 4')) {
+    if (bagsToAdd === 4) {
       if (isFortnigthly) {
         this.bagCounter.fortnightly.four += 1;
       } else {
@@ -126,17 +133,91 @@ export class DashboardComponent implements OnInit {
       return 4;
     }
 
-    if (name.includes('- 5')) {
+    if (bagsToAdd === 5) {
       if (isFortnigthly) {
         this.bagCounter.fortnightly.five += 1;
       } else {
         this.bagCounter.monthly.five += 1;
       }
       return 5;
-
     }
 
-    throw new Error('Not supported subscription item name');
+    throw new Error('Not supported bag count');
+
+  }
+
+  private resolveNumberOfBags(name, isFortnigthly) {
+
+    if (name.includes('- 1')) {
+      return this.updateBagCounter(1, isFortnigthly);
+    }
+
+    if (name.includes('- 2')) {
+      return this.updateBagCounter(2, isFortnigthly);
+    }
+
+    if (name.includes('- 3')) {
+      return this.updateBagCounter(3, isFortnigthly);
+    }
+
+    if (name.includes('- 4')) {
+      return this.updateBagCounter(4, isFortnigthly);
+    }
+
+    if (name.includes('- 5')) {
+      return this.updateBagCounter(5, isFortnigthly);
+    }
+  }
+
+  private resolveActiveGiftSubscriptions(orders: any) {
+
+    const activeGiftSubscriptions = new Array<any>();
+
+    for (const order of orders) {
+      for (const item of order.line_items) {
+        if (item.product_id === this.giftSubscriptionProductId) {
+
+          const startDateString = this.getMetadataValue(item.meta_data, 'abo_start');
+
+          const length = this.getMetadataValue(item.meta_data, 'antall-maneder');
+
+          const startDate = moment(startDateString, 'DD.MM.YYYY');
+
+          const activeFrom = moment(startDate).add(-7, 'days');
+          const activeTo = moment(activeFrom).add(+length, 'months');
+
+          const today = moment().startOf('day');
+
+          if (today <= activeTo) {
+            activeGiftSubscriptions.push(item);
+          }
+        }
+      }
+    }
+
+    for (const sub of activeGiftSubscriptions) {
+      const bags = +this.getMetadataValue(sub.meta_data, 'poser');
+      const isFortnighlty = this.getMetadataValue(sub.meta_data, 'levering').includes('Annenhver uke');
+      this.updateBagCounter(bags, isFortnighlty);
+
+      if (isFortnighlty) {
+        this.subsciptionsBagsPerFortnightlyCount += bags;
+        this.subsciptionsBagsPerMonthCount += bags * 2;
+        this.giftSubscriptionFortnightlyCount++;
+
+      } else {
+        this.subsciptionsBagsPerMonthlyCount += bags;
+        this.subsciptionsBagsPerMonthCount += bags;
+        this.giftSubscriptionMonthlyCount++;
+      }
+    }
+
+    this.giftSubscriptionCount = activeGiftSubscriptions.length;
+  }
+
+  private getMetadataValue(meta_data: Array<any>, key: string) {
+    const res =  meta_data.find(data => data.key === key);
+    return !res ? null : res.value;
   }
 
   private keySecretParams() {
