@@ -1,12 +1,16 @@
+import { DecimalPipe } from "@angular/common";
+
+export class PriceVariation {
+    name: string;
+    price: number;
+}
+
 export class Product {
     id: number;
     category: string;
-    code: string;
-    name: string;
-    description: string;
-    description2: string;
-    price: number;
-    taxRate: string;
+    data: any;
+    priceVariations: Array<PriceVariation>;
+    vatGroup: string;
     portfolioImageKey: string;
     isActive: boolean;
     isInStock: boolean;

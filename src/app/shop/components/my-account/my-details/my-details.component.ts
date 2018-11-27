@@ -53,19 +53,21 @@ export class MyDetailsComponent implements OnInit {
     }
 
     this.detailsForm.patchValue({
-      firstName: this.user.givenName,
-      lastName: this.user.familyName,
+      name: this.user.name,
+      organizationNumber: this.user.organizationNumber,
       email: this.user.email,
-      phone: this.user.phone
+      phone: this.user.phone,
+      contactPerson: this.user.contactPerson
     });
   }
 
   createForms() {
     this.detailsForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      name: ['', Validators.required],
+      organizationNumber: ['', Validators.required],
       email: ['', Validators.required],
       mobile: [''],
+      contactPerson: [''],
       currentPassword: [''],
       newPassword: [''],
       confirmNewPassword: ['']

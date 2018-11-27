@@ -1,17 +1,19 @@
 export class User {
     id: number;
-    email: string;
-    givenName: string;
-    familyName: string;
     role: string;
+    email: string;
     phone: string;
+    name: string;
+    organizationNumber: string;
+    contactPerson: string;
 }
 
 export class RegisterUserModel {
     id: number;
     email: string;
-    givenName: string;
-    familyName: string;
     phone: string;
+    name: string;
+    organizationNumber: string;
+    contactPerson: string;
     password: string;
 }

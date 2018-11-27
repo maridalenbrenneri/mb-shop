@@ -23,12 +23,12 @@ export class AuthService {
 
   signIn(email: string, password: string): Observable<any> {
 
-    this.signIn_Wordpress(email, password);
-return null;
-    // return this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
-    //   email: email,
-    //   password: password
-    // });
+    // this.signIn_Wordpress(email, password);
+    // return null;
+    return this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
+      email: email,
+      password: password
+    });
   }
 
   signOut() {

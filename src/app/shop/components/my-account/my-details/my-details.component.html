@@ -2,15 +2,15 @@
     <div class="col-12 col-lg-6">
         <form [formGroup]="detailsForm">    
             <div class="form-group">
-              <label class="center-block">Fornavn
-                <input type="text" required class="form-control" formControlName="firstName">
+              <label class="center-block">Navn
+                <input type="text" required class="form-control" formControlName="name">
               </label>
             </div>
             <div class="form-group">
-                <label class="center-block">Etternavn
-                  <input type="text" required class="form-control" formControlName="lastName">
-                </label>
-              </div>        
+              <label class="center-block">Organisasjonsnummer
+                <input type="text" required class="form-control" formControlName="organizationNumber">
+              </label>
+            </div>          
             <div class="form-group">
               <label class="center-block">E-postadresse
                 <input class="form-control" required formControlName="email">
@@ -20,7 +20,12 @@
                 <label class="center-block">Telefon
                   <input class="form-control" formControlName="mobile">
                 </label>
-              </div>              
+            </div>
+            <div class="form-group">
+              <label class="center-block">Kontaktperson
+                <input type="text" required class="form-control" formControlName="contactPerson">
+              </label>
+            </div>                                
             <div class="form-group">
               <button class="btn btn-primary float-right" (click)="saveDetails()" [disabled]="!detailsForm.valid">Lagre endringer</button>
             </div>

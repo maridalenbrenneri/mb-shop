@@ -1,7 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ProductCategories } from '../../constants';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+export interface EditCoffeeProductData {
+  code: string;
+  country: string;
+  name: string;
+  description: string;
+  tastes: string;
+  priceSmallBag: number;
+  pricePerKg: number;
+}
+
 
 @Component({
   selector: 'app-products',
@@ -9,12 +22,15 @@ import { ProductCategories } from '../../constants';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
+  vatCoffee = 15;
+
   text: string;
   coffeeProducts: Array<Product>;
   subscriptionProduct: Product;
   giftSubscriptionProduct: Product;
+  editProductForm: FormGroup;
 
-  constructor(private productService: ProductService) {
+  constructor(private productService: ProductService, private fb: FormBuilder, public dialog: MatDialog) {
     this.subscriptionProduct = new Product();
     this.giftSubscriptionProduct = new Product();
   }
@@ -29,6 +45,55 @@ export class ProductsComponent implements OnInit {
     }, err => {
       console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
     });
+
+    this.createForms();
+  }
+
+  openEditProductDialog(product: Product): void {
+    console.log(product);
+    const dialogRef = this.dialog.open(EditProductComponent, {
+      data: {
+        code: product.data.code,
+        country: product.data.country,
+        name: product.data.name,
+        description: product.data.description,
+        tastes: product.data.tastes,
+        priceSmallBag: product.priceVariations[0].price,
+        pricePerKg: product.priceVariations[1].price
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(!result) {
+        return;
+      }
+
+      product.data.code = result.code;
+      product.data.country = result.country;
+      product.data.name = result.name;
+      product.data.description = result.description;
+      product.data.tastes = result.tastes;
+      product.priceVariations[0].price = result.priceSmallBag;
+      product.priceVariations[1].price = result.pricePerKg;
+    });
+  }
+
+  saveProduct() {
+    // todo: ...
+  }
+
+  createForms() {
+    this.editProductForm = this.fb.group({
+      code: ['', Validators.required],
+      country: ['', Validators.required],
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      tastes: [''],
+      priceSmallBag: [''],
+      pricePerKg: [''],
+      infoUrl: [''],
+      portfolioImageKey: ['']
+    });
   }
 
   getFirstProductOfType(products: Array<Product>, category: String) {
@@ -37,14 +102,23 @@ export class ProductsComponent implements OnInit {
   }
 
   getProductImageOrDefault(product: Product): string {
-    if (product.category === ProductCategories.coffeeSubscription) {
-      return 'product_abo.jpg';
-    }
-
-    if (product.category === ProductCategories.coffeeGiftSubscription) {
-      return 'product_gave_abo.png';
-    }
-
     return !product.portfolioImageKey ? 'product_default.jpg' : product.portfolioImageKey;
   }
+}
+
+
+@Component({
+  selector: 'edit-product.component',
+  templateUrl: 'edit-product.component.html',
+})
+export class EditProductComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<EditProductComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: EditCoffeeProductData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }

@@ -20,7 +20,7 @@ export class BasketComponent implements OnInit {
   getTotalPrice(): number {
     let total = 0;
     this.items.forEach(i => {
-      total += i.product.price * i.quantity;
+      // total += i.product.price * i.quantity;
     });
     return total;
   }

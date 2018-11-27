@@ -84,11 +84,10 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  private userToCustomer(user) {
+  private userToCustomer(user: User) {
     const customer = new OrderCustomer();
     customer.userId = user.id;
-    customer.givenName = user.givenName;
-    customer.familyName = user.familyName;
+    customer.givenName = user.name;
     customer.email = user.email;
     customer.phone = user.phone;
     return customer;
@@ -97,8 +96,7 @@ export class CheckoutComponent implements OnInit {
   private customerToRegisterUser(customer: OrderCustomer) {
     const user = new RegisterUserModel();
     user.email = customer.email;
-    user.givenName = customer.givenName;
-    user.familyName = customer.familyName;
+    user.name = customer.givenName;
     user.phone = customer.phone;
     user.password = customer.password;
     return user;

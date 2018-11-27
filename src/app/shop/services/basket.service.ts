@@ -49,7 +49,7 @@ export class BasketService {
 
     this.totaltCount += quantity;
 
-    console.log('[DEBUG]: Product added to basket service, ' + product.name + ' item count ' + this.items.length + ' ' + this.totaltCount);
+   // console.log('[DEBUG]: Product added to basket service, ' + product.name + ' item count ' + this.items.length + ' ' + this.totaltCount);
   }
 
   private validateItem(product: Product, quantity: number, allowZero: boolean): boolean {
