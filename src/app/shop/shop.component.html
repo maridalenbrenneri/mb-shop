@@ -1,4 +1,19 @@
 
-<app-breadcrumb></app-breadcrumb>
-<app-mini-basket></app-mini-basket>
-<router-outlet></router-outlet>
+<mat-tab-group>
+    <!-- <mat-tab label="DASHBOARD">
+        <app-dashboard></app-dashboard>
+    </mat-tab> -->
+    <mat-tab label="ORDRE">
+        <h1>Orders</h1>
+        <p>...</p>
+    </mat-tab>
+    <mat-tab label="KUNDER">    
+        <app-accounts></app-accounts>
+    </mat-tab>
+    <mat-tab label="PRODUKTER">
+        <app-products></app-products>
+    </mat-tab>        
+    <mat-tab label="MIN KONTO">
+        <app-my-account></app-my-account>
+    </mat-tab>    
+</mat-tab-group>

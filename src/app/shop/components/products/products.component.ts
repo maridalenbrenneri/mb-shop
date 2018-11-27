@@ -2,19 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ProductCategories } from '../../constants';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-
-export interface EditCoffeeProductData {
-  code: string;
-  country: string;
-  name: string;
-  description: string;
-  tastes: string;
-  priceSmallBag: number;
-  pricePerKg: number;
-}
-
 
 @Component({
   selector: 'app-products',
@@ -28,30 +16,43 @@ export class ProductsComponent implements OnInit {
   coffeeProducts: Array<Product>;
   subscriptionProduct: Product;
   giftSubscriptionProduct: Product;
-  editProductForm: FormGroup;
 
-  constructor(private productService: ProductService, private fb: FormBuilder, public dialog: MatDialog) {
+  constructor(private productService: ProductService, public dialog: MatDialog) {
     this.subscriptionProduct = new Product();
     this.giftSubscriptionProduct = new Product();
   }
 
   ngOnInit() {
-    this.productService.getProducts().subscribe(products => {
+    this.loadProducts();
+  }
 
+  loadProducts() {
+    this.productService.getProducts().subscribe(products => {
       this.coffeeProducts = products.filter(product => product.category === ProductCategories.coffee);
-      this.subscriptionProduct = this.getFirstProductOfType(products, ProductCategories.coffeeSubscription);
-      this.giftSubscriptionProduct = this.getFirstProductOfType(products, ProductCategories.coffeeGiftSubscription);
 
     }, err => {
       console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
     });
-
-    this.createForms();
   }
 
   openEditProductDialog(product: Product): void {
-    console.log(product);
+    if(!product) {
+      product = new Product();
+      product.data = {
+        code: '',
+        country: '',
+        name: '',
+        description: '',
+        tastes: ''
+      }
+      product.priceVariations = [
+        { name: 'priceSmallBag', price: 72.2 },
+        { name: 'pricePerKg', price: 280 }
+      ]
+    }
+
     const dialogRef = this.dialog.open(EditProductComponent, {
+      disableClose: true,
       data: {
         code: product.data.code,
         country: product.data.country,
@@ -68,6 +69,11 @@ export class ProductsComponent implements OnInit {
         return;
       }
 
+      product.category = 'coffee';
+      product.vatGroup = 'coffee';
+      product.isActive = true;
+      product.isInStock = true;
+
       product.data.code = result.code;
       product.data.country = result.country;
       product.data.name = result.name;
@@ -75,25 +81,23 @@ export class ProductsComponent implements OnInit {
       product.data.tastes = result.tastes;
       product.priceVariations[0].price = result.priceSmallBag;
       product.priceVariations[1].price = result.pricePerKg;
+
+      if(!this.alreadyContainsProduct(product)) {
+        this.productService.createProduct(product).subscribe(() => {
+          this.loadProducts();
+        });
+      
+      } else {
+        this.productService.updateProduct(product).subscribe(() => {
+          this.loadProducts();
+        });
+      }
     });
   }
 
-  saveProduct() {
-    // todo: ...
-  }
-
-  createForms() {
-    this.editProductForm = this.fb.group({
-      code: ['', Validators.required],
-      country: ['', Validators.required],
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      tastes: [''],
-      priceSmallBag: [''],
-      pricePerKg: [''],
-      infoUrl: [''],
-      portfolioImageKey: ['']
-    });
+  alreadyContainsProduct(product: Product) {
+    const items = this.coffeeProducts.filter(p => p.id && p.id  === product.id);
+    return items.length > 0;
   }
 
   getFirstProductOfType(products: Array<Product>, category: String) {
@@ -106,6 +110,15 @@ export class ProductsComponent implements OnInit {
   }
 }
 
+export interface EditCoffeeProductData {
+  code: string;
+  country: string;
+  name: string;
+  description: string;
+  tastes: string;
+  priceSmallBag: number;
+  pricePerKg: number;
+}
 
 @Component({
   selector: 'edit-product.component',

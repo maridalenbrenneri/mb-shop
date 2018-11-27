@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Legg til / Endre Kunde</h1>
+
+<div mat-dialog-content class="edit-account-form">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="editAccountForm">
+                <div class="form-group">
+                    <label class="center-block">Navn
+                        <input type="text" required class="form-control" formControlName="name" [(ngModel)]="data.name">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Organisasjonsnummer
+                        <input type="text" required class="form-control" formControlName="organizationNumber"  [(ngModel)]="data.organizationNumber">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">E-postadresse
+                        <input class="form-control" required formControlName="email" [(ngModel)]="data.email">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Telefon
+                        <input class="form-control" formControlName="mobile" [(ngModel)]="data.mobile">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Kontaktperson
+                        <input type="text" required class="form-control" formControlName="contactPerson" [(ngModel)]="data.contactPerson">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Nytt passord
+                        <input type="password" class="form-control" formControlName="newPassword" [(ngModel)]="data.newPassword">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Gjenta nytt passord
+                        <input type="password" class="form-control" formControlName="confirmNewPassword" [(ngModel)]="data.confirmNewPassword">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div mat-dialog-actions>
+                        <button mat-button (click)="onNoClick()">Avbryt</button>
+                        <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!editAccountForm.valid">Lagre endringer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

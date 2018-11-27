@@ -15,7 +15,15 @@ export class ProductService {
 
   constructor(private http: HttpClient) {
     this.products = new Array<Product>();
-   }
+  }
+
+  createProduct(product: Product): Observable<any> {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}products`, product);
+  }
+
+  updateProduct(product: Product): Observable<any> {
+    return this.http.put<any>(`${environment.mbApiBaseUrl}products/${product.id}`, product);
+  }
 
   getProduct(id: number): Observable<Product> {
     const product = this.products.find(p => p.id === id);

@@ -14,6 +14,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { ProductsComponent } from './shop/components/products/products.component';
@@ -44,7 +45,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminSubscriptionsComponent } from './admin/components/admin-subscriptions/admin-subscriptions.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
-import { AccountsComponent } from './shop/components/accounts/accounts.component';
+import { AccountsComponent, EditAccounComponent } from './shop/components/accounts/accounts.component';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, 'nb');
@@ -91,10 +92,11 @@ const appRoutes: Routes = [
     DashboardComponent,
     ShopComponent,
     AccountsComponent,
-    EditProductComponent
+    EditProductComponent,
+    EditAccounComponent
   ],
   entryComponents: [
-    EditProductComponent
+    EditProductComponent, EditAccounComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -106,7 +108,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule  ],
+    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule, MatTabsModule  ],
   providers: [
   //  { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true },
