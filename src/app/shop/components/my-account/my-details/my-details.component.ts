@@ -53,11 +53,11 @@ export class MyDetailsComponent implements OnInit {
     }
 
     this.detailsForm.patchValue({
-      name: this.user.name,
-      organizationNumber: this.user.organizationNumber,
+      // name: this.user.name,
+      // organizationNumber: this.user.organizationNumber,
       email: this.user.email,
-      phone: this.user.phone,
-      contactPerson: this.user.contactPerson
+      // phone: this.user.phone,
+      // contactPerson: this.user.contactPerson
     });
   }
 

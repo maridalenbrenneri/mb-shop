@@ -49,6 +49,18 @@ export class AuthService {
     return this.http.get<any>(environment.mbApiBaseUrl + 'users/me');
   }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get<any[]>(environment.mbApiBaseUrl + 'users');
+  }
+
+  createUser(user: User): Observable<User> {
+    return this.http.post<any>(environment.mbApiBaseUrl + 'users', user);
+  }
+
+  updateUser(user: User): Observable<User> {
+    return this.http.put<any>(`${environment.mbApiBaseUrl}users/${user.id}`, user);
+  }
+
   setSignedIn(authResponse) {
     // todo: save token in cookie
 

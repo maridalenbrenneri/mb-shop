@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Legg til / Endre Kunde</h1>
+
+<div mat-dialog-content>
+    <div class="row">
+        <div class="col-12">
+            <form #customerForm="ngForm">
+                <div class="form-group">
+                    <label class="center-block">Navn
+                        <input type="text" required class="form-control" name="name" [(ngModel)]="data.name">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Organisasjonsnummer
+                        <input type="text" class="form-control" name="organizationNumber" [(ngModel)]="data.organizationNumber">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Epost
+                        <input class="form-control" required name="email" [(ngModel)]="data.email">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Telefon
+                        <input class="form-control" name="phone" [(ngModel)]="data.phone">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="center-block">Kontaktperson
+                        <input type="text" class="form-control" name="contactPerson" [(ngModel)]="data.contactPerson">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div mat-dialog-actions>
+                        <button mat-button (click)="onNoClick()">Avbryt</button>
+                        <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!customerForm.valid">Lagre endringer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

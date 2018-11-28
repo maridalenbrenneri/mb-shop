@@ -38,13 +38,7 @@ export class ProductsComponent implements OnInit {
   openEditProductDialog(product: Product): void {
     if(!product) {
       product = new Product();
-      product.data = {
-        code: '',
-        country: '',
-        name: '',
-        description: '',
-        tastes: ''
-      }
+      product.data = { }
       product.priceVariations = [
         { name: 'priceSmallBag', price: 72.2 },
         { name: 'pricePerKg', price: 280 }
@@ -133,5 +127,4 @@ export class EditProductComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }

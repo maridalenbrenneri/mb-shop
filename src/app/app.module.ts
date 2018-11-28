@@ -15,11 +15,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatTableModule} from '@angular/material/table';
 
 import { AppComponent } from './app.component';
-import { ProductsComponent } from './shop/components/products/products.component';
-import { EditProductComponent } from './shop/components/products/products.component';
-
+import { ProductsComponent, EditProductComponent } from './shop/components/products/products.component';
 import { ProductComponent } from './shop/components/products/product/product.component';
 import { BasketComponent } from './shop/components/basket/basket.component';
 import { BuyProductComponent } from './shop/components/buy-product/buy-product.component';
@@ -45,7 +44,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminSubscriptionsComponent } from './admin/components/admin-subscriptions/admin-subscriptions.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
-import { AccountsComponent, EditAccounComponent } from './shop/components/accounts/accounts.component';
+import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, 'nb');
@@ -91,12 +90,12 @@ const appRoutes: Routes = [
     AdminSubscriptionsComponent,
     DashboardComponent,
     ShopComponent,
-    AccountsComponent,
+    CustomersComponent,
     EditProductComponent,
-    EditAccounComponent
+    EditCustomerComponent
   ],
   entryComponents: [
-    EditProductComponent, EditAccounComponent
+    EditProductComponent, EditCustomerComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -108,7 +107,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule, MatTabsModule  ],
+    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule, MatTabsModule, MatTableModule ],
   providers: [
   //  { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true },

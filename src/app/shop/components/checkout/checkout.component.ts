@@ -87,17 +87,17 @@ export class CheckoutComponent implements OnInit {
   private userToCustomer(user: User) {
     const customer = new OrderCustomer();
     customer.userId = user.id;
-    customer.givenName = user.name;
+    // customer.givenName = user.name;
     customer.email = user.email;
-    customer.phone = user.phone;
+    // customer.phone = user.phone;
     return customer;
   }
 
   private customerToRegisterUser(customer: OrderCustomer) {
     const user = new RegisterUserModel();
     user.email = customer.email;
-    user.name = customer.givenName;
-    user.phone = customer.phone;
+    // user.name = customer.givenName;
+    // user.phone = customer.phone;
     user.password = customer.password;
     return user;
   }
