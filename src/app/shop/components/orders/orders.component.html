@@ -108,7 +108,7 @@
 <hr />
 
 <h4>
-  {{order.customer?.name}}
+  {{order.customer?.name}}  - Org.no: {{order.customer?.organizationNumber}}
 </h4>
 <table class="table">
   <thead>
@@ -129,11 +129,26 @@
       <td> <button mat-button (click)="removeItem(item)">X</button></td>
     </tr>
     <tr>
-      <th colspan="4"></th>
-      <th>{{getTotalPrice}}</th>
+      <td colspan="4"></td>
+      <td><strong>{{getTotalPrice}}</strong></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+          <h5>Leveringsadresse</h5>
+          <app-address [address]="order.customer?.deliveryAddress"></app-address>
+      </td>
+      <td colspan="2">
+          <h5>Fakturaadresse</h5>
+          <app-address [address]="order.customer?.invoiceAddress"></app-address>
+      </td>     
+      <td colspan="2">
+          <h5>Notat</h5>
+          Ipsum Lorum
+      </td>      
     </tr>
   </tbody>
 </table>
+
 
 <button class="btn btn-primary float-right" [disabled]="!order.items?.length" (click)="createOrder()">Lag bestilling</button>
 

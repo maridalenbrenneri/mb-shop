@@ -19,6 +19,8 @@ import { TableDataSource } from '../../core/table-data-source';
 })
 export class CustomersComponent implements OnInit {
 
+  customerTypes: string[] = ['Café/Butikk', 'Kontor'];
+
   displayedColumns: string[] = ['id', 'name', 'organizationNumber', 'email', 'phone'];
   customers: Array<Customer>;
   dataSource: TableDataSource;
@@ -32,9 +34,12 @@ export class CustomersComponent implements OnInit {
   }
 
   openEditCustomerDialog(customer: Customer): void {
-
+    console.log("open customer" + this.customerTypes);
     if (!customer) {
       customer = new Customer();
+      customer.type = this.customerTypes[0];
+      customer.deliveryAddress.country = "Norge";
+      customer.invoiceAddress.country = "Norge";
     }
 
     const dialogRef = this.dialog.open(EditCustomerComponent, {
@@ -45,7 +50,12 @@ export class CustomersComponent implements OnInit {
         email: customer.email,
         organizationNumber: customer.organizationNumber,
         phone: customer.phone,
-        contactPerson: customer.contactPerson
+        contactPerson: customer.contactPerson,
+        deliveryAddress: customer.deliveryAddress,
+        invoiceAddress: customer.invoiceAddress,
+        note: customer.note,
+        type: customer.type,
+        customerTypes: this.customerTypes
       }
     });
 
@@ -61,8 +71,13 @@ export class CustomersComponent implements OnInit {
       customer.organizationNumber = result.organizationNumber;
       customer.contactPerson = result.contactPerson;
       customer.phone = result.phone;
+      customer.deliveryAddress = result.deliveryAddress;
+      customer.invoiceAddress = result.invoiceAddress;
+      customer.note = result.note;
+      customer.type = result.type;
 
       if (!this.containsItem(customer)) {
+        console.log("create customer");
         this.customerService.createCustomer(customer).subscribe(() => {
           this.loadCustomers();
         });

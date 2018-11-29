@@ -40,7 +40,16 @@
     <!-- Expanded Content Column - The detail row is made up of this one column -->
     <ng-container matColumnDef="expandedDetail">
       <mat-cell *matCellDef="let detail">
-        Here comes the details about {{detail.element.name}} {{detail.element.contactPerson }}...
+
+        <app-address [address]="detail.element.deliveryAddress"></app-address>
+
+        <app-address [address]="detail.element.invoiceAddress"></app-address>
+
+        Notat: {{detail.element.note }} <br /> <br />
+
+        Kundetype: {{detail.element.type }} <br /><br />
+        Kontaktperson: {{detail.element.contactPerson }} <br /><br />
+
         <button mat-raised-button (click)="openEditCustomerDialog(detail.element)">Endre</button>
       </mat-cell>
     </ng-container>
