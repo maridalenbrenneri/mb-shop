@@ -73,7 +73,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   private sendCreateOrder(order: Order, customer: OrderCustomer) {
-    order.customer = customer;
+    // order.customer = customer;
 
     this.orderService.createOrder(order).subscribe((createdOrder) => {
 

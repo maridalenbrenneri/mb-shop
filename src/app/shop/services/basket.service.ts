@@ -37,11 +37,11 @@ export class BasketService {
     const existingItem = this.items.find(p => p.product.id === product.id);
 
     if (!existingItem) {
-      this.items.push({
-        product: product,
-        productOptions: productOptions,
-        quantity: quantity
-      });
+      // this.items.push({
+      //   product: product,
+      //   productOptions: productOptions,
+      //   quantity: quantity
+      // });
 
     } else {
       existingItem.quantity += quantity;

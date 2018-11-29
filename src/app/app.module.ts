@@ -45,6 +45,7 @@ import { AdminSubscriptionsComponent } from './admin/components/admin-subscripti
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
 import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
+import { OrdersComponent, EditOrderComponent } from './shop/components/orders/orders.component';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, 'nb');
@@ -92,10 +93,12 @@ const appRoutes: Routes = [
     ShopComponent,
     CustomersComponent,
     EditProductComponent,
-    EditCustomerComponent
+    EditCustomerComponent,
+    OrdersComponent,
+    EditOrderComponent
   ],
   entryComponents: [
-    EditProductComponent, EditCustomerComponent
+    EditProductComponent, EditCustomerComponent, EditOrderComponent
   ],
   imports: [
     RouterModule.forRoot(

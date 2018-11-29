@@ -1,5 +1,3 @@
-import { DecimalPipe } from "@angular/common";
-
 export class PriceVariation {
     name: string;
     price: number;

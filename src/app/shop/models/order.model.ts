@@ -1,10 +1,11 @@
-import { Product } from './product.model';
+import { Product, PriceVariation } from './product.model';
 import { Address } from './address.model';
+import { Customer } from './customer.model';
 
 export class Order {
     id: number;
     type: string;
-    customer: OrderCustomer;
+    customer: Customer;
     items: Array<OrderItem>;
 }
 
@@ -20,6 +21,7 @@ export class OrderCustomer {
 
 export class OrderItem {
     product: Product;
+    productVariation: PriceVariation;
     productOptions: any;
     quantity: number;
 }
