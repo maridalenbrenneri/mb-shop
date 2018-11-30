@@ -6,6 +6,7 @@ import { ProductService } from '../../services/product.service';
 import { Product, PriceVariation } from '../../models/product.model';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer.model';
+import { TableDataSource } from '../../core/table-data-source';
 
 const small = new PriceVariation();
 small.name = "250gr";
@@ -22,10 +23,10 @@ large.price = 280.00;
 export class OrdersComponent implements OnInit {
   vatCoffee = 15;
 
-  orders: Array<Order>;
+  orders: Array<Order> = [];
 
-  customers: Array<Customer>;
-  products: Array<Product>;
+  customers: Array<Customer> = [];
+  products: Array<Product> = [];
 
   orderItem: OrderItem;
   order: Order;
@@ -60,6 +61,7 @@ export class OrdersComponent implements OnInit {
   initOrder() {
     this.order = new Order();
 
+    this.order.type = "normal";
     this.order.customer = this.customers[0];
     this.order.items = new Array<OrderItem>();
   }
@@ -72,45 +74,6 @@ export class OrdersComponent implements OnInit {
     this.orderItem.quantity = 1;
   }
 
-  // openEditOrderDialog(order: Order): void {
-  //   if(!order) {
-  //     order = new Order();
-      
-  //   }
-
-  //   const dialogRef = this.dialog.open(EditOrderComponent, {
-  //     disableClose: true,
-  //     data: {
-  //      customerId: this.customers[0].id,
-  //      //orderItem: new OrderItem(this.products[0], 1,this.products[0].priceVariations[0]), 
-  //      product: this.products[0],
-  //      productVariation: 0,
-  //      quantity: 1,
-  //      customers: this.customers,
-  //      products: this.products,
-  //      productVariations: [0,1]
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if(!result) {
-  //       return;
-  //     }
-
-      
-  //     if(!this.alreadyContainsOrder(order)) {
-  //       this.orderService.createOrder(order).subscribe(() => {
-  //         this.loadOrders();
-  //       });
-      
-  //     } else {
-  //       this.orderService.updateOrder(order).subscribe(() => {
-  //         this.loadOrders();
-  //       });
-  //     }
-  //   });
-  // }
-
   addCoffee() {
     this.order.items.push(this.orderItem);
     this.initOrderItem();
@@ -121,7 +84,9 @@ export class OrdersComponent implements OnInit {
   }
 
   createOrder() {
-    this.orderService.createOrder(this.order);
+    this.orderService.createOrder(this.order).subscribe(result => {
+      console.log(result);
+    });
   }
 
   alreadyContainsOrder(order: Order) {

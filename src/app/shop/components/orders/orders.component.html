@@ -1,176 +1,135 @@
 <p></p>
 
-<div class="row">
-  <div class="col-12">
+<div id="accordion">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Lag ny bestilling
+            </button>
+        </h5>
+        </div>
+    
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+              
+                  <h3></h3>
+              
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <form>
+                        <div class="form-group row">
+                          <label for="customer" class="col-sm-2 col-form-label">Kunde</label>
+                          <div class="col-sm-10">
+                            <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="order.customer"
+                              required>
+                              <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+              
+                  <hr />
+              
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+              
+                      <form #coffeeForm="ngForm" (ngSubmit)="addCoffee()">
+              
+                        <div class="form-group row">
+                          <label for="customer" class="col-sm-2 col-form-label">Kaffe</label>
+                          <div class="col-sm-10">
+                            <select class="form-control" id="productElement" name="productElement" [(ngModel)]="orderItem.product"
+                              required>
+                              <option *ngFor="let product of products" [ngValue]="product">{{resolveCoffeeProductName(product)}}</option>
+                            </select>
+                          </div>
+                        </div>
+              
+                        <div class="form-group row">
+                          <label for="customer" class="col-sm-2 col-form-label">Pose</label>
+                          <div class="col-sm-10">
+                            <select class="form-control" id="variationElement" name="variationElement" [(ngModel)]="orderItem.productVariation"
+                              required>
+                              <option *ngFor="let variation of getCoffeeProductVariations" [ngValue]="variation">{{resolveProductVariationString(variation)}}</option>
+                            </select>
+                          </div>
+                        </div>
+              
+                        <div class="form-group row">
+                          <label for="customer" class="col-sm-2 col-form-label">Antall</label>
+                          <div class="col-sm-10">
+                            <input type="number" min="1" max="999" required class="form-control" name="quantity" [(ngModel)]="orderItem.quantity">
+                          </div>
+                        </div>
+              
+                        <div class="form-group row">
+                          <div class="col-12">
+                            <button type="submit" mat-button cdkFocusInitial [disabled]="!coffeeForm.valid">Legg til</button>
+                          </div>
+                        </div>
+              
+                      </form>
+              
+                    </div>
+              
+                    <div class="col-12 col-md-6">
+              
+                      <form #stashForm="ngForm">
+                        <div class="col-12 col-md-6">
+              
+                          <!-- <div class="form-group row">
+                            <label for="customer" class="col-sm-2 col-form-label">Stash</label>
+                            <div class="col-sm-10">
+                              <input type="text" required class="form-control" name="stashName">
+                            </div>
+                          </div>
+              
+                          <div class="form-group row">
+                            <label for="customer" class="col-sm-2 col-form-label">Antall</label>
+                            <div class="col-sm-10">
+                              <input type="number" required class="form-control" name="quantity">
+                            </div>
+                          </div>
+              
+                          <div class="form-group row">
+                            <div class="col-12">
+                              <button mat-button cdkFocusInitial [disabled]="true">Legg til</button>
+                            </div>
+                          </div> -->
+              
+                        </div>
+              
+                      </form>
+              
+                    </div>
+              
+                  </div>
+              
+                </div>
+              </div>
+              
+              <hr />
 
-    <h3>Ny bestilling</h3>
+              <div class="row">
+                  <div class="col-12">
+                      <app-order-details [order]="order"></app-order-details>
+                  </div>
+              </div>
 
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <form>
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Kunde</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="order.customer"
-                required>
-                <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
-              </select>
-            </div>
-          </div>
-        </form>
-      </div>
+              <div class="row">
+                  <div class="col-12">
+                      <button class="btn btn-primary float-right" [disabled]="!order.items?.length" (click)="createOrder()">Lag bestilling</button>
+                  </div>
+              </div>
+        </div>
     </div>
-
-    <hr />
-
-    <div class="row">
-      <div class="col-12 col-md-6">
-
-        <form #coffeeForm="ngForm" (ngSubmit)="addCoffee()">
-
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Kaffe</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="productElement" name="productElement" [(ngModel)]="orderItem.product"
-                required>
-                <option *ngFor="let product of products" [ngValue]="product">{{resolveCoffeeProductName(product)}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Pose</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="variationElement" name="variationElement" [(ngModel)]="orderItem.productVariation"
-                required>
-                <option *ngFor="let variation of getCoffeeProductVariations" [ngValue]="variation">{{resolveProductVariationString(variation)}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Antall</label>
-            <div class="col-sm-10">
-              <input type="number" min="1" max="999" required class="form-control" name="quantity" [(ngModel)]="orderItem.quantity">
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-12">
-              <button type="submit" mat-button cdkFocusInitial [disabled]="!coffeeForm.valid">Legg til</button>
-            </div>
-          </div>
-
-        </form>
-
-      </div>
-
-      <div class="col-12 col-md-6">
-
-        <form #stashForm="ngForm">
-          <div class="col-12 col-md-6">
-
-            <div class="form-group row">
-              <label for="customer" class="col-sm-2 col-form-label">Stash</label>
-              <div class="col-sm-10">
-                <input type="text" required class="form-control" name="stashName">
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label for="customer" class="col-sm-2 col-form-label">Antall</label>
-              <div class="col-sm-10">
-                <input type="number" required class="form-control" name="quantity">
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <div class="col-12">
-                <button mat-button cdkFocusInitial [disabled]="true">Legg til</button>
-              </div>
-            </div>
-
-          </div>
-
-        </form>
-
-      </div>
-
-    </div>
-
-  </div>
 </div>
-
-<!-- <p>
-  {{ diagnostic }}
-</p> -->
 
 <hr />
 
-<h4>
-  {{order.customer?.name}}  - Org.no: {{order.customer?.organizationNumber}}
-</h4>
-<table class="table">
-  <thead>
-    <th>Produkt</th>
-    <th>Variant</th>
-    <th>Antall</th>
-    <th>Pris</th>
-    <th>Pris totalt</th>
-    <th></th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of order.items">
-      <td>{{ item.product?.data?.name}} ({{item.product?.data?.code}})</td>
-      <td>{{ item.productVariation?.name }}</td>
-      <td>{{ item.quantity }}</td>
-      <td>{{ item.productVariation?.price}}</td>
-      <td>{{ item.quantity * item.productVariation.price}}</td>
-      <td> <button mat-button (click)="removeItem(item)">X</button></td>
-    </tr>
-    <tr>
-      <td colspan="4"></td>
-      <td><strong>{{getTotalPrice}}</strong></td>
-    </tr>
-    <tr>
-      <td colspan="2">
-          <h5>Leveringsadresse</h5>
-          <app-address [address]="order.customer?.deliveryAddress"></app-address>
-      </td>
-      <td colspan="2">
-          <h5>Fakturaadresse</h5>
-          <app-address [address]="order.customer?.invoiceAddress"></app-address>
-      </td>     
-      <td colspan="2">
-          <h5>Notat</h5>
-          Ipsum Lorum
-      </td>      
-    </tr>
-  </tbody>
-</table>
-
-
-<button class="btn btn-primary float-right" [disabled]="!order.items?.length" (click)="createOrder()">Lag bestilling</button>
-
-<p></p>
-
-<div class="row">
-  <div class="col-12 col-md-6" *ngFor="let order of orders">
-    <mat-card class="product-card">
-      <mat-card-header>
-        <mat-card-title>Ordre</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="row">
-          <div class="col-12">
-
-          </div>
-        </div>
-
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button (click)="openEditOrderDialog(order)">Endre</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-</div>
+<app-order-list [orders]="orders"></app-order-list>

@@ -47,6 +47,8 @@ import { ShopComponent } from './shop/shop.component';
 import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
 import { OrdersComponent, EditOrderComponent } from './shop/components/orders/orders.component';
 import { AddressComponent } from './shop/components/address/address.component';
+import { OrderListComponent } from './shop/components/orders/order-list/order-list.component';
+import { OrderDetailsComponent } from './shop/components/orders/order-details/order-details.component';
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, 'nb');
@@ -97,7 +99,9 @@ const appRoutes: Routes = [
     EditCustomerComponent,
     OrdersComponent,
     EditOrderComponent,
-    AddressComponent
+    AddressComponent,
+    OrderListComponent,
+    OrderDetailsComponent
   ],
   entryComponents: [
     EditProductComponent, EditCustomerComponent, EditOrderComponent

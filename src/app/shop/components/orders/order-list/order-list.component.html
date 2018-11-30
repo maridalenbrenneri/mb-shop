@@ -1,0 +1,40 @@
+<div class="example-container mat-elevation-z8">
+
+  <mat-table #table [dataSource]="ordersDataSource">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Navn </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.customer}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <mat-cell *matCellDef="let detail">
+
+        DETAILS!
+
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row 
+      *matRowDef="let row; columns: displayedColumns;" 
+      matRipple 
+      class="element-row" 
+      [class.expanded]="expandedElement == row"
+      (click)="expandedElement = row">
+    </mat-row>
+
+    <mat-row
+      *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow" 
+      [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+      style="overflow: hidden">
+    </mat-row>
+
+  </mat-table>
+</div>

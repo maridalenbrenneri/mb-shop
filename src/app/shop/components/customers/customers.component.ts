@@ -77,7 +77,6 @@ export class CustomersComponent implements OnInit {
       customer.type = result.type;
 
       if (!this.containsItem(customer)) {
-        console.log("create customer");
         this.customerService.createCustomer(customer).subscribe(() => {
           this.loadCustomers();
         });

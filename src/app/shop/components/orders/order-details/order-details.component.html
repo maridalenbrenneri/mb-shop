@@ -1,0 +1,43 @@
+<h4>
+  {{order.customer?.name}}  - Org.no: {{order.customer?.organizationNumber}}
+</h4>
+<table class="table">
+  <thead>
+    <th>Produkt</th>
+    <th>Variant</th>
+    <th>Antall</th>
+    <th>Pris</th>
+    <th>Pris totalt</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of order.items">
+      <td>{{ item.product?.data?.name}} ({{item.product?.data?.code}})</td>
+      <td>{{ item.productVariation?.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.productVariation?.price}}</td>
+      <td>{{ item.quantity * item.productVariation.price}}</td>
+      <td> 
+        <!-- <button mat-button (click)="removeItem(item)">X</button> -->
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4"></td>
+      <td><strong>{{getTotalPrice}}</strong></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+          <h5>Leveringsadresse</h5>
+          <app-address [address]="order.customer?.deliveryAddress"></app-address>
+      </td>
+      <td colspan="2">
+          <h5>Fakturaadresse</h5>
+          <app-address [address]="order.customer?.invoiceAddress"></app-address>
+      </td>     
+      <td colspan="2">
+          <h5>Notat</h5>
+          Ipsum Lorum
+      </td>      
+    </tr>
+  </tbody>
+</table>

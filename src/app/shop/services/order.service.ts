@@ -13,8 +13,9 @@ export class OrderService {
 
   createOrder(order: Order): Observable<any> {
     console.log('Creating order... ' + JSON.stringify(order));
+    let response = this.http.post<any>(environment.mbApiBaseUrl + 'orders', order);
 
-    return this.http.post<any>(environment.mbApiBaseUrl + 'orders', order);
+    return response;
   }
 
   updateOrder(order: Order): Observable<any> {
