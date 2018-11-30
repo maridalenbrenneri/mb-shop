@@ -6,7 +6,6 @@ import { ProductService } from '../../services/product.service';
 import { Product, PriceVariation } from '../../models/product.model';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer.model';
-import { TableDataSource } from '../../core/table-data-source';
 
 const small = new PriceVariation();
 small.name = "250gr";
@@ -112,37 +111,5 @@ export class OrdersComponent implements OnInit {
     return [ small, large ];
   }
 
-  get getTotalPrice(): number {
-    if(!this.order.items) { return 0;}
-
-    let total = 0;
-    this.order.items.forEach(i => {
-      total += i.productVariation.price * i.quantity;
-    });
-    return total;
-  }
-
   get diagnostic() { return JSON.stringify(this.order.customer); }
-}
-
-export interface EditOrderData {
-  customerId: number,
-  productId: number,
-  productVariation: PriceVariation,
-  quantity: number,
-}
-
-@Component({
-  selector: 'edit-order.component',
-  templateUrl: 'edit-order.component.html',
-})
-export class EditOrderComponent {
-  constructor(
-    public dialogRef: MatDialogRef<EditOrderComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EditOrderData) { 
-
-    }
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }

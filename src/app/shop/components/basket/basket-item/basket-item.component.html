@@ -1,8 +1,8 @@
-<div>{{item.product.name}}</div>
+<!-- <div>{{item.data.name}}</div>
 
-<div>{{item.product.price}}</div>
+<div>{{item.data.product.price}}</div>
 
-<div>{{item.product.price * item.quantity}}</div>
+<div>{{item.data.product.price * item.quantity}}</div> -->
 
 <form [formGroup]="quantityForm" *ngIf="!isCheckoutModel">
     <input class="form-control" formControlName="quantity">

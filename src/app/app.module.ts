@@ -45,7 +45,7 @@ import { AdminSubscriptionsComponent } from './admin/components/admin-subscripti
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
 import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
-import { OrdersComponent, EditOrderComponent } from './shop/components/orders/orders.component';
+import { OrdersComponent } from './shop/components/orders/orders.component';
 import { AddressComponent } from './shop/components/address/address.component';
 import { OrderListComponent } from './shop/components/orders/order-list/order-list.component';
 import { OrderDetailsComponent } from './shop/components/orders/order-details/order-details.component';
@@ -98,13 +98,12 @@ const appRoutes: Routes = [
     EditProductComponent,
     EditCustomerComponent,
     OrdersComponent,
-    EditOrderComponent,
     AddressComponent,
     OrderListComponent,
     OrderDetailsComponent
   ],
   entryComponents: [
-    EditProductComponent, EditCustomerComponent, EditOrderComponent
+    EditProductComponent, EditCustomerComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -18,9 +18,19 @@ export class OrderDetailsComponent implements OnInit {
   get order() {
     return this._order;
   }
-  
+
   @Input()
   set order(order: Order) {
     this._order = order;
   }
+
+  get getTotalPrice(): number {
+    if(!this.order.items) { return 0;}
+
+    let total = 0;
+    this.order.items.forEach(i => {
+      total += i.productVariation.price * i.quantity;
+    });
+    return total;
+  }  
 }
