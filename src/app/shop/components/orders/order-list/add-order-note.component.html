@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Legg til notat</h1>
+
+<div mat-dialog-content>
+    <form #addNoteForm="ngForm">
+        <div class="row">
+            <div class="col-12">
+                <h4>Notat</h4>
+                <div class="form-group">
+                    <label>
+                        <textarea style="width:100%" name="note" [(ngModel)]="data.note"></textarea>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <div mat-dialog-actions>
+                        <button mat-button (click)="onNoClick()">Avbryt</button>
+                        <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!addNoteForm.valid">Lagre</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

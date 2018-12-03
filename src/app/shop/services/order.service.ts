@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Order } from '../models/order.model';
+import { Order, OrderNote } from '../models/order.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -33,15 +33,19 @@ export class OrderService {
     return this.http.get<any[]>(environment.mbApiBaseUrl + 'orders/mine');
   }
 
-  completeOrder(orderId: Number) {
+  completeOrder(orderId: number) {
     return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/complete`, null);
   }
 
-  cancelOrder(orderId: Number) {
+  cancelOrder(orderId: number) {
     return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/cancel`, null);
   }
 
-  processOrder(orderId: Number) {
+  processOrder(orderId: number) {
     return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/process`, null);
+  }
+
+  addOrderNote(note: OrderNote) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${note.orderId}/notes`, note);
   }
 }

@@ -27,11 +27,12 @@
       </tr>
       <tr *ngIf="order.rowExpanded">
           <td colspan="5">
-              <button class="btn btn-primary" (click)="completeOrder(order)">Complete</button>
-              <button class="btn btn-primary" (click)="processOrder(order)">Process</button>
-              <button class="btn btn-default" (click)="cancelOrder(order)">Cancel</button>
-              
+              <button class="btn btn-primary" (click)="completeOrder(order)" [disabled]="order.status !== 'processing'">Complete</button>
+              <button class="btn btn-default" (click)="processOrder(order)" [disabled]="order.status === 'processing'">Process</button>
+              <button class="btn btn-default" (click)="cancelOrder(order)" [disabled]="order.status !== 'processing'">Cancel</button>
+
               <div class="float-right">
+                  <button class="btn btn-default" (click)="openAddNoteDialog(order)">Add note</button>
                   <button class="btn btn-default">Lag faktura</button>
                   <button class="btn btn-default">Vis faktura</button>
               </div>

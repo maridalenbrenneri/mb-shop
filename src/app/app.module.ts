@@ -20,8 +20,17 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
+
 import { ProductsComponent, EditProductComponent } from './shop/components/products/products.component';
 import { ProductComponent } from './shop/components/products/product/product.component';
+
+import { OrdersComponent } from './shop/components/orders/orders.component';
+import { OrderListComponent, AddOrderNoteComponent } from './shop/components/orders/order-list/order-list.component';
+import { OrderDetailsComponent } from './shop/components/orders/order-details/order-details.component';
+
+import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
+import { AddressComponent } from './shop/components/address/address.component';
+
 import { BasketComponent } from './shop/components/basket/basket.component';
 import { BuyProductComponent } from './shop/components/buy-product/buy-product.component';
 import { BasketItemComponent } from './shop/components/basket/basket-item/basket-item.component';
@@ -46,11 +55,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminSubscriptionsComponent } from './admin/components/admin-subscriptions/admin-subscriptions.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
-import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
-import { OrdersComponent } from './shop/components/orders/orders.component';
-import { AddressComponent } from './shop/components/address/address.component';
-import { OrderListComponent } from './shop/components/orders/order-list/order-list.component';
-import { OrderDetailsComponent } from './shop/components/orders/order-details/order-details.component';
+
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, 'nb');
@@ -102,10 +107,11 @@ const appRoutes: Routes = [
     OrdersComponent,
     AddressComponent,
     OrderListComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
+    AddOrderNoteComponent
   ],
   entryComponents: [
-    EditProductComponent, EditCustomerComponent
+    EditProductComponent, EditCustomerComponent, AddOrderNoteComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -44,7 +44,9 @@
         </td>     
         <td colspan="2">
             <h5>Notat</h5>
-            Ipsum Lorum
+            <ul>
+              <li *ngFor="let orderNote of order.notes">{{orderNote.note}}</li> 
+            </ul>
         </td>      
       </tr>
     </tbody>

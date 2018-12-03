@@ -36,3 +36,10 @@ export class SubscriptionProductOptions {
     firstDelivery: Date;
     immediateDelivery: boolean;
 }
+
+export class OrderNote {
+    orderId: number;
+    date: Date;
+    note: string;
+    user: string;
+}

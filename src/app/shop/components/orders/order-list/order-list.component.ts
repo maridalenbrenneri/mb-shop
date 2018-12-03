@@ -1,8 +1,9 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Order } from 'src/app/shop/models/order.model';
+import { Component, Input, EventEmitter, Output, Inject } from '@angular/core';
+import { Order, OrderNote } from 'src/app/shop/models/order.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Customer } from 'src/app/shop/models/customer.model';
 import { TableDataSource } from 'src/app/shop/core/table-data-source';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-order-list',
@@ -29,8 +30,9 @@ export class OrderListComponent {
   @Output() completed = new EventEmitter<number>();
   @Output() canceled = new EventEmitter<number>();
   @Output() processed = new EventEmitter<number>();
-
-  constructor() {  }
+  @Output() addedNote = new EventEmitter<OrderNote>();
+  
+  constructor(public dialog: MatDialog) {  }
 
   @Input()
   set orders(orders: Array<Order>) {
@@ -84,6 +86,32 @@ export class OrderListComponent {
     return data.customer.id.toString() === filter;
   }
 
+  openAddNoteDialog(order: Order): void {
+
+    const dialogRef = this.dialog.open(AddOrderNoteComponent, {
+      disableClose: true,
+      data: {
+        note: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (!result) {
+        return;
+      }
+
+      let orderNote: OrderNote = {
+        orderId: order.id,
+        date: new Date(),
+        note: result.note,
+        user: 'client'
+      } ;
+
+      this.addedNote.emit(orderNote)
+    });
+  }
+
   completeOrder(order: Order) {
     this.completed.emit(order.id);
   }
@@ -102,5 +130,20 @@ export class OrderListComponent {
 
   viewInvoice(order: Order) {
     console.log("viewInvoice not yet implemented...");
+  }
+}
+
+@Component({
+  selector: 'add-order-note.component',
+  templateUrl: 'add-order-note.component.html',
+})
+export class AddOrderNoteComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<AddOrderNoteComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: string) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

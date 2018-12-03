@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Order, OrderItem } from '../../models/order.model';
+import { Order, OrderItem, OrderNote } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { ProductService } from '../../services/product.service';
 import { Product, ProductVariation } from '../../models/product.model';
 import { CustomerService } from '../../services/customer.service';
@@ -31,7 +30,7 @@ export class OrdersComponent implements OnInit {
   order: Order;
 
   constructor(private orderService: OrderService, private productService: ProductService,
-    private customerService: CustomerService, public dialog: MatDialog) {
+    private customerService: CustomerService) {
     
       this.order = new Order();
       this.orderItem = new OrderItem();
@@ -43,11 +42,6 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     this.orderService.getOrders({}).subscribe(orders => {
-      // todo: why is this neccessary?
-      for (const order of orders) {
-        order.customer = JSON.parse(order.customer);
-        order.items = JSON.parse(order.items);
-      }
       this.orders = orders;
     });
 
@@ -130,6 +124,12 @@ export class OrdersComponent implements OnInit {
 
   onProcessed(orderId: number) {
     this.orderService.processOrder(orderId).subscribe(() => {
+      this.loadOrders();
+    });
+  }
+
+  onAddedNote(note: OrderNote) {
+    this.orderService.addOrderNote(note).subscribe(() => {
       this.loadOrders();
     });
   }
