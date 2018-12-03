@@ -1,6 +1,6 @@
 
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { Constants } from '../constants';
+import { Constants } from '../../constants';
 
 export function quantityValidator(): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {

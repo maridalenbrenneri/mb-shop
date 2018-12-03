@@ -12,10 +12,9 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   createOrder(order: Order): Observable<any> {
-    console.log('Creating order... ' + JSON.stringify(order));
-    let response = this.http.post<any>(environment.mbApiBaseUrl + 'orders', order);
+    console.debug('Creating order... ' + JSON.stringify(order));
 
-    return response;
+    return this.http.post<any>(environment.mbApiBaseUrl + 'orders', order);
   }
 
   updateOrder(order: Order): Observable<any> {
@@ -34,9 +33,15 @@ export class OrderService {
     return this.http.get<any[]>(environment.mbApiBaseUrl + 'orders/mine');
   }
 
-  completeOrder(orderId: Number, completeAndShip: Boolean) {
-    const endpoint = completeAndShip ? 'completeAndShip' : 'complete';
-    return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/${endpoint}`, null);
+  completeOrder(orderId: Number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/complete`, null);
   }
 
+  cancelOrder(orderId: Number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/cancel`, null);
+  }
+
+  processOrder(orderId: Number) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/process`, null);
+  }
 }

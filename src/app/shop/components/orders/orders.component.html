@@ -1,88 +1,104 @@
 <p></p>
 
 <div id="accordion">
-    <div class="card">
-        <div class="card-header" id="headingOne">
-        <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Lag ny bestilling
-            </button>
-        </h5>
-        </div>
-    
-        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-        <div class="card-body">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="collapseOne">
+          Lag ny bestilling
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+
+            <h3></h3>
+
             <div class="row">
-                <div class="col-12">
-              
-                  <h3></h3>
-              
-                  <div class="row">
-                    <div class="col-12 col-md-6">
-                      <form>
-                        <div class="form-group row">
-                          <label for="customer" class="col-sm-2 col-form-label">Kunde</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="order.customer"
-                              required>
-                              <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
-                            </select>
-                          </div>
-                        </div>
-                      </form>
+              <div class="col-12 col-md-6">
+                <form>
+                  <div class="form-group row">
+                    <label for="customer" class="col-sm-2 col-form-label">Kunde</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="order.customer"
+                        required>
+                        <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
+                      </select>
                     </div>
                   </div>
-              
-                  <hr />
-              
-                  <div class="row">
-                    <div class="col-12 col-md-6">
-              
-                      <form #coffeeForm="ngForm" (ngSubmit)="addCoffee()">
-              
-                        <div class="form-group row">
-                          <label for="customer" class="col-sm-2 col-form-label">Kaffe</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" id="productElement" name="productElement" [(ngModel)]="orderItem.product"
-                              required>
-                              <option *ngFor="let product of products" [ngValue]="product">{{resolveCoffeeProductName(product)}}</option>
-                            </select>
-                          </div>
-                        </div>
-              
-                        <div class="form-group row">
-                          <label for="customer" class="col-sm-2 col-form-label">Pose</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" id="variationElement" name="variationElement" [(ngModel)]="orderItem.productVariation"
-                              required>
-                              <option *ngFor="let variation of getCoffeeProductVariations" [ngValue]="variation">{{resolveProductVariationString(variation)}}</option>
-                            </select>
-                          </div>
-                        </div>
-              
-                        <div class="form-group row">
-                          <label for="customer" class="col-sm-2 col-form-label">Antall</label>
-                          <div class="col-sm-10">
-                            <input type="number" min="1" max="999" required class="form-control" name="quantity" [(ngModel)]="orderItem.quantity">
-                          </div>
-                        </div>
-              
-                        <div class="form-group row">
-                          <div class="col-12">
-                            <button type="submit" mat-button cdkFocusInitial [disabled]="!coffeeForm.valid">Legg til</button>
-                          </div>
-                        </div>
-              
-                      </form>
-              
+                </form>
+              </div>
+              <!-- TODO: Does not bind... -->
+              <!-- <div class="col-12 col-md-6">
+                <form>
+                  <div class="form-group row">
+                    <label for="customer" class="col-sm-2 col-form-label">Levering</label>
+                    <div class="col-sm-10">
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="picker3" placeholder="Value binding" [value]="order.deliveryDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                      </mat-form-field>
                     </div>
-              
-                    <div class="col-12 col-md-6">
-              
-                      <form #stashForm="ngForm">
-                        <div class="col-12 col-md-6">
-              
-                          <!-- <div class="form-group row">
+                  </div>
+                </form>
+              </div> -->
+            </div>
+
+            <hr />
+
+            <div class="row">
+              <div class="col-12 col-md-6">
+
+                <form #coffeeForm="ngForm" (ngSubmit)="addCoffee()">
+
+                  <div class="form-group row">
+                    <label for="customer" class="col-sm-2 col-form-label">Kaffe</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="productElement" name="productElement" [(ngModel)]="orderItem.product"
+                        required>
+                        <option *ngFor="let product of products" [ngValue]="product">{{resolveCoffeeProductName(product)}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="customer" class="col-sm-2 col-form-label">Pose</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="variationElement" name="variationElement" [(ngModel)]="orderItem.productVariation"
+                        required>
+                        <option *ngFor="let variation of getCoffeeProductVariations" [ngValue]="variation">{{resolveProductVariationString(variation)}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="customer" class="col-sm-2 col-form-label">Antall</label>
+                    <div class="col-sm-10">
+                      <input type="number" min="1" max="999" required class="form-control" name="quantity" [(ngModel)]="orderItem.quantity">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-12">
+                      <button type="submit" mat-button cdkFocusInitial [disabled]="!coffeeForm.valid">Legg til</button>
+                    </div>
+                  </div>
+
+                </form>
+
+              </div>
+
+              <div class="col-12 col-md-6">
+
+                <form #stashForm="ngForm">
+                  <div class="col-12 col-md-6">
+
+                    <!-- <div class="form-group row">
                             <label for="customer" class="col-sm-2 col-form-label">Stash</label>
                             <div class="col-sm-10">
                               <input type="text" required class="form-control" name="stashName">
@@ -97,39 +113,46 @@
                           </div>
               
                           <div class="form-group row">
-                            <div class="col-12">
+                            <div class="col-12">sudoi 
                               <button mat-button cdkFocusInitial [disabled]="true">Legg til</button>
                             </div>
                           </div> -->
-              
-                        </div>
-              
-                      </form>
-              
-                    </div>
-              
-                  </div>
-              
-                </div>
-              </div>
-              
-              <hr />
 
-              <div class="row">
-                  <div class="col-12">
-                      <app-order-details [order]="order"></app-order-details>
                   </div>
+
+                </form>
+
               </div>
 
-              <div class="row">
-                  <div class="col-12">
-                      <button class="btn btn-primary float-right" [disabled]="!order.items?.length" (click)="createOrder()">Lag bestilling</button>
-                  </div>
-              </div>
+            </div>
+
+          </div>
         </div>
+
+        <hr />
+
+        <div class="row">
+          <div class="col-12">
+            <app-order-details [order]="order"></app-order-details>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-primary float-right" [disabled]="!order.items?.length" (click)="createOrder()">Lag
+              bestilling</button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<hr />
+  <hr />
 
-<app-order-list [orders]="orders"></app-order-list>
+  <app-order-list 
+    [orders]="orders" 
+    [customers]="customers" 
+    (completed)="onCompleted($event)"
+    (canceled)="onCanceled($event)"
+    (processed)="onProcessed($event)"
+  ></app-order-list>

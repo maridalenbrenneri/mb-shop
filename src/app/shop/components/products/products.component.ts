@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
-import { ProductCategories } from '../../constants';
+import { ProductCategories } from '../../../constants';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
@@ -39,7 +39,7 @@ export class ProductsComponent implements OnInit {
     if(!product) {
       product = new Product();
       product.data = { }
-      product.priceVariations = [
+      product.productVariations = [
         { name: 'priceSmallBag', price: 72.2 },
         { name: 'pricePerKg', price: 280 }
       ]
@@ -53,8 +53,8 @@ export class ProductsComponent implements OnInit {
         name: product.data.name,
         description: product.data.description,
         tastes: product.data.tastes,
-        priceSmallBag: product.priceVariations[0].price,
-        pricePerKg: product.priceVariations[1].price
+        priceSmallBag: product.productVariations[0].price,
+        pricePerKg: product.productVariations[1].price
       }
     });
 
@@ -73,8 +73,8 @@ export class ProductsComponent implements OnInit {
       product.data.name = result.name;
       product.data.description = result.description;
       product.data.tastes = result.tastes;
-      product.priceVariations[0].price = result.priceSmallBag;
-      product.priceVariations[1].price = result.pricePerKg;
+      product.productVariations[0].price = result.priceSmallBag;
+      product.productVariations[1].price = result.pricePerKg;
 
       if(!this.alreadyContainsProduct(product)) {
         this.productService.createProduct(product).subscribe(() => {

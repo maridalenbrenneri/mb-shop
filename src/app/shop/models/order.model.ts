@@ -1,12 +1,16 @@
-import { Product, PriceVariation } from './product.model';
-import { Address } from './address.model';
+import { Product, ProductVariation } from './product.model';
 import { Customer } from './customer.model';
 
 export class Order {
     id: number;
     type: string;
+    orderDate: Date;
+    deliveryDate: Date;
     customer: Customer;
     items: Array<OrderItem>;
+    notes: Array<any>;
+    isRecurringOrder: boolean;
+    subscriptionId: number;
 }
 
 export class OrderCustomer {
@@ -21,7 +25,7 @@ export class OrderCustomer {
 
 export class OrderItem {
     product: Product;
-    productVariation: PriceVariation;
+    productVariation: ProductVariation;
     productOptions: any;
     quantity: number;
 }

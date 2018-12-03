@@ -19,11 +19,11 @@ export class AdminOrdersComponent implements OnInit {
 
   complete(orderId: Number, completeAndShip: Boolean) {
 
-    this.orderService.completeOrder(orderId, completeAndShip).subscribe(updatedOrder => {
-      // todo: update order in ui instead of reloading all...
+    // this.orderService.completeOrder(orderId, completeAndShip).subscribe(updatedOrder => {
+    //   // todo: update order in ui instead of reloading all...
 
-      this.loadOrders();
-    });
+    //   this.loadOrders();
+    // });
   }
 
   private loadOrders() {
@@ -31,10 +31,10 @@ export class AdminOrdersComponent implements OnInit {
 
     this.orderService.getOrders(filter).subscribe(orders => {
 
-      for (const order of orders) {
-        order.customer = JSON.parse(order.customer);
-        order.items = JSON.parse(order.items);
-      }
+      // for (const order of orders) {
+      //   order.customer = JSON.parse(order.customer);
+      //   order.items = JSON.parse(order.items);
+      // }
 
       this.orders = orders;
     });

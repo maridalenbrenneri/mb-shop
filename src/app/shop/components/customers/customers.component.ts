@@ -34,7 +34,6 @@ export class CustomersComponent implements OnInit {
   }
 
   openEditCustomerDialog(customer: Customer): void {
-    console.log("open customer" + this.customerTypes);
     if (!customer) {
       customer = new Customer();
       customer.type = this.customerTypes[0];

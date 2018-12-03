@@ -67,7 +67,7 @@
     <mat-row
       *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow" 
       [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
-      style="overflow: hidden">
+      style="overflow: hidden; height: 200px">
     </mat-row>
 
   </mat-table>

@@ -1,40 +1,42 @@
-<div class="example-container mat-elevation-z8">
+<select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="selectedCustomer">
+  <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
+</select>
 
-  <mat-table #table [dataSource]="ordersDataSource">
 
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Status</th>
+      <th>Dato</th>
+      <th>Kunde</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let order of orders">
+      <tr (click)="order.rowExpanded=!order.rowExpanded" class="clickable">
+        <td>{{order.id}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.orderDate}}</td>
+        <td>{{order.customer.name}}</td>
+      </tr>
+      <tr *ngIf="order.rowExpanded">
+        <td colspan="5">
+            <app-order-details [order]="order"></app-order-details>
+        </td>
+      </tr>
+      <tr *ngIf="order.rowExpanded">
+          <td colspan="5">
+              <button class="btn btn-primary" (click)="completeOrder(order)">Complete</button>
+              <button class="btn btn-primary" (click)="processOrder(order)">Process</button>
+              <button class="btn btn-default" (click)="cancelOrder(order)">Cancel</button>
+              
+              <div class="float-right">
+                  <button class="btn btn-default">Lag faktura</button>
+                  <button class="btn btn-default">Vis faktura</button>
+              </div>
+          </td>
+        </tr>
     </ng-container>
-
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Navn </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.customer}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="expandedDetail">
-      <mat-cell *matCellDef="let detail">
-
-        DETAILS!
-
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-    <mat-row 
-      *matRowDef="let row; columns: displayedColumns;" 
-      matRipple 
-      class="element-row" 
-      [class.expanded]="expandedElement == row"
-      (click)="expandedElement = row">
-    </mat-row>
-
-    <mat-row
-      *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow" 
-      [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
-      style="overflow: hidden">
-    </mat-row>
-
-  </mat-table>
-</div>
+  </tbody>
+</table>

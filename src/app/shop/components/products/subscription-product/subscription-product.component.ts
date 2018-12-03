@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../../models/product.model';
 import { SubscriptionService } from '../../../services/subscription.service';
 import { BasketService } from '../../../services/basket.service';
-import { SubscriptionData } from '../../../constants';
+import { SubscriptionFrequence } from '../../../../constants';
 
 @Component({
   selector: 'app-subscription-product',
@@ -23,7 +23,7 @@ export class SubscriptionProductComponent implements OnInit {
     this.nextDeliveryDates = new Array<Date>();
     this.quantities = [1, 2, 3, 4, 5, 6];
     this.selectedQuantity = 2;
-    this.selectedFrequence = SubscriptionData.fortnightlyFrequence;
+    this.selectedFrequence = SubscriptionFrequence.fortnightly;
   }
 
   ngOnInit() {

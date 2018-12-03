@@ -3,14 +3,14 @@ import { Order, OrderItem } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { ProductService } from '../../services/product.service';
-import { Product, PriceVariation } from '../../models/product.model';
+import { Product, ProductVariation } from '../../models/product.model';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer.model';
 
-const small = new PriceVariation();
+const small = new ProductVariation();
 small.name = "250gr";
 small.price = 72.20;
-const large = new PriceVariation();
+const large = new ProductVariation();
 large.name = "1,2kg";
 large.price = 280.00;
 
@@ -43,6 +43,11 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     this.orderService.getOrders({}).subscribe(orders => {
+      // todo: why is this neccessary?
+      for (const order of orders) {
+        order.customer = JSON.parse(order.customer);
+        order.items = JSON.parse(order.items);
+      }
       this.orders = orders;
     });
 
@@ -84,7 +89,7 @@ export class OrdersComponent implements OnInit {
 
   createOrder() {
     this.orderService.createOrder(this.order).subscribe(result => {
-      console.log(result);
+      this.loadOrders();
     });
   }
 
@@ -103,12 +108,30 @@ export class OrdersComponent implements OnInit {
     return 'Unknown';
   }
 
-  resolveProductVariationString(variation: PriceVariation) {
+  resolveProductVariationString(variation: ProductVariation) {
     return !variation ? '' : variation.name + ' - ' + variation.price + ' kr';
   }
 
   get getCoffeeProductVariations() { 
     return [ small, large ];
+  }
+
+  onCompleted(orderId: number) {
+    this.orderService.completeOrder(orderId).subscribe(() => {
+      this.loadOrders();
+    });
+  }
+
+  onCanceled(orderId: number) {
+    this.orderService.cancelOrder(orderId).subscribe(() => {
+      this.loadOrders();
+    });
+  }
+
+  onProcessed(orderId: number) {
+    this.orderService.processOrder(orderId).subscribe(() => {
+      this.loadOrders();
+    });
   }
 
   get diagnostic() { return JSON.stringify(this.order.customer); }

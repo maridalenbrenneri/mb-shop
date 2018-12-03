@@ -1,4 +1,4 @@
-export class PriceVariation {
+export class ProductVariation {
     name: string;
     price: number;
 }
@@ -7,7 +7,7 @@ export class Product {
     id: number;
     category: string;
     data: any;
-    priceVariations: Array<PriceVariation>;
+    productVariations: Array<ProductVariation>;
     vatGroup: string;
     portfolioImageKey: string;
     isActive: boolean;
