@@ -90,9 +90,7 @@ export class OrderListComponent {
 
     const dialogRef = this.dialog.open(AddOrderNoteComponent, {
       disableClose: true,
-      data: {
-        note: ''
-      }
+      data: ''
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -104,7 +102,7 @@ export class OrderListComponent {
       let orderNote: OrderNote = {
         orderId: order.id,
         date: new Date(),
-        note: result.note,
+        note: result,
         user: 'client'
       } ;
 
