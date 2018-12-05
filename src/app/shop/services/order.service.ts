@@ -12,7 +12,7 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   createOrder(order: Order): Observable<any> {
-    console.debug('Creating order... ' + JSON.stringify(order));
+    console.log('Creating order... ' + JSON.stringify(order));
 
     return this.http.post<any>(environment.mbApiBaseUrl + 'orders', order);
   }

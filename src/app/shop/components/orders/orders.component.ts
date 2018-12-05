@@ -27,6 +27,7 @@ export class OrdersComponent implements OnInit {
   products: Array<Product> = [];
 
   orderItem: OrderItem;
+  stashOrderItem: OrderItem;
   order: Order;
 
   constructor(private orderService: OrderService, private productService: ProductService,
@@ -34,17 +35,12 @@ export class OrdersComponent implements OnInit {
     
       this.order = new Order();
       this.orderItem = new OrderItem();
+      this.initStashOrderItem();
   }
 
   ngOnInit() {
     this.loadOrders();
-  }
-
-  loadOrders() {
-    this.orderService.getOrders({}).subscribe(orders => {
-      this.orders = orders;
-    });
-
+    
     this.customerService.getCustomers().subscribe(customers => {
       this.customers = customers;
       this.initOrder();
@@ -54,6 +50,14 @@ export class OrdersComponent implements OnInit {
       this.products = products;
       this.initOrderItem();
     });
+  }
+
+  loadOrders() {
+    this.orderService.getOrders({}).subscribe(orders => {
+      this.orders = orders;
+    
+    }, error => console.log(error)
+    );
   }
 
   initOrder() {
@@ -66,15 +70,36 @@ export class OrdersComponent implements OnInit {
 
   initOrderItem() {
     this.orderItem = new OrderItem();
-
     this.orderItem.product = this.products[0];
     this.orderItem.productVariation = this.getCoffeeProductVariations[0];
     this.orderItem.quantity = 1;
   }
 
+  initStashOrderItem() {
+    this.stashOrderItem = new OrderItem;
+    this.stashOrderItem.product  = new Product();
+    this.stashOrderItem.product.vatGroup = "standard";
+    this.stashOrderItem.product.category = 'stash';
+    this.stashOrderItem.productVariation = new ProductVariation();
+    this.stashOrderItem.quantity = 1;
+  }
+
   addCoffee() {
-    this.order.items.push(this.orderItem);
+    let productAdded = this.order.items.find(i => i.product.id === this.orderItem.product.id);
+
+    if(!productAdded) {
+      this.order.items.push(this.orderItem);
+    
+    } else {
+      productAdded.quantity += this.orderItem.quantity;
+    }
+
     this.initOrderItem();
+  }
+
+  addStash() {
+    this.order.items.push(this.stashOrderItem);
+    this.initStashOrderItem();
   }
 
   removeItem(item) {
@@ -82,9 +107,11 @@ export class OrdersComponent implements OnInit {
   }
 
   createOrder() {
-    this.orderService.createOrder(this.order).subscribe(result => {
+    this.orderService.createOrder(this.order).subscribe(() => {
       this.loadOrders();
-    });
+
+    }, error => console.log(error)
+    );
   }
 
   alreadyContainsOrder(order: Order) {
@@ -98,8 +125,7 @@ export class OrdersComponent implements OnInit {
     if(product.category === 'coffee') {
       return `${product.data.country} - ${product.data.name} (${product.data.code})`; 
     }
-
-    return 'Unknown';
+    return product.data.name;
   }
 
   resolveProductVariationString(variation: ProductVariation) {

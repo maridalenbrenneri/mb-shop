@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Order } from 'src/app/shop/models/order.model';
+import { Order, OrderItem } from 'src/app/shop/models/order.model';
+import { VatRates } from 'src/app/constants';
 
 @Component({
   selector: 'app-order-details',
@@ -33,4 +34,34 @@ export class OrderDetailsComponent implements OnInit {
     });
     return total;
   }  
+
+  getVatFromItem(item: OrderItem) {
+    if(item.product.vatGroup == 'coffee') {
+      return VatRates.coffee * 100;
+    }
+
+    return VatRates.standard * 100;
+  }
+
+  get getTotalVatCoffee(): number {
+    return this.calculateTotalVat("coffee");
+  }
+
+  get getTotalVatStandard(): number {
+    return this.calculateTotalVat("standard");
+  }
+
+  private calculateTotalVat(vatGroup: string) {
+    if(!this.order.items) { return 0;}
+
+    let rate = vatGroup === "coffee" ? VatRates.coffee : VatRates.standard;
+    let total = 0;
+    this.order.items.forEach(i => {
+      if(i.product.vatGroup === vatGroup) {
+        total += (i.productVariation.price * i.quantity) * rate;
+      }
+    });
+
+    return total;
+  }
 }

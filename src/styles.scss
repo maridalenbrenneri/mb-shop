@@ -36,6 +36,10 @@ button {
     text-transform: uppercase;
 }
 
+button[disabled], .btn[disabled] {
+    background: lightgray !important;
+}
+
 .btn {
     padding: 1em 1.5em !important;
     border-radius: 0;

@@ -55,6 +55,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminSubscriptionsComponent } from './admin/components/admin-subscriptions/admin-subscriptions.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
+import { AmountFieldComponent } from './shop/components/util/amount-field/amount-field.component';
 
 
 // the second parameter 'fr' is optional
@@ -108,7 +109,8 @@ const appRoutes: Routes = [
     AddressComponent,
     OrderListComponent,
     OrderDetailsComponent,
-    AddOrderNoteComponent
+    AddOrderNoteComponent,
+    AmountFieldComponent
   ],
   entryComponents: [
     EditProductComponent, EditCustomerComponent, AddOrderNoteComponent

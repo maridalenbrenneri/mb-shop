@@ -4,7 +4,7 @@ export class Constants {
     static minPasswordLength = 5;
 }
 
-export class TaxRates {
+export class VatRates {
     static coffee = 0.15;
     static standard = 0.25;
 }

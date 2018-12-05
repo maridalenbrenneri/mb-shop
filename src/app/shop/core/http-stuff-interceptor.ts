@@ -23,7 +23,7 @@ export class HttpStuffInterceptor implements HttpInterceptor {
 
     const token = this.auth.getToken() != null ? this.auth.getToken() : '';
 
-    // temp hack, wp api does not allow access token
+//    temp hack, wp api does not allow access token
     if(!req.url.includes('https://maridalenbrenneri.no/wp-json')) {
       req = (req as HttpRequest<any>).clone({
         setHeaders: {
@@ -56,10 +56,10 @@ export class HttpStuffInterceptor implements HttpInterceptor {
 
   handleError(err) {
     if (err instanceof HttpErrorResponse) {
-      console.error(`${err.status} ${err.message}`);
+      console.log(`${err.status} ${err.message}`);
 
     } else {
-      console.error('Oops, an error occured when calling a service. ' + err);
+      console.log('Oops, an error occured when calling a service. ' + err);
     }
   }
 

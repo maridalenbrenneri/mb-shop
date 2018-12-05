@@ -16,8 +16,6 @@
         <div class="row">
           <div class="col-12">
 
-            <h3></h3>
-
             <div class="row">
               <div class="col-12 col-md-6">
                 <form>
@@ -95,30 +93,34 @@
 
               <div class="col-12 col-md-6">
 
-                <form #stashForm="ngForm">
-                  <div class="col-12 col-md-6">
+                <form #stashForm="ngForm" (ngSubmit)="addStash()">
 
-                    <!-- <div class="form-group row">
-                            <label for="customer" class="col-sm-2 col-form-label">Stash</label>
-                            <div class="col-sm-10">
-                              <input type="text" required class="form-control" name="stashName">
-                            </div>
-                          </div>
-              
-                          <div class="form-group row">
-                            <label for="customer" class="col-sm-2 col-form-label">Antall</label>
-                            <div class="col-sm-10">
-                              <input type="number" required class="form-control" name="quantity">
-                            </div>
-                          </div>
-              
-                          <div class="form-group row">
-                            <div class="col-12">sudoi 
-                              <button mat-button cdkFocusInitial [disabled]="true">Legg til</button>
-                            </div>
-                          </div> -->
+                    <div class="form-group row">
+                      <label for="customer" class="col-sm-2 col-form-label">Stash</label>
+                      <div class="col-sm-10">
+                        <input type="text" required class="form-control" name="stashName" [(ngModel)]="stashOrderItem.productVariation.name">
+                      </div>
+                    </div>
 
-                  </div>
+                    <div class="form-group row">
+                      <label for="customer" class="col-sm-2 col-form-label">Pris</label>
+                      <div class="col-sm-10">
+                        <input type="number" min="1" max="99999" required class="form-control" name="stashPrice" [(ngModel)]="stashOrderItem.productVariation.price">
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                      <label for="customer" class="col-sm-2 col-form-label">Antall</label>
+                      <div class="col-sm-10">
+                        <input type="number" min="1" max="999" required class="form-control" name="stashQuantity" [(ngModel)]="stashOrderItem.quantity">
+                      </div>
+                    </div>
+                       
+                    <div class="form-group row">
+                      <div class="col-12">
+                        <button mat-button cdkFocusInitial [disabled]="!stashForm.valid">Legg til</button>
+                      </div>
+                    </div>
 
                 </form>
 
@@ -149,11 +151,5 @@
 
   <hr />
 
-  <app-order-list 
-    [orders]="orders" 
-    [customers]="customers" 
-    (completed)="onCompleted($event)"
-    (canceled)="onCanceled($event)"
-    (processed)="onProcessed($event)"
-    (addedNote)="onAddedNote($event)"
-  ></app-order-list>
+  <app-order-list [orders]="orders" [customers]="customers" (completed)="onCompleted($event)" (canceled)="onCanceled($event)"
+    (processed)="onProcessed($event)" (addedNote)="onAddedNote($event)"></app-order-list>
