@@ -140,3 +140,15 @@ h1, h2, h3, h4 {
 .ng-invalid:not(form)  {
     border-left: 4px solid darken(#d81939, 10%);
 }
+
+.mat-checkbox {
+    margin-right: 1em;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: $primary !important;
+}
+
+.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+    background-color: $primary !important;
+}

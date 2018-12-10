@@ -1,43 +1,66 @@
-<select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="selectedCustomer">
-  <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
-</select>
+<div class="row">
 
+  <div class="col-12 col-md-6">
+    <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="selectedCustomer">
+      <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
+    </select>
+  </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Status</th>
-      <th>Dato</th>
-      <th>Kunde</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let order of orders">
-      <tr (click)="order.rowExpanded=!order.rowExpanded" class="clickable">
-        <td>{{order.id}}</td>
-        <td>{{order.status}}</td>
-        <td>{{order.orderDate}}</td>
-        <td>{{order.customer.name}}</td>
-      </tr>
-      <tr *ngIf="order.rowExpanded">
-        <td colspan="5">
-            <app-order-details [order]="order"></app-order-details>
-        </td>
-      </tr>
-      <tr *ngIf="order.rowExpanded">
-          <td colspan="5">
+  <div class="col-12 col-md-6">
+
+    <section class="example-section">
+      <mat-checkbox class="example-margin" [(ngModel)]="showProcessing" (checked)=true>Processing</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="showCompleted">Completed</mat-checkbox>
+      <mat-checkbox class="example-margin" [(ngModel)]="showCanceled">Canceled</mat-checkbox>
+    </section>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-12">
+    <P>
+        Viser {{orders.length}} bestillinger
+    </P>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Status</th>
+          <th>Dato</th>
+          <th>Kunde</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let order of orders">
+          <tr (click)="order.rowExpanded=!order.rowExpanded" class="clickable">
+            <td>{{order.id}}</td>
+            <td>{{order.status}}</td>
+            <td>{{order.orderDate | date: 'short'}}</td>
+            <td>{{order.customer.name}}</td>
+          </tr>
+          <tr *ngIf="order.rowExpanded">
+            <td colspan="5">
+              <app-order-details [order]="order"></app-order-details>
+            </td>
+          </tr>
+          <tr *ngIf="order.rowExpanded">
+            <td colspan="5">
               <button class="btn btn-primary" (click)="completeOrder(order)" [disabled]="order.status !== 'processing'">Complete</button>
               <button class="btn btn-default" (click)="processOrder(order)" [disabled]="order.status === 'processing'">Process</button>
               <button class="btn btn-default" (click)="cancelOrder(order)" [disabled]="order.status !== 'processing'">Cancel</button>
 
               <div class="float-right">
-                  <button class="btn btn-default" (click)="openAddNoteDialog(order)">Add note</button>
-                  <button class="btn btn-default">Lag faktura</button>
-                  <button class="btn btn-default">Vis faktura</button>
+                <button class="btn btn-default" (click)="openAddNoteDialog(order)">Add note</button>
+                <button class="btn btn-default">Lag faktura</button>
+                <button class="btn btn-default">Vis faktura</button>
               </div>
-          </td>
-        </tr>
-    </ng-container>
-  </tbody>
-</table>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

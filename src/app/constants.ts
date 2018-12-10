@@ -1,38 +1,38 @@
 export class Constants {
-    static deliveryDay = 2; // Tuesday
-    static subscriptionRenewalPaymentDaysBeforeDelivery = 14;
-    static minPasswordLength = 5;
+    public static readonly deliveryDay = 2; // Tuesday
+    public static readonly subscriptionRenewalPaymentDaysBeforeDelivery = 14;
+    public static readonly minPasswordLength = 5;
 }
 
 export class VatRates {
-    static coffee = 0.15;
-    static standard = 0.25;
+    public static readonly coffee = 0.15;
+    public static readonly standard = 0.25;
 }
 
 export class FreightRates {
-    static standard = 40;
-    static standard_subscription = 30;
+    public static readonly standard = 40;
+    public static readonly standard_subscription = 30;
 }
 
 export class ProductCategories {
-    static coffee = 'coffee';
-    static coffeeSubscription = 'coffee-subscription';
-    static coffeeGiftSubscription = 'coffee-gift-subscription';
+    public static readonly coffee = 'coffee';
+    public static readonly coffeeSubscription = 'coffee-subscription';
+    public static readonly coffeeGiftSubscription = 'coffee-gift-subscription';
 }
 
 export class OrderTypes {
-    static normal: 'normal';
-    static renewal: 'renewal';
+    public static readonly normal = 'normal';
+    public static readonly renewal = 'renewal';
 }
 
 export class OrderStatus {
-    static created: 'created';
-    static processing: 'processing';
-    static completed: 'completed';
-    static canceled: 'canceled';
+    public static readonly created = 'created';
+    public static readonly processing = 'processing';
+    public static readonly completed = 'completed';
+    public static readonly canceled = 'canceled';
 }
 
 export class SubscriptionFrequence {
-    static monthly = 1;
-    static fortnightly = 2;
+    public static readonly monthly = 1;
+    public static readonly fortnightly = 2;
 }

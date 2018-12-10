@@ -4,6 +4,7 @@ import { Customer } from './customer.model';
 export class Order {
     id: number;
     type: string;
+    status: string;
     orderDate: Date;
     deliveryDate: Date;
     customer: Customer;

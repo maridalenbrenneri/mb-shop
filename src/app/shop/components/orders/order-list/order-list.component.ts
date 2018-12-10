@@ -4,6 +4,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Customer } from 'src/app/shop/models/customer.model';
 import { TableDataSource } from 'src/app/shop/core/table-data-source';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { OrderStatus } from 'src/app/constants';
 
 @Component({
   selector: 'app-order-list',
@@ -27,6 +28,11 @@ export class OrderListComponent {
   private _filteredOrders: Array<Order> = []; 
   private _customers: Array<Customer>;
 
+  private _selectedCustomer: number;
+  private _showProcessing: boolean = true;
+  private _showCompleted: boolean;
+  private _showCanceled: boolean;
+
   @Output() completed = new EventEmitter<number>();
   @Output() canceled = new EventEmitter<number>();
   @Output() processed = new EventEmitter<number>();
@@ -37,8 +43,8 @@ export class OrderListComponent {
   @Input()
   set orders(orders: Array<Order>) {
     this._orders = orders;
-    this._filteredOrders = orders;
-    this.ordersDataSource = new TableDataSource(this._filteredOrders);
+
+    this.applyOrderFilter();
   }
 
   get orders() : Array<Order> {
@@ -59,25 +65,52 @@ export class OrderListComponent {
   }
 
   set selectedCustomer(customer: Customer) {
-    if(customer.id > 0) {
-      this.applyCustomerFilter(customer.id);
-    
-    } else {
-      this.applyCustomerFilter();  
-    }
+    this._selectedCustomer = customer.id;
+    this.applyOrderFilter();
   }
 
-  applyCustomerFilter(customerId: number = 0) {
-    if(!customerId) {
+  set showProcessing(show: boolean) {
+    this._showProcessing = show;
+    this.applyOrderFilter();
+  }
+
+  get showProcessing() {
+    return this._showProcessing;
+  }
+
+  set showCompleted(show: boolean) {
+    this._showCompleted = show;
+    this.applyOrderFilter();
+  }
+
+  set showCanceled(show: boolean) {
+    this._showCanceled = show;
+    this.applyOrderFilter();
+  }
+
+  applyOrderFilter() {
+    if(!this._selectedCustomer) {
       this._filteredOrders = this._orders;
     
     } else {
-      this._filteredOrders = this._orders.filter(o => o.customer.id === customerId)
+      this._filteredOrders = this._orders.filter(o => o.customer.id === this._selectedCustomer);
+    }
+
+    if(!this._showProcessing) {
+      this._filteredOrders = this._filteredOrders.filter(o => o.status !== OrderStatus.processing);
+    }
+
+    if(!this._showCompleted) {
+      this._filteredOrders = this._filteredOrders.filter(o => o.status !== OrderStatus.completed);
+    }
+
+    if(!this._showCanceled) {
+      this._filteredOrders = this._filteredOrders.filter(o => o.status !== OrderStatus.canceled);
     }
 
     this.ordersDataSource = new TableDataSource(this._filteredOrders); 
   }
-
+  
   checkCustomerId(data: any, filter: string) {
     if(!data || !data.customer || !data.customer.id) {
       return false;
