@@ -7,7 +7,11 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeNb from '@angular/common/locales/nb';
 
+import { CommonModule } from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
+
 import {MatSelectModule, MatCheckboxModule, MatInputModule} from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
@@ -77,17 +81,18 @@ const appRoutes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
+      appRoutes, { enableTracing: false } // <-- debugging purposes only
     ),
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    CommonModule,
+    ToastrModule.forRoot(),
     MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule, MatTabsModule, MatTableModule, MatDatepickerModule, MatMomentDateModule ],
   providers: [
-  //  { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
+    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true },
     { provide: LOCALE_ID, useValue: 'nb' }
   ],

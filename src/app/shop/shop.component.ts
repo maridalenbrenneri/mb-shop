@@ -10,9 +10,11 @@ export class ShopComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.authService.trySignInFromStoredCredentials();
+  }
 
   get isSignedIn() {
-    return this.authService.isSignedIn();
+    return this.authService.isSignedIn;
   }
 }

@@ -17,7 +17,7 @@ export class MyAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.isSignedIn()) {
+    if (!this.isSignedIn) {
       return;
     }
 
@@ -27,14 +27,15 @@ export class MyAccountComponent implements OnInit {
   onSignedIn(signedIn: boolean) {
     if(signedIn) {
       this.getUser();
-
-      // go to first tab
-      // show toast
     }
   }
 
-  isSignedIn() {
-    return this.authService.isSignedIn();
+  signOut() {
+    this.authService.signOut();
+  }
+
+  get isSignedIn() {
+    return this.authService.isSignedIn;
   }
 
   getUser() {

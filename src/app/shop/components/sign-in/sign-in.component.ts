@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,7 +14,7 @@ export class SignInComponent implements OnInit {
   @Output() signedIn = new EventEmitter<boolean>();
   @Output() tested = new EventEmitter<boolean>();
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private fb: FormBuilder, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.createForms();
@@ -30,6 +31,16 @@ export class SignInComponent implements OnInit {
     this.authService.signIn(this.signInForm.value.email, this.signInForm.value.password).subscribe(result => {
       this.authService.setSignedIn(result);
       this.signedIn.emit(true);
+      this.toastr.success('Logget inn');
+    
+    }, err => {
+      if(err.code == 401) {
+        this.toastr.error('Sign in failed, username or password is wrong.');
+        this.authService.signOut(); 
+
+      } else {
+        this.toastr.error('An error occured when trying to sign in');
+      }
     });
   }
 
@@ -37,11 +48,11 @@ export class SignInComponent implements OnInit {
     this.authService.signOut();
   }
 
-  isSignedIn() {
-    return this.authService.isSignedIn();
+  get isSignedIn() {
+    return this.authService.isSignedIn;
   }
 
-  signedInUserName() {
-    return this.authService.username;
+  get signedInUserName() {
+    return this.authService.userEmail;
   }
 }

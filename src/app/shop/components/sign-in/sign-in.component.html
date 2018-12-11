@@ -1,4 +1,4 @@
-<div *ngIf="!isSignedIn()">
+<div *ngIf="!isSignedIn">
   <form [formGroup]="signInForm">
     <div class="form-group">
       <label class="center-block">E-post:
@@ -16,7 +16,7 @@
   </form>
 </div>
 
-<p *ngIf="isSignedIn()">
-  Logget inn som {{signedInUserName()}}
+<p *ngIf="isSignedIn">
+  Logget inn som {{signedInUserName}}
   <button class="btn btn-primary" (click)="signOut()">Logg ut</button>
 </p> 

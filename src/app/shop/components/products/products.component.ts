@@ -3,6 +3,7 @@ import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ProductCategories } from '../../../constants';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-products',
@@ -19,7 +20,7 @@ export class ProductsComponent implements OnInit {
 
   private _showNotActiveProducts: boolean = false;
 
-  constructor(private productService: ProductService, public dialog: MatDialog) {
+  constructor(private productService: ProductService, public dialog: MatDialog, private toastr: ToastrService) {
     this.subscriptionProduct = new Product();
     this.giftSubscriptionProduct = new Product();
   }
@@ -37,7 +38,7 @@ export class ProductsComponent implements OnInit {
       }
 
     }, err => {
-      console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
+      this.toastr.error("Error when getting product");
     });
   }
 
@@ -85,11 +86,19 @@ export class ProductsComponent implements OnInit {
       if(!this.alreadyContainsProduct(product)) {
         this.productService.createProduct(product).subscribe(() => {
           this.loadProducts();
+          this.toastr.success("Product created");
+
+        }, err => {
+          this.toastr.error("Error when creating product");
         });
       
       } else {
         this.productService.updateProduct(product).subscribe(() => {
           this.loadProducts();
+          this.toastr.success("Product updated");
+
+        }, err => {
+          this.toastr.error("Error when updating product");
         });
       }
     });
@@ -99,6 +108,9 @@ export class ProductsComponent implements OnInit {
     product.isActive = active;
     this.productService.updateProduct(product).subscribe(() => {
       this.loadProducts();
+
+    }, err => {
+      this.toastr.error("Error when updating product");
     });
   }
 

@@ -1,10 +1,10 @@
-<div class="row justify-content-center" [hidden]="isSignedIn()">
+<div class="row justify-content-center" [hidden]="isSignedIn">
     <div class="col-12 col-md-6 col-lg-4">
         <app-sign-in (signedIn)="onSignedIn($event)"></app-sign-in>
     </div>
 </div>
 
-<div *ngIf="isSignedIn()">
+<div *ngIf="isSignedIn">
     <div class="row">
         <div class="col-12">
             <h4>Logget in som <i>{{user.email}}</i></h4>
@@ -28,7 +28,7 @@
 
                     <hr />
 
-                    <button class="btn btn-secondary float-right" [disabled]="true">Logg ut</button>
+                    <button class="btn btn-secondary float-right" (click)="signOut()" [disabled]="false">Logg ut</button>
                 </div>
             </div>
         </div>

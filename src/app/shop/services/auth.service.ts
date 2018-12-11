@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { User, RegisterUserModel } from '../models/user.model';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+
+const token_cookie = "mb/token";
+const email_cookie = "mb/email";
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +14,10 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   private token: string = null;
+  private userId: number;
+  private email: string;
 
-  userId: number;
-  username: string;
-  email: string;
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   registerUser(user: RegisterUserModel) {
     return this.http.post<any>(environment.mbApiBaseUrl + 'users', user);
@@ -23,23 +25,45 @@ export class AuthService {
 
   signIn(email: string, password: string): Observable<any> {
 
-    // this.signIn_Wordpress(email, password);
-    // return null;
     return this.http.post<any>(environment.mbApiBaseUrl + 'authenticate', {
       email: email,
       password: password
     });
   }
 
+  trySignInFromStoredCredentials() {
+    let token = this.cookieService.get(token_cookie);
+    let email = this.cookieService.get(email_cookie);
+
+    if(!token || !email) {
+      return;  
+    } 
+
+    this.setSignedIn({token: token, email: email}, false);
+
+  }
+
+  setSignedIn(authResponse, setCookie: boolean = true) {
+
+    this.token = authResponse.token;
+    this.email = authResponse.email;
+
+    if(setCookie) {
+      this.cookieService.set(token_cookie, this.token);
+      this.cookieService.set(email_cookie, this.email);
+    }
+  }
+
   signOut() {
-    // todo: remove token from cookie
 
     this.token = null;
     this.email = null;
-    this.username = null;
+
+    this.cookieService.delete(token_cookie);
+    this.cookieService.delete(email_cookie);
   }
 
-  isSignedIn(): boolean {
+  get isSignedIn(): boolean {
     return this.token != null;
   }
 
@@ -61,20 +85,16 @@ export class AuthService {
     return this.http.put<any>(`${environment.mbApiBaseUrl}users/${user.id}`, user);
   }
 
-  setSignedIn(authResponse) {
-    // todo: save token in cookie
-
-    this.token = authResponse.token;
-    this.email = authResponse.email;
-    this.username = authResponse.givenName;
-  }
-
   getToken() {
     return this.token;
   }
 
   getUserId() {
     return this.userId;
+  }
+
+  get userEmail() {
+    return this.email;
   }
 
   signIn_Wordpress(username: string, password: string) {
@@ -88,7 +108,6 @@ export class AuthService {
     }).subscribe(response => {
       console.log('[DEBUG] User was successfully logged in (' + response.user_display_name + ')');
       this.token = response.token;
-      this.username = response.user_display_name;
 
     }, err => {
       if (err.status === 403) {
