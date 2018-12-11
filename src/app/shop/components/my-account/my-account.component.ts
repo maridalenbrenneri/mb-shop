@@ -25,7 +25,12 @@ export class MyAccountComponent implements OnInit {
   }
 
   onSignedIn(signedIn: boolean) {
-    this.getUser();
+    if(signedIn) {
+      this.getUser();
+
+      // go to first tab
+      // show toast
+    }
   }
 
   isSignedIn() {

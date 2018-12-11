@@ -22,7 +22,7 @@ export class SignInComponent implements OnInit {
   createForms() {
     this.signInForm = this.fb.group({
       email: ['kaffe@maridalenbrenneri.no', Validators.required],
-      password: ['12345', Validators.required]
+      password: ['Wq2i!3z7', Validators.required]
     });
   }
 

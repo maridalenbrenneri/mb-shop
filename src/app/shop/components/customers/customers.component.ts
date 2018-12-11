@@ -96,7 +96,7 @@ export class CustomersComponent implements OnInit {
   }
 
   containsItem(customer: Customer) {
-    const items = this.customers.filter(u => u.id && u.id === customer.id);
+    const items = this.customers.filter(c => c.id > 0 && c.id === customer.id);
     return items.length > 0;
   }
 }

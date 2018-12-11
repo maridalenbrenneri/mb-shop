@@ -53,7 +53,7 @@ export class OrdersComponent implements OnInit {
   }
 
   loadOrders() {
-    this.orderService.getOrders({}).subscribe(orders => {
+    this.orderService.getOrders().subscribe(orders => {
       this.orders = orders;
     
     }, error => console.log(error)

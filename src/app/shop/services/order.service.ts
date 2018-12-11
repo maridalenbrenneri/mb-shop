@@ -25,7 +25,7 @@ export class OrderService {
     return of(true);
   }
 
-  getOrders(filter: any): Observable<any[]> {
+  getOrders(): Observable<any[]> {
     return this.http.get<any[]>(environment.mbApiBaseUrl + 'orders');
   }
 

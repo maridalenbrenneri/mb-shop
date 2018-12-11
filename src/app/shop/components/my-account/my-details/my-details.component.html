@@ -2,32 +2,17 @@
     <div class="col-12 col-lg-6">
         <form [formGroup]="detailsForm">    
             <div class="form-group">
-              <label class="center-block">Navn
-                <input type="text" required class="form-control" formControlName="name">
-              </label>
-            </div>
-            <div class="form-group">
-              <label class="center-block">Organisasjonsnummer
-                <input type="text" required class="form-control" formControlName="organizationNumber">
-              </label>
-            </div>          
-            <div class="form-group">
               <label class="center-block">E-postadresse
                 <input class="form-control" required formControlName="email">
               </label>
             </div>   
             <div class="form-group">
-                <label class="center-block">Telefon
-                  <input class="form-control" formControlName="mobile">
+                <label class="center-block">Rolle
+                  <input class="form-control" required formControlName="role">
                 </label>
-            </div>
+              </div>               
             <div class="form-group">
-              <label class="center-block">Kontaktperson
-                <input type="text" required class="form-control" formControlName="contactPerson">
-              </label>
-            </div>                                
-            <div class="form-group">
-              <button class="btn btn-primary float-right" (click)="saveDetails()" [disabled]="!detailsForm.valid">Lagre endringer</button>
+              <button class="btn btn-primary float-right" (click)="saveDetails()" [disabled]="true">Lagre endringer</button>
             </div>
           </form>
     </div>
@@ -50,7 +35,7 @@
               </label>
             </div>     
             <div class="form-group">
-              <button class="btn btn-primary float-right" (click)="changePassword()" [disabled]="!changePasswordForm.valid">Endre passord</button>
+              <button class="btn btn-primary float-right" (click)="changePassword()" [disabled]="true">Endre passord</button>
             </div>
           </form>
     </div>

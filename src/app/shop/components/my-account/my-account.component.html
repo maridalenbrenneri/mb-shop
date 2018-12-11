@@ -5,56 +5,32 @@
 </div>
 
 <div *ngIf="isSignedIn()">
-    <h2>Hei, {{user.givenName}}!</h2>
-    
-    <p>
-        Her kan du se dine ordre og endre dine abonnementer, adresser og andre kontodetaljer.
-    </p>
+    <div class="row">
+        <div class="col-12">
+            <h4>Logget in som <i>{{user.email}}</i></h4>
+        </div>
+    </div>
 
     <div id="accordion">
         <div class="card">
             <div class="card-header" id="headingOne">
-            <h5 class="mb-0">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Kontodetaljer
-                </button>
-            </h5>
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                        aria-controls="collapseOne">
+                        Kontodetaljer
+                    </button>
+                </h5>
             </div>
-        
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-body">
-                <app-my-details [user]="user"></app-my-details>
-            </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header" id="headingTwo">
-            <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Abonnement
-                </button>
-            </h5>
-            </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-            <div class="card-body">
-                <app-my-subscriptions></app-my-subscriptions>
-            </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header" id="headingThree">
-            <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Ordre
-                </button>
-            </h5>
-            </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-            <div class="card-body">
-                <app-my-orders></app-my-orders>
-            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <app-my-details [user]="user"></app-my-details>
+
+                    <hr />
+
+                    <button class="btn btn-secondary float-right" [disabled]="true">Logg ut</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-

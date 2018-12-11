@@ -17,6 +17,8 @@ export class ProductsComponent implements OnInit {
   subscriptionProduct: Product;
   giftSubscriptionProduct: Product;
 
+  private _showNotActiveProducts: boolean = false;
+
   constructor(private productService: ProductService, public dialog: MatDialog) {
     this.subscriptionProduct = new Product();
     this.giftSubscriptionProduct = new Product();
@@ -29,6 +31,10 @@ export class ProductsComponent implements OnInit {
   loadProducts() {
     this.productService.getProducts().subscribe(products => {
       this.coffeeProducts = products.filter(product => product.category === ProductCategories.coffee);
+
+      if(!this._showNotActiveProducts) {
+        this.coffeeProducts = this.coffeeProducts.filter(product => product.isActive);
+      }
 
     }, err => {
       console.log('[DEBUG] Error when getting products: ' + err.status + ' ' + err.message);
@@ -63,7 +69,7 @@ export class ProductsComponent implements OnInit {
         return;
       }
 
-      product.category = 'coffee';
+      product.category = ProductCategories.coffee;
       product.vatGroup = 'coffee';
       product.isActive = true;
       product.isInStock = true;
@@ -87,6 +93,18 @@ export class ProductsComponent implements OnInit {
         });
       }
     });
+  }
+
+  toggleIsActive(product: Product, active: boolean) {
+    product.isActive = active;
+    this.productService.updateProduct(product).subscribe(() => {
+      this.loadProducts();
+    });
+  }
+
+  set showNotActiveProducts(show: boolean) {
+    this._showNotActiveProducts = show;
+    this.loadProducts();
   }
 
   alreadyContainsProduct(product: Product) {
