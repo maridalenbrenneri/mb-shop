@@ -38,7 +38,7 @@ export class ProductsComponent implements OnInit {
       }
 
     }, err => {
-      this.toastr.error("Error when getting product");
+      this.toastr.error("Error when loading products");
     });
   }
 
