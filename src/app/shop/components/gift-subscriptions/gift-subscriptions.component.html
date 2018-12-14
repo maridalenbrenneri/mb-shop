@@ -1,0 +1,49 @@
+<div class="row">
+
+  <div class="col-12">
+    <button class="btn btn-primary" (click)="import()">Importer fra Woo</button>
+  </div>
+
+  </div>
+  <div class="col-12">
+    <P>
+        Viser {{subscriptions.length}} bestillinger
+    </P>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Status</th>
+          <th>Förste levering</th>
+          <th>Siste levering</th>
+          <th>Antall</th>
+          <th>Type</th>
+          <th>Mottaker</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let subscription of subscriptions">
+          <tr (click)="subscription.rowExpanded=!subscription.rowExpanded" class="clickable">
+            <td>{{subscription.id}}</td>
+            <td>{{subscription.status}}</td>
+            <td>{{subscription.startDate | date: 'short'}}</td>
+            <td>{{subscription.endDate | date: 'short'}}</td>
+            <td>{{subscription.frequency}}</td>
+            <td>{{subscription.quantity}}</td>
+            <td>{{subscription.recipient_name}}</td>
+          </tr>
+          <tr *ngIf="subscription.rowExpanded">
+            <td colspan="7">
+              <app-gift-subscription-details [subscription]="subscription"></app-gift-subscription-details>
+            </td>
+          </tr>
+          <tr *ngIf="subscription.rowExpanded">
+            <td colspan="7">
+              <button class="btn btn-primary" (click)="sendOrder(subscription)" [disabled]="true">Lag oppdrag i Cargonizer</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>

@@ -14,15 +14,16 @@ export class Order {
     subscriptionId: number;
 }
 
-export class OrderCustomer {
-    userId: number;
-    givenName: string;
-    familyName: string;
-    email: string;
-    phone: string;
-    password: string;
-    passwordConfirm: string;
-}
+// OBSOLETE ?
+// export class OrderCustomer {
+//     userId: number;
+//     givenName: string;
+//     familyName: string;
+//     email: string;
+//     phone: string;
+//     password: string;
+//     passwordConfirm: string;
+// }
 
 export class OrderItem {
     product: Product;

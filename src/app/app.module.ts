@@ -42,6 +42,8 @@ import { MyDetailsComponent } from './shop/components/my-account/my-details/my-d
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShopComponent } from './shop/shop.component';
 import { AmountFieldComponent } from './shop/components/util/amount-field/amount-field.component';
+import { GiftSubscriptionsComponent } from './shop/components/gift-subscriptions/gift-subscriptions.component';
+import { GiftSubscriptionDetailsComponent } from './shop/components/gift-subscriptions/gift-subscription-details/gift-subscription-details.component';
 
 
 // the second parameter 'fr' is optional
@@ -74,7 +76,9 @@ const appRoutes: Routes = [
     OrderListComponent,
     OrderDetailsComponent,
     AddOrderNoteComponent,
-    AmountFieldComponent
+    AmountFieldComponent,
+    GiftSubscriptionsComponent,
+    GiftSubscriptionDetailsComponent
   ],
   entryComponents: [
     EditProductComponent, EditCustomerComponent, AddOrderNoteComponent

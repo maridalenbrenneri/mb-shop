@@ -11,11 +11,9 @@ import { environment } from '../../../environments/environment';
 })
 export class ProductService {
 
-  products: Array<Product>;
+  products: Array<Product> = [];
 
-  constructor(private http: HttpClient) {
-    this.products = new Array<Product>();
-  }
+  constructor(private http: HttpClient) { }
 
   createProduct(product: Product): Observable<any> {
     return this.http.post<any>(`${environment.mbApiBaseUrl}products`, product);

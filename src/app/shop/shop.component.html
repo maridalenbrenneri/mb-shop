@@ -5,6 +5,9 @@
     <mat-tab label="BESTILLINGER" *ngIf="isSignedIn">
         <app-orders></app-orders>
     </mat-tab>
+    <mat-tab label="GAVEABOS" *ngIf="isSignedIn">
+        <app-gift-subscriptions></app-gift-subscriptions>
+    </mat-tab>
     <mat-tab label="KUNDER" *ngIf="isSignedIn">    
         <app-customers></app-customers>
     </mat-tab>
