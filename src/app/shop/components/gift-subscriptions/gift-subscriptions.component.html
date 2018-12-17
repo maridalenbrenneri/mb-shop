@@ -14,10 +14,10 @@
       <thead>
         <tr>
           <th>Id</th>
-          <th>Status</th>
+          <th>Antall mån</th>
           <th>Förste levering</th>
           <th>Siste levering</th>
-          <th>Antall</th>
+          <th>Poser</th>
           <th>Type</th>
           <th>Mottaker</th>
         </tr>
@@ -26,11 +26,11 @@
         <ng-container *ngFor="let subscription of subscriptions">
           <tr (click)="subscription.rowExpanded=!subscription.rowExpanded" class="clickable">
             <td>{{subscription.id}}</td>
-            <td>{{subscription.status}}</td>
-            <td>{{subscription.startDate | date: 'short'}}</td>
-            <td>{{subscription.endDate | date: 'short'}}</td>
-            <td>{{subscription.frequency}}</td>
+            <td>{{subscription.numberOfMonths}}</td>
+            <td>{{subscription.firstDeliveryDate | date: 'shortDate'}}</td>
+            <td>{{subscription.lastDeliveryDate | date: 'shortDate'}}</td>
             <td>{{subscription.quantity}}</td>
+            <td>{{subscription.frequence}}</td>
             <td>{{subscription.recipient_name}}</td>
           </tr>
           <tr *ngIf="subscription.rowExpanded">

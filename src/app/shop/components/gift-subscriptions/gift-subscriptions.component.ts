@@ -19,6 +19,10 @@ export class GiftSubscriptionsComponent implements OnInit {
   constructor(private giftSubscriptionService: GiftSubscriptionService) { }
 
   ngOnInit() {
+    this.loadSubscriptions();
+  }
+
+  loadSubscriptions() {
     this.giftSubscriptionService.getSubscriptions().subscribe(subscriptions => {
       this.subscriptions = subscriptions;
     });
@@ -40,7 +44,7 @@ export class GiftSubscriptionsComponent implements OnInit {
 
   import() {
     this.giftSubscriptionService.import().subscribe(() => {
-      console.log("Import done!");
+      this.loadSubscriptions();
     });
   }
 

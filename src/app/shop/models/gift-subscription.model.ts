@@ -9,7 +9,7 @@ export interface GiftSubscription {
     firstDeliveryDate: Date;
     lastDeliveryDate: Date;
     quantity: number;
-    frequency: string,
+    frequence: string,
     recipent_name: string;
     recipent_email: string;
     recipent_address: Address;
