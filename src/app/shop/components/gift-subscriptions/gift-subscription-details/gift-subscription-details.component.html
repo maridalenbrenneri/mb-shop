@@ -1,14 +1,22 @@
-<p>
-  <i>Mottaker:</i> {{ subscription.recipient_name }}
-</p>
-
-<p>
-  <i>Melding:</i> <br />
-  {{ subscription.message_to_recipient }}
-</p>
+<div class="row">
+  <div class="col-6">
+    <i>Mottaker:</i> {{ subscription.recipient_name }} <br />
+    <i>Förste levering:</i> {{subscription.firstDeliveryDate | date: 'shortDate'}} <br />
+    <i>Siste levering:</i> {{subscription.lastDeliveryDate | date: 'shortDate'}}
+  </div>
+  <div class="col-6">
+      <i>Melding:</i> <br />
+      {{ subscription.message_to_recipient }}
+  </div>
+  <div class="col-12">
+    <a [href]="wooUri" target="_blank">Åpne ordre i nettbutikken</a>
+  </div>
+</div>
 
 <hr />
 
-<p>
-  {{ diagnose }}
-</p>
+<div class="row">
+  <div class="col-12">
+      {{ diagnose }}
+  </div>
+</div>

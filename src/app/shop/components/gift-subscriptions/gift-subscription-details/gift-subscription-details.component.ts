@@ -24,6 +24,10 @@ export class GiftSubscriptionDetailsComponent implements OnInit {
     this._subscription = subscription;
   }
 
+  get wooUri() {
+    return `https://maridalenbrenneri.no/wp-admin/post.php?post=${this._subscription.wooOrderId}&action=edit`;
+  }
+
   get diagnose() {
     return JSON.stringify(this.subscription);
   }

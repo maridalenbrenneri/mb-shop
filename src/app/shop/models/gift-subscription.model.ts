@@ -6,6 +6,7 @@ export interface GiftSubscription {
     wooOrderNumber: number;
     status: string;
     orderDate: number;
+    originalFirstDeliveryDate: Date;
     numerOfMonths: number;
     firstDeliveryDate: Date;
     lastDeliveryDate: Date;
@@ -16,4 +17,5 @@ export interface GiftSubscription {
     recipient_address: Address;
     message_to_recipient: string;
     note: string;
+    lastOrderCreated: Date;
 }

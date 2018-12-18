@@ -38,8 +38,10 @@ export class GiftSubscriptionsComponent implements OnInit {
     return this._subscription;
   }  
 
-  sendOrder(subscription: GiftSubscription) {
-    console.log("Not implemented...");
+  createOrder(subscription: GiftSubscription) {
+    this.giftSubscriptionService.createOrder(subscription).subscribe(s => {
+      this.loadSubscriptions();
+    });
   }
 
   import() {
