@@ -13,7 +13,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Id</th>
+          <th>Order# (Woo)</th>
           <th>Antall mån</th>
           <th>Förste levering</th>
           <th>Siste levering</th>
@@ -25,7 +25,7 @@
       <tbody>
         <ng-container *ngFor="let subscription of subscriptions">
           <tr (click)="subscription.rowExpanded=!subscription.rowExpanded" class="clickable">
-            <td>{{subscription.id}}</td>
+            <td>{{subscription.wooOrderNumber}}</td>
             <td>{{subscription.numberOfMonths}}</td>
             <td>{{subscription.firstDeliveryDate | date: 'shortDate'}}</td>
             <td>{{subscription.lastDeliveryDate | date: 'shortDate'}}</td>

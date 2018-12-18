@@ -3,6 +3,7 @@ import { Address } from './address.model';
 export interface GiftSubscription {
     id: number;
     wooOrderId: number;
+    wooOrderNumber: number;
     status: string;
     orderDate: number;
     numerOfMonths: number;
