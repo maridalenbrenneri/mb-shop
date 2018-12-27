@@ -1,31 +1,34 @@
+<div class="row" *ngIf="!stats">
+  <div class="col-12">      
+    <h3>Loading MB Dashboard...</h3>
+  </div>
+</div>
 
-
-<div class="row">
+<div class="row" *ngIf="stats">
   <div class="col-12 col-lg-6">
       <mat-card class="product-card">
           <mat-card-header>
             <mat-card-title>#aboabo</mat-card-title>
           </mat-card-header>
-          <h1>{{subscriptionActiveCount + giftSubscriptionCount}} aktive abos</h1>
+          <h1>{{stats.subscriptionActiveCount + stats.giftSubscriptionCount}} aktive abos</h1>
           
           <p>
-            {{subscriptionFortnightlyCount + giftSubscriptionFortnightlyCount}} annenhver uke, {{subscriptionMonthlyCount + giftSubscriptionMonthlyCount}} månedlig
+            {{stats.subscriptionFortnightlyCount + stats.giftSubscriptionFortnightlyCount}} annenhver uke, {{stats.subscriptionMonthlyCount + stats.giftSubscriptionMonthlyCount}} månedlig
           </p>
 
           <mat-card-content>
             <p>
-              
-              Antall poser per måned: <strong>{{ subsciptionsBagsPerMonthCount }}</strong> <br>
+              Antall poser per måned: <strong>{{ stats.subsciptionsBagsPerMonthCount }}</strong> <br>
 
-              Antall poser 1. tirsdag : <strong> {{ subsciptionsBagsPerMonthlyCount + subsciptionsBagsPerFortnightlyCount}} </strong> <br>
+              Antall poser 1. tirsdag : <strong> {{ stats.subsciptionsBagsPerMonthlyCount + stats.subsciptionsBagsPerFortnightlyCount}} </strong> <br>
 
-              Antall poser 3. tirsdag: <strong> {{subsciptionsBagsPerFortnightlyCount}} </strong> <br>
+              Antall poser 3. tirsdag: <strong> {{stats.subsciptionsBagsPerFortnightlyCount}} </strong> <br>
 
-              Gyldne abosnittet: <strong>{{ (subsciptionsBagsPerMonthCount / (subscriptionActiveCount + giftSubscriptionCount)) | number:'1.1-1' }}</strong> <br>
+              Gyldne abosnittet: <strong>{{ (stats.subsciptionsBagsPerMonthCount / (stats.subscriptionActiveCount + stats.giftSubscriptionCount)) | number:'1.1-1' }}</strong> <br>
 
-              Abos på pause: {{subscriptionOnHoldCount }} <br>
+              Abos på pause: {{stats.subscriptionOnHoldCount }} <br>
 
-              Gaveabos: {{giftSubscriptionCount}}
+              Gaveabos: {{stats.giftSubscriptionCount}}
             </p>
 
             <table class="table">
@@ -41,20 +44,20 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>Annenhver uke ({{subsciptionsBagsPerFortnightlyCount}} poser)</td>
-                  <td>{{bagCounter.fortnightly.one}}</td>
-                  <td>{{bagCounter.fortnightly.two}}</td>
-                  <td>{{bagCounter.fortnightly.three}}</td>
-                  <td>{{bagCounter.fortnightly.four}}</td>
-                  <td>{{bagCounter.fortnightly.five}}</td>
+                  <td>Annenhver uke ({{stats.subsciptionsBagsPerFortnightlyCount}} poser)</td>
+                  <td>{{stats.bagCounter.fortnightly.one}}</td>
+                  <td>{{stats.bagCounter.fortnightly.two}}</td>
+                  <td>{{stats.bagCounter.fortnightly.three}}</td>
+                  <td>{{stats.bagCounter.fortnightly.four}}</td>
+                  <td>{{stats.bagCounter.fortnightly.five}}</td>
                 </tr>
                 <tr>
-                    <td>Månedlig ({{subsciptionsBagsPerMonthlyCount}} poser)</td>
-                    <td>{{bagCounter.monthly.one}}</td>
-                    <td>{{bagCounter.monthly.two}}</td>
-                    <td>{{bagCounter.monthly.three}}</td>
-                    <td>{{bagCounter.monthly.four}}</td>
-                    <td>{{bagCounter.monthly.five}}</td>
+                    <td>Månedlig ({{stats.subsciptionsBagsPerMonthlyCount}} poser)</td>
+                    <td>{{stats.bagCounter.monthly.one}}</td>
+                    <td>{{stats.bagCounter.monthly.two}}</td>
+                    <td>{{stats.bagCounter.monthly.three}}</td>
+                    <td>{{stats.bagCounter.monthly.four}}</td>
+                    <td>{{stats.bagCounter.monthly.five}}</td>
                   </tr>
               </tbody>
 
@@ -66,12 +69,12 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
         <mat-card-header>
-          <mat-card-title>#orders</mat-card-title>
+          <mat-card-title>#orders (aktive i woo)</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p>
-            Processing: <strong>{{ orderProcessingCount }}</strong> <br>
-            Pending payment: <strong>{{ orderPendingPaymentCount }}</strong> <br>
+            Processing: <strong>{{ stats.orderProcessingCount }}</strong> <br>
+            Pending payment: <strong>{{ stats.orderPendingPaymentCount }}</strong> <br>
           </p>
         </mat-card-content>
       </mat-card>

@@ -1,6 +1,6 @@
 <mat-tab-group>
     <mat-tab label="DASHBOARD" *ngIf="isSignedIn">
-        <!-- <app-dashboard></app-dashboard> -->
+        <app-dashboard></app-dashboard>
     </mat-tab>
     <mat-tab label="BESTILLINGER" *ngIf="isSignedIn">
         <app-orders></app-orders>
@@ -11,7 +11,7 @@
     <mat-tab label="KUNDER" *ngIf="isSignedIn">    
         <app-customers></app-customers>
     </mat-tab>
-    <mat-tab label="PRODUKTER">
+    <mat-tab label="PRODUKTER" *ngIf="isSignedIn">
         <app-products></app-products>
     </mat-tab>        
     <mat-tab label="MIN KONTO">
