@@ -1,13 +1,30 @@
 <div class="row">
-
   <div class="col-12">
-    <button class="btn btn-primary" (click)="import()">Importer fra Woo</button>
+    <p>
+      <button class="btn btn-secondary float-right" (click)="import()">Importer fra Woo</button>
+    </p>
+    <hr />
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-12 col-md-4">
+    <section>
+      <mat-checkbox [(ngModel)]="showMonthly" (checked)=true>Månedlig</mat-checkbox>
+      <mat-checkbox [(ngModel)]="showFortnightly" (checked)=true>Annenhver uke</mat-checkbox>
+    </section>
   </div>
 
+  <div class="col-12 col-md-4">
+    <select class="form-control" id="quantityElement" name="quantityElement" [(ngModel)]="selectedQuantity">
+      <option *ngFor="let quantity of quantities" [ngValue]="quantity">{{quantity.label}}</option>
+    </select>
   </div>
+
   <div class="col-12">
     <P>
-        Viser {{subscriptions.length}} bestillinger
+        Viser {{subscriptions.length}} gabos
     </P>
 
     <table class="table table-striped">
@@ -28,7 +45,7 @@
             <td>{{subscription.numberOfMonths}}</td>
             <td>{{subscription.lastOrderCreated | date: 'short' }}</td>
             <td>{{subscription.quantity}}</td>
-            <td>{{subscription.frequence}}</td>
+            <td>{{subscription.frequence == 1 ? 'Månedlig' : 'Annenhver uke'}}</td>
             <td>{{subscription.recipient_name}}</td>
           </tr>
           <tr *ngIf="subscription.rowExpanded">

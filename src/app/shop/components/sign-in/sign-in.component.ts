@@ -35,7 +35,7 @@ export class SignInComponent implements OnInit {
     
     }, err => {
       if(err.code == 401) {
-        this.toastr.error('Sign in failed, username or password is wrong.');
+        this.toastr.error('Innlogging mislyktes, brukernavn eller passord er feil.');
         this.authService.signOut(); 
 
       } else {

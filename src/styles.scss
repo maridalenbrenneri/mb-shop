@@ -152,3 +152,7 @@ h1, h2, h3, h4 {
 .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
     background-color: $primary !important;
 }
+
+.clickable {
+    cursor: pointer;
+}
