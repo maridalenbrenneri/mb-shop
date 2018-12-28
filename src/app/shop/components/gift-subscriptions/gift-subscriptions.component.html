@@ -1,24 +1,26 @@
-<div class="row">
-  <div class="col-12">
-    <p>
-      <button class="btn btn-secondary float-right" (click)="import()">Importer fra Woo</button>
-    </p>
-  </div>
-</div>
-
-<div class="row">
+<div class="row margin-top">
 
   <div class="col-12 col-md-4">
     <section>
       <mat-checkbox [(ngModel)]="showMonthly" (checked)=true>Månedlig</mat-checkbox>
       <mat-checkbox [(ngModel)]="showFortnightly" (checked)=true>Annenhver uke</mat-checkbox>
     </section>
+    <section>
+      <mat-checkbox [(ngModel)]="showOnlyNew" (checked)=false>Vis kun nye</mat-checkbox>
+    </section>
   </div>
 
   <div class="col-12 col-md-4">
+    <label>Antall poser</label>
     <select class="form-control" id="quantityElement" name="quantityElement" [(ngModel)]="selectedQuantity">
       <option *ngFor="let quantity of quantities" [ngValue]="quantity">{{quantity.label}}</option>
     </select>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <p>
+      <button class="btn btn-secondary float-right" (click)="import()">Importer fra Woo</button>
+    </p>
   </div>
 
   <div class="col-12">
@@ -31,6 +33,7 @@
         <tr>
           <th>Order# (Woo)</th>
           <th>Antall mån</th>
+          <th>Første levering</th>
           <th>Siste ordre</th>
           <th>Poser</th>
           <th>Type</th>
@@ -42,6 +45,7 @@
           <tr (click)="subscription.rowExpanded=!subscription.rowExpanded" class="clickable">
             <td>{{subscription.wooOrderNumber}}</td>
             <td>{{subscription.numberOfMonths}}</td>
+            <td>{{subscription.firstDeliveryDate | date: 'shortDate'}}</td>
             <td>{{subscription.lastOrderCreated | date: 'short' }}</td>
             <td>{{subscription.quantity}}</td>
             <td>{{subscription.frequence == 1 ? 'Månedlig' : 'Annenhver uke'}}</td>

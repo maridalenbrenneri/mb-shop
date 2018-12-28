@@ -6,7 +6,10 @@
   </div>
   <div class="col-6">
       <i>Melding:</i> <br />
-      {{ subscription.message_to_recipient }}
+      {{ subscription.message_to_recipient }} <br /> <br />
+
+      <i>Notat:</i> <br />
+      {{ subscription.note }}
   </div>
   <div class="col-12">
     <a [href]="wooUri" target="_blank">Åpne ordre i nettbutikken</a>

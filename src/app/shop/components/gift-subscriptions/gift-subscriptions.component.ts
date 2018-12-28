@@ -21,6 +21,7 @@ export class GiftSubscriptionsComponent implements OnInit {
   private _selectedQuantity: any;
   private _showMonthly: boolean = true;
   private _showFortnightly: boolean = true;
+  private _showOnlyNew: boolean = false;
 
   constructor(private giftSubscriptionService: GiftSubscriptionService, private toastr: ToastrService) { 
     this._quantities.push({quantity: 0, label: "Alle"});
@@ -61,6 +62,15 @@ export class GiftSubscriptionsComponent implements OnInit {
 
   set showFortnightly(show: boolean) {
     this._showFortnightly = show;
+    this.applyFilter();
+  }
+  
+  get showOnlyNew() : boolean {
+    return this._showOnlyNew;
+  }
+
+  set showOnlyNew(show: boolean) {
+    this._showOnlyNew = show;
     this.applyFilter();
   }
   
@@ -109,6 +119,10 @@ export class GiftSubscriptionsComponent implements OnInit {
 
     if(!this._showFortnightly) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(s => s.frequence !== SubscriptionFrequence.fortnightly);
+    }
+
+    if(this.showOnlyNew) {
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(s => !s.lastOrderCreated);
     }
   }
 }
