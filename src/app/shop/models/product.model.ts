@@ -1,6 +1,7 @@
 export class ProductVariation {
     name: string;
     price: number;
+    weight: number;
 }
 
 export class Product {

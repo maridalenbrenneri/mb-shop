@@ -34,6 +34,7 @@ export class OrderListComponent {
   private _showCanceled: boolean;
 
   @Output() completed = new EventEmitter<number>();
+  @Output() completedAndShipped = new EventEmitter<Order>();
   @Output() canceled = new EventEmitter<number>();
   @Output() processed = new EventEmitter<number>();
   @Output() addedNote = new EventEmitter<OrderNote>();
@@ -145,6 +146,10 @@ export class OrderListComponent {
 
   completeOrder(order: Order) {
     this.completed.emit(order.id);
+  }
+
+  completeAndShipOrder(order: Order) {
+    this.completedAndShipped.emit(order);
   }
 
   cancelOrder(order: Order) {

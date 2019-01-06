@@ -37,7 +37,7 @@ export class ProductsComponent implements OnInit {
         this.coffeeProducts = this.coffeeProducts.filter(product => product.isActive);
       }
 
-    }, err => {
+    }, () => {
       this.toastr.error("Error when loading products");
     });
   }
@@ -47,8 +47,8 @@ export class ProductsComponent implements OnInit {
       product = new Product();
       product.data = { }
       product.productVariations = [
-        { name: 'priceSmallBag', price: 72.2 },
-        { name: 'pricePerKg', price: 280 }
+        { name: 'priceSmallBag', price: 72.2, weight: 250 },
+        { name: 'pricePerKg', price: 280, weight: 1000 }
       ]
     }
 

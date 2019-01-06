@@ -14,17 +14,6 @@ export class Order {
     subscriptionId: number;
 }
 
-// OBSOLETE ?
-// export class OrderCustomer {
-//     userId: number;
-//     givenName: string;
-//     familyName: string;
-//     email: string;
-//     phone: string;
-//     password: string;
-//     passwordConfirm: string;
-// }
-
 export class OrderItem {
     product: Product;
     productVariation: ProductVariation;

@@ -37,25 +37,37 @@
         <ng-container *ngFor="let order of orders">
           <tr (click)="order.rowExpanded=!order.rowExpanded" class="clickable">
             <td>{{order.id}}</td>
-            <td>{{order.status}}</td>
+            <td>
+              <span *ngIf="order.status == 'processing'">
+                  <i class="material-icons">refresh</i>
+              </span>
+              <span *ngIf="order.status == 'completed'">
+                  <i class="material-icons">done</i>
+              </span>
+              <span *ngIf="order.status == 'canceled'">
+                  <i class="material-icons">cancel_presentation</i>
+              </span>
+            </td>
             <td>{{order.orderDate | date: 'short'}}</td>
             <td>{{order.customer.name}}</td>
           </tr>
           <tr *ngIf="order.rowExpanded">
-            <td colspan="5">
+            <td colspan="4">
               <app-order-details [order]="order"></app-order-details>
             </td>
           </tr>
           <tr *ngIf="order.rowExpanded">
-            <td colspan="5">
-              <button class="btn btn-primary" (click)="completeOrder(order)" [disabled]="order.status !== 'processing'">Complete</button>
-              <button class="btn btn-default" (click)="processOrder(order)" [disabled]="order.status === 'processing'">Process</button>
-              <button class="btn btn-default" (click)="cancelOrder(order)" [disabled]="order.status !== 'processing'">Cancel</button>
-
-              <div class="float-right">
-                <button class="btn btn-default" (click)="openAddNoteDialog(order)">Add note</button>
-                <button class="btn btn-default">Lag faktura</button>
-                <button class="btn btn-default">Vis faktura</button>
+            <td colspan="4">
+              <div>
+                  <button mat-raised-button (click)="completeOrder(order)" [disabled]="order.status !== 'processing'" title="Fullfør bestilling"><i class="material-icons">done</i></button>
+                  <button mat-raised-button (click)="completeAndShipOrder(order)" [disabled]="order.status !== 'processing'" title="Fullfør og lag oppdrag i Cargonizer">
+                    <i class="material-icons">done</i> & <i class="material-icons">local_shipping</i>
+                  </button>
+                  <button mat-raised-button (click)="processOrder(order)" [disabled]="order.status === 'processing'" title="Sett status behandles"><i class="material-icons">refresh</i></button>
+                  <button mat-raised-button (click)="cancelOrder(order)" [disabled]="order.status !== 'processing'" title="Kanseller bestilling"><i class="material-icons">cancel_presentation</i></button>
+                  <button mat-raised-button (click)="openAddNoteDialog(order)" title="Legg til notat"><i class="material-icons">speaker_notes</i></button>
+                  <button mat-raised-button>Lag faktura</button>
+                  <button mat-raised-button>Vis faktura</button>
               </div>
             </td>
           </tr>

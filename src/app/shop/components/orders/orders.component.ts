@@ -9,9 +9,11 @@ import { Customer } from '../../models/customer.model';
 const small = new ProductVariation();
 small.name = "250gr";
 small.price = 72.20;
+small.weight = 250;
 const large = new ProductVariation();
-large.name = "1,2kg";
+large.name = "1kg";
 large.price = 280.00;
+large.weight = 1000;
 
 @Component({
   selector: 'app-orders',
@@ -142,6 +144,14 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  onCompletedAndShipped(order: Order) {
+    this.orderService.completeOrder(order.id).subscribe(() => {
+      this.orderService.shipBusinessOrder(order).subscribe(() => {
+        this.loadOrders();
+      });
+    });
+  }
+ 
   onCanceled(orderId: number) {
     this.orderService.cancelOrder(orderId).subscribe(() => {
       this.loadOrders();

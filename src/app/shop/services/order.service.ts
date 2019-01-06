@@ -12,8 +12,6 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   createOrder(order: Order): Observable<any> {
-    console.log('Creating order... ' + JSON.stringify(order));
-
     return this.http.post<any>(environment.mbApiBaseUrl + 'orders', order);
   }
 
@@ -35,6 +33,10 @@ export class OrderService {
 
   completeOrder(orderId: number) {
     return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${orderId}/complete`, null);
+  }
+
+  shipBusinessOrder(order: Order) { 
+    return this.http.post<any>(`${environment.mbApiBaseUrl}shipping/ship-business-order`, order);
   }
 
   cancelOrder(orderId: number) {
