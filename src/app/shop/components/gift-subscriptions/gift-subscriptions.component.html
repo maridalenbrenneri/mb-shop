@@ -18,9 +18,7 @@
   </div>
 
   <div class="col-12 col-md-4">
-    <p>
-      <button class="btn btn-secondary float-right" (click)="import()">Importer fra Woo</button>
-    </p>
+      <button mat-raised-button class="float-right" (click)="import()">Importer fra Woo</button>
   </div>
 
   <div class="col-12">
@@ -38,6 +36,7 @@
           <th>Poser</th>
           <th>Type</th>
           <th>Mottaker</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -50,15 +49,11 @@
             <td>{{subscription.quantity}}</td>
             <td>{{subscription.frequence == 1 ? 'Månedlig' : 'Annenhver uke'}}</td>
             <td>{{subscription.recipient_name}}</td>
+            <td><button mat-raised-button (click)="createOrder(subscription)" title="Lag oppdrag i Cargonizer"><i class="material-icons">local_shipping</i></button></td>
           </tr>
           <tr *ngIf="subscription.rowExpanded">
             <td colspan="7">
               <app-gift-subscription-details [subscription]="subscription"></app-gift-subscription-details>
-            </td>
-          </tr>
-          <tr *ngIf="subscription.rowExpanded">
-            <td colspan="7">
-              <button class="btn btn-primary" (click)="createOrder(subscription)">Lag oppdrag i Cargonizer</button>
             </td>
           </tr>
         </ng-container>
