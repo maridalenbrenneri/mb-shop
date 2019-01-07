@@ -48,11 +48,8 @@ import { GiftSubscriptionDetailsComponent } from './shop/components/gift-subscri
 registerLocaleData(localeNb, 'nb');
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/backoffice/dashboard', pathMatch: 'full' },
-  { path: 'backoffice/dashboard', component: DashboardComponent },
-  { path: 'shop', component: ShopComponent },
-  { path: 'products', component: ProductsComponent },
-  { path: 'account', component: MyAccountComponent }
+  { path: '', redirectTo: '/shop', pathMatch: 'full' },
+  { path: 'shop', component: ShopComponent }
   // { path: '**', component: PageNotFoundComponent }
 ];
 
