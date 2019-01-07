@@ -28,7 +28,7 @@ export class OrderListComponent {
   private _filteredOrders: Array<Order> = []; 
   private _customers: Array<Customer>;
 
-  private _selectedCustomer: number;
+  private _selectedCustomer: Customer;
   private _showProcessing: boolean = true;
   private _showCompleted: boolean;
   private _showCanceled: boolean;
@@ -57,8 +57,9 @@ export class OrderListComponent {
     this._customers = customers;
     const all = new Customer();
     all.name = 'Alle kunder';
-    all.id = 0;
+    all.customerNumber = 0;
     this._customers.unshift(all)
+    this.selectedCustomer = this._customers[0];
   }
 
   get customers() : Array<Customer> { 
@@ -66,7 +67,7 @@ export class OrderListComponent {
   }
 
   set selectedCustomer(customer: Customer) {
-    this._selectedCustomer = customer.id;
+    this._selectedCustomer = customer;
     this.applyOrderFilter();
   }
 
@@ -90,11 +91,11 @@ export class OrderListComponent {
   }
 
   applyOrderFilter() {
-    if(!this._selectedCustomer) {
+    if(!this._selectedCustomer || !this._selectedCustomer.customerNumber) {
       this._filteredOrders = this._orders;
     
     } else {
-      this._filteredOrders = this._orders.filter(o => o.customer.id === this._selectedCustomer);
+      this._filteredOrders = this._orders.filter(o => o.customer.customerNumber == this._selectedCustomer.customerNumber);
     }
 
     if(!this._showProcessing) {

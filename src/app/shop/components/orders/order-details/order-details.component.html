@@ -2,7 +2,7 @@
 
 <div *ngIf="order">
   <h4>
-    #{{order.id}} - {{order.customer?.name}}  - {{order.customer?.organizationNumber}} - {{order.customer?.email}} - {{order.customer?.phone}}
+    #{{order.id}} - Kundenr: {{ order.customer?.customerNumber}} - {{order.customer?.name}}  - {{order.customer?.email}}
   </h4>
   <table class="table table-order-details">
     <thead>
@@ -63,14 +63,10 @@
       </tr> -->
       <tr>
         <td colspan="2">
-            <h5>Leveringsadresse</h5>
-            <app-address [address]="order.customer?.deliveryAddress"></app-address>
+            <h5>Adresse</h5>
+            <app-address [address]="order.customer?.address"></app-address>
         </td>
-        <td colspan="2">
-            <h5>Fakturaadresse</h5>
-            <app-address [address]="order.customer?.invoiceAddress"></app-address>
-        </td>     
-        <td colspan="2">
+        <td colspan="4">
             <h5>Notat</h5>
             <ul>
               <li *ngFor="let orderNote of order.notes">

@@ -30,8 +30,6 @@ import { ProductsComponent, EditProductComponent } from './shop/components/produ
 import { OrdersComponent } from './shop/components/orders/orders.component';
 import { OrderListComponent, AddOrderNoteComponent } from './shop/components/orders/order-list/order-list.component';
 import { OrderDetailsComponent } from './shop/components/orders/order-details/order-details.component';
-
-import { CustomersComponent, EditCustomerComponent } from './shop/components/customers/customers.component';
 import { AddressComponent } from './shop/components/address/address.component';
 
 import { SignInComponent } from './shop/components/sign-in/sign-in.component';
@@ -68,9 +66,7 @@ const appRoutes: Routes = [
     MyDetailsComponent,
     DashboardComponent,
     ShopComponent,
-    CustomersComponent,
     EditProductComponent,
-    EditCustomerComponent,
     OrdersComponent,
     AddressComponent,
     OrderListComponent,
@@ -81,7 +77,7 @@ const appRoutes: Routes = [
     GiftSubscriptionDetailsComponent
   ],
   entryComponents: [
-    EditProductComponent, EditCustomerComponent, AddOrderNoteComponent
+    EditProductComponent, AddOrderNoteComponent
   ],
   imports: [
     RouterModule.forRoot(

@@ -8,11 +8,11 @@ import { Customer } from '../../models/customer.model';
 
 const small = new ProductVariation();
 small.name = "250gr";
-small.price = 72.20;
+small.price = 70.00;
 small.weight = 250;
 const large = new ProductVariation();
 large.name = "1kg";
-large.price = 280.00;
+large.price = 250.00;
 large.weight = 1000;
 
 @Component({
@@ -41,6 +41,8 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("init");
+
     this.loadOrders();
     
     this.customerService.getCustomers().subscribe(customers => {
@@ -49,7 +51,7 @@ export class OrdersComponent implements OnInit {
     });
 
     this.productService.getProducts().subscribe(products => {
-      this.products = products;
+      this.products = products.filter(product => product.isActive);
       this.initOrderItem();
     });
   }
@@ -111,6 +113,9 @@ export class OrdersComponent implements OnInit {
   createOrder() {
     this.orderService.createOrder(this.order).subscribe(() => {
       this.loadOrders();
+      this.initOrder();
+      this.initOrderItem();
+      this.initStashOrderItem();
 
     }, error => console.log(error)
     );

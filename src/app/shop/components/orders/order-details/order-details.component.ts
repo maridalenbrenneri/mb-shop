@@ -13,8 +13,7 @@ export class OrderDetailsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   get order() {
     return this._order;
