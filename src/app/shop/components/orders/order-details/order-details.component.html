@@ -25,36 +25,38 @@
           <span *ngIf="item.product.category === 'stash'"></span>
         </td>
         <td>{{ item.quantity }}</td>
-        <td>{{ item.productVariation?.price}}</td>
+        <td>
+          <app-amount-field [amount]="item.productVariation?.price"></app-amount-field>
+        </td>
         <td>{{ getVatFromItem(item) }}% </td>
         <td>
           <app-amount-field [amount]="item.quantity * item.productVariation.price"></app-amount-field>
         <td> 
-          <!-- <button mat-button (click)="removeItem(item)">X</button> -->
+          <button *ngIf="!isOrderCreated" mat-raised-button (click)="removeItem(item)" title="Fjern linje"><i class="material-icons">remove_circle_outline</i></button>
         </td>
       </tr>
       <tr>
-        <td colspan="6">
+        <td colspan="7">
           
         </td>
       </tr>
       <tr>
         <td colspan="4"></td>
         <td>15%</td>
-        <td><strong>{{getTotalVatCoffee}}</strong></td>
+        <td><strong><app-amount-field [amount]="getTotalVatCoffee"></app-amount-field></strong></td>
       </tr>
       <tr>
         <td colspan="4"></td>
         <td>25%</td>
-        <td><strong>{{getTotalVatStandard}}</strong></td>
+        <td><strong><app-amount-field [amount]="getTotalVatStandard"></app-amount-field></strong></td>
       </tr>
       <tr>
         <td colspan="5"></td>
-        <td><strong>{{getTotalPrice}} ekskl. mva</strong></td>
+        <td><strong><app-amount-field [amount]="getTotalPrice"></app-amount-field> Eks MVA</strong></td>
       </tr>
       <tr>
         <td colspan="5"></td>
-        <td><strong>{{getTotalPrice + getTotalVatCoffee + getTotalVatStandard }} inkl. mva</strong></td>
+        <td><strong><app-amount-field [amount]="getTotalPrice + getTotalVatCoffee + getTotalVatStandard"></app-amount-field> Inkl MVA</strong></td>
       </tr>
       <!-- <tr>
         <td colspan="6">

@@ -50,6 +50,22 @@ export class OrderDetailsComponent implements OnInit {
     return this.calculateTotalVat("standard");
   }
 
+  get isOrderCreated(): boolean {
+    return this.order.id > 0;
+  }
+
+  removeItem(item: OrderItem) {
+    const index = this.order.items.findIndex(i => {
+      return i.product.id === item.product.id && 
+             i.productVariation.name == item.productVariation.name &&
+             i.productVariation.price == item.price;
+    });
+
+    if(index >= 0) {
+      this.order.items.splice(index, 1);
+    }
+  }  
+
   private calculateTotalVat(vatGroup: string) {
     if(!this.order.items) { return 0;}
 

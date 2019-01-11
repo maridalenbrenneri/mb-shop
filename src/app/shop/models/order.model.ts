@@ -19,6 +19,7 @@ export class OrderItem {
     productVariation: ProductVariation;
     productOptions: any;
     quantity: number;
+    price: number; // from variation or custom
 }
 
 export class SubscriptionProductOptions {

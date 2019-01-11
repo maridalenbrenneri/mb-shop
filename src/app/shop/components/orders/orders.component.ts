@@ -12,7 +12,7 @@ small.price = 70.00;
 small.weight = 250;
 const large = new ProductVariation();
 large.name = "1kg";
-large.price = 250.00;
+large.price = 280.00;
 large.weight = 1000;
 
 @Component({
@@ -41,8 +41,6 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("init");
-
     this.loadOrders();
     
     this.customerService.getCustomers().subscribe(customers => {
@@ -77,6 +75,7 @@ export class OrdersComponent implements OnInit {
     this.orderItem.product = this.products[0];
     this.orderItem.productVariation = this.getCoffeeProductVariations[0];
     this.orderItem.quantity = 1;
+    this.orderItem.price = this.orderItem.productVariation.price;
   }
 
   initStashOrderItem() {
@@ -89,9 +88,19 @@ export class OrdersComponent implements OnInit {
   }
 
   addCoffee() {
-    let productAdded = this.order.items.find(i => i.product.id === this.orderItem.product.id);
+    let productAdded = this.order.items.find(i => {
+      return i.product.id === this.orderItem.product.id && 
+             i.productVariation.name == this.orderItem.productVariation.name &&
+             i.productVariation.price == this.orderItem.price;
+    });
 
-    if(!productAdded) {
+    if(!productAdded) { 
+
+      // clone and set possibly custom price 
+      const json = JSON.stringify(this.orderItem.productVariation);
+      this.orderItem.productVariation = JSON.parse(json);
+      this.orderItem.productVariation.price = this.orderItem.price;
+
       this.order.items.push(this.orderItem);
     
     } else {
@@ -106,10 +115,6 @@ export class OrdersComponent implements OnInit {
     this.initStashOrderItem();
   }
 
-  removeItem(item) {
-    this.order.items.filter(i => i )
-  }
-
   createOrder() {
     this.orderService.createOrder(this.order).subscribe(() => {
       this.loadOrders();
@@ -119,6 +124,10 @@ export class OrdersComponent implements OnInit {
 
     }, error => console.log(error)
     );
+  }
+
+  onProductVariationChange(productVariation: ProductVariation) {
+    this.orderItem.price = productVariation.price;
   }
 
   alreadyContainsOrder(order: Order) {
@@ -136,7 +145,7 @@ export class OrdersComponent implements OnInit {
   }
 
   resolveProductVariationString(variation: ProductVariation) {
-    return !variation ? '' : variation.name + ' - ' + variation.price + ' kr';
+    return !variation ? '' : variation.name + ' - Normalpris: ' + variation.price + ' kr';
   }
 
   get getCoffeeProductVariations() { 
