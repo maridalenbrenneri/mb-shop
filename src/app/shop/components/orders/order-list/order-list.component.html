@@ -65,7 +65,7 @@
                   </button>
                   <button mat-raised-button (click)="processOrder(order)" [disabled]="order.status === 'processing'" title="Sett status behandles"><i class="material-icons">refresh</i></button>
                   <button mat-raised-button (click)="cancelOrder(order)" [disabled]="order.status !== 'processing'" title="Kanseller bestilling"><i class="material-icons">cancel_presentation</i></button>
-                  <button mat-raised-button (click)="openAddNoteDialog(order)" title="Legg til notat"><i class="material-icons">speaker_notes</i></button>
+                  <button mat-raised-button (click)="openAddNoteDialog(order)" title="Legg til internt notat"><i class="material-icons">speaker_notes</i></button>
                   <button mat-raised-button>Lag faktura</button>
                   <button mat-raised-button>Vis faktura</button>
               </div>
