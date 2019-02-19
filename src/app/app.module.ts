@@ -22,6 +22,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTableModule} from '@angular/material/table';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
 
 import { AppComponent } from './app.component';
 
@@ -38,7 +40,6 @@ import { HttpStuffInterceptor } from './shop/core/http-stuff-interceptor';
 import { MyAccountComponent } from './shop/components/my-account/my-account.component';
 import { MyDetailsComponent } from './shop/components/my-account/my-details/my-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ShopComponent } from './shop/shop.component';
 import { AmountFieldComponent } from './shop/components/util/amount-field/amount-field.component';
 import { GiftSubscriptionsComponent } from './shop/components/gift-subscriptions/gift-subscriptions.component';
 import { GiftSubscriptionDetailsComponent } from './shop/components/gift-subscriptions/gift-subscription-details/gift-subscription-details.component';
@@ -48,8 +49,13 @@ import { GiftSubscriptionDetailsComponent } from './shop/components/gift-subscri
 registerLocaleData(localeNb, 'nb');
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/shop', pathMatch: 'full' },
-  { path: 'shop', component: ShopComponent }
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'shop', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent},
+  { path: 'orders', component: OrdersComponent},
+  { path: 'gift-subscriptions', component: GiftSubscriptionsComponent},
+  { path: 'products', component: ProductsComponent},
+  { path: 'my-account', component: MyAccountComponent}
   // { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -62,7 +68,6 @@ const appRoutes: Routes = [
     MyAccountComponent,
     MyDetailsComponent,
     DashboardComponent,
-    ShopComponent,
     EditProductComponent,
     OrdersComponent,
     AddressComponent,
@@ -87,7 +92,10 @@ const appRoutes: Routes = [
     HttpClientModule,
     CommonModule,
     ToastrModule.forRoot(),
-    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule, MatTabsModule, MatTableModule, MatDatepickerModule, MatMomentDateModule ],
+    MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule, 
+    MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule, 
+    MatTabsModule, MatTableModule, MatDatepickerModule, MatMomentDateModule,
+    MatMenuModule, MatIconModule ],
   providers: [
     CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpStuffInterceptor, multi: true },

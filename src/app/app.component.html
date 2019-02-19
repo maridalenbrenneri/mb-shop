@@ -1,8 +1,45 @@
 <div class="container-fluid">
-    <app-loader></app-loader>
 
-    <div class="router-outlet">
-        <router-outlet></router-outlet>
+    <div class="row">
+        <div class="column">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+
+        <div class="column">
+            <h4 class="pull-right">MB Backoffice</h4>
+        </div>
     </div>
 
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>dashboard</mat-icon>
+            <a [routerLink]="['/dashboard']">Dashboard</a>
+        </button>
+        <button mat-menu-item *ngIf="isSignedIn">
+            <mat-icon>shopping_cart</mat-icon>
+            <a [routerLink]="['/orders']">Bestillinger</a>
+        </button>
+        <button mat-menu-item *ngIf="isSignedIn">
+            <mat-icon>card_giftcard</mat-icon>
+            <a [routerLink]="['/gift-subscriptions']">Gaveabos</a>
+        </button>
+        <button mat-menu-item *ngIf="isSignedIn">
+            <mat-icon>reorder</mat-icon>
+            <a [routerLink]="['/products']">Produkter</a>
+        </button>
+        <button mat-menu-item>
+            <mat-icon>account_circle</mat-icon>
+            <a [routerLink]="['/my-account']">Min konto</a>
+        </button>
+    </mat-menu>
+
+    <div>
+        <app-loader></app-loader>
+
+        <div class="router-outlet">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
