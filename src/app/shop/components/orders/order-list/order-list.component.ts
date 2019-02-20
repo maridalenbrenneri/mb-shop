@@ -38,6 +38,7 @@ export class OrderListComponent {
   @Output() canceled = new EventEmitter<number>();
   @Output() processed = new EventEmitter<number>();
   @Output() addedNote = new EventEmitter<OrderNote>();
+  @Output() createdInvoice = new EventEmitter<Order>();
   
   constructor(public dialog: MatDialog) {  }
 
@@ -162,7 +163,8 @@ export class OrderListComponent {
   }
   
   createInvoice(order: Order) {
-    console.log("createInvoice not yet implemented...");
+    console.log("create invoice");
+    this.createdInvoice.emit(order);
   }
 
   viewInvoice(order: Order) {

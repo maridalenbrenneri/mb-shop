@@ -50,4 +50,8 @@ export class OrderService {
   addOrderNote(note: OrderNote) {
     return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${note.orderId}/notes`, note);
   }
+
+  createInvoice(order: Order) {
+    return this.http.post<any>(`${environment.mbApiBaseUrl}orders/${order.id}/invoice`, order);
+  }
 }

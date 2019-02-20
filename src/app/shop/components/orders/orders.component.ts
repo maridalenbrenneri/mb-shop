@@ -184,5 +184,12 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  onCreatedInvoice(order: Order) {
+    console.log("create invoice emitted");
+    this.orderService.createInvoice(order).subscribe(() => {
+      this.loadOrders();
+    });
+  }
+
   get diagnostic() { return JSON.stringify(this.order.customer); }
 }
