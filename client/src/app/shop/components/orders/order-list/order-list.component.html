@@ -1,0 +1,77 @@
+<div class="row">
+
+  <div class="col-12 col-md-6">
+    <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="selectedCustomer">
+      <option *ngFor="let customer of customers" [ngValue]="customer">{{customer.name}}</option>
+    </select>
+  </div>
+
+  <div class="col-12 col-md-6">
+
+    <section>
+      <mat-checkbox [(ngModel)]="showProcessing" (checked)=true>Processing</mat-checkbox>
+      <mat-checkbox [(ngModel)]="showCompleted">Completed</mat-checkbox>
+      <mat-checkbox [(ngModel)]="showCanceled">Canceled</mat-checkbox>
+    </section>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-12">
+    <P>
+        Viser {{orders.length}} bestillinger
+    </P>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Status</th>
+          <th>Dato</th>
+          <th>Kunde</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let order of orders">
+          <tr (click)="order.rowExpanded=!order.rowExpanded" class="clickable">
+            <td>{{order.id}}</td>
+            <td>
+              <span *ngIf="order.status == 'processing'">
+                  <i class="material-icons">refresh</i>
+              </span>
+              <span *ngIf="order.status == 'completed'">
+                  <i class="material-icons">done</i>
+              </span>
+              <span *ngIf="order.status == 'canceled'">
+                  <i class="material-icons">cancel_presentation</i>
+              </span>
+            </td>
+            <td>{{order.orderDate | date: 'short'}}</td>
+            <td>{{order.customer.name}}</td>
+          </tr>
+          <tr *ngIf="order.rowExpanded">
+            <td colspan="4">
+              <app-order-details [order]="order"></app-order-details>
+            </td>
+          </tr>
+          <tr *ngIf="order.rowExpanded">
+            <td colspan="4">
+              <div>
+                  <button mat-raised-button (click)="completeOrder(order)" [disabled]="order.status !== 'processing'" title="Fullfør bestilling"><i class="material-icons">done</i></button>
+                  <button mat-raised-button (click)="completeAndShipOrder(order)" [disabled]="order.status !== 'processing'" title="Fullfør og lag oppdrag i Cargonizer">
+                    <i class="material-icons">done</i> & <i class="material-icons">local_shipping</i>
+                  </button>
+                  <button mat-raised-button (click)="processOrder(order)" [disabled]="order.status === 'processing'" title="Sett status behandles"><i class="material-icons">refresh</i></button>
+                  <button mat-raised-button (click)="cancelOrder(order)" [disabled]="order.status !== 'processing'" title="Kanseller bestilling"><i class="material-icons">cancel_presentation</i></button>
+                  <button mat-raised-button (click)="openAddNoteDialog(order)" title="Legg til internt notat"><i class="material-icons">speaker_notes</i></button>
+                  <button mat-raised-button (click)="createInvoice(order)" [disabled]="true">Lag faktura</button>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

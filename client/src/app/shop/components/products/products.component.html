@@ -1,0 +1,54 @@
+<p></p>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <button mat-raised-button (click)="openEditProductDialog(null)">Legg til ny kaffe</button>
+    </div>
+    <div class="col-12 col-md-6">
+        <section>
+            <mat-checkbox [(ngModel)]="showNotActiveProducts">Vis deaktiverte produkter</mat-checkbox>
+        </section>
+    </div>
+</div>
+
+<p></p>
+
+<div class="row">
+    <div class="col-12">
+        Viser {{coffeeProducts?.length}} produkter
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-6" *ngFor="let product of coffeeProducts">
+        <mat-card class="product-card">
+            <mat-card-header>
+                <mat-card-title>{{product.data.country}} - {{product.data.name}} ({{product.data.code}})</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="row">
+                    <div class="col-6">
+                        <img mat-card-image src="../../../assets/{{getProductImageOrDefault(product)}}" alt="Produktbilde" />
+                    </div>
+                    <div class="col-6">
+                        <p>{{product.data.description}}</p>
+                        <p>{{product.data.tastes}}</p>
+                        <p>{{product.productVariations[0].price}} kr - 250g.</p>
+                        <p>{{product.productVariations[1].price}} kr / kg.</p>
+                        <hr />
+                        <p>På lager: {{product.isInStock}} </p>
+                        <p>Aktiv: {{product.isActive}}</p>
+                        <p>Momsgruppe: {{product.vatGroup}} ({{vatCoffee}}%) </p>
+                        <p>Produktbilde: {{product.portfolioImageKey}}</p>
+                    </div>
+                </div>
+
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="openEditProductDialog(product)" [disabled]="!product.isActive">Endre</button>
+                <button mat-raised-button (click)="toggleIsActive(product, false)" [hidden]="!product.isActive">Deaktiver</button>
+                <button mat-raised-button (click)="toggleIsActive(product, true)" [hidden]="product.isActive">Aktiver</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

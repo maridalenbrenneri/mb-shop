@@ -1,0 +1,62 @@
+<div class="row margin-top">
+
+  <div class="col-12 col-md-4">
+    <section>
+      <mat-checkbox [(ngModel)]="showMonthly" (checked)=true>Månedlig</mat-checkbox>
+      <mat-checkbox [(ngModel)]="showFortnightly" (checked)=true>Annenhver uke</mat-checkbox>
+    </section>
+    <section>
+      <mat-checkbox [(ngModel)]="showOnlyNew" (checked)=false>Vis kun nye</mat-checkbox>
+    </section>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <label>Antall poser</label>
+    <select class="form-control" id="quantityElement" name="quantityElement" [(ngModel)]="selectedQuantity">
+      <option *ngFor="let quantity of quantities" [ngValue]="quantity">{{quantity.label}}</option>
+    </select>
+  </div>
+
+  <div class="col-12 col-md-4">
+      <button mat-raised-button class="float-right" (click)="import()">Importer fra Woo</button>
+  </div>
+
+  <div class="col-12">
+    <P>
+        Viser {{subscriptions.length}} gabos
+    </P>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Order# (Woo)</th>
+          <th>Antall mån</th>
+          <th>Første levering</th>
+          <th>Siste ordre</th>
+          <th>Poser</th>
+          <th>Type</th>
+          <th>Mottaker</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let subscription of subscriptions">
+          <tr (click)="subscription.rowExpanded=!subscription.rowExpanded" class="clickable">
+            <td>{{subscription.wooOrderNumber}}</td>
+            <td>{{subscription.numberOfMonths}}</td>
+            <td>{{subscription.firstDeliveryDate | date: 'shortDate'}}</td>
+            <td>{{subscription.lastOrderCreated | date: 'short' }}</td>
+            <td>{{subscription.quantity}}</td>
+            <td>{{subscription.frequence == 1 ? 'Månedlig' : 'Annenhver uke'}}</td>
+            <td>{{subscription.recipient_name}}</td>
+            <td><button mat-raised-button (click)="createOrder(subscription)" title="Lag oppdrag i Cargonizer"><i class="material-icons">local_shipping</i></button></td>
+          </tr>
+          <tr *ngIf="subscription.rowExpanded">
+            <td colspan="7">
+              <app-gift-subscription-details [subscription]="subscription"></app-gift-subscription-details>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>

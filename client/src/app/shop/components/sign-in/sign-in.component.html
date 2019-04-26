@@ -1,0 +1,22 @@
+<div *ngIf="!isSignedIn">
+  <form [formGroup]="signInForm">
+    <div class="form-group">
+      <label class="center-block">E-post:
+        <input class="form-control" required formControlName="email">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Passord:
+        <input type="password" required class="form-control" formControlName="password">
+      </label>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" (click)="signIn()" [disabled]="!signInForm.valid">Logg inn</button>
+    </div>
+  </form>
+</div>
+
+<p *ngIf="isSignedIn">
+  Logget inn som {{signedInUserName}}
+  <button class="btn btn-primary" (click)="signOut()">Logg ut</button>
+</p> 
