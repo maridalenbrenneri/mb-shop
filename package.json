@@ -7,7 +7,7 @@
   },
   "main": "./server/dist/server.js",
   "scripts": {
-    "postinstall-client": "ng build --aot --prod --prefix ./client/",
+    "postinstall-client": "npm run build --aot --prod --prefix ./client/",
     "postinstall-server": "npm run build --prefix ./server/",
     "postinstall": "npm-run-all postinstall-client postinstall-server",
     "build-client": "npm run build --prefix ./client/",
