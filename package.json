@@ -7,8 +7,8 @@
   },
   "main": "./server/dist/server.js",
   "scripts": {
-    "postinstall-client": "npm run build --aot --prod --prefix ./client/",
-    "postinstall-server": "npm run build --prefix ./server/",
+    "postinstall-client": "npm run postinstall --prefix ./client/",
+    "postinstall-server": "npm run postinstall --prefix ./server/",
     "postinstall": "npm-run-all postinstall-client postinstall-server",
     "build-client": "npm run build --prefix ./client/",
     "build-server": "npm run build --prefix ./server/",
@@ -19,9 +19,7 @@
   "dependencies": {
     "@types/node": "^10.5.6",
     "typescript": "^3.0.1",
-    "npm-run-all": "^4.1.5",
-    "@angular/cli": "~7.1.0",
-    "@angular-devkit/build-angular": "~0.6.8"
+    "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
     "ts-node": "^7.0.1"
