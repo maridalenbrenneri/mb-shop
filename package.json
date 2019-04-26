@@ -20,7 +20,8 @@
     "@types/node": "^10.5.6",
     "typescript": "^3.0.1",
     "npm-run-all": "^4.1.5",
-    "@angular/cli": "~7.1.0"
+    "@angular/cli": "~7.1.0",
+    "@angular-devkit/build-angular": "~0.6.8"
   },
   "devDependencies": {
     "ts-node": "^7.0.1"
