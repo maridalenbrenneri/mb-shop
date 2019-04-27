@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GiftSubscription } from '../../models/gift-subscription.model';
 import { GiftSubscriptionService } from '../../services/gift-subscription.service';
 import { ToastrService } from 'ngx-toastr';
-import { SubscriptionFrequence } from 'src/app/constants';
+import { SubscriptionFrequence } from '../../../constants';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-gift-subscriptions',
@@ -17,16 +18,17 @@ export class GiftSubscriptionsComponent implements OnInit {
 
   private _subscriptions: Array<GiftSubscription> = [];
   private _filteredSubscriptions: Array<GiftSubscription> = [];
-  private _quantities: Array<any> = []; 
+  private _quantities: Array<any> = [];
   private _selectedQuantity: any;
   private _showMonthly: boolean = true;
   private _showFortnightly: boolean = true;
   private _showOnlyNew: boolean = false;
+  private _showOnlyNotSentToday: boolean = false;
 
-  constructor(private giftSubscriptionService: GiftSubscriptionService, private toastr: ToastrService) { 
-    this._quantities.push({quantity: 0, label: "Alle"});
-    this._quantities.push({quantity: 1, label: "1 pose"});
-    this._quantities.push({quantity: 2, label: "2 poser"});
+  constructor(private giftSubscriptionService: GiftSubscriptionService, private toastr: ToastrService) {
+    this._quantities.push({ quantity: 0, label: "Alle" });
+    this._quantities.push({ quantity: 1, label: "1 pose" });
+    this._quantities.push({ quantity: 2, label: "2 poser" });
 
     this._selectedQuantity = this._quantities[0];
   }
@@ -47,16 +49,16 @@ export class GiftSubscriptionsComponent implements OnInit {
     this.applyFilter();
   }
 
-  get subscriptions() : Array<GiftSubscription> {
+  get subscriptions(): Array<GiftSubscription> {
     return this._filteredSubscriptions;
-  }  
+  }
 
   set showMonthly(show: boolean) {
     this._showMonthly = show;
     this.applyFilter();
   }
 
-  get showMonthly() : boolean {
+  get showMonthly(): boolean {
     return this._showMonthly;
   }
 
@@ -64,8 +66,12 @@ export class GiftSubscriptionsComponent implements OnInit {
     this._showFortnightly = show;
     this.applyFilter();
   }
-  
-  get showOnlyNew() : boolean {
+
+  get showFortnightly(): boolean {
+    return this._showFortnightly;
+  }
+
+  get showOnlyNew(): boolean {
     return this._showOnlyNew;
   }
 
@@ -73,10 +79,16 @@ export class GiftSubscriptionsComponent implements OnInit {
     this._showOnlyNew = show;
     this.applyFilter();
   }
-  
-  get showFortnightly() : boolean {
-    return this._showFortnightly;
+
+  get showOnlyNotSentToday(): boolean {
+    return this._showOnlyNotSentToday;
   }
+
+  set showOnlyNotSentToday(show: boolean) {
+    this._showOnlyNotSentToday = show;
+    this.applyFilter();
+  }
+
 
   set selectedQuantity(quantity) {
     this._selectedQuantity = quantity;
@@ -87,7 +99,7 @@ export class GiftSubscriptionsComponent implements OnInit {
     return this._selectedQuantity;
   }
 
-  get quantities() : Array<any> {
+  get quantities(): Array<any> {
     return this._quantities;
   }
 
@@ -106,23 +118,28 @@ export class GiftSubscriptionsComponent implements OnInit {
   }
 
   applyFilter() {
-    if(!this._selectedQuantity.quantity) {
+    if (!this._selectedQuantity.quantity) {
       this._filteredSubscriptions = this._subscriptions;
-    
+
     } else {
       this._filteredSubscriptions = this._subscriptions.filter(s => s.quantity === this._selectedQuantity.quantity);
     }
 
-    if(!this._showMonthly) {
+    if (!this._showMonthly) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(s => s.frequence !== SubscriptionFrequence.monthly);
     }
 
-    if(!this._showFortnightly) {
+    if (!this._showFortnightly) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(s => s.frequence !== SubscriptionFrequence.fortnightly);
     }
 
-    if(this.showOnlyNew) {
+    if (this.showOnlyNew) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(s => !s.lastOrderCreated);
+    }
+
+    if (this.showOnlyNotSentToday) {
+      const today = moment();
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(s => !moment(s.lastOrderCreated).isSame(today, 'd'));
     }
   }
 }

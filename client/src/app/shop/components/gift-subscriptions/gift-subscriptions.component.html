@@ -7,6 +7,7 @@
     </section>
     <section>
       <mat-checkbox [(ngModel)]="showOnlyNew" (checked)=false>Vis kun nye</mat-checkbox>
+      <mat-checkbox [(ngModel)]="showOnlyNotSentToday" (checked)=false>Ikke sent idag</mat-checkbox>
     </section>
   </div>
 
@@ -18,12 +19,12 @@
   </div>
 
   <div class="col-12 col-md-4">
-      <button mat-raised-button class="float-right" (click)="import()">Importer fra Woo</button>
+    <button mat-raised-button class="float-right" (click)="import()">Importer fra Woo</button>
   </div>
 
   <div class="col-12">
     <P>
-        Viser {{subscriptions.length}} gabos
+      Viser {{subscriptions.length}} gabos
     </P>
 
     <table class="table table-striped">
@@ -49,7 +50,8 @@
             <td>{{subscription.quantity}}</td>
             <td>{{subscription.frequence == 1 ? 'Månedlig' : 'Annenhver uke'}}</td>
             <td>{{subscription.recipient_name}}</td>
-            <td><button mat-raised-button (click)="createOrder(subscription)" title="Lag oppdrag i Cargonizer"><i class="material-icons">local_shipping</i></button></td>
+            <td><button mat-raised-button (click)="createOrder(subscription)" title="Lag oppdrag i Cargonizer"><i
+                  class="material-icons">local_shipping</i></button></td>
           </tr>
           <tr *ngIf="subscription.rowExpanded">
             <td colspan="7">
