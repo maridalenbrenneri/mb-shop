@@ -21,20 +21,24 @@ export class Consignment {
 }
 
 export class CargonizerService {
-  private prod_consignment_url = "https://cargonizer.no/consignments.xml";
+  private prod_consignment_url =
+    "https://cargonizer.no/consignments.xml";
   private prod_service_partners_url =
     "https://cargonizer.no/service_partners.xml";
-
   private sandbox_consignment_url =
     "https://sandbox.cargonizer.no/consignments.xml";
   private sandbox_service_partners_url =
     "https://cargonizer.no/service_partners.xml"; // use prod, sandbox doesn't work (read only anyway)
+
+  private printer_normal_id = 1057;
+  private printer_rfid_id = 1698;
 
   private api_key: string;
   private sender_id: string;
   private url: string;
   private transport_agreement: string;
   private service_partners_url: string;
+  private print_url: string;
 
   constructor() {
     const useSandbox = process.env.CARGONIZER_USE_SANDBOX;
@@ -45,6 +49,9 @@ export class CargonizerService {
     this.service_partners_url = useSandbox
       ? this.sandbox_service_partners_url
       : this.prod_service_partners_url;
+    this.print_url = useSandbox
+      ? 'https://sandbox.cargonizer.no/consignments/label_direct'
+      : 'https://cargonizer.no/consignments/label_direct';
 
     this.api_key = useSandbox
       ? process.env.CARGONIZER_SANDBOX_API_KEY
@@ -57,15 +64,16 @@ export class CargonizerService {
       : process.env.CARGONIZER_TRANSPORT_AGREEMENT;
   }
 
-  public async requestConsignment(consignment: Consignment) {
+  public async requestConsignment(consignment: Consignment, useRfidPrinter: boolean = false) {
     const xml = await this.createConsignmentXml(consignment);
 
-    const result = await this.createConsignment(xml);
+    const result = await this.createConsignment(xml, useRfidPrinter);
 
     return result;
   }
 
-  private async createConsignment(xml: string) {
+  private async createConsignment(xml: string, useRfidPrinter: boolean) {
+    const self = this;
     let options = {
       url: this.url,
       method: "POST",
@@ -96,6 +104,13 @@ export class CargonizerService {
         ) {
           if (parseError) {
             return reject(parseError);
+          }
+
+          if (result.consignments &&
+            result.consignments.consignment &&
+            result.consignments.consignment.length > 0) {
+            const id = result.consignments.consignment[0].id[0]._;
+            self.printLabel(useRfidPrinter, id);
           }
 
           return resolve(result);
@@ -165,7 +180,7 @@ export class CargonizerService {
         consignment: {
           $: {
             transport_agreement: this.transport_agreement,
-            print: true
+            print: false
           },
           product: product,
           parts: {
@@ -216,6 +231,38 @@ export class CargonizerService {
     });
 
     return builder.buildObject(obj);
+  }
+
+  private printLabel(useRfidPrinter: boolean, consignmentId: number) {
+    const printerId = useRfidPrinter ? this.printer_rfid_id : this.printer_normal_id;
+    // const printerId = 227;  // printer sandbox ids  - 227 and 238
+
+    let url = `${this.print_url}?printer_id=${printerId}&consignment_ids[]=${consignmentId}`;
+
+    let options = {
+      url: url,
+      method: "POST",
+      headers: {
+        "X-Cargonizer-Key": this.api_key,
+        "X-Cargonizer-Sender": this.sender_id,
+      },
+    };
+
+    return new Promise<any>(function (resolve, reject) {
+      const request = require("request");
+
+      request(options, function (error: any, response: any) {
+        if (error) {
+          return reject(error);
+        }
+
+        if (response.statusCode != 202) {
+          return reject(response.body);
+        }
+
+        return resolve('OK');
+      });
+    });
   }
 
   private ShippingTypeToProduct(shippingType: number): string {

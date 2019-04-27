@@ -7,11 +7,23 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/server/dist/server.js",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        }
+            "name": "server",
+            "cwd": "${workspaceRoot}/server",
+            "args": [
+                "./src/server.ts"
+            ],
+            "protocol": "inspector",
+            "internalConsoleOptions": "openOnSessionStart",
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register"
+            ],
+            "outputCapture": "std",
+            "env": {
+                "NODE_ENV": "development",
+                "TS_NODE_FILES": "true"
+            },
+            "sourceMaps": true
+        },
     ]
 }

@@ -123,8 +123,12 @@ app.get('/api', function (_req, res) {
 
 app.use(express.static(__dirname + '/../../client/dist/mb-shop'));
 
-app.get('/*', function (_req, res) {
+app.get('/', function (_req, res) {
     res.sendFile(__dirname + '/../../client/dist/mb-shop/index.html');
+});
+
+app.get('/*', function (_req, res) {
+    res.redirect('/');
 });
 
 /*** END CLIENT ***/
