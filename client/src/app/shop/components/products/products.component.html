@@ -20,35 +20,37 @@
 </div>
 
 <div class="row">
-    <div class="col-12 col-md-6" *ngFor="let product of coffeeProducts">
-        <mat-card class="product-card">
-            <mat-card-header>
-                <mat-card-title>{{product.data.country}} - {{product.data.name}} ({{product.data.code}})</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="row">
-                    <div class="col-6">
-                        <img mat-card-image src="../../../assets/{{getProductImageOrDefault(product)}}" alt="Produktbilde" />
-                    </div>
-                    <div class="col-6">
-                        <p>{{product.data.description}}</p>
-                        <p>{{product.data.tastes}}</p>
-                        <p>{{product.productVariations[0].price}} kr - 250g.</p>
-                        <p>{{product.productVariations[1].price}} kr / kg.</p>
-                        <hr />
-                        <p>På lager: {{product.isInStock}} </p>
-                        <p>Aktiv: {{product.isActive}}</p>
-                        <p>Momsgruppe: {{product.vatGroup}} ({{vatCoffee}}%) </p>
-                        <p>Produktbilde: {{product.portfolioImageKey}}</p>
-                    </div>
-                </div>
-
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-raised-button (click)="openEditProductDialog(product)" [disabled]="!product.isActive">Endre</button>
-                <button mat-raised-button (click)="toggleIsActive(product, false)" [hidden]="!product.isActive">Deaktiver</button>
-                <button mat-raised-button (click)="toggleIsActive(product, true)" [hidden]="product.isActive">Aktiver</button>
-            </mat-card-actions>
-        </mat-card>
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>250g</td>
+                    <td>Kilopris</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of coffeeProducts">
+                    <td>{{product.id}}</td>
+                    <td>{{product.data.name}}</td>
+                    <td>{{product.data.code}}</td>
+                    <td>{{product.data.country}}</td>
+                    <td>{{product.productVariations[0].price}} kr</td>
+                    <td>{{product.productVariations[1].price}} kr</td>
+                    <td>
+                        <button mat-raised-button (click)="openEditProductDialog(product)"
+                            [disabled]="!product.isActive">Endre</button>
+                        <button mat-raised-button (click)="toggleIsActive(product, false)"
+                            [hidden]="!product.isActive">Deaktiver</button>
+                        <button mat-raised-button (click)="toggleIsActive(product, true)"
+                            [hidden]="product.isActive">Aktiver</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

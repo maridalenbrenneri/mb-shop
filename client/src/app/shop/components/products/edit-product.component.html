@@ -26,23 +26,15 @@
                 </div>
                 <div class="form-group">
                     <label class="center-block">Pris per kg <small>(Eks mva)</small>
-                        <input type="text" required class="form-control" name="pricePerKg" [(ngModel)]="data.pricePerKg">
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="center-block">Smaker <small>(Intens frukt | God fylde | ...)</small>
-                        <input type="text" class="form-control" name="tastes" [(ngModel)]="data.tastes">
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label class="center-block">Beskrivelse
-                        <textarea type="text" class="form-control" name="description" [(ngModel)]="data.description"></textarea>
+                        <input type="text" required class="form-control" name="pricePerKg"
+                            [(ngModel)]="data.pricePerKg">
                     </label>
                 </div>
                 <div class="form-group">
                     <div mat-dialog-actions>
                         <button mat-button (click)="onNoClick()">Avbryt</button>
-                        <button mat-button [mat-dialog-close]="data" cdkFocusInitial [disabled]="!productForm.valid">Lagre endringer</button>
+                        <button mat-button [mat-dialog-close]="data" cdkFocusInitial
+                            [disabled]="!productForm.valid">Lagre endringer</button>
                     </div>
                 </div>
             </form>
