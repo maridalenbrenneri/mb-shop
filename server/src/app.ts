@@ -51,15 +51,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Set allowed origin 
 app.use(function (req: Request, res: Response, next: any) {
     res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
+    res.setHeader('Access-Control-Allow-Origin', "http://localhost:4200");
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', ['content-type', 'x-access-token']);
     next();
-});
-
-// Validate api key
-app.use(function (req: Request, res: Response, next: any): Boolean {
-    var provider = req.get('X-Header-Provider');
-    return next();
 });
 
 import adminController from './controllers/admin';
@@ -73,8 +68,9 @@ import shippingController from './controllers/shipping';
 /*** API ***/
 
 // Admin routes
-app.post("/api/admin/create-tables", isUserInAdmin, adminController.createTable);
+app.get("/api/admin/create-tables", isUserInAdmin, adminController.createTable);
 app.get("/api/admin/stats", adminController.getStats);
+app.get("/api/admin/importstats", adminController.importStats);
 
 app.get("/api/admin/hello", adminController.hello);
 app.get("/api/admin/testdb", adminController.testDb);
@@ -116,16 +112,9 @@ app.post("/api/orders/:id/process", isUserInSuperuser, orderController.processOr
 app.post("/api/orders/:id/notes", isUserInSuperuser, orderController.addOrderNote);
 app.post("/api/orders/:id/invoice", isUserInSuperuser, orderController.createInvoice);
 
-
-// Subscriptions
-// app.get("/api/subscriptions/mine", isAuthenticated, subscriptionController.getSubscriptions);
-// app.post("/api/subscriptions/:id/activate", isAuthenticated, subscriptionController.activateSubscription);
-// app.post("/api/subscriptions/:id/pause", isAuthenticated, subscriptionController.pauseSubscription);
-// app.post("/api/subscriptions/:id/cancel", isAuthenticated, subscriptionController.startCancelSubscription);
-// app.get("/api/subscriptions", isUserInSuperuser, subscriptionController.getSubscriptions);
-// app.get("/api/subscriptions/data/delivery-dates", isUserInSuperuser, subscriptionController.getNextStandardDeliveryDates);
-// app.post("/api/subscriptions/:id/complete-cancel", isUserInSuperuser, subscriptionController.completeCancelSubscription);
-// app.post("/api/subscription/engine/create-renewal-orders", isUserInSuperuser, subscriptionController.createRenewalOrders);
+app.get('/api', function (_req, res) {
+    res.send('Maridalen Brenneri Backoffice API');
+});
 
 /*** END API ***/
 
@@ -151,6 +140,6 @@ app.use(function (err, req, res, next) {
 });
 
 // console.log('NODE_ENV: ' + process.env.NODE_ENV);
-// console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
+//console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
 
 export default app;

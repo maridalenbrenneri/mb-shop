@@ -83,3 +83,8 @@ export const subscriptionModel = {
     isGiftSubscription: { type: BOOLEAN, allowNull: false },
     isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
 }
+
+export const statsModel = {
+    lastUpdated: { type: DATE, allowNull: false },
+    data: { type: TEXT, allowNull: false }
+}

@@ -1,4 +1,5 @@
 import giftSubscriptionService from "./gift-subscription-service";
+import StatsRepo from '../repositories/stats-repo';
 
 class Counter {
     one: number = 0;
@@ -40,6 +41,23 @@ class DashboardService {
     private stats: Stats;
 
     async getStats() {
+        return StatsRepo.getStats().then(stats => {
+            return {
+                data: JSON.parse(stats.data),
+                lastUpdated: stats.lastUpdated
+            };
+        });
+    }
+
+    /* Get stats from Woo and save in app db */
+    async importStats() {
+        const statsData = await this.getStatsDataFromWoo();
+        return StatsRepo.updateStats(statsData).then(() => {
+            return this.getStats();
+        });
+    }
+
+    private async getStatsDataFromWoo() {
         this.stats = new Stats();
         this.stats.bagCounter = new BagCounter();
         this.stats.bagCounter.fortnightly = new Counter();
@@ -49,7 +67,7 @@ class DashboardService {
         await this.getOrdersInPendingPayment();
         await this.getOrdersInProcess();
         await this.getGiftSubscriptions();
-        
+
         return this.stats;
     }
 
@@ -60,20 +78,20 @@ class DashboardService {
             const bags = sub.quantity;;
             const isFortnighlty = sub.type == 2;
             this.updateBagCounter(bags, isFortnighlty);
-      
+
             if (isFortnighlty) {
-              this.stats.subsciptionsBagsPerFortnightlyCount += bags;
-              this.stats.subsciptionsBagsPerMonthCount += bags * 2;
-              this.stats.giftSubscriptionFortnightlyCount++;
-      
+                this.stats.subsciptionsBagsPerFortnightlyCount += bags;
+                this.stats.subsciptionsBagsPerMonthCount += bags * 2;
+                this.stats.giftSubscriptionFortnightlyCount++;
+
             } else {
-              this.stats.subsciptionsBagsPerMonthlyCount += bags;
-              this.stats.subsciptionsBagsPerMonthCount += bags;
-              this.stats.giftSubscriptionMonthlyCount++;
+                this.stats.subsciptionsBagsPerMonthlyCount += bags;
+                this.stats.subsciptionsBagsPerMonthCount += bags;
+                this.stats.giftSubscriptionMonthlyCount++;
             }
-          }
-      
-          this.stats.giftSubscriptionCount = activeGiftSubscriptions.length;
+        }
+
+        this.stats.giftSubscriptionCount = activeGiftSubscriptions.length;
     }
 
     private getSubscriptionsFromWoo() {

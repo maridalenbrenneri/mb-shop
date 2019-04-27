@@ -5,7 +5,7 @@ class OrderRepo extends BaseRepo {
 
     private Order = this.sequelize.define('order', orderModel);
 
-    createTable = function (forceCreate) {
+    createTable = function (forceCreate = false) {
         return this.Order.sync({ force: forceCreate }); // todo: force only during initial development...
     }
 
