@@ -33,6 +33,9 @@ export class CargonizerService {
   private printer_normal_id = 1057;
   private printer_rfid_id = 1698;
 
+  private product_business = "bring_bedr_dor_dor";
+  private product_private = "bring_pose_pa_doren_rfid";
+
   private api_key: string;
   private sender_id: string;
   private url: string;
@@ -49,9 +52,7 @@ export class CargonizerService {
     this.service_partners_url = useSandbox
       ? this.sandbox_service_partners_url
       : this.prod_service_partners_url;
-    this.print_url = useSandbox
-      ? 'https://sandbox.cargonizer.no/consignments/label_direct'
-      : 'https://cargonizer.no/consignments/label_direct';
+    this.print_url = 'https://cargonizer.no/consignments/label_direct';
 
     this.api_key = useSandbox
       ? process.env.CARGONIZER_SANDBOX_API_KEY
@@ -64,15 +65,12 @@ export class CargonizerService {
       : process.env.CARGONIZER_TRANSPORT_AGREEMENT;
   }
 
-  public async requestConsignment(consignment: Consignment, useRfidPrinter: boolean = false) {
+  public async requestConsignment(consignment: Consignment) {
     const xml = await this.createConsignmentXml(consignment);
-
-    const result = await this.createConsignment(xml, useRfidPrinter);
-
-    return result;
+    return await this.createConsignment(xml);
   }
 
-  private async createConsignment(xml: string, useRfidPrinter: boolean) {
+  private async createConsignment(xml: string) {
     const self = this;
     let options = {
       url: this.url,
@@ -110,6 +108,8 @@ export class CargonizerService {
             result.consignments.consignment &&
             result.consignments.consignment.length > 0) {
             const id = result.consignments.consignment[0].id[0]._;
+            const useRfidPrinter = result.consignments.consignment[0].product === this.product_private;
+
             self.printLabel(useRfidPrinter, id);
           }
 
@@ -235,7 +235,6 @@ export class CargonizerService {
 
   private printLabel(useRfidPrinter: boolean, consignmentId: number) {
     const printerId = useRfidPrinter ? this.printer_rfid_id : this.printer_normal_id;
-    // const printerId = 227;  // printer sandbox ids  - 227 and 238
 
     let url = `${this.print_url}?printer_id=${printerId}&consignment_ids[]=${consignmentId}`;
 
@@ -266,22 +265,15 @@ export class CargonizerService {
   }
 
   private ShippingTypeToProduct(shippingType: number): string {
-    /*
-			"bring_pose_pa_doren_no_rfid" - "Bring Pose pa doren"
-			"bring_bedr_dor_dor" - "Bring Bedriftspakke"
-    */
 
     if (process.env.CARGONIZER_USE_SANDBOX) {
       return "bring_pa_doren";
     }
 
-    const product_business = "bring_bedr_dor_dor";
-    const product_private = "bring_pose_pa_doren_rfid";
-
     if (shippingType == ShippingType.standard_business) {
-      return product_business;
+      return this.product_business;
     }
 
-    return product_private;
+    return this.product_private;
   }
 }
