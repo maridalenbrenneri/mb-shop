@@ -3,23 +3,12 @@
 
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-// @font-face {    
-//     font-family:'Open Sans';     
-//     src:url('assets/fonts/OpenSans-Light-webfont.eot');     
-//     src:url('assets/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),         
-//     url('assets/fonts/OpenSans-Light-webfont.woff') format('woff'),         
-//     url('assets/fonts/OpenSans-Light-webfont.ttf') format('truetype'),         
-//     url('assets/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');     
-//     font-weight:300;     
-//     font-style:normal
-// }
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400);
 
-// @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSans-Regular-webfont.eot');     src:url('css/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSans-Regular-webfont.woff') format('woff'),         url('css/fonts/OpenSans-Regular-webfont.ttf') format('truetype'),         url('css/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');     font-weight:400;     font-style:normal}
-// @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSans-Semibold-webfont.eot');     src:url('css/fonts/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSans-Semibold-webfont.woff') format('woff'),         url('css/fonts/OpenSans-Semibold-webfont.ttf') format('truetype'),         url('css/fonts/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');     font-weight:600;     font-style:normal}
-// @font-face{    font-family:'Open Sans';     src:url('css/fonts/OpenSansBold-webfont.eot');     src:url('css/fonts/OpenSansBold-webfont.eot?#iefix') format('embedded-opentype'),         url('css/fonts/OpenSansBold-webfont.woff') format('woff'),         url('css/fonts/OpenSansBold-webfont.ttf') format('truetype'),         url('css/fonts/OpenSansBold-webfont.svg#OpenSansBold') format('svg');  font-weight:700;  font-style:normal}
+$roboto-cond: 'Roboto Condensed', serif; 
 
 body {
-    font-family: 'Lato', 'Open Sans', sans-serif;
+    font-family: $roboto-cond;
     color: $primary-color;
     background-color: #f6f6f6;
 }
@@ -159,3 +148,20 @@ h1, h2, h3, h4 {
         background: #d8d8d8 !important;
     }
 }
+
+.modal-fullscreen {
+    .modal-dialog {
+      max-width: 95%;
+      height: 100%;
+    }
+
+    .modal-title {
+        font-size: 1.5em;
+        line-height: 1.2;
+    }
+    
+    .modal-content {
+      height: 100%;
+      width: 100%;
+    }
+  }
