@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Order, OrderItem, OrderNote } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
 import { ProductService } from '../../services/product.service';
 import { Product, ProductVariation } from '../../models/product.model';
 import { CustomerService } from '../../services/customer.service';
 import { Customer } from '../../models/customer.model';
+import { OrderEditComponent } from './order-edit/order-edit.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-orders',
@@ -24,10 +27,7 @@ export class OrdersComponent implements OnInit {
   order: Order;
 
   constructor(private orderService: OrderService, private productService: ProductService,
-    private customerService: CustomerService) {
-
-    this.order = new Order();
-    this.orderItem = new OrderItem();
+    private customerService: CustomerService, public dialog: MatDialog, private toastr: ToastrService) {
   }
 
   ngOnInit() {
@@ -42,12 +42,41 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  openEditProductDialog(order: Order): void {
+    const self = this;
+
+    const dialogRef = this.dialog.open(OrderEditComponent, {
+      disableClose: true,
+      data: {
+        order: order,
+        customers: self.customers,
+        products: self.products
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+
+      const order = JSON.parse(JSON.stringify(result.order));
+
+      this.orderService.createOrder(order).subscribe((order) => {
+        this.toastr.success(`Order ${order.id} was created`);
+        self.loadOrders();
+
+      }, err => {
+        this.toastr.error(`Error when creating order. ${err.message}`);
+      });
+    });
+  }
+
   loadOrders() {
     this.orderService.getOrders().subscribe(orders => {
       this.orders = orders;
-
-    }, error => console.log(error)
-    );
+    }, err => {
+      this.toastr.error(`Error when fetching orders. ${err.message}`);
+    });
   }
 
   onProductVariationChange(productVariation: ProductVariation) {
@@ -59,8 +88,16 @@ export class OrdersComponent implements OnInit {
     return items.length > 0;
   }
 
+  onOrderUpdated(order: Order) {
+    this.orderService.updateOrder(order).subscribe((order) => {
+      this.toastr.success(`Order ${order.id} was updated`);
+      this.loadOrders();
+    });
+  }
+
   onCompleted(orderId: number) {
     this.orderService.completeOrder(orderId).subscribe(() => {
+      this.toastr.success(`Order ${orderId} was completed`);
       this.loadOrders();
     });
   }
@@ -68,6 +105,7 @@ export class OrdersComponent implements OnInit {
   onCompletedAndShipped(order: Order) {
     this.orderService.completeOrder(order.id).subscribe(() => {
       this.orderService.shipBusinessOrder(order).subscribe(() => {
+        this.toastr.success(`Order ${order.id} was completed and shipped`);
         this.loadOrders();
       });
     });
@@ -75,21 +113,23 @@ export class OrdersComponent implements OnInit {
 
   onCanceled(orderId: number) {
     this.orderService.cancelOrder(orderId).subscribe(() => {
+      this.toastr.success(`Order ${orderId} was canceled`);
       this.loadOrders();
     });
   }
 
   onProcessed(orderId: number) {
     this.orderService.processOrder(orderId).subscribe(() => {
+      this.toastr.success(`Order ${orderId} was set in process`);
       this.loadOrders();
     });
   }
 
-  onAddedNote(note: OrderNote) {
-    this.orderService.addOrderNote(note).subscribe(() => {
-      this.loadOrders();
-    });
-  }
+  // onAddedNote(note: OrderNote) {
+  //   this.orderService.addOrderNote(note).subscribe(() => {
+  //     this.loadOrders();
+  //   });
+  // }
 
   onCreatedInvoice(order: Order) {
     this.orderService.createInvoice(order).subscribe(() => {
@@ -97,9 +137,9 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  onOrderCreated(order: Order) {
-    this.loadOrders();
-  }
+  // onOrderCreated(order: Order) {
+  //   this.loadOrders();
+  // }
 
   get diagnostic() { return JSON.stringify(this.order.customer); }
 }

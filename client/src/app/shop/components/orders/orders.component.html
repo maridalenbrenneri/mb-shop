@@ -1,10 +1,11 @@
 <p></p>
 
-<app-order-edit [customers]="customers" [products]="products" (orderCreated)="onOrderCreated($event)"></app-order-edit>
+<button (click)="openEditProductDialog(null)">Ny bestilling</button>
+<!-- <app-order-edit [customers]="customers" [products]="products" (orderCreated)="onOrderCreated($event)"></app-order-edit> -->
 
 <hr />
 
-<app-order-list [orders]=" orders" [customers]="customers" (completed)="onCompleted($event)"
-  (completedAndShipped)="onCompletedAndShipped($event)" (canceled)="onCanceled($event)"
-  (processed)="onProcessed($event)" (addedNote)="onAddedNote($event)" (createdInvoice)="onCreatedInvoice($event)">
+<app-order-list [orders]=" orders" [customers]="customers" [products]="products" (updated)="onOrderUpdated($event)"
+  (completed)="onCompleted($event)" (completedAndShipped)="onCompletedAndShipped($event)"
+  (canceled)="onCanceled($event)" (processed)="onProcessed($event)" (createdInvoice)="onCreatedInvoice($event)">
 </app-order-list>

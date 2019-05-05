@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeNb from '@angular/common/locales/nb';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,7 +31,7 @@ import { AppComponent } from './app.component';
 import { ProductsComponent, EditProductComponent } from './shop/components/products/products.component';
 
 import { OrdersComponent } from './shop/components/orders/orders.component';
-import { OrderListComponent, AddOrderNoteComponent } from './shop/components/orders/order-list/order-list.component';
+import { OrderListComponent } from './shop/components/orders/order-list/order-list.component';
 import { OrderDetailsComponent } from './shop/components/orders/order-details/order-details.component';
 import { AddressComponent } from './shop/components/address/address.component';
 
@@ -74,14 +75,13 @@ const appRoutes: Routes = [
     AddressComponent,
     OrderListComponent,
     OrderDetailsComponent,
-    AddOrderNoteComponent,
     AmountFieldComponent,
     GiftSubscriptionsComponent,
     GiftSubscriptionDetailsComponent,
     OrderEditComponent,
   ],
   entryComponents: [
-    EditProductComponent, AddOrderNoteComponent
+    EditProductComponent, OrderEditComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -94,6 +94,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     CommonModule,
     ToastrModule.forRoot(),
+    NgbModule.forRoot(),
     MatSelectModule, MatCheckboxModule, MatCardModule, MatButtonModule,
     MatExpansionModule, MatDialogModule, MatInputModule, MatRadioModule,
     MatTabsModule, MatTableModule, MatDatepickerModule, MatMomentDateModule,

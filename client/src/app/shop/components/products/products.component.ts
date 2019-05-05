@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
 import { ProductCategories } from '../../../constants';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -33,7 +33,7 @@ export class ProductsComponent implements OnInit {
     this.productService.getProducts().subscribe(products => {
       this.coffeeProducts = products.filter(product => product.category === ProductCategories.coffee);
 
-      if(!this._showNotActiveProducts) {
+      if (!this._showNotActiveProducts) {
         this.coffeeProducts = this.coffeeProducts.filter(product => product.isActive);
       }
 
@@ -43,9 +43,9 @@ export class ProductsComponent implements OnInit {
   }
 
   openEditProductDialog(product: Product): void {
-    if(!product) {
+    if (!product) {
       product = new Product();
-      product.data = { }
+      product.data = {}
       product.productVariations = [
         { name: 'priceSmallBag', price: 70, weight: 250 },
         { name: 'pricePerKg', price: 280, weight: 1000 }
@@ -66,7 +66,7 @@ export class ProductsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(!result) {
+      if (!result) {
         return;
       }
 
@@ -83,7 +83,7 @@ export class ProductsComponent implements OnInit {
       product.productVariations[0].price = result.priceSmallBag;
       product.productVariations[1].price = result.pricePerKg;
 
-      if(!this.alreadyContainsProduct(product)) {
+      if (!this.alreadyContainsProduct(product)) {
         this.productService.createProduct(product).subscribe(() => {
           this.loadProducts();
           this.toastr.success("Product created");
@@ -91,7 +91,7 @@ export class ProductsComponent implements OnInit {
         }, err => {
           this.toastr.error("Error when creating product");
         });
-      
+
       } else {
         this.productService.updateProduct(product).subscribe(() => {
           this.loadProducts();
@@ -120,7 +120,7 @@ export class ProductsComponent implements OnInit {
   }
 
   alreadyContainsProduct(product: Product) {
-    const items = this.coffeeProducts.filter(p => p.id && p.id  === product.id);
+    const items = this.coffeeProducts.filter(p => p.id && p.id === product.id);
     return items.length > 0;
   }
 
@@ -152,7 +152,7 @@ export class EditProductComponent {
 
   constructor(
     public dialogRef: MatDialogRef<EditProductComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EditCoffeeProductData) {}
+    @Inject(MAT_DIALOG_DATA) public data: EditCoffeeProductData) { }
 
   onNoClick(): void {
     this.dialogRef.close();

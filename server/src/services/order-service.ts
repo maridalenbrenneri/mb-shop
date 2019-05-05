@@ -1,5 +1,5 @@
 import { Response } from "express";
-import orderRepo  from '../repositories/order-repo';
+import orderRepo from '../repositories/order-repo';
 import { OrderValidator } from '../validators/order-validator';
 import { ValidationError } from "../models/validation-error";
 import { OrderStatus } from "../constants";
@@ -10,7 +10,7 @@ class OrderService {
     createOrder(order: any, res: Response) {
         let self = this;
         OrderValidator.validate(order);
-        
+
         order.orderDate = Date.now()
         order.status = OrderStatus.processing;
         order.notes = [];
@@ -24,7 +24,20 @@ class OrderService {
 
             return res.send(clientOrder);
 
-        }).catch(function (err) { 
+        }).catch(function (err) {
+            self.handleError(err, res);
+        });
+    }
+
+    updateOrder(order: any, res: Response) {
+        let self = this;
+        OrderValidator.validate(order);
+
+        const orderToUpdate = self.mapToDbModel(order);
+        return orderRepo.updateOrder(order.id, orderToUpdate).then(updatedOrder => {
+            return res.send(self.mapToClientModel(updatedOrder));
+
+        }).catch(function (err) {
             self.handleError(err, res);
         });
     }
@@ -33,10 +46,10 @@ class OrderService {
         let self = this;
         return orderRepo.getOrder(orderId).then(dbOrder => {
             if (!dbOrder) {
-              return res.status(404).send("Order was not found, order id: " + orderId);
+                return res.status(404).send("Order was not found, order id: " + orderId);
             }
             return res.send(self.mapToClientModel(dbOrder));
-          });
+        });
     }
 
     getOrders(res: Response, filter = {}) {
@@ -48,12 +61,12 @@ class OrderService {
 
     updateOrderStatus(orderId: number, newStatus: string, res: Response) {
         let self = this;
-        
-        return orderRepo.getOrder(orderId).then(function(order) {
+
+        return orderRepo.getOrder(orderId).then(function (order) {
             OrderValidator.validateStatus(order.status, newStatus);
 
             return orderRepo.updateOrderStatus(orderId, newStatus).then(updatedOrder => {
-          
+
                 return res.send(self.mapToClientModel(updatedOrder));
             });
 
@@ -65,9 +78,9 @@ class OrderService {
     addOrderNote(orderNote: any, res: any): any {
         let self = this;
 
-        OrderValidator.validateOrderNote(orderNote);    
+        OrderValidator.validateOrderNote(orderNote);
 
-        return orderRepo.getOrder(orderNote.orderId).then(order=> {
+        return orderRepo.getOrder(orderNote.orderId).then(order => {
 
             let clientOrder = this.mapToClientModel(order);
 
@@ -86,9 +99,9 @@ class OrderService {
     addCustomerOrderNote(orderNote: any, res: any): any {
         let self = this;
 
-        OrderValidator.validateCustomerOrderNote(orderNote);    
+        OrderValidator.validateCustomerOrderNote(orderNote);
 
-        return orderRepo.getOrder(orderNote.orderId).then(order=> {
+        return orderRepo.getOrder(orderNote.orderId).then(order => {
 
             let clientOrder = this.mapToClientModel(order);
 
@@ -100,18 +113,18 @@ class OrderService {
         }).catch(function (err) {
             self.handleError(err, res);
         });
-    }    
+    }
 
     handleError(err: any, res: Response) {
         if (err instanceof ValidationError) {
-            return res.status(422).send({validationError: err.message});
-        } 
+            return res.status(422).send({ validationError: err.message });
+        }
 
         logger.error(err);
         return res.status(500).send({ error: "An error occured when updating the order: " + err });
     }
-    
-    mapToDbModel = function(order) {
+
+    mapToDbModel = function (order) {
         return {
             orderDate: order.orderDate,
             deliveryDate: order.deliveryDate,
@@ -126,7 +139,7 @@ class OrderService {
         };
     }
 
-    mapToClientModel = function(order) {
+    mapToClientModel = function (order) {
 
         return {
             id: order.id,

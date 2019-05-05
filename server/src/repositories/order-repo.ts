@@ -30,6 +30,12 @@ class OrderRepo extends BaseRepo {
         return this.Order.create(order);
     }
 
+    updateOrder = function (orderId, order) {
+        return this.Order.findById(orderId).then(dbOrder => {
+            return dbOrder.update(order);
+        });
+    }
+
     updateOrderStatus = function (orderId, newStatus) {
 
         return this.Order.findById(orderId).then(order => {

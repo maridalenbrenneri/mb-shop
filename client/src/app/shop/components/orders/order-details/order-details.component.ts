@@ -25,17 +25,17 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   get getTotalPrice(): number {
-    if(!this.order.items) { return 0;}
+    if (!this.order.items) { return 0; }
 
     let total = 0;
     this.order.items.forEach(i => {
       total += i.productVariation.price * i.quantity;
     });
     return total;
-  }  
+  }
 
   getVatFromItem(item: OrderItem) {
-    if(item.product.vatGroup == 'coffee') {
+    if (item.product.vatGroup == 'coffee') {
       return VatRates.coffee * 100;
     }
 
@@ -55,24 +55,32 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   removeItem(item: OrderItem) {
+    // TODO; Remove stash does not work
+
     const index = this.order.items.findIndex(i => {
-      return i.product.id === item.product.id && 
-             i.productVariation.name == item.productVariation.name &&
-             i.productVariation.price == item.price;
+      if (item.product.category === 'stash') {
+        return i.productVariation.name == item.productVariation.name &&
+          i.productVariation.price == item.price;
+
+      } else {
+        return i.product.id === item.product.id &&
+          i.productVariation.name == item.productVariation.name &&
+          i.productVariation.price == item.price;
+      }
     });
 
-    if(index >= 0) {
+    if (index >= 0) {
       this.order.items.splice(index, 1);
     }
-  }  
+  }
 
   private calculateTotalVat(vatGroup: string) {
-    if(!this.order.items) { return 0;}
+    if (!this.order.items) { return 0; }
 
     let rate = vatGroup === "coffee" ? VatRates.coffee : VatRates.standard;
     let total = 0;
     this.order.items.forEach(i => {
-      if(i.product.vatGroup === vatGroup) {
+      if (i.product.vatGroup === vatGroup) {
         total += (i.productVariation.price * i.quantity) * rate;
       }
     });

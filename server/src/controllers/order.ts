@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import orderRepo  from '../repositories/order-repo';
+import orderRepo from '../repositories/order-repo';
 import orderService from "../services/order-service";
 import logger from '../utils/logger';
 import fikenService from '../services/fiken-service';
@@ -20,7 +20,7 @@ class OrderController {
   /**
    * GET /orders
    */
-  getOrders (req: Request, res: Response) {
+  getOrders(req: Request, res: Response) {
 
     return orderService.getOrders(res);
   }
@@ -28,9 +28,9 @@ class OrderController {
   /**
    * GET /orders/mine
    */
-  getMyOrders (req: Request, res: Response) {
+  getMyOrders(req: Request, res: Response) {
 
-    let filter = { 
+    let filter = {
       userId: req.user.id
     };
 
@@ -43,16 +43,25 @@ class OrderController {
   /**
    * POST /orders
    */
-  createOrder (req: Request, res: Response) {
+  createOrder(req: Request, res: Response) {
 
     return orderService.createOrder(req.body, res);
 
   }
 
   /**
+   * PUT /orders/:id
+   */
+  updateOrder(req: Request, res: Response) {
+
+    return orderService.updateOrder(req.body, res);
+
+  }
+
+  /**
    * POST /orders/:id/complete
    */
-  completeOrder (req: Request, res: Response, next: any) {
+  completeOrder(req: Request, res: Response, next: any) {
 
     return orderService.updateOrderStatus(req.params.id, "completed", res);
 
@@ -61,16 +70,16 @@ class OrderController {
   /**
    * POST /orders/:id/cancel
    */
-  cancelOrder (req: Request, res: Response, next: any) {
+  cancelOrder(req: Request, res: Response, next: any) {
 
     return orderService.updateOrderStatus(req.params.id, "canceled", res);
 
   }
 
-   /**
-   * POST /orders/:id/process
-   */
-  processOrder (req: Request, res: Response, next: any) {
+  /**
+  * POST /orders/:id/process
+  */
+  processOrder(req: Request, res: Response, next: any) {
 
     return orderService.updateOrderStatus(req.params.id, "processing", res);
 
@@ -79,7 +88,7 @@ class OrderController {
   /**
    * POST /orders/:id/notes
    */
-  addOrderNote (req: Request, res: Response, next: any) {
+  addOrderNote(req: Request, res: Response, next: any) {
 
     return orderService.addOrderNote(req.body, res);
 
@@ -88,11 +97,11 @@ class OrderController {
   /**
    * POST /orders/:id/customernotes
    */
-  addCustomerOrderNote (req: Request, res: Response, next: any) {
+  addCustomerOrderNote(req: Request, res: Response, next: any) {
 
     return orderService.addCustomerOrderNote(req.body, res);
 
-  }  
+  }
 
   /**
    * POST /orders/:id/invoice
@@ -100,11 +109,11 @@ class OrderController {
   createInvoice = function (req: Request, res: Response) {
 
     fikenService.createInvoice(req.body).then(() => {
-        res.send('Invoice created');
+      res.send('Invoice created');
 
     }).catch(function (err) {
-        logger.error(err);
-        res.status(500).send({ error: "An error occured when creating the invoice: " + err });
+      logger.error(err);
+      res.status(500).send({ error: "An error occured when creating the invoice: " + err });
     });
   }
 }

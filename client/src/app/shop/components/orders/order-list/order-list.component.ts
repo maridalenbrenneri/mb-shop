@@ -1,10 +1,13 @@
 import { Component, Input, EventEmitter, Output, Inject } from '@angular/core';
 import { Order, OrderNote } from 'src/app/shop/models/order.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatDialog } from '@angular/material';
 import { Customer } from 'src/app/shop/models/customer.model';
 import { TableDataSource } from 'src/app/shop/core/table-data-source';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { OrderStatus } from 'src/app/constants';
+import { Product } from '../../..//models/product.model';
+import { OrderEditComponent } from '../order-edit/order-edit.component';
+import { relativeTimeRounding } from 'moment';
 
 @Component({
   selector: 'app-order-list',
@@ -25,8 +28,9 @@ export class OrderListComponent {
   expandedElement: any;
 
   private _orders: Array<Order> = [];
-  private _filteredOrders: Array<Order> = []; 
+  private _filteredOrders: Array<Order> = [];
   private _customers: Array<Customer>;
+  private _products: Array<Product>;
 
   private _selectedCustomer: Customer;
   private _showProcessing: boolean = true;
@@ -39,19 +43,17 @@ export class OrderListComponent {
   @Output() processed = new EventEmitter<number>();
   @Output() addedNote = new EventEmitter<OrderNote>();
   @Output() createdInvoice = new EventEmitter<Order>();
-  
-  constructor(public dialog: MatDialog) {  }
+  @Output() updated = new EventEmitter<Order>();
+
+  constructor(public dialog: MatDialog) { }
 
   @Input()
   set orders(orders: Array<Order>) {
     this._orders = orders;
-
     this.applyOrderFilter();
   }
 
-  get orders() : Array<Order> {
-    return this._filteredOrders;
-  }
+  get orders(): Array<Order> { return this._filteredOrders; }
 
   @Input()
   set customers(customers: Array<Customer>) {
@@ -63,9 +65,16 @@ export class OrderListComponent {
     this.selectedCustomer = this._customers[0];
   }
 
-  get customers() : Array<Customer> { 
-    return this._customers; 
+  get customers(): Array<Customer> {
+    return this._customers;
   }
+
+  @Input()
+  set products(products: Array<Product>) {
+    this._products = products;
+  }
+
+  get products(): Array<Product> { return this._products; }
 
   set selectedCustomer(customer: Customer) {
     this._selectedCustomer = customer;
@@ -92,57 +101,59 @@ export class OrderListComponent {
   }
 
   applyOrderFilter() {
-    if(!this._selectedCustomer || !this._selectedCustomer.customerNumber) {
+    if (!this._selectedCustomer || !this._selectedCustomer.customerNumber) {
       this._filteredOrders = this._orders;
-    
+
     } else {
       this._filteredOrders = this._orders.filter(o => o.customer.customerNumber == this._selectedCustomer.customerNumber);
     }
 
-    if(!this._showProcessing) {
+    if (!this._showProcessing) {
       this._filteredOrders = this._filteredOrders.filter(o => o.status !== OrderStatus.processing);
     }
 
-    if(!this._showCompleted) {
+    if (!this._showCompleted) {
       this._filteredOrders = this._filteredOrders.filter(o => o.status !== OrderStatus.completed);
     }
 
-    if(!this._showCanceled) {
+    if (!this._showCanceled) {
       this._filteredOrders = this._filteredOrders.filter(o => o.status !== OrderStatus.canceled);
     }
 
-    this.ordersDataSource = new TableDataSource(this._filteredOrders); 
+    this.ordersDataSource = new TableDataSource(this._filteredOrders);
   }
-  
+
   checkCustomerId(data: any, filter: string) {
-    if(!data || !data.customer || !data.customer.id) {
+    if (!data || !data.customer || !data.customer.id) {
       return false;
     }
 
     return data.customer.id.toString() === filter;
   }
 
-  openAddNoteDialog(order: Order): void {
+  openEditProductDialog(order: Order): void {
+    const self = this;
 
-    const dialogRef = this.dialog.open(AddOrderNoteComponent, {
+    if (!order) {
+      console.warn("Order was null, cannot edit")
+      return;
+    }
+
+    const dialogRef = this.dialog.open(OrderEditComponent, {
       disableClose: true,
-      data: ''
+      data: {
+        order: order,
+        customers: self.customers,
+        products: self.products
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
       if (!result) {
         return;
       }
 
-      let orderNote: OrderNote = {
-        orderId: order.id,
-        date: new Date(),
-        note: result,
-        user: 'client'
-      } ;
-
-      this.addedNote.emit(orderNote)
+      this.updated.emit(result.order);
     });
   }
 
@@ -161,28 +172,34 @@ export class OrderListComponent {
   processOrder(order: Order) {
     this.processed.emit(order.id);
   }
-  
+
   createInvoice(order: Order) {
-    console.log("create invoice");
     this.createdInvoice.emit(order);
   }
 
   viewInvoice(order: Order) {
     console.log("viewInvoice not yet implemented...");
   }
-}
 
-@Component({
-  selector: 'add-order-note.component',
-  templateUrl: 'add-order-note.component.html',
-})
-export class AddOrderNoteComponent {
+  getArticlesShort(order: Order) {
 
-  constructor(
-    public dialogRef: MatDialogRef<AddOrderNoteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: string) { }
+    const arr = order.items.map(item => {
+      const code = item.product.data && item.product.data.code ? item.product.data.code : '';
+      let name = '';
 
-  onNoClick(): void {
-    this.dialogRef.close();
+      if (item.productVariation.name === '250gr') name = `${code}`;
+      else if (item.productVariation.name === '1kg') name = `kg${code}`;
+      else name = item.productVariation.name; // todo handle stash
+
+      return `${item.quantity}${name}`;
+    });
+
+    let str = arr.join();
+    if (str.length > 25) {
+      str = str.substr(0, 22)
+      str = str.concat('...');
+    }
+
+    return str;
   }
 }

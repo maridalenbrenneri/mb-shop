@@ -149,19 +149,14 @@ h1, h2, h3, h4 {
     }
 }
 
-.modal-fullscreen {
-    .modal-dialog {
-      max-width: 95%;
-      height: 100%;
-    }
-
-    .modal-title {
-        font-size: 1.5em;
-        line-height: 1.2;
+.dialig-large {
+    .mat-dialog-content {
+        max-height: 100%;
     }
     
-    .modal-content {
-      height: 100%;
-      width: 100%;
+    .cdk-overlay-pane {
+        max-width: 100% !important;
+        height: 95%;
+        width: 95%;
     }
-  }
+}

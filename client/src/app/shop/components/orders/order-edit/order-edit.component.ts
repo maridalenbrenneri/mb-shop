@@ -1,8 +1,14 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Order, OrderItem } from '../../../models/order.model';
+import { Component, OnInit, Inject } from '@angular/core';
+import { Order, OrderItem, OrderNote } from '../../../models/order.model';
 import { Customer } from '../../../models/customer.model';
 import { Product, ProductVariation } from '../../..//models/product.model';
-import { OrderService } from '../../../services/order.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+export interface OrderData {
+  order: Order;
+  customers: Array<Customer>;
+  products: Array<Product>;
+}
 
 const small = new ProductVariation();
 small.name = "250gr";
@@ -20,38 +26,46 @@ large.weight = 1000;
   styleUrls: ['./order-edit.component.scss']
 })
 export class OrderEditComponent implements OnInit {
-
-  @Output() orderCreated = new EventEmitter<Order>();
-
-  _order: Order;
-  _customers: Array<Customer>;
-  _products: Array<Product>;
-
   orderItem: OrderItem;
   stashOrderItem: OrderItem;
+  note: OrderNote;
+  order: Order;
+  isEditMode: Boolean; // edit or new order
 
-  constructor(private orderService: OrderService) {
-    this.order = new Order();
-    this.orderItem = new OrderItem();
-  }
+  constructor(
+    public dialogRef: MatDialogRef<OrderEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: OrderData) { }
 
   ngOnInit() {
     this.initOrder();
     this.initOrderItem();
     this.initStashOrderItem();
+    this.note = new OrderNote();
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
   initOrder() {
-    this.order = new Order();
+    if (!this.data.order) {
+      this.data.order = new Order();
+      this.order = this.data.order;
+      this.order.type = "normal";
+      this.order.customer = this.data.customers[0];
+      this.order.items = new Array<OrderItem>();
+      this.order.notes = new Array<OrderNote>();
+      this.isEditMode = false;
 
-    this.order.type = "normal";
-    this.order.customer = this.customers[0];
-    this.order.items = new Array<OrderItem>();
+    } else {
+      this.order = this.data.order;
+      this.isEditMode = true;
+    }
   }
 
   initOrderItem() {
     this.orderItem = new OrderItem();
-    this.orderItem.product = this.products[0];
+    this.orderItem.product = this.data.products[0];
     this.orderItem.productVariation = this.getCoffeeProductVariations[0];
     this.orderItem.quantity = 1;
     this.orderItem.price = this.orderItem.productVariation.price;
@@ -94,16 +108,26 @@ export class OrderEditComponent implements OnInit {
     this.initStashOrderItem();
   }
 
-  createOrder() {
-    const self = this;
-    this.orderService.createOrder(this.order).subscribe(() => {
-      this.initOrder();
-      this.initOrderItem();
-      this.initStashOrderItem();
+  removeOrderItem(item: OrderItem) {
+    const index = this.order.items.findIndex(i => {
+      return i.product.id === item.product.id &&
+        i.productVariation.name == item.productVariation.name &&
+        i.productVariation.price == item.price;
+    });
 
-      this.orderCreated.emit(self.order);
+    if (index >= 0) {
+      this.order.items.splice(index, 1);
+    }
+  }
 
-    }, (error: any) => console.log(error));
+  addNote() {
+    const newNote = new OrderNote();
+    newNote.date = new Date();
+    newNote.note = this.note.note;
+
+    this.order.notes.push(newNote);
+
+    this.note = new OrderNote();
   }
 
   onProductVariationChange(productVariation: ProductVariation) {
@@ -113,6 +137,8 @@ export class OrderEditComponent implements OnInit {
   get getCoffeeProductVariations() {
     return [small, large];
   }
+
+  get isOrderValid() { return this.order && this.order.customer && this.order.items.length > 0 }
 
   resolveCoffeeProductName(product: Product) {
     if (!product) { return ''; }
@@ -126,17 +152,4 @@ export class OrderEditComponent implements OnInit {
   resolveProductVariationString(variation: ProductVariation) {
     return !variation ? '' : variation.name + ' - Normalpris: ' + variation.price + ' kr';
   }
-
-  @Input()
-  set order(order: Order) { this._order = order; }
-  get order() { return this._order; }
-
-  @Input()
-  set customers(customers: Array<Customer>) { this._customers = customers; }
-  get customers() { return this._customers; }
-
-  @Input()
-  set products(products: Array<Product>) { this._products = products; }
-  get products() { return this._products; }
-
 }

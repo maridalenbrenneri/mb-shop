@@ -104,6 +104,7 @@ app.put("/api/products/:id", isUserInSuperuser, productController.updateProduct)
 
 // Orders
 app.get("/api/orders", isUserInSuperuser, orderController.getOrders);
+app.put("/api/orders/:id", isUserInSuperuser, orderController.updateOrder);
 app.get("/api/orders/:id", isAuthenticated, orderController.getOrders);
 app.get("/api/orders/mine", isAuthenticated, orderController.getMyOrders);
 app.post("/api/orders", isUserInSuperuser, orderController.createOrder);
