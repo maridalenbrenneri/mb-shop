@@ -108,7 +108,9 @@ export class CargonizerService {
             result.consignments.consignment &&
             result.consignments.consignment.length > 0) {
             const id = result.consignments.consignment[0].id[0]._;
-            const useRfidPrinter = result.consignments.consignment[0].product === this.product_private;
+
+            // todo: product is not correctly retrieved
+            const useRfidPrinter = result.consignments.consignment[0].product[0].identifier[0] === self.product_private;
 
             self.printLabel(useRfidPrinter, id);
           }
