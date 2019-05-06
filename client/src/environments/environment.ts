@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   wpBaseUrl: 'https://maridalenbrenneri.no/wp-json/',
-  mbApiBaseUrl: 'http://localhost:5001/api/'
+  mbApiBaseUrl: 'https://mb-backoffice.herokuapp.com/api/'
 };
 
 /*
