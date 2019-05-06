@@ -50,9 +50,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set allowed origin 
 app.use(function (req: Request, res: Response, next: any) {
-    res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
-    res.setHeader('Access-Control-Allow-Origin', "http://localhost:4200");
-    res.setHeader('Access-Control-Allow-Origin', "http://localhost:5001");
+    res.setHeader('Access-Control-Allow-Origin', "*");
+    // res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
+    // res.setHeader('Access-Control-Allow-Origin', "http://localhost:4200");
+    // res.setHeader('Access-Control-Allow-Origin', "http://localhost:5001");
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS')
     res.setHeader('Access-Control-Allow-Headers', ['content-type', 'x-access-token']);
     next();

@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   wpBaseUrl: 'https://maridalenbrenneri.no/wp-json/',
-  mbApiBaseUrl: 'https://mb-backoffice.herokuapp.com/api/'
+  mbApiBaseUrl: 'http://localhost:5001/api/'
 };
 
 /*
- * In development mode, to ignore zone related error stack frames such as
+ * In development mode, to ignore zonenpm in related error stack frames such as
  * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
  * import the following file, but please comment it out in production mode
  * because it will have performance impact when throw error
