@@ -1,5 +1,8 @@
 <div class="dialog-large">
-  <h1 mat-dialog-title>Bestilling</h1>
+  <h1 mat-dialog-title>
+    <span *ngIf="!isSubscriptionParent">Bestilling</span>
+    <span *ngIf="isSubscriptionParent">Abonnement</span>
+  </h1>
 
   <mat-dialog-content>
     <div class="row">
@@ -8,9 +11,49 @@
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Kunde</label>
             <div class="col-sm-10">
-              <select class="form-control" id="customerElement" name="customerElement" [(ngModel)]="order.customer"
-                required>
-                <option *ngFor="let customer of data.customers" [ngValue]="customer">{{customer.name}}</option>
+              <select
+                class="form-control"
+                id="customerElement"
+                name="customerElement"
+                [(ngModel)]="order.customer"
+                required
+              >
+                <option
+                  *ngFor="let customer of data.customers"
+                  [ngValue]="customer"
+                  >{{ customer.name }}</option
+                >
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-12 col-lg-3">
+        <mat-checkbox
+          class="form-control"
+          [(ngModel)]="isSubscriptionParent"
+          (ngModelChange)="onIsSubscriptionChanged($event)"
+          (checked)="(false)"
+          [disabled]="isEditMode"
+          *ngIf="!isEditMode || isSubscriptionParent"
+          >Abonnement</mat-checkbox
+        >
+      </div>
+      <div class="col-12 col-lg-5">
+        <form *ngIf="isSubscriptionParent">
+          <div class="form-group row">
+            <label for="frequenceElement" class="col-3 col-form-label"
+              >Type abo</label
+            >
+            <div class="col-9">
+              <select
+                class="form-control"
+                id="frequenceElement"
+                name="frequenceElement"
+                [(ngModel)]="order.subscriptionData.frequence"
+              >
+                <option [ngValue]="1">Månedlig</option>
+                <option [ngValue]="2">Annenhver uke</option>
               </select>
             </div>
           </div>
@@ -18,18 +61,27 @@
       </div>
     </div>
 
+    <hr />
+
     <div class="row">
       <div class="col-12 col-lg-4">
-
         <form #coffeeForm="ngForm" (ngSubmit)="addCoffee()">
-
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Kaffe</label>
             <div class="col-sm-10">
-              <select class="form-control" id="productElement" name="productElement" [(ngModel)]="orderItem.product"
-                required>
-                <option *ngFor="let product of data.products" [ngValue]="product">
-                  {{resolveCoffeeProductName(product)}}</option>
+              <select
+                class="form-control"
+                id="productElement"
+                name="productElement"
+                [(ngModel)]="orderItem.product"
+                required
+              >
+                <option
+                  *ngFor="let product of data.products"
+                  [ngValue]="product"
+                >
+                  {{ resolveCoffeeProductName(product) }}</option
+                >
               </select>
             </div>
           </div>
@@ -37,10 +89,20 @@
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Pose</label>
             <div class="col-sm-10">
-              <select class="form-control" id="variationElement" name="variationElement"
-                [(ngModel)]="orderItem.productVariation" (ngModelChange)="onProductVariationChange($event)" required>
-                <option *ngFor="let variation of getCoffeeProductVariations" [ngValue]="variation">
-                  {{resolveProductVariationString(variation)}}</option>
+              <select
+                class="form-control"
+                id="variationElement"
+                name="variationElement"
+                [(ngModel)]="orderItem.productVariation"
+                (ngModelChange)="onProductVariationChange($event)"
+                required
+              >
+                <option
+                  *ngFor="let variation of getCoffeeProductVariations"
+                  [ngValue]="variation"
+                >
+                  {{ resolveProductVariationString(variation) }}</option
+                >
               </select>
             </div>
           </div>
@@ -48,62 +110,106 @@
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Pris</label>
             <div class="col-sm-10">
-              <input type="number" min="0" max="99999" required class="form-control" name="price"
-                [(ngModel)]="orderItem.price">
+              <input
+                type="number"
+                min="0"
+                max="99999"
+                required
+                class="form-control"
+                name="price"
+                [(ngModel)]="orderItem.price"
+              />
             </div>
           </div>
 
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Antall</label>
             <div class="col-sm-10">
-              <input type="number" min="1" max="999" required class="form-control" name="quantity"
-                [(ngModel)]="orderItem.quantity">
+              <input
+                type="number"
+                min="1"
+                max="999"
+                required
+                class="form-control"
+                name="quantity"
+                [(ngModel)]="orderItem.quantity"
+              />
             </div>
           </div>
 
           <div class="form-group row">
             <div class="col-12">
-              <button type="submit" class="btn btn-primary float-right" [disabled]="!coffeeForm.valid">Legg til
-                kaffe</button>
+              <button
+                type="submit"
+                class="btn btn-primary float-right"
+                [disabled]="!coffeeForm.valid"
+              >
+                Legg til kaffe
+              </button>
             </div>
           </div>
-
         </form>
-
       </div>
 
       <div class="col-12 col-lg-4">
         <form #stashForm="ngForm" (ngSubmit)="addStash()">
-
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Stash</label>
             <div class="col-sm-10">
-              <input type="text" required class="form-control" name="stashName"
-                [(ngModel)]="stashOrderItem.productVariation.name">
+              <input
+                type="text"
+                required
+                class="form-control"
+                name="stashName"
+                [(ngModel)]="stashOrderItem.productVariation.name"
+              />
             </div>
           </div>
 
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Pris</label>
             <div class="col-sm-10">
-              <input type="number" min="1" max="99999" required class="form-control" name="stashPrice"
-                [(ngModel)]="stashOrderItem.productVariation.price">
+              <input
+                type="number"
+                min="1"
+                max="99999"
+                required
+                class="form-control"
+                name="stashPrice"
+                [(ngModel)]="stashOrderItem.productVariation.price"
+              />
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Vekt (g)</label>
+            <label for="customer" class="col-sm-2 col-form-label"
+              >Vekt (g)</label
+            >
             <div class="col-sm-10">
-              <input type="number" min="100" max="99999" required class="form-control" name="stashWeight"
-                [(ngModel)]="stashOrderItem.productVariation.weight">
+              <input
+                type="number"
+                min="100"
+                max="99999"
+                required
+                class="form-control"
+                name="stashWeight"
+                [(ngModel)]="stashOrderItem.productVariation.weight"
+              />
             </div>
           </div>
 
           <div class="form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Antall</label>
             <div class="col-sm-10">
-              <input type="number" min="1" max="999" required class="form-control" name="stashQuantity"
-                [(ngModel)]="stashOrderItem.quantity">
+              <input
+                type="number"
+                min="1"
+                max="999"
+                required
+                class="form-control"
+                name="stashQuantity"
+                [(ngModel)]="stashOrderItem.quantity"
+              />
             </div>
           </div>
 
@@ -112,28 +218,33 @@
               <!-- <button class="btn btn-primary float-right" [disabled]="!stashForm.valid">Legg til stash</button> -->
             </div>
           </div>
-
         </form>
-
       </div>
 
       <div class="col-12 col-lg-4">
-
         <form #addNoteForm="ngForm" (ngSubmit)="addNote()">
           <div class=" form-group row">
             <label for="customer" class="col-sm-2 col-form-label">Notat</label>
             <div class="col-sm-10">
-              <textarea style="width:100%" name="note" [(ngModel)]="note.note"></textarea>
+              <textarea
+                style="width:100%"
+                name="note"
+                [(ngModel)]="note.note"
+              ></textarea>
             </div>
           </div>
 
           <div class="form-group row">
             <div class="col-12">
-              <button class="btn btn-primary float-right" [disabled]="!isOrderValid">Legg til notat</button>
+              <button
+                class="btn btn-primary float-right"
+                [disabled]="!isOrderValid"
+              >
+                Legg til notat
+              </button>
             </div>
           </div>
         </form>
-
       </div>
     </div>
 
@@ -144,7 +255,6 @@
         <app-order-details [order]="order"></app-order-details>
       </div>
     </div>
-
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
@@ -154,5 +264,4 @@
       <span *ngIf="!isEditMode">Lag bestilling</span>
     </button>
   </mat-dialog-actions>
-
 </div>

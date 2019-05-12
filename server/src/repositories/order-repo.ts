@@ -1,71 +1,64 @@
-import BaseRepo from './base-repo';
-import { orderModel } from './models';
+import BaseRepo from "./base-repo";
+import { orderModel } from "./models";
 
 class OrderRepo extends BaseRepo {
+  private Order = this.sequelize.define("order", orderModel);
 
-    private Order = this.sequelize.define('order', orderModel);
+  getOrder = function(orderId: Number) {
+    return this.Order.findById(orderId);
+  };
 
-    createTable = function (forceCreate = false) {
-        return this.Order.sync({ force: forceCreate }); // todo: force only during initial development...
-    }
+  getOrders = function(filter: any) {
+    filter = filter || {};
+    filter.isDeleted = false;
 
-    getOrder = function (orderId: Number) {
-        return this.Order.findById(orderId);
-    }
+    return this.Order.findAll({
+      where: filter,
+      order: [["createdAt", "DESC"]]
+    });
+  };
 
-    getOrders = function (filter) {
+  getSubscriptionParentOrders = function() {
+    return this.getOrders({
+      subscriptionData: {
+        [this.sequelize.Op.ne]: null
+      }
+    });
+  };
 
-        filter = filter || {};
-        filter.isDeleted = false;
+  createOrder = function(order) {
+    return this.Order.create(order);
+  };
 
-        return this.Order.findAll({
-            where: filter,
-            order: [
-                ['createdAt', 'DESC']
-            ]
-        });
-    }
+  updateOrder = function(orderId, order) {
+    return this.Order.findById(orderId).then(dbOrder => {
+      return dbOrder.update(order);
+    });
+  };
 
-    createOrder = function (order) {
-        return this.Order.create(order);
-    }
+  updateOrderStatus = function(orderId, newStatus) {
+    return this.Order.findById(orderId).then(order => {
+      return order.update({
+        status: newStatus
+      });
+    });
+  };
 
-    updateOrder = function (orderId, order) {
-        return this.Order.findById(orderId).then(dbOrder => {
-            return dbOrder.update(order);
-        });
-    }
+  addOrderNote = function(orderId: number, orderNotes: string) {
+    return this.Order.findById(orderId).then(order => {
+      return order.update({
+        notes: orderNotes
+      });
+    });
+  };
 
-    updateOrderStatus = function (orderId, newStatus) {
-
-        return this.Order.findById(orderId).then(order => {
-
-            return order.update(
-                {
-                    status: newStatus
-                });
-        });
-    }
-
-    addOrderNote = function (orderId: number, orderNotes: string) {
-        return this.Order.findById(orderId).then(order => {
-
-            return order.update(
-                {
-                    notes: orderNotes
-                });
-        });
-    }
-
-    addCustomerOrderNote = function (orderId: number, customerOrderNotes: string) {
-        return this.Order.findById(orderId).then(order => {
-
-            return order.update(
-                {
-                    customerNotes: customerOrderNotes
-                });
-        });
-    }
+  addCustomerOrderNote = function(orderId: number, customerOrderNotes: string) {
+    return this.Order.findById(orderId).then(order => {
+      return order.update({
+        customerNotes: customerOrderNotes
+      });
+    });
+  };
 }
 
 export default new OrderRepo();

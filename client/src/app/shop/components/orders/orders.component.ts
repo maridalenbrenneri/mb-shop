@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { Order, OrderItem, OrderNote } from '../../models/order.model';
-import { OrderService } from '../../services/order.service';
-import { ProductService } from '../../services/product.service';
-import { Product, ProductVariation } from '../../models/product.model';
-import { CustomerService } from '../../services/customer.service';
-import { Customer } from '../../models/customer.model';
-import { OrderEditComponent } from './order-edit/order-edit.component';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material";
+import { Order, OrderItem } from "../../models/order.model";
+import { OrderService } from "../../services/order.service";
+import { ProductService } from "../../services/product.service";
+import { Product, ProductVariation } from "../../models/product.model";
+import { CustomerService } from "../../services/customer.service";
+import { Customer } from "../../models/customer.model";
+import { OrderEditComponent } from "./order-edit/order-edit.component";
+import { ToastrService } from "ngx-toastr";
+import { Utils } from "../../../utils";
 
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  selector: "app-orders",
+  templateUrl: "./orders.component.html",
+  styleUrls: ["./orders.component.scss"]
 })
 export class OrdersComponent implements OnInit {
   vatCoffee = 15;
@@ -26,9 +27,13 @@ export class OrdersComponent implements OnInit {
   stashOrderItem: OrderItem;
   order: Order;
 
-  constructor(private orderService: OrderService, private productService: ProductService,
-    private customerService: CustomerService, public dialog: MatDialog, private toastr: ToastrService) {
-  }
+  constructor(
+    private orderService: OrderService,
+    private productService: ProductService,
+    private customerService: CustomerService,
+    public dialog: MatDialog,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.loadOrders();
@@ -48,7 +53,7 @@ export class OrdersComponent implements OnInit {
     const dialogRef = this.dialog.open(OrderEditComponent, {
       disableClose: true,
       data: {
-        order: order,
+        order: Utils.clone(order),
         customers: self.customers,
         products: self.products
       }
@@ -59,24 +64,35 @@ export class OrdersComponent implements OnInit {
         return;
       }
 
-      const order = JSON.parse(JSON.stringify(result.order));
-
-      this.orderService.createOrder(order).subscribe((order) => {
-        this.toastr.success(`Order ${order.id} was created`);
-        self.loadOrders();
-
-      }, err => {
-        this.toastr.error(`Error when creating order. ${err.message}`);
-      });
+      self.createOrder(result.order);
     });
   }
 
+  createOrder(order: Order) {
+    var self = this;
+
+    console.log("Creating order", order);
+
+    this.orderService.createOrder(order).subscribe(
+      order => {
+        this.toastr.success(`Order ${order.id} was created`);
+        self.loadOrders();
+      },
+      err => {
+        this.toastr.error(`Error when creating order. ${err.message}`);
+      }
+    );
+  }
+
   loadOrders() {
-    this.orderService.getOrders().subscribe(orders => {
-      this.orders = orders;
-    }, err => {
-      this.toastr.error(`Error when fetching orders. ${err.message}`);
-    });
+    this.orderService.getOrders().subscribe(
+      orders => {
+        this.orders = orders;
+      },
+      err => {
+        this.toastr.error(`Error when fetching orders. ${err.message}`);
+      }
+    );
   }
 
   onProductVariationChange(productVariation: ProductVariation) {
@@ -89,7 +105,7 @@ export class OrdersComponent implements OnInit {
   }
 
   onOrderUpdated(order: Order) {
-    this.orderService.updateOrder(order).subscribe((order) => {
+    this.orderService.updateOrder(order).subscribe(order => {
       this.toastr.success(`Order ${order.id} was updated`);
       this.loadOrders();
     });
@@ -141,5 +157,7 @@ export class OrdersComponent implements OnInit {
   //   this.loadOrders();
   // }
 
-  get diagnostic() { return JSON.stringify(this.order.customer); }
+  get diagnostic() {
+    return JSON.stringify(this.order.customer);
+  }
 }

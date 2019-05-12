@@ -1,36 +1,31 @@
-import BaseRepo from './base-repo';
-import { productModel } from './models';
+import BaseRepo from "./base-repo";
+import { productModel } from "./models";
 
 class ProductRepo extends BaseRepo {
+  private Product = this.sequelize.define("product", productModel);
 
-    private Product = this.sequelize.define('product', productModel);
+  getProduct = function(productId: Number) {
+    return this.Product.findById(productId);
+  };
 
-    createTable = function(forceCreate) {
-        return this.Product.sync({force: forceCreate}); // todo: force only during initial development...
-    }
+  getProducts = function(filter) {
+    let self = this;
 
-    getProduct = function (productId: Number) {
-        return this.Product.findById(productId);
-    }
+    filter = filter || {};
+    filter.isDeleted = false;
 
-    getProducts = function (filter) {
-        let self = this;
+    return this.Product.findAll({ where: filter });
+  };
 
-        filter = filter || {};
-        filter.isDeleted = false;
+  createProduct = function(product) {
+    return this.Product.create(product);
+  };
 
-        return this.Product.findAll({where:filter});
-    }
-
-    createProduct = function(product) {
-        return this.Product.create(product);
-    }
-
-    updateProduct = function(productId, product) {
-        return this.Product.findById(productId).then(dbProduct => {
-            return dbProduct.update(product);
-        });
-    }
+  updateProduct = function(productId, product) {
+    return this.Product.findById(productId).then(dbProduct => {
+      return dbProduct.update(product);
+    });
+  };
 }
 
 export default new ProductRepo();
