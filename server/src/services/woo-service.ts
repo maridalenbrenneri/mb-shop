@@ -9,7 +9,12 @@ const GIFT_SUBSCRIPTION_GIFT_ID = 968;
 class WooService {
   getActiveGiftSubscriptions() {
     let self = this;
-    const url = WOO_API_BASE_URL + "orders?" + process.env.WOO_SECRET_PARAM + "&product=" + GIFT_SUBSCRIPTION_GIFT_ID;
+    const url =
+      WOO_API_BASE_URL +
+      "orders?" +
+      process.env.WOO_SECRET_PARAM +
+      "&product=" +
+      GIFT_SUBSCRIPTION_GIFT_ID;
 
     return new Promise<Array<any>>(function(resolve, reject) {
       https
@@ -25,8 +30,9 @@ class WooService {
           });
           orderResponse.on("end", () => {
             try {
-              return resolve(self.filterActiveGiftSubscriptions(JSON.parse(rawData)));
-
+              return resolve(
+                self.filterActiveGiftSubscriptions(JSON.parse(rawData))
+              );
             } catch (e) {
               reject(e);
             }
@@ -38,9 +44,16 @@ class WooService {
     });
   }
 
-  resolveLastDeliveryDate(firstDeliveryDate: Date, numberOfMonths: number, frequence: number) {
+  resolveLastDeliveryDate(
+    firstDeliveryDate: Date,
+    numberOfMonths: number,
+    frequence: number
+  ) {
     const date = moment(firstDeliveryDate).add(numberOfMonths - 1, "M");
-    return SubscriptionDateHelper.resolveNextDeliveryDate(date.toDate(), frequence);
+    return SubscriptionDateHelper.resolveNextDeliveryDate(
+      date.toDate(),
+      frequence
+    );
   }
 
   private filterActiveGiftSubscriptions(orders: any): Array<any> {
@@ -50,8 +63,18 @@ class WooService {
     const activeGiftSubscriptions = new Array<any>();
 
     for (const order of orders) {
+      if (
+        order.status !== "processing" &&
+        order.status !== "on-hold" &&
+        order.status !== "completed"
+      ) {
+        continue;
+      }
+
       const orderId = order.id;
-      const orderNumber = +order.meta_data.find(data => data.key == "_order_number").value;
+      const orderNumber = +order.meta_data.find(
+        data => data.key == "_order_number"
+      ).value;
       const orderNote = order.customer_note;
       const orderDate = order.date_created;
       const orderCustomerName =
@@ -82,44 +105,6 @@ class WooService {
     return !res ? null : res.value;
   }
 
-  private resolveNumberOfMOnths(orderItem: any) {
-    // Id's from Woo Product Variation (Not very robust solution...)
-
-    switch (orderItem.variation_id) {
-      case 998:
-      case 1002:
-      case 1006:
-        return 1;
-      case 999:
-      case 1003:
-      case 1007:
-        return 3;
-      case 1000:
-      case 1004:
-      case 1008:
-      case 1012:
-        return 6;
-      case 1001:
-      case 1005:
-      case 1009:
-      case 1019:
-        return 12;
-    }
-
-    if (orderItem.orderId == 3204) {
-      // Hack for a specific order that has a removed variation id
-      // todo: Can be removed after 19th feb 2019
-      return 3;
-    }
-
-    throw new Error(
-      "Unsupported Product Variation,  order id: " +
-        orderItem.orderId +
-        " ,variation id: " +
-        orderItem.variation_id
-    );
-  }
-
   private mapFromWooToDbModel(orderItem: any) {
     const df = this.resolveMetadataValue(orderItem.meta_data, "levering");
     const frequence =
@@ -127,7 +112,10 @@ class WooService {
         ? SubscriptionFrequence.fortnightly
         : SubscriptionFrequence.monthly;
 
-    const nrOfMonths = this.resolveNumberOfMOnths(orderItem);
+    const nrOfMonths = this.resolveMetadataValue(
+      orderItem.meta_data,
+      "antall-maneder"
+    );
 
     let startDate = null;
     let startDateString = this.resolveMetadataValue(
