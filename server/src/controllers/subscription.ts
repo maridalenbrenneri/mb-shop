@@ -3,7 +3,6 @@ import subscriptionService from "../services/subscription-service";
 import subscriptionEngineService from "../services/subscription-engine-service";
 import orderService from "../services/order-service";
 import logger from "../utils/logger";
-import { SubscriptionStatus } from "../constants";
 
 class SubscriptionController {
   /**
@@ -15,9 +14,9 @@ class SubscriptionController {
     // get orders with SubscriptionData (isSubscriptionParent)
     orderService.getOrders({});
 
-    subscriptionService.getSubscriptions(filter).then(subscriptions => {
-      res.send(subscriptions);
-    });
+    // subscriptionService.getSubscriptions(filter).then(subscriptions => {
+    //   res.send(subscriptions);
+    // });
   };
 
   updateSubscription = function(req: Request, res: Response) {};
