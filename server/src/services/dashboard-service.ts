@@ -109,7 +109,10 @@ class DashboardService {
 
     return new Promise<any>(function(resolve, reject) {
       const request = require("request");
-      request(url, function(error: any, response: { body: any; headers: any }) {
+      request({ url: url, timeout: 60 * 5 * 1000 }, function(
+        error: any,
+        response: { body: any; headers: any }
+      ) {
         if (error) {
           return reject(error);
         }
