@@ -63,6 +63,7 @@ class DashboardService {
     this.stats.bagCounter = new BagCounter();
     this.stats.bagCounter.fortnightly = new Counter();
     this.stats.bagCounter.monthly = new Counter();
+    this.subscriptions = [];
 
     let page = 1;
     do {
