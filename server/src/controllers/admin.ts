@@ -27,11 +27,9 @@ class AdminController {
       })
       .catch(function(err) {
         logger.error(err);
-        res
-          .status(500)
-          .send({
-            error: "An error occured when creating the tables. Error: " + err
-          });
+        res.status(500).send({
+          error: "An error occured when creating the tables. Error: " + err
+        });
       });
   };
 
@@ -59,8 +57,19 @@ class AdminController {
   };
 
   importStats = async function(_req: Request, res: Response) {
-    const stats = await dashboardService.importStats();
-    res.send(stats);
+    try {
+      const stats = await dashboardService.importStats();
+      res.send(stats);
+    } catch (err) {
+      logger.error(err);
+      res.status(500).send({
+        error:
+          "An error occured when importing data. Error: " +
+          err +
+          " - " +
+          err.msg
+      });
+    }
   };
 }
 

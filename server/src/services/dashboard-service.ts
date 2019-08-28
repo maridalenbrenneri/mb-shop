@@ -106,7 +106,8 @@ class DashboardService {
       "subscriptions?page=" +
       page +
       "&" +
-      process.env.WOO_SECRET_PARAM;
+      process.env.WOO_SECRET_PARAM +
+      "&per_page=30";
 
     return new Promise<any>(function(resolve, reject) {
       const request = require("request");
@@ -125,6 +126,12 @@ class DashboardService {
           self.setSubscriptionData();
           return resolve(1);
         } else {
+          console.log(
+            "Not yet done, " +
+              page +
+              " / " +
+              response.headers["x-wp-totalpages"]
+          );
           return resolve(page + 1);
         }
       });
@@ -169,6 +176,7 @@ class DashboardService {
       this.wooApiBaseUrl +
       "orders?" +
       process.env.WOO_SECRET_PARAM +
+      "&per_page=100" +
       "&status=processing";
 
     return new Promise<any>(function(resolve, reject) {
@@ -191,6 +199,7 @@ class DashboardService {
       this.wooApiBaseUrl +
       "orders?" +
       process.env.WOO_SECRET_PARAM +
+      "&per_page=100" +
       "&status=pending";
 
     return new Promise<any>(function(resolve, reject) {

@@ -13,9 +13,11 @@ class WooService {
       WOO_API_BASE_URL +
       "orders?" +
       process.env.WOO_SECRET_PARAM +
+      "&per_page=100" +
       "&product=" +
       GIFT_SUBSCRIPTION_GIFT_ID;
 
+    // todo: this will fail when we have more than 100 gift subscription orders...
     return new Promise<Array<any>>(function(resolve, reject) {
       https
         .get(url, orderResponse => {
