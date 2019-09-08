@@ -1,26 +1,28 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 
-import { Product } from '../models/product.model';
-import { environment } from '../../../environments/environment';
+import { Product } from "../models/product.model";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ProductService {
-
   products: Array<Product> = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   createProduct(product: Product): Observable<any> {
     return this.http.post<any>(`${environment.mbApiBaseUrl}products`, product);
   }
 
   updateProduct(product: Product): Observable<any> {
-    return this.http.put<any>(`${environment.mbApiBaseUrl}products/${product.id}`, product);
+    return this.http.put<any>(
+      `${environment.mbApiBaseUrl}products/${product.id}`,
+      product
+    );
   }
 
   getProduct(id: number): Observable<Product> {
@@ -33,13 +35,11 @@ export class ProductService {
   }
 
   getProducts(): Observable<Product[]> {
-    if (this.products.length > 0) {
-      return of(this.products);
-    }
-
-    return this.http.get<Product[]>(environment.mbApiBaseUrl + 'products').pipe(map(products => {
-      this.products = products;
-      return this.products;
-    }));
+    return this.http.get<Product[]>(environment.mbApiBaseUrl + "products").pipe(
+      map(products => {
+        this.products = products;
+        return this.products;
+      })
+    );
   }
 }

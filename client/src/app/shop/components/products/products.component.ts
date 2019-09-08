@@ -1,14 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Product } from '../../models/product.model';
-import { ProductService } from '../../services/product.service';
-import { ProductCategories } from '../../../constants';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, Inject } from "@angular/core";
+import { Product } from "../../models/product.model";
+import { ProductService } from "../../services/product.service";
+import { ProductCategories } from "../../../constants";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  selector: "app-products",
+  templateUrl: "./products.component.html",
+  styleUrls: ["./products.component.scss"]
 })
 export class ProductsComponent implements OnInit {
   vatCoffee = 15;
@@ -20,7 +20,11 @@ export class ProductsComponent implements OnInit {
 
   private _showNotActiveProducts: boolean = false;
 
-  constructor(private productService: ProductService, public dialog: MatDialog, private toastr: ToastrService) {
+  constructor(
+    private productService: ProductService,
+    public dialog: MatDialog,
+    private toastr: ToastrService
+  ) {
     this.subscriptionProduct = new Product();
     this.giftSubscriptionProduct = new Product();
   }
@@ -30,26 +34,32 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productService.getProducts().subscribe(products => {
-      this.coffeeProducts = products.filter(product => product.category === ProductCategories.coffee);
+    this.productService.getProducts().subscribe(
+      products => {
+        this.coffeeProducts = products.filter(
+          product => product.category === ProductCategories.coffee
+        );
 
-      if (!this._showNotActiveProducts) {
-        this.coffeeProducts = this.coffeeProducts.filter(product => product.isActive);
+        if (!this._showNotActiveProducts) {
+          this.coffeeProducts = this.coffeeProducts.filter(
+            product => product.isActive
+          );
+        }
+      },
+      () => {
+        this.toastr.error("Error when loading products");
       }
-
-    }, () => {
-      this.toastr.error("Error when loading products");
-    });
+    );
   }
 
   openEditProductDialog(product: Product): void {
     if (!product) {
       product = new Product();
-      product.data = {}
+      product.data = {};
       product.productVariations = [
-        { name: 'priceSmallBag', price: 70, weight: 250 },
-        { name: 'pricePerKg', price: 280, weight: 1000 }
-      ]
+        { name: "priceSmallBag", price: 70, weight: 250 },
+        { name: "pricePerKg", price: 280, weight: 1000 }
+      ];
     }
 
     const dialogRef = this.dialog.open(EditProductComponent, {
@@ -71,7 +81,7 @@ export class ProductsComponent implements OnInit {
       }
 
       product.category = ProductCategories.coffee;
-      product.vatGroup = 'coffee';
+      product.vatGroup = "coffee";
       product.isActive = true;
       product.isInStock = true;
 
@@ -84,34 +94,39 @@ export class ProductsComponent implements OnInit {
       product.productVariations[1].price = result.pricePerKg;
 
       if (!this.alreadyContainsProduct(product)) {
-        this.productService.createProduct(product).subscribe(() => {
-          this.loadProducts();
-          this.toastr.success("Product created");
-
-        }, err => {
-          this.toastr.error("Error when creating product");
-        });
-
+        this.productService.createProduct(product).subscribe(
+          () => {
+            this.loadProducts();
+            this.toastr.success("Product created");
+          },
+          err => {
+            this.toastr.error("Error when creating product");
+          }
+        );
       } else {
-        this.productService.updateProduct(product).subscribe(() => {
-          this.loadProducts();
-          this.toastr.success("Product updated");
-
-        }, err => {
-          this.toastr.error("Error when updating product");
-        });
+        this.productService.updateProduct(product).subscribe(
+          () => {
+            this.loadProducts();
+            this.toastr.success("Product updated");
+          },
+          err => {
+            this.toastr.error("Error when updating product");
+          }
+        );
       }
     });
   }
 
   toggleIsActive(product: Product, active: boolean) {
     product.isActive = active;
-    this.productService.updateProduct(product).subscribe(() => {
-      this.loadProducts();
-
-    }, err => {
-      this.toastr.error("Error when updating product");
-    });
+    this.productService.updateProduct(product).subscribe(
+      () => {
+        this.loadProducts();
+      },
+      err => {
+        this.toastr.error("Error when updating product");
+      }
+    );
   }
 
   set showNotActiveProducts(show: boolean) {
@@ -126,11 +141,15 @@ export class ProductsComponent implements OnInit {
 
   getFirstProductOfType(products: Array<Product>, category: String) {
     const items = products.filter(p => p.category === category);
-    return items.length > 0 ? products.filter(p => p.category === category)[0] : null;
+    return items.length > 0
+      ? products.filter(p => p.category === category)[0]
+      : null;
   }
 
   getProductImageOrDefault(product: Product): string {
-    return !product.portfolioImageKey ? 'product_default.jpg' : product.portfolioImageKey;
+    return !product.portfolioImageKey
+      ? "product_default.jpg"
+      : product.portfolioImageKey;
   }
 }
 
@@ -145,14 +164,14 @@ export interface EditCoffeeProductData {
 }
 
 @Component({
-  selector: 'edit-product.component',
-  templateUrl: 'edit-product.component.html',
+  selector: "edit-product.component",
+  templateUrl: "edit-product.component.html"
 })
 export class EditProductComponent {
-
   constructor(
     public dialogRef: MatDialogRef<EditProductComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EditCoffeeProductData) { }
+    @Inject(MAT_DIALOG_DATA) public data: EditCoffeeProductData
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
