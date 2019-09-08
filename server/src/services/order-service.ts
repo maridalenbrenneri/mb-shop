@@ -143,15 +143,15 @@ class OrderService {
 
   mapToDbModel = function(order: any) {
     return {
-      orderDate: order.orderDate,
-      deliveryDate: order.deliveryDate,
+      orderDate: order.orderDate || Date.now(),
+      deliveryDate: order.deliveryDate || Date.now(),
       status: order.status,
       customer: JSON.stringify(order.customer),
       items: JSON.stringify(order.items),
-      notes: JSON.stringify(order.notes),
-      customerNotes: JSON.stringify(order.customerNotes),
-      subscriptionParentOrderId: order.subscriptionParentOrderId,
-      subscriptionData: JSON.stringify(order.subscriptionData)
+      notes: JSON.stringify(order.notes || []),
+      customerNotes: JSON.stringify(order.customerNotes || "")
+      // subscriptionParentOrderId: order.subscriptionParentOrderId,
+      // subscriptionData: JSON.stringify(order.subscriptionData)
     };
   };
 
@@ -164,9 +164,9 @@ class OrderService {
       customer: JSON.parse(order.customer),
       items: JSON.parse(order.items),
       notes: JSON.parse(order.notes),
-      customerNotes: order.customerNotes ? JSON.parse(order.customerNotes) : "",
-      subscriptionParentOrderId: order.subscriptionParentOrderId, // if set, order is a subscription renewal (refers to another id)
-      subscriptionData: JSON.parse(order.subscriptionData) // if set, order is a subscription parent
+      customerNotes: order.customerNotes ? JSON.parse(order.customerNotes) : ""
+      //subscriptionParentOrderId: order.subscriptionParentOrderId, // if set, order is a subscription renewal (refers to another id)
+      //subscriptionData: JSON.parse(order.subscriptionData) // if set, order is a subscription parent
     };
   };
 }
