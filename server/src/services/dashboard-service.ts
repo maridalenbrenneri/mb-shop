@@ -7,6 +7,9 @@ class Counter {
   three: number = 0;
   four: number = 0;
   five: number = 0;
+  six: number = 0;
+  seven: number = 0;
+  eight: number = 0;
 }
 
 class BagCounter {
@@ -217,25 +220,14 @@ class DashboardService {
   }
 
   private resolveNumberOfBags(name, isFortnigthly) {
-    if (name.includes("- 1")) {
-      return this.updateBagCounter(1, isFortnigthly);
+    for (let i = 1; i <= 8; i++) {
+      if (name.includes(`- ${i}`)) {
+        return this.updateBagCounter(i, isFortnigthly);
+      }
     }
 
-    if (name.includes("- 2")) {
-      return this.updateBagCounter(2, isFortnigthly);
-    }
-
-    if (name.includes("- 3")) {
-      return this.updateBagCounter(3, isFortnigthly);
-    }
-
-    if (name.includes("- 4")) {
-      return this.updateBagCounter(4, isFortnigthly);
-    }
-
-    if (name.includes("- 5")) {
-      return this.updateBagCounter(5, isFortnigthly);
-    }
+    console.log(`Number of bags not supported, name: ${name}`);
+    return 0;
   }
 
   private updateBagCounter(bagsToAdd: number, isFortnigthly: boolean) {
@@ -282,6 +274,33 @@ class DashboardService {
         this.stats.bagCounter.monthly.five += 1;
       }
       return 5;
+    }
+
+    if (bagsToAdd === 6) {
+      if (isFortnigthly) {
+        this.stats.bagCounter.fortnightly.six += 1;
+      } else {
+        this.stats.bagCounter.monthly.six += 1;
+      }
+      return 6;
+    }
+
+    if (bagsToAdd === 7) {
+      if (isFortnigthly) {
+        this.stats.bagCounter.fortnightly.seven += 1;
+      } else {
+        this.stats.bagCounter.monthly.seven += 1;
+      }
+      return 7;
+    }
+
+    if (bagsToAdd === 8) {
+      if (isFortnigthly) {
+        this.stats.bagCounter.fortnightly.eight += 1;
+      } else {
+        this.stats.bagCounter.monthly.eight += 1;
+      }
+      return 8;
     }
 
     throw new Error("Not supported bag count");
