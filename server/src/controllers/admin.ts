@@ -33,11 +33,12 @@ class AdminController {
       });
   };
 
-  hello = function(req: Request, res: Response) {
+  hello = function(_req: Request, res: Response) {
+    console.log("yeah");
     res.send("Hello MB API!");
   };
 
-  testDb = function(req: Request, res: Response) {
+  testDb = function(_req: Request, res: Response) {
     UserRepo.getUser(1)
       .then(user => {
         user.password = "";

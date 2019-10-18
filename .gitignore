@@ -6,7 +6,7 @@
 /out-tsc
 /client/dist
 /server/dist
-
+/client-ng
 # dependencies
 /node_modules
 /client/node_modules

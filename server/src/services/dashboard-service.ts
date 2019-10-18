@@ -17,6 +17,8 @@ class BagCounter {
   monthly: Counter;
 }
 
+interface IBagCount {}
+
 class Stats {
   subscriptionActiveCount: number = 0;
   subscriptionOnHoldCount: number = 0;
@@ -33,7 +35,8 @@ class Stats {
   giftSubscriptionFortnightlyCount: number = 0;
   giftSubscriptionMonthlyCount: number = 0;
 
-  bagCounter: BagCounter;
+  bagCountFortnightly: { [id: string]: number } = {};
+  bagCountMonthly: { [id: string]: number } = {};
 }
 
 class DashboardService {
@@ -63,9 +66,6 @@ class DashboardService {
 
   private async getStatsDataFromWoo() {
     this.stats = new Stats();
-    this.stats.bagCounter = new BagCounter();
-    this.stats.bagCounter.fortnightly = new Counter();
-    this.stats.bagCounter.monthly = new Counter();
     this.subscriptions = [];
 
     let page = 1;
@@ -231,79 +231,25 @@ class DashboardService {
   }
 
   private updateBagCounter(bagsToAdd: number, isFortnigthly: boolean) {
-    if (bagsToAdd === 1) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.one += 1;
-      } else {
-        this.stats.bagCounter.monthly.one += 1;
+    if (isFortnigthly) {
+      if (!this.stats.bagCountFortnightly[`${bagsToAdd}`])
+        this.stats.bagCountFortnightly[`${bagsToAdd}`] = 1;
+      else {
+        this.stats.bagCountFortnightly[`${bagsToAdd}`] =
+          this.stats.bagCountFortnightly[`${bagsToAdd}`] + 1;
       }
-      return 1;
+
+      return this.stats.bagCountFortnightly[`${bagsToAdd}`];
     }
 
-    if (bagsToAdd === 2) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.two += 1;
-      } else {
-        this.stats.bagCounter.monthly.two += 1;
-      }
-      return 2;
+    if (!this.stats.bagCountMonthly[`${bagsToAdd}`])
+      this.stats.bagCountMonthly[`${bagsToAdd}`] = 1;
+    else {
+      this.stats.bagCountMonthly[`${bagsToAdd}`] =
+        this.stats.bagCountMonthly[`${bagsToAdd}`] + 1;
     }
 
-    if (bagsToAdd === 3) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.three += 1;
-      } else {
-        this.stats.bagCounter.monthly.three += 1;
-      }
-      return 3;
-    }
-
-    if (bagsToAdd === 4) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.four += 1;
-      } else {
-        this.stats.bagCounter.monthly.four += 1;
-      }
-      return 4;
-    }
-
-    if (bagsToAdd === 5) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.five += 1;
-      } else {
-        this.stats.bagCounter.monthly.five += 1;
-      }
-      return 5;
-    }
-
-    if (bagsToAdd === 6) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.six += 1;
-      } else {
-        this.stats.bagCounter.monthly.six += 1;
-      }
-      return 6;
-    }
-
-    if (bagsToAdd === 7) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.seven += 1;
-      } else {
-        this.stats.bagCounter.monthly.seven += 1;
-      }
-      return 7;
-    }
-
-    if (bagsToAdd === 8) {
-      if (isFortnigthly) {
-        this.stats.bagCounter.fortnightly.eight += 1;
-      } else {
-        this.stats.bagCounter.monthly.eight += 1;
-      }
-      return 8;
-    }
-
-    throw new Error("Not supported bag count");
+    return this.stats.bagCountMonthly[`${bagsToAdd}`];
   }
 }
 

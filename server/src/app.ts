@@ -166,10 +166,10 @@ app.get("/api", function(_req: Request, res: Response) {
 
 /*** CLIENT ***/
 
-app.use(express.static(__dirname + "/../../client/dist/mb-shop"));
+app.use(express.static(__dirname + "/../../client/build/mb-shop"));
 
 app.get("/", function(_req, res) {
-  res.sendFile(__dirname + "/../../client/dist/mb-shop/index.html");
+  res.sendFile(__dirname + "/../../client/build/mb-shop/index.html");
 });
 
 app.get("/*", function(_req, res) {

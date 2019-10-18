@@ -1,9 +1,10 @@
 {
   "name": "mb-shop",
-  "version": "1.0.1",
+  "version": "1.0.0",
+  "license": "MIT",
   "description": "Maridalen Brenneri Backoffice",
   "engines": {
-    "node": "11.2.0"
+    "node": "12.2.0"
   },
   "main": "./server/dist/server.js",
   "scripts": {

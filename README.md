@@ -1,3 +1,3 @@
 develop
-./server - npm run dev
-./client - ng serve
+./server - npm run dev / F5
+./client - yarn start
