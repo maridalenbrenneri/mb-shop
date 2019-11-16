@@ -9,12 +9,12 @@
   "scripts": {
     "install-client": "npm install --prefix ./client/",
     "install-server": "npm install --prefix ./server/",
-    "postinstall-client": "npm run postinstall --prefix ./client/",
     "postinstall-server": "npm run postinstall --prefix ./server/",
-    "postinstall": "npm-run-all install-client install-server postinstall-client postinstall-server",
+    "postinstall": "npm-run-all install-client install-server postinstall-server",
     "build-client": "npm run build --prefix ./client/",
     "build-server": "npm run build --prefix ./server/",
     "build": "npm-run-all build-client build-server",
+    "heroku-postbuild": "npm run heroku-postbuild --prefix ./client/",
     "dev": "npm run dev --prefix ./server/",
     "start": "node ./server/dist/server.js"
   },
