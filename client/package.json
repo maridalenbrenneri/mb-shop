@@ -1,13 +1,13 @@
 {
   "name": "mb-shop",
   "version": "1.0.0",
-  "description": "Maridalen Brenneri web shop",
+  "description": "Maridalen Brenneri Backoffice",
   "engines": {
-    "node": "8.9.1"
+    "node": "10.15.3"
   },
   "main": "index.js",
   "scripts": {
-    "postinstall": "ng build --aot --prod",
+    "heroku-postbuild": "ng build --configuration=production",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

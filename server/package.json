@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Maridalen Brenneri Api",
   "engines": {
-    "node": "11.2.0"
+    "node": "10.15.3"
   },
   "main": "./dist/server.js",
   "scripts": {
