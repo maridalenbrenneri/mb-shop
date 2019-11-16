@@ -43,10 +43,16 @@ export const orderModel = {
   items: { type: TEXT },
   notes: { type: TEXT },
   customerNotes: { type: TEXT },
-  parentOrderId: { type: INTEGER.UNSIGNED }, // todo: to be removed
+
+  // If this has a value, order is generated from a subscription
   subscriptionParentOrderId: { type: INTEGER.UNSIGNED },
+
+  // If this is set, the order is a subscription
   subscriptionData: { type: TEXT },
-  type: { type: STRING }, // todo: tp be removed
+
+  parentOrderId: { type: INTEGER.UNSIGNED }, // todo: to be removed
+  type: { type: STRING }, // todo: to be removed
+
   isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
 };
 

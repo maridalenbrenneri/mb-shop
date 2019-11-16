@@ -18,12 +18,9 @@ import {
 
 import AppMenu from "./AppMenu";
 import Dashboard from "./modules/dashboard/dashboard";
+import Orders from "./modules/order/orders";
+import Order from "./modules/order/order";
 
-const PageOrders = () => (
-  <Typography variant="h3" component="h1">
-    Orders Page
-  </Typography>
-);
 const PageCustomers = () => (
   <Typography variant="h3" component="h1">
     Customers Page
@@ -93,7 +90,8 @@ const App: React.FC = () => {
           <Container maxWidth="lg" className={classes.container}>
             <Switch>
               <Route path="/" exact component={Dashboard} />
-              <Route path="/orders" component={PageOrders} />
+              <Route path="/orders" component={Orders} />
+              <Route path="/order" component={Order} />
               <Route path="/customers" component={PageCustomers} />
               <Route path="/reports" component={PageReports} />
             </Switch>
