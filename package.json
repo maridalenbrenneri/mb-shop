@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "Maridalen Brenneri Backoffice",
   "engines": {
-    "node": "11.2.0"
+    "node": "10.15.3"
   },
   "main": "./server/dist/server.js",
   "scripts": {
