@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { Order, OrderItem, OrderNote } from "../../../models/order.model";
 import { Customer } from "../../../models/customer.model";
-import { Product, ProductVariation } from "../../..//models/product.model";
+import { Product, ProductVariation } from "../../../models/product.model";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { SubscriptionData } from "src/app/shop/models/subscription-data.model";
 

@@ -1,5 +1,4 @@
 import { Response, Request } from "express";
-import orderRepo from "../repositories/order-repo";
 import orderService from "../services/order-service";
 import logger from "../utils/logger";
 import fikenService from "../services/fiken-service";

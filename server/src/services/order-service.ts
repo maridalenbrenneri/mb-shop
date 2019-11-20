@@ -1,5 +1,5 @@
 import { Response } from "express";
-import orderRepo from "../repositories/order-repo";
+import OrderModel from "../repositories/order-model";
 import { OrderValidator } from "../validators/order-validator";
 import { ValidationError } from "../models/validation-error";
 import { OrderStatus } from "../constants";
@@ -14,8 +14,7 @@ class OrderService {
     order.status = OrderStatus.processing;
     order.notes = [];
 
-    return orderRepo
-      .createOrder(self.mapToDbModel(order))
+    return OrderModel.createOrder(self.mapToDbModel(order))
       .then(dbOrder => {
         let clientOrder = self.mapToClientModel(dbOrder);
 
@@ -31,8 +30,7 @@ class OrderService {
     OrderValidator.validate(order);
 
     const orderToUpdate = self.mapToDbModel(order);
-    return orderRepo
-      .updateOrder(order.id, orderToUpdate)
+    return OrderModel.updateOrder(order.id, orderToUpdate)
       .then(updatedOrder => {
         return res.send(self.mapToClientModel(updatedOrder));
       })
@@ -43,7 +41,7 @@ class OrderService {
 
   getOrder(orderId: number, res: Response) {
     let self = this;
-    return orderRepo.getOrder(orderId).then(dbOrder => {
+    return OrderModel.getOrder(orderId).then(dbOrder => {
       if (!dbOrder) {
         return res
           .status(404)
@@ -55,14 +53,14 @@ class OrderService {
 
   getOrders(res: Response, filter = {}) {
     let self = this;
-    return orderRepo.getOrders(filter).then(dbOrders => {
+    return OrderModel.getOrders(filter).then(dbOrders => {
       return res.send(dbOrders.map(order => self.mapToClientModel(order)));
     });
   }
 
   getSubscriptionParentOrders(res: Response) {
     let self = this;
-    return orderRepo.getSubscriptionParentOrders().then(dbOrders => {
+    return OrderModel.getSubscriptionParentOrders().then(dbOrders => {
       return res.send(dbOrders.map(order => self.mapToClientModel(order)));
     });
   }
@@ -70,16 +68,15 @@ class OrderService {
   updateOrderStatus(orderId: number, newStatus: string, res: Response) {
     let self = this;
 
-    return orderRepo
-      .getOrder(orderId)
+    return OrderModel.getOrder(orderId)
       .then(function(order) {
         OrderValidator.validateStatus(order.status, newStatus);
 
-        return orderRepo
-          .updateOrderStatus(orderId, newStatus)
-          .then(updatedOrder => {
+        return OrderModel.updateOrderStatus(orderId, newStatus).then(
+          updatedOrder => {
             return res.send(self.mapToClientModel(updatedOrder));
-          });
+          }
+        );
       })
       .catch(function(err) {
         self.handleError(err, res);
@@ -91,18 +88,18 @@ class OrderService {
 
     OrderValidator.validateOrderNote(orderNote);
 
-    return orderRepo
-      .getOrder(orderNote.orderId)
+    return OrderModel.getOrder(orderNote.orderId)
       .then(order => {
         let clientOrder = this.mapToClientModel(order);
 
         clientOrder.notes.push(orderNote);
 
-        return orderRepo
-          .addOrderNote(order.id, JSON.stringify(clientOrder.notes))
-          .then(updatedOrder => {
-            return res.send(self.mapToClientModel(updatedOrder));
-          });
+        return OrderModel.addOrderNote(
+          order.id,
+          JSON.stringify(clientOrder.notes)
+        ).then(updatedOrder => {
+          return res.send(self.mapToClientModel(updatedOrder));
+        });
       })
       .catch(function(err) {
         self.handleError(err, res);
@@ -114,16 +111,16 @@ class OrderService {
 
     OrderValidator.validateCustomerOrderNote(orderNote);
 
-    return orderRepo
-      .getOrder(orderNote.orderId)
+    return OrderModel.getOrder(orderNote.orderId)
       .then(order => {
         let clientOrder = this.mapToClientModel(order);
 
-        return orderRepo
-          .addCustomerOrderNote(order.id, clientOrder.customerNotes)
-          .then(updatedOrder => {
-            return res.send(self.mapToClientModel(updatedOrder));
-          });
+        return OrderModel.addCustomerOrderNote(
+          order.id,
+          clientOrder.customerNotes
+        ).then(updatedOrder => {
+          return res.send(self.mapToClientModel(updatedOrder));
+        });
       })
       .catch(function(err) {
         self.handleError(err, res);

@@ -1,5 +1,5 @@
 import giftSubscriptionService from "./gift-subscription-service";
-import StatsRepo from "../repositories/stats-repo";
+import { StatsModel } from "../repositories/stats-model";
 
 class Counter {
   one: number = 0;
@@ -45,7 +45,8 @@ class DashboardService {
   private stats: Stats;
 
   async getStats() {
-    return StatsRepo.getStats().then(stats => {
+    console.log("calling getStats...");
+    return StatsModel.getStats().then(stats => {
       return {
         data: JSON.parse(stats.data),
         lastUpdated: stats.lastUpdated
@@ -56,7 +57,7 @@ class DashboardService {
   /* Get stats from Woo and save in app db */
   async importStats() {
     const statsData = await this.getStatsDataFromWoo();
-    return StatsRepo.updateStats(statsData).then(() => {
+    return StatsModel.updateStats(statsData).then(() => {
       return this.getStats();
     });
   }

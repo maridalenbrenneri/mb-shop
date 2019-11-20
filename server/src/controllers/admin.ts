@@ -1,13 +1,13 @@
 import { Response, Request } from "express";
 import logger from "../utils/logger";
-import ProductRepo from "../repositories/product-repo";
-import UserRepo from "../repositories/user-repo";
-import OrderRepo from "../repositories/order-repo";
-import customerRepo from "../repositories/customer-repo";
-import product from "./product";
-import giftSubscriptionRepo from "../repositories/gift-subscription-repo";
+// import ProductRepo from "../repositories/product-model";
+import UserModel from "../repositories/user-model";
+// import OrderRepo from "../repositories/order-model";
+// import customerRepo from "../repositories/customer-model";
+// import product from "./product";
+// import giftSubscriptionRepo from "../repositories/gift-subscription-model";
 import dashboardService from "../services/dashboard-service";
-import statsRepo from "../repositories/stats-repo";
+// import statsRepo from "../repositories/stats-repo";
 
 class AdminController {
   // WARNING: Overrides any existing tables
@@ -38,7 +38,7 @@ class AdminController {
   };
 
   testDb = function(req: Request, res: Response) {
-    UserRepo.getUser(1)
+    UserModel.getUser(1)
       .then(user => {
         user.password = "";
         return res.send(user);

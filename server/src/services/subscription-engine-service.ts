@@ -6,10 +6,10 @@ import {
   Constants,
   OrderTypes
 } from "../constants";
-import orderRepo from "../repositories/order-repo";
+import OrderModel from "../repositories/order-model";
 import logger from "../utils/logger";
 import orderService from "./order-service";
-import userRepo from "../repositories/user-repo";
+import UserModel from "../repositories/user-model";
 
 class SubscriptionEngineService {
   createRenewalOrders(res: Response) {
@@ -90,19 +90,16 @@ class SubscriptionEngineService {
       ]
     };
 
-    return orderRepo.createOrder(order).then(createdOrder => {
+    return OrderModel.createOrder(order).then(createdOrder => {
       logger.info(
-        `Renewal order ${createdOrder.id} was created for subscription ${
-          subscription.id
-        }`
+        `Renewal order ${createdOrder.id} was created for subscription ${subscription.id}`
       );
     });
   }
 
   // Gather data need for createing the order
   private createRenewalOrder_Step2(subscription, nextRenewalDate, result) {
-    return userRepo
-      .getUser(subscription.userId)
+    return UserModel.getUser(subscription.userId)
       .then(customer => {
         return this.createRenewalOrder_Step3(
           subscription,
@@ -150,9 +147,7 @@ class SubscriptionEngineService {
 
           if (match.length > 1) {
             let err = new Error(
-              `Duplicate orders found on subscription when creating renewal order. Subscription id: ${
-                subscription.id
-              }`
+              `Duplicate orders found on subscription when creating renewal order. Subscription id: ${subscription.id}`
             );
             logger.error(err.message);
           }
