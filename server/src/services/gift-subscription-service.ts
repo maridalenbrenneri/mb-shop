@@ -1,5 +1,5 @@
 import { Response } from "express";
-import GiftSubscriptionModel from "../repositories/gift-subscription-model";
+import GiftSubscriptionModel from "../database/models/gift-subscription-model";
 import logger from "../utils/logger";
 import wooService from "./woo-service";
 import { GiftSubscriptionValidator } from "../validators/gift-subscription-validator";
@@ -19,11 +19,9 @@ class GiftSubscriptionService {
       })
       .catch(function(err) {
         logger.error(err);
-        return res
-          .status(500)
-          .send({
-            error: "An error occured when getting the gift subscription"
-          });
+        return res.status(500).send({
+          error: "An error occured when getting the gift subscription"
+        });
       });
   }
 
@@ -60,12 +58,9 @@ class GiftSubscriptionService {
       })
       .catch(function(err) {
         logger.error(err);
-        return res
-          .status(500)
-          .send({
-            error:
-              "An error occured when creating the gift subscription: " + err
-          });
+        return res.status(500).send({
+          error: "An error occured when creating the gift subscription: " + err
+        });
       });
   }
 
@@ -85,12 +80,9 @@ class GiftSubscriptionService {
       })
       .catch(function(err) {
         logger.error(err);
-        return res
-          .status(500)
-          .send({
-            error:
-              "An error occured when updating the gift subscription: " + err
-          });
+        return res.status(500).send({
+          error: "An error occured when updating the gift subscription: " + err
+        });
       });
   }
 
@@ -118,9 +110,8 @@ class GiftSubscriptionService {
 
     for (const wooSubscription of wooSubscriptions) {
       let sub = giftSubscriptions.find(
-        s => s.wooOrderId == wooSubscription.wooOrderId
+        (s: { wooOrderId: any }) => s.wooOrderId == wooSubscription.wooOrderId
       );
-
       if (!sub) {
         await GiftSubscriptionModel.createGiftSubscription(wooSubscription);
         importedCount++;

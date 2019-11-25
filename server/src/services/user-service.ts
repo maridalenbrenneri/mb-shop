@@ -1,4 +1,4 @@
-import UserModel from "../repositories/user-model";
+import UserModel from "../database/models/user-model";
 import { Response } from "express";
 
 class UserService {

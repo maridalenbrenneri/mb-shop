@@ -1,5 +1,5 @@
 import giftSubscriptionService from "./gift-subscription-service";
-import { StatsModel } from "../repositories/stats-model";
+import StatsModel from "../database/models/stats-model";
 
 class Counter {
   one: number = 0;

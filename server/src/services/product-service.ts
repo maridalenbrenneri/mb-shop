@@ -1,5 +1,5 @@
 import { Response } from "express";
-import ProductModel from "../repositories/product-model";
+import ProductModel from "../database/models/product-model";
 import logger from "../utils/logger";
 import { ProductValidator } from "../validators/product-validator";
 

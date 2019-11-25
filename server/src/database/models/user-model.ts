@@ -6,10 +6,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 });
 
 export default class UserModel extends Model {
-  public static createTable = function(forceCreate) {
-    return UserModel.sync({ force: forceCreate });
-  };
-
   public static getUser = function(userId: Number) {
     return UserModel.findByPk(userId as any);
   };

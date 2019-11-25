@@ -6,10 +6,10 @@ import {
   Constants,
   OrderTypes
 } from "../constants";
-import OrderModel from "../repositories/order-model";
+import OrderModel from "../database/models/order-model";
 import logger from "../utils/logger";
 import orderService from "./order-service";
-import UserModel from "../repositories/user-model";
+import UserModel from "../database/models/user-model";
 
 class SubscriptionEngineService {
   createRenewalOrders(res: Response) {

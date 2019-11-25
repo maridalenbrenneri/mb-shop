@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import * as jwt from "jsonwebtoken";
-import UserModel from "../repositories/user-model";
+import UserModel from "../database/models/user-model";
 import userService from "../services/user-service";
 
 class AuthController {

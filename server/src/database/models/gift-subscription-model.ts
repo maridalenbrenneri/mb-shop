@@ -14,10 +14,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 });
 
 export default class GiftSubscriptionModel extends Model {
-  public static createTable = function(forceCreate) {
-    return GiftSubscriptionModel.sync({ force: forceCreate }); // todo: force only during initial development...
-  };
-
   public static getGiftSubscription = function(giftSubscriptionId) {
     return GiftSubscriptionModel.findByPk(giftSubscriptionId);
   };
@@ -33,14 +29,14 @@ export default class GiftSubscriptionModel extends Model {
   };
 
   public static createGiftSubscription = function(giftSubscription) {
-    return this.GiftSubscription.create(giftSubscription);
+    return GiftSubscriptionModel.create(giftSubscription);
   };
 
   public static updateGiftSubscription = function(
     giftSubscriptionId,
     giftSubscription
   ) {
-    return this.GiftSubscription.findById(giftSubscriptionId).then(
+    return GiftSubscriptionModel.findByPk(giftSubscriptionId).then(
       dbGiftSubscription => {
         return dbGiftSubscription.update(giftSubscription);
       }

@@ -6,10 +6,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 });
 
 export default class CustomerModel extends Model {
-  public static createTable = function(forceCreate) {
-    return CustomerModel.sync({ force: forceCreate });
-  };
-
   public static getCustomer = function(customerId) {
     let customer = CustomerModel.findByPk(customerId);
     return this.mapToClientModel(customer);

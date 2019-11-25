@@ -1,5 +1,5 @@
 import { Response } from "express";
-import OrderModel from "../repositories/order-model";
+import OrderModel from "../database/models/order-model";
 import { OrderValidator } from "../validators/order-validator";
 import { ValidationError } from "../models/validation-error";
 import { OrderStatus } from "../constants";
