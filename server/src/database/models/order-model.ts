@@ -85,8 +85,8 @@ OrderModel.init(
     customerNotes: { type: TEXT },
     parentOrderId: { type: INTEGER.UNSIGNED }, // todo: to be removed
     subscriptionParentOrderId: { type: INTEGER.UNSIGNED },
-    subscriptionData: { type: TEXT },
-    type: { type: STRING }, // todo: tp be removed
+    subscriptionData: { type: TEXT }, // to be removed ?
+    type: { type: STRING }, // todo: to be removed
     isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
   },
   {

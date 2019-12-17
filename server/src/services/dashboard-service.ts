@@ -27,6 +27,7 @@ class Stats {
   subsciptionsBagsPerMonthlyCount: number = 0;
 
   orderProcessingCount: number = 0;
+  orderOnHoldCount: number = 0;
   orderPendingPaymentCount: number = 0;
 
   giftSubscriptionCount: number = 0;
@@ -76,6 +77,7 @@ class DashboardService {
 
     await this.getOrdersInPendingPayment();
     await this.getOrdersInProcess();
+    await this.getOrdersOnHold();
     await this.getGiftSubscriptions();
 
     return this.stats;
@@ -191,6 +193,29 @@ class DashboardService {
         }
 
         self.stats.orderProcessingCount = JSON.parse(response.body).length;
+
+        resolve(true);
+      });
+    });
+  }
+
+  private getOrdersOnHold() {
+    const self = this;
+    const url =
+      this.wooApiBaseUrl +
+      "orders?" +
+      process.env.WOO_SECRET_PARAM +
+      "&per_page=100" +
+      "&status=on-hold";
+
+    return new Promise<any>(function(resolve, reject) {
+      const request = require("request");
+      request(url, function(error: any, response: { body: any }) {
+        if (error) {
+          return reject(error);
+        }
+
+        self.stats.orderOnHoldCount = JSON.parse(response.body).length;
 
         resolve(true);
       });

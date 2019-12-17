@@ -13,18 +13,15 @@ export default class StatsModel extends Model {
   };
 
   public static updateStats = function(statsData: any) {
-    return StatsModel.create({
-      lastUpdated: new Date(),
-      data: JSON.stringify(statsData)
+    return StatsModel.findByPk(STATS_ID).then(stats => {
+      return stats.update({
+        lastUpdated: new Date(),
+        data: JSON.stringify(statsData)
+      });
     });
-    // return StatsModel.findByPk(STATS_ID).then((dbStats: any) => {
-    //   return dbStats.update({
-    //     lastUpdated: new Date(),
-    //     data: JSON.stringify(statsData)
-    //   });
-    // });
   };
 }
+
 StatsModel.init(
   {
     lastUpdated: { type: DATE, allowNull: false },

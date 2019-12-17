@@ -29,9 +29,6 @@
 
       <mat-card-content>
         <p>
-          Antall poser per måned:
-          <strong>{{ stats.subsciptionsBagsPerMonthCount }}</strong> <br />
-
           Antall poser 1. tirsdag :
           <strong>
             {{
@@ -43,7 +40,11 @@
 
           Antall poser 3. tirsdag:
           <strong> {{ stats.subsciptionsBagsPerFortnightlyCount }} </strong>
-          <br />
+        </p>
+
+        <p>
+          Antall poser totalt per måned:
+          <strong>{{ stats.subsciptionsBagsPerMonthCount }}</strong> <br />
 
           Gyldne abosnittet:
           <strong>{{
@@ -61,7 +62,11 @@
         <table class="table">
           <thead>
             <tr>
-              <th></th>
+              <th colspan="7" class="full-col">
+                Antall poser
+              </th>
+            </tr>
+            <tr>
               <th>1</th>
               <th>2</th>
               <th>3</th>
@@ -73,12 +78,12 @@
           </thead>
           <tbody>
             <tr>
-              <td>
-                Annenhver uke ({{
-                  stats.subsciptionsBagsPerFortnightlyCount
-                }}
+              <td colspan="7" class="full-col">
+                Annenhver uke ({{ stats.subsciptionsBagsPerFortnightlyCount }}
                 poser)
               </td>
+            </tr>
+            <tr>
               <td>{{ stats.bagCounter.fortnightly.one }}</td>
               <td>{{ stats.bagCounter.fortnightly.two }}</td>
               <td>{{ stats.bagCounter.fortnightly.three }}</td>
@@ -88,9 +93,11 @@
               <td>{{ stats.bagCounter.fortnightly.seven }}</td>
             </tr>
             <tr>
-              <td>
+              <td colspan="7" class="full-col">
                 Månedlig ({{ stats.subsciptionsBagsPerMonthlyCount }} poser)
               </td>
+            </tr>
+            <tr>
               <td>{{ stats.bagCounter.monthly.one }}</td>
               <td>{{ stats.bagCounter.monthly.two }}</td>
               <td>{{ stats.bagCounter.monthly.three }}</td>
@@ -98,6 +105,59 @@
               <td>{{ stats.bagCounter.monthly.five }}</td>
               <td>{{ stats.bagCounter.monthly.six }}</td>
               <td>{{ stats.bagCounter.monthly.seven }}</td>
+            </tr>
+            <tr>
+              <td colspan="7" class="full-col">
+                Totalt ({{
+                  stats.subsciptionsBagsPerFortnightlyCount +
+                    stats.subsciptionsBagsPerMonthlyCount
+                }}
+                poser)
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.one +
+                    stats.bagCounter.monthly.one
+                }}
+              </td>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.two +
+                    stats.bagCounter.monthly.two
+                }}
+              </td>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.three +
+                    stats.bagCounter.monthly.three
+                }}
+              </td>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.four +
+                    stats.bagCounter.monthly.four
+                }}
+              </td>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.five +
+                    stats.bagCounter.monthly.five
+                }}
+              </td>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.six +
+                    stats.bagCounter.monthly.six
+                }}
+              </td>
+              <td>
+                {{
+                  stats.bagCounter.fortnightly.seven +
+                    stats.bagCounter.monthly.seven
+                }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -108,11 +168,12 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#orders (aktive i woo)</mat-card-title>
+        <mat-card-title>#orders (i Woo)</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>
           Processing: <strong>{{ stats.orderProcessingCount }}</strong> <br />
+          On hold: <strong>{{ stats.orderOnHoldCount }}</strong> <br />
           Pending payment:
           <strong>{{ stats.orderPendingPaymentCount }}</strong> <br />
         </p>
