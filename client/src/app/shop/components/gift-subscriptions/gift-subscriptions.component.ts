@@ -1,19 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { GiftSubscription } from '../../models/gift-subscription.model';
-import { GiftSubscriptionService } from '../../services/gift-subscription.service';
-import { ToastrService } from 'ngx-toastr';
-import { SubscriptionFrequence } from '../../../constants';
-import * as moment from 'moment';
+import { Component, OnInit } from "@angular/core";
+import { GiftSubscription } from "../../models/gift-subscription.model";
+import { GiftSubscriptionService } from "../../services/gift-subscription.service";
+import { ToastrService } from "ngx-toastr";
+import { SubscriptionFrequence } from "../../../constants";
+import * as moment from "moment";
 
 @Component({
-  selector: 'app-gift-subscriptions',
-  templateUrl: './gift-subscriptions.component.html',
-  styleUrls: ['./gift-subscriptions.component.scss']
+  selector: "app-gift-subscriptions",
+  templateUrl: "./gift-subscriptions.component.html",
+  styleUrls: ["./gift-subscriptions.component.scss"]
 })
 export class GiftSubscriptionsComponent implements OnInit {
-
-  displayedColumns: string[] = ['id', 'status', 'startDate', 'endDate', 'frequency', 'quantity', 'recipient_name'];
-  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
+  displayedColumns: string[] = [
+    "id",
+    "status",
+    "startDate",
+    "endDate",
+    "frequency",
+    "quantity",
+    "recipient_name"
+  ];
+  isExpansionDetailRow = (i: number, row: Object) =>
+    row.hasOwnProperty("detailRow");
   expandedElement: any;
 
   private _subscriptions: Array<GiftSubscription> = [];
@@ -24,8 +32,12 @@ export class GiftSubscriptionsComponent implements OnInit {
   private _showFortnightly: boolean = true;
   private _showOnlyNew: boolean = false;
   private _showOnlyNotSentToday: boolean = false;
+  private _showOnlyStarted: boolean = true;
 
-  constructor(private giftSubscriptionService: GiftSubscriptionService, private toastr: ToastrService) {
+  constructor(
+    private giftSubscriptionService: GiftSubscriptionService,
+    private toastr: ToastrService
+  ) {
     this._quantities.push({ quantity: 0, label: "Alle" });
     this._quantities.push({ quantity: 1, label: "1 pose" });
     this._quantities.push({ quantity: 2, label: "2 poser" });
@@ -89,6 +101,14 @@ export class GiftSubscriptionsComponent implements OnInit {
     this.applyFilter();
   }
 
+  get showOnlyStarted(): boolean {
+    return this._showOnlyStarted;
+  }
+
+  set showOnlyStarted(show: boolean) {
+    this._showOnlyStarted = show;
+    this.applyFilter();
+  }
 
   set selectedQuantity(quantity) {
     this._selectedQuantity = quantity;
@@ -106,40 +126,60 @@ export class GiftSubscriptionsComponent implements OnInit {
   createOrder(subscription: GiftSubscription) {
     this.giftSubscriptionService.createOrder(subscription).subscribe(s => {
       this.loadSubscriptions();
-      this.toastr.success('Oppdrag for #' + subscription.wooOrderNumber + ' lagt til i Cargonizer');
+      this.toastr.success(
+        "Oppdrag for #" + subscription.wooOrderNumber + " lagt til i Cargonizer"
+      );
     });
   }
 
   import() {
     this.giftSubscriptionService.import().subscribe(result => {
       this.loadSubscriptions();
-      this.toastr.success('Importert ' + result.count + ' gabos fra Woo');
+      this.toastr.success("Importert " + result.count + " gabos fra Woo");
     });
   }
 
   applyFilter() {
     if (!this._selectedQuantity.quantity) {
       this._filteredSubscriptions = this._subscriptions;
-
     } else {
-      this._filteredSubscriptions = this._subscriptions.filter(s => s.quantity === this._selectedQuantity.quantity);
+      this._filteredSubscriptions = this._subscriptions.filter(
+        s => s.quantity === this._selectedQuantity.quantity
+      );
     }
 
     if (!this._showMonthly) {
-      this._filteredSubscriptions = this._filteredSubscriptions.filter(s => s.frequence !== SubscriptionFrequence.monthly);
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(
+        s => s.frequence !== SubscriptionFrequence.monthly
+      );
     }
 
     if (!this._showFortnightly) {
-      this._filteredSubscriptions = this._filteredSubscriptions.filter(s => s.frequence !== SubscriptionFrequence.fortnightly);
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(
+        s => s.frequence !== SubscriptionFrequence.fortnightly
+      );
     }
 
     if (this.showOnlyNew) {
-      this._filteredSubscriptions = this._filteredSubscriptions.filter(s => !s.lastOrderCreated);
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(
+        s => !s.lastOrderCreated
+      );
     }
 
     if (this.showOnlyNotSentToday) {
       const today = moment();
-      this._filteredSubscriptions = this._filteredSubscriptions.filter(s => !moment(s.lastOrderCreated).isSame(today, 'd'));
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(
+        s => !moment(s.lastOrderCreated).isSame(today, "d")
+      );
+    }
+
+    if (this.showOnlyStarted) {
+      let startdate = moment();
+      startdate = startdate.add(7, "days");
+
+      this._filteredSubscriptions = this._filteredSubscriptions.filter(s =>
+        moment(s.firstDeliveryDate).isSameOrBefore(startdate, "d")
+      );
     }
   }
 }
