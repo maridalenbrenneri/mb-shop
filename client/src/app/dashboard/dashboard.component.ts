@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
     console.warn("Environment is PRODUCTION: " + environment.production);
 
     this.http
-      .get<any>(environment.mbApiBaseUrl + "admin/stats")
+      .get<any>(environment.mbApiBaseUrl + "aboabo/stats")
       .subscribe(stats => {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   updateStats() {
     this.isUpdating = true;
     this.http
-      .get<any>(environment.mbApiBaseUrl + "admin/importstats")
+      .get<any>(environment.mbApiBaseUrl + "aboabo/importstats")
       .subscribe(stats => {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;

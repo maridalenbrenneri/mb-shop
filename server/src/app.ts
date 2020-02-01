@@ -62,7 +62,7 @@ app.use(function(req: Request, res: Response, next: any) {
   next();
 });
 
-import adminController from "./controllers/admin";
+import dashboardController from "./controllers/dashboard";
 import authController from "./controllers/auth";
 import customerController from "./controllers/customer";
 import productController from "./controllers/product";
@@ -72,13 +72,10 @@ import shippingController from "./controllers/shipping";
 
 /*** API ***/
 
-// Admin routes
+// Dashboars / Stats routes
 // app.get("/api/admin/create-tables", isUserInAdmin, adminController.createTable);
-app.get("/api/admin/stats", adminController.getStats);
-app.get("/api/admin/importstats", adminController.importStats);
-
-app.get("/api/admin/hello", adminController.hello);
-app.get("/api/admin/testdb", adminController.testDb);
+app.get("/api/aboabo/stats", dashboardController.getAboaboStats);
+app.get("/api/aboabo/import", dashboardController.importAboaboStats);
 
 // User and auth
 app.post("/api/authenticate", authController.authenticate);
