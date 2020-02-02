@@ -1,52 +1,71 @@
 import * as moment from "moment";
 import * as https from "https";
 import { SubscriptionFrequence } from "../constants";
-import { SubscriptionDateHelper } from "./subscription-date-helper";
+import SubscriptionDateHelper from "./subscription-date-helper";
 
 const WOO_API_BASE_URL = "https://maridalenbrenneri.no/wp-json/wc/v2/";
 const GIFT_SUBSCRIPTION_GIFT_ID = 968;
 
 class WooService {
-  getActiveGiftSubscriptions() {
+  activeGiftSubscriptions: any[];
+
+  async getActiveGiftSubscriptions() {
+    this.activeGiftSubscriptions = [];
+    let page = 1;
+    do {
+      page = await this._getActiveGiftSubscriptions(page);
+    } while (page != 1);
+
+    const filtered = this.filterActiveGiftSubscriptions(
+      this.activeGiftSubscriptions
+    );
+    return filtered;
+  }
+
+  private _getActiveGiftSubscriptions(page: number = 1) {
     let self = this;
+    const fromCreatedDate = moment().subtract(15, "months");
     const url =
       WOO_API_BASE_URL +
       "orders?" +
       process.env.WOO_SECRET_PARAM +
       "&per_page=100" +
       "&product=" +
-      GIFT_SUBSCRIPTION_GIFT_ID;
+      GIFT_SUBSCRIPTION_GIFT_ID +
+      "&after=" +
+      fromCreatedDate.toISOString();
 
-    // TODO: this will fail when we have more than 100 gift subscription orders...
-    return new Promise<Array<any>>(function(resolve, reject) {
-      https
-        .get(url, orderResponse => {
-          if (orderResponse.statusCode == 401) {
-            reject(new Error("Not authorized with Woo"));
-          }
+    return new Promise<any>(function(resolve, reject) {
+      const request = require("request");
+      request({ url: url, timeout: 60 * 5 * 1000 }, function(
+        error: any,
+        response: { body: any; headers: any }
+      ) {
+        if (error) {
+          return reject(error);
+        }
 
-          orderResponse.setEncoding("utf8");
-          let rawData = "";
-          orderResponse.on("data", chunk => {
-            rawData += chunk;
-          });
-          orderResponse.on("end", () => {
-            try {
-              return resolve(
-                self.filterActiveGiftSubscriptions(JSON.parse(rawData))
-              );
-            } catch (e) {
-              reject(e);
-            }
-          });
-        })
-        .on("error", e => {
-          reject(e);
-        });
+        const fetchedSubscriptions = JSON.parse(response.body);
+        self.activeGiftSubscriptions = self.activeGiftSubscriptions.concat(
+          fetchedSubscriptions
+        );
+
+        if (response.headers["x-wp-totalpages"] === `${page}`) {
+          return resolve(1);
+        } else {
+          console.log(
+            "Not yet done fetching gift subscriptions, " +
+              page +
+              " / " +
+              response.headers["x-wp-totalpages"]
+          );
+          return resolve(page + 1);
+        }
+      });
     });
   }
 
-  resolveLastDeliveryDate(
+  private resolveLastDeliveryDate(
     firstDeliveryDate: Date,
     numberOfMonths: number,
     frequence: number

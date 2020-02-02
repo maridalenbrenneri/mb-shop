@@ -30,8 +30,8 @@ class SubscriptionController {
     next: any
   ) {
     try {
-      let result = subscriptionService.getNextDeliveryDates();
-      res.send(result);
+      // let result = subscriptionService.getNextDeliveryDates();
+      // res.send(result);
     } catch (err) {
       logger.error(err);
       res.status(500).send({ error: err });
@@ -46,7 +46,7 @@ class SubscriptionController {
    * POST /subscription/engine/create-renewal-orders
    */
   createRenewalOrders = function(req: Request, res: Response) {
-    return subscriptionEngineService.createRenewalOrders(res);
+    // return subscriptionEngineService.createRenewalOrders(res);
   };
 }
 

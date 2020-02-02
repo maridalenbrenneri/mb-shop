@@ -1,7 +1,5 @@
 import giftSubscriptionService from "./gift-subscription-service";
 import StatsModel from "../database/models/stats-model";
-import orderService from "./order-service";
-import OrderModel from "../database/models/order-model";
 
 class Counter {
   one: number = 0;
@@ -31,6 +29,7 @@ class Stats {
   orderProcessingCount: number = 0;
   orderOnHoldCount: number = 0;
   orderPendingPaymentCount: number = 0;
+  orderProcessingNonSubscriptionCount: number = 0;
 
   giftSubscriptionCount: number = 0;
   giftSubscriptionFortnightlyCount: number = 0;
@@ -64,14 +63,6 @@ class AboAboStatsService {
     });
   }
 
-  getOrderStats = async () => {
-    const dbOrders = await OrderModel.getOrders({});
-    const orders = dbOrders.map((order: OrderModel) =>
-      orderService.mapToClientModel(order)
-    );
-    return orders;
-  };
-
   private async getStatsDataFromWoo() {
     this.stats = new Stats();
     this.stats.bagCounter = new BagCounter();
@@ -84,10 +75,14 @@ class AboAboStatsService {
       page = await this.getSubscriptionsFromWoo(page);
     } while (page != 1);
 
-    await this.getOrdersInPendingPayment();
-    await this.getOrdersInProcess();
-    await this.getOrdersOnHold();
-    await this.getGiftSubscriptions();
+    page = 1;
+    do {
+      page = await this.getOrdersInProcess(page);
+    } while (page != 1);
+
+    await this.getOrdersInPendingPayment(); // TODO: will never return more than 100
+    await this.getOrdersOnHold(); // TODO: will never return more than 100
+    await this.getGiftSubscriptions(); // from backoffice db, paging not needed
 
     return this.stats;
   }
@@ -116,13 +111,7 @@ class AboAboStatsService {
 
   private getSubscriptionsFromWoo(page: number = 1) {
     const self = this;
-    const url =
-      this.wooSubscriptionApiBaseUrl +
-      "subscriptions?page=" +
-      page +
-      "&" +
-      process.env.WOO_SECRET_PARAM +
-      "&per_page=30";
+    const url = `${this.wooSubscriptionApiBaseUrl}subscriptions?page=${page}&per_page=30&${process.env.WOO_SECRET_PARAM}`;
 
     return new Promise<any>(function(resolve, reject) {
       const request = require("request");
@@ -142,7 +131,7 @@ class AboAboStatsService {
           return resolve(1);
         } else {
           console.log(
-            "Not yet done, " +
+            "Not yet done fetching subscriptions, " +
               page +
               " / " +
               response.headers["x-wp-totalpages"]
@@ -185,25 +174,33 @@ class AboAboStatsService {
     }
   }
 
-  private getOrdersInProcess() {
+  private getOrdersInProcess(page: number = 1) {
     const self = this;
-    const url =
-      this.wooApiBaseUrl +
-      "orders?" +
-      process.env.WOO_SECRET_PARAM +
-      "&per_page=100" +
-      "&status=processing";
+    const url = `${this.wooSubscriptionApiBaseUrl}orders?page=${page}&per_page=30&status=processing&${process.env.WOO_SECRET_PARAM}`;
 
     return new Promise<any>(function(resolve, reject) {
       const request = require("request");
-      request(url, function(error: any, response: { body: any }) {
+      request(url, function(error: any, response: any) {
         if (error) {
           return reject(error);
         }
 
-        self.stats.orderProcessingCount = JSON.parse(response.body).length;
+        if (response.statusCode !== 200) return reject(response.body);
 
-        resolve(true);
+        const orders = JSON.parse(response.body);
+        self.stats.orderProcessingCount += orders.length;
+
+        const nonSubscriptionOrders = orders.filter(
+          (o: { created_via: string }) => o.created_via !== "subscription"
+        );
+        self.stats.orderProcessingNonSubscriptionCount +=
+          nonSubscriptionOrders.length;
+
+        if (response.headers["x-wp-totalpages"] === `${page}`) {
+          return resolve(1);
+        }
+
+        return resolve(page + 1);
       });
     });
   }

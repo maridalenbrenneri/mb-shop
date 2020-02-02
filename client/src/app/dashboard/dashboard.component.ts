@@ -11,6 +11,8 @@ export class DashboardComponent implements OnInit {
   stats: any;
   statsLastUpdated: Date;
   isUpdating: boolean = false;
+  orderStats: any;
+  deliveryDays: any[];
 
   constructor(private http: HttpClient) {}
 
@@ -23,16 +25,39 @@ export class DashboardComponent implements OnInit {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;
       });
+
+    this.http
+      .get<any>(environment.mbApiBaseUrl + "stats/orders")
+      .subscribe(res => {
+        this.orderStats = res;
+      });
+
+    this.http
+      .get<any>(environment.mbApiBaseUrl + "stats/deliverydays")
+      .subscribe(res => {
+        this.deliveryDays = res;
+      });
+  }
+
+  resolveDeliveryTypeString(type) {
+    if (type === "monthly") return "STOR-ABO";
+    if (type === "fortnightly") return "lill-abo";
+    return "normal";
+  }
+
+  resolveDeliveryQuantities(day) {
+    if (!day.quantities) return "-";
+
+    return (day.quantities.bags250 * 250) / 1000 + "kg";
   }
 
   updateStats() {
     this.isUpdating = true;
     this.http
-      .get<any>(environment.mbApiBaseUrl + "aboabo/importstats")
+      .get<any>(environment.mbApiBaseUrl + "aboabo/import")
       .subscribe(stats => {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;
-
         this.isUpdating = false;
       });
   }

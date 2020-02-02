@@ -1,10 +1,10 @@
-<div class="row" *ngIf="!stats">
+<div class="row" *ngIf="!stats || !orderStats || !deliveryDays">
   <div class="col-12">
     <h3>Loading MB Dashboard...</h3>
   </div>
 </div>
 
-<div class="row" *ngIf="stats">
+<div class="row" *ngIf="stats && orderStats && deliveryDays">
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
@@ -56,7 +56,7 @@
 
           Abos på pause: {{ stats.subscriptionOnHoldCount }} <br />
 
-          Gaveabos: {{ stats.giftSubscriptionCount }}
+          Gabos: {{ stats.giftSubscriptionCount }}
         </p>
 
         <table class="table">
@@ -168,7 +168,7 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#orders (i Woo)</mat-card-title>
+        <mat-card-title>#privatorders (woo nettbutikk)</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>
@@ -182,7 +182,48 @@
   </div>
 
   <div class="col-12">
-    <p>Data last updated {{ statsLastUpdated | date: "short" }}</p>
+    <mat-card class="product-card">
+      <mat-card-header>
+        <mat-card-title>#bedriftsorders (backoffice)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Processing: <strong>{{ orderStats.activeOrderCount }}</strong> <br />
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-12">
+    <mat-card class="product-card">
+      <mat-card-header>
+        <mat-card-title>#pakkekos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Type</th>
+              <!-- <th></th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let day of deliveryDays">
+              <tr>
+                <td>{{ day.date | date: "EEE d. MMM" }}</td>
+                <td>{{ resolveDeliveryTypeString(day.type) }}</td>
+                <!-- <td>{{ resolveDeliveryQuantities(day) }}</td> -->
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-12">
+    <p>Data from Woo last updated {{ statsLastUpdated | date: "short" }}</p>
     <p>
       <button mat-raised-button (click)="updateStats()" [disabled]="isUpdating">
         Update now
