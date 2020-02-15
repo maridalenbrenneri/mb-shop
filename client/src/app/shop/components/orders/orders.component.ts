@@ -1,14 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material";
-import { Order, OrderItem } from "../../models/order.model";
+import { Order, StashItem, CoffeeItem } from "../../models/order.model";
 import { OrderService } from "../../services/order.service";
-import { ProductService } from "../../services/product.service";
-import { Product, ProductVariation } from "../../models/product.model";
 import { CustomerService } from "../../services/customer.service";
 import { Customer } from "../../models/customer.model";
 import { OrderEditComponent } from "./order-edit/order-edit.component";
 import { ToastrService } from "ngx-toastr";
 import { Utils } from "../../../utils";
+import { CoffeeService } from "../../services/coffee.service";
+import { Coffee, CoffeeVariation } from "../../models/coffee.model";
 
 @Component({
   selector: "app-orders",
@@ -21,15 +21,15 @@ export class OrdersComponent implements OnInit {
   orders: Array<Order> = [];
 
   customers: Array<Customer> = [];
-  products: Array<Product> = [];
+  coffees: Array<Coffee> = [];
 
-  orderItem: OrderItem;
-  stashOrderItem: OrderItem;
+  orderItem: CoffeeItem;
+  stashOrderItem: StashItem;
   order: Order;
 
   constructor(
     private orderService: OrderService,
-    private productService: ProductService,
+    private coffeesService: CoffeeService,
     private customerService: CustomerService,
     public dialog: MatDialog,
     private toastr: ToastrService
@@ -42,8 +42,8 @@ export class OrdersComponent implements OnInit {
       this.customers = customers;
     });
 
-    this.productService.getProducts().subscribe(products => {
-      this.products = products.filter(product => product.isActive);
+    this.coffeesService.getCoffees().subscribe(products => {
+      this.coffees = products.filter(product => product.isActive);
     });
   }
 
@@ -55,7 +55,7 @@ export class OrdersComponent implements OnInit {
       data: {
         order: Utils.clone(order),
         customers: self.customers,
-        products: self.products
+        coffees: self.coffees
       }
     });
 
@@ -70,8 +70,6 @@ export class OrdersComponent implements OnInit {
 
   createOrder(order: Order) {
     var self = this;
-
-    console.log("Creating order", order);
 
     this.orderService.createOrder(order).subscribe(
       order => {
@@ -95,8 +93,8 @@ export class OrdersComponent implements OnInit {
     );
   }
 
-  onProductVariationChange(productVariation: ProductVariation) {
-    this.orderItem.price = productVariation.price;
+  onProductVariationChange(variation: CoffeeVariation) {
+    this.orderItem.price = variation.price;
   }
 
   alreadyContainsOrder(order: Order) {

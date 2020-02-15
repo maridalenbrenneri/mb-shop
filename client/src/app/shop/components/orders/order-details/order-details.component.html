@@ -2,7 +2,8 @@
 
 <div *ngIf="order">
   <h4 *ngIf="order.customer">
-    #{{order.id}} - Kundenr: {{ order.customer?.customerNumber}} - {{order.customer?.name}} - {{order.customer?.email}}
+    #{{ order.id }} - Kundenr: {{ order.customer?.customerNumber }} -
+    {{ order.customer?.name }} - {{ order.customer?.email }}
   </h4>
   <h4 *ngIf="!order.customer">
     Ingen kunde valgt
@@ -10,72 +11,79 @@
   <table class="table table-order-details">
     <thead>
       <th>Produkt</th>
-      <th></th>
       <th>Antall</th>
       <th>Pris</th>
       <th>MVA</th>
       <th>Pris totalt</th>
       <th></th>
     </thead>
-    <tbody *ngIf="!order || !order.items || order.items.length === 0">
+    <tbody *ngIf="!order || !order.coffeeItems || !order.coffeeItems.length">
       <tr>
         <td colspan="7">Ingen produkter lagt til</td>
       </tr>
     </tbody>
-    <tbody *ngIf="order && order.items && order.items.length > 0">
-      <tr *ngFor="let item of order.items">
+    <tbody *ngIf="order && order.coffeeItems && order.coffeeItems.length > 0">
+      <tr *ngFor="let item of order.coffeeItems">
         <td>
-          <span *ngIf="item.product.category === 'coffee'">{{ item.product?.data?.name}}
-            ({{item.product?.data?.code}})</span>
-          <span *ngIf="item.product.category === 'stash'">{{ item.productVariation?.name }} </span>
-        </td>
-        <td>
-          <span *ngIf="item.product.category === 'coffee'">{{ item.productVariation?.name }}</span>
-          <span *ngIf="item.product.category === 'stash'"></span>
+          <span>{{ getProductNameString(item) }}</span>
         </td>
         <td>{{ item.quantity }}</td>
         <td>
-          <app-amount-field [amount]="item.productVariation?.price"></app-amount-field>
+          <app-amount-field [amount]="item.price"></app-amount-field>
         </td>
-        <td>{{ getVatFromItem(item) }}% </td>
+        <td>{{ getVatFromItem(item) }}%</td>
         <td>
-          <app-amount-field [amount]="item.quantity * item.productVariation.price"></app-amount-field>
+          <app-amount-field
+            [amount]="item.quantity * item.price"
+          ></app-amount-field>
+        </td>
+
         <td>
-          <button mat-button (click)="removeItem(item)" title="Fjern linje"><i
-              class="material-icons">remove_circle_outline</i></button>
+          <button mat-button (click)="removeItem(item)" title="Fjern linje">
+            <i class="material-icons">remove_circle_outline</i>
+          </button>
         </td>
       </tr>
       <tr>
-        <td colspan="7">
-
-        </td>
+        <td colspan="7"></td>
       </tr>
       <tr>
         <td colspan="4"></td>
         <td>15%</td>
-        <td><strong>
+        <td>
+          <strong>
             <app-amount-field [amount]="getTotalVatCoffee"></app-amount-field>
-          </strong></td>
+          </strong>
+        </td>
       </tr>
       <tr>
         <td colspan="4"></td>
         <td>25%</td>
-        <td><strong>
+        <td>
+          <strong>
             <app-amount-field [amount]="getTotalVatStandard"></app-amount-field>
-          </strong></td>
+          </strong>
+        </td>
       </tr>
       <tr>
         <td colspan="5"></td>
-        <td><strong>
-            <app-amount-field [amount]="getTotalPrice"></app-amount-field> Eks MVA
-          </strong></td>
+        <td>
+          <strong>
+            <app-amount-field [amount]="getTotalPrice"></app-amount-field> Eks
+            MVA
+          </strong>
+        </td>
       </tr>
       <tr>
         <td colspan="5"></td>
-        <td><strong>
-            <app-amount-field [amount]="getTotalPrice + getTotalVatCoffee + getTotalVatStandard"></app-amount-field>
+        <td>
+          <strong>
+            <app-amount-field
+              [amount]="getTotalPrice + getTotalVatCoffee + getTotalVatStandard"
+            ></app-amount-field>
             Inkl MVA
-          </strong></td>
+          </strong>
+        </td>
       </tr>
       <!-- <tr>
         <td colspan="6">
@@ -91,7 +99,7 @@
           <h5>Notat (internt)</h5>
           <ul>
             <li *ngFor="let orderNote of order.notes">
-              {{orderNote.date | date: 'short'}} - {{orderNote.note}}
+              {{ orderNote.date | date: "short" }} - {{ orderNote.note }}
             </li>
           </ul>
         </td>

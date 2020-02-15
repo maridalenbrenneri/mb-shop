@@ -51,6 +51,10 @@ import { AmountFieldComponent } from "./shop/components/util/amount-field/amount
 import { GiftSubscriptionsComponent } from "./shop/components/gift-subscriptions/gift-subscriptions.component";
 import { GiftSubscriptionDetailsComponent } from "./shop/components/gift-subscriptions/gift-subscription-details/gift-subscription-details.component";
 import { OrderEditComponent } from "./shop/components/orders/order-edit/order-edit.component";
+import {
+  CoffeesComponent,
+  EditCoffeeComponent
+} from "./shop/components/coffees/coffees.component";
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, "nb");
@@ -62,6 +66,7 @@ const appRoutes: Routes = [
   { path: "orders", component: OrdersComponent },
   { path: "gift-subscriptions", component: GiftSubscriptionsComponent },
   { path: "products", component: ProductsComponent },
+  { path: "coffees", component: CoffeesComponent },
   { path: "my-account", component: MyAccountComponent }
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -70,12 +75,14 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     ProductsComponent,
+    CoffeesComponent,
     SignInComponent,
     LoaderComponent,
     MyAccountComponent,
     MyDetailsComponent,
     DashboardComponent,
     EditProductComponent,
+    EditCoffeeComponent,
     OrdersComponent,
     AddressComponent,
     OrderListComponent,
@@ -85,7 +92,11 @@ const appRoutes: Routes = [
     GiftSubscriptionDetailsComponent,
     OrderEditComponent
   ],
-  entryComponents: [EditProductComponent, OrderEditComponent],
+  entryComponents: [
+    EditProductComponent,
+    OrderEditComponent,
+    EditCoffeeComponent
+  ],
   imports: [
     RouterModule.forRoot(
       appRoutes,

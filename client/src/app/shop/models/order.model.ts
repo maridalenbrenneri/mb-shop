@@ -1,25 +1,28 @@
-import { Product, ProductVariation } from "./product.model";
 import { Customer } from "./customer.model";
-import { SubscriptionData } from "./subscription-data.model";
+import { Coffee } from "./coffee.model";
 
 export class Order {
   id: number;
   status: string;
   orderDate: Date;
-  deliveryDate: Date;
   customer: Customer;
-  items: Array<OrderItem>;
-  notes: Array<any>;
-  subscriptionParentOrderId: number; // is renewal order, this id referes to parent subscription order
-  subscriptionData: SubscriptionData; // if set, order is a parent subscription
+  coffeeItems: Array<CoffeeItem>;
+  stashItems: Array<StashItem>;
+  notes: Array<OrderNote>;
 }
 
-export class OrderItem {
-  product: Product;
-  productVariation: ProductVariation;
-  productOptions: any;
+export class CoffeeItem {
+  coffee: Coffee;
   quantity: number;
-  price: number; // from variation or custom
+  variationId: number;
+  price: number; // default in variation, but vcan be overriden
+}
+
+export class StashItem {
+  name: string;
+  weight: number;
+  quantity: number;
+  price: number;
 }
 
 export class SubscriptionProductOptions {

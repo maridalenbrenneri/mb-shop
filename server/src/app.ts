@@ -66,6 +66,7 @@ import dashboardController from "./controllers/dashboard";
 import authController from "./controllers/auth";
 import customerController from "./controllers/customer";
 import productController from "./controllers/product";
+import coffeeController from "./controllers/coffee";
 import orderController from "./controllers/order";
 import giftSubscriptionController from "./controllers/gift-subscription";
 import shippingController from "./controllers/shipping";
@@ -129,6 +130,12 @@ app.put(
   isUserInSuperuser,
   productController.updateProduct
 );
+
+// Coffees
+app.get("/api/coffees", coffeeController.getCoffees);
+app.get("/api/coffees/:id", coffeeController.getCoffee);
+app.post("/api/coffees", isUserInSuperuser, coffeeController.createCoffee);
+app.put("/api/coffees/:id", isUserInSuperuser, coffeeController.updateCoffee);
 
 // Orders
 app.get("/api/orders", isUserInSuperuser, orderController.getOrders);

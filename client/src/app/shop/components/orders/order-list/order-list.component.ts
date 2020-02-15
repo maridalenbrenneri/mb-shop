@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, Inject } from "@angular/core";
+import { Component, Input, EventEmitter, Output } from "@angular/core";
 import { Order, OrderNote } from "src/app/shop/models/order.model";
 import {
   animate,
@@ -10,10 +10,12 @@ import {
 import { MatDialog } from "@angular/material";
 import { Customer } from "src/app/shop/models/customer.model";
 import { TableDataSource } from "src/app/shop/core/table-data-source";
-import { OrderStatus } from "src/app/constants";
+import { OrderStatus, CoffeeSizes } from "src/app/constants";
 import { Product } from "../../..//models/product.model";
 import { OrderEditComponent } from "../order-edit/order-edit.component";
 import { Utils } from "../../../../utils";
+import { resolveCoffeeVariation } from "../coffee-variations";
+import { Coffee } from "src/app/shop/models/coffee.model";
 
 @Component({
   selector: "app-order-list",
@@ -49,7 +51,7 @@ export class OrderListComponent {
   private _orders: Array<Order> = [];
   private _filteredOrders: Array<Order> = [];
   private _customers: Array<Customer>;
-  private _products: Array<Product>;
+  private _coffees: Array<Coffee>;
 
   private _selectedCustomer: Customer;
   private _showProcessing: boolean = true;
@@ -94,12 +96,12 @@ export class OrderListComponent {
   }
 
   @Input()
-  set products(products: Array<Product>) {
-    this._products = products;
+  set coffees(coffees: Array<Coffee>) {
+    this._coffees = coffees;
   }
 
-  get products(): Array<Product> {
-    return this._products;
+  get coffees(): Array<Coffee> {
+    return this._coffees;
   }
 
   set selectedCustomer(customer: Customer) {
@@ -177,7 +179,7 @@ export class OrderListComponent {
       data: {
         order: Utils.clone(order),
         customers: self.customers,
-        products: self.products
+        coffees: self.coffees
       }
     });
 
@@ -215,30 +217,37 @@ export class OrderListComponent {
   }
 
   getArticlesShort(order: Order) {
-    const arr = order.items.map(item => {
-      const code =
-        item.product.data && item.product.data.code
-          ? item.product.data.code
-          : "";
+    console.log("HELLO", order.coffeeItems);
+    const arr = order.coffeeItems.map(item => {
       let name = "";
 
-      if (item.productVariation.name === "250gr") name = `${code}`;
-      else if (item.productVariation.name === "1kg") name = `kg${code}`;
-      else name = item.productVariation.name; // todo handle stash
+      if (resolveCoffeeVariation(item.variationId).size === CoffeeSizes._250)
+        name = `${item.coffee.code}`;
+      else if (
+        resolveCoffeeVariation(item.variationId).size === CoffeeSizes._500
+      )
+        name = `${item.coffee.code}500`;
+      else if (
+        resolveCoffeeVariation(item.variationId).size === CoffeeSizes._1000
+      )
+        name = `${item.coffee.code}kg`;
+      else name = item.coffee.name;
 
       return `${item.quantity}${name}`;
     });
 
-    let str = arr.join();
+    let str = arr.join(", ");
 
-    if (order.subscriptionData) {
-      str = `ABO-${str}`;
-    }
+    // if (order.subscriptionData) {
+    //   str = `ABO-${str}`;
+    // }
 
-    if (str.length > 25) {
-      str = str.substr(0, 22);
+    if (str.length > 40) {
+      str = str.substr(0, 37);
       str = str.concat("...");
     }
+
+    console.log("getArticlesShort", str);
 
     return str;
   }

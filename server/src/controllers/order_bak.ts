@@ -1,9 +1,9 @@
 import { Response, Request } from "express";
-import orderService from "../services/mb-order-service";
+import orderService from "../services/order-service";
 import logger from "../utils/logger";
 import fikenService from "../services/fiken-service";
 
-class OrderController {
+class OrderController_Old {
   /**
    * GET /orders/:id
    */
@@ -63,6 +63,13 @@ class OrderController {
   }
 
   /**
+   * POST /orders/:id/customernotes
+   */
+  addCustomerOrderNote(req: Request, res: Response, next: any) {
+    return orderService.addCustomerOrderNote(req.body, res);
+  }
+
+  /**
    * POST /orders/:id/invoice
    */
   createInvoice = function(req: Request, res: Response) {
@@ -80,4 +87,4 @@ class OrderController {
   };
 }
 
-export default new OrderController();
+export default new OrderController_Old();

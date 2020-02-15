@@ -4,6 +4,18 @@ export class Constants {
   public static readonly minPasswordLength = 5;
 }
 
+export class CoffeeSizes {
+  public static readonly _250 = 250;
+  public static readonly _500 = 500;
+  public static readonly _1000 = 1000;
+}
+
+export class CoffeePrizes {
+  public static readonly _250 = 70;
+  public static readonly _500 = 140;
+  public static readonly _1000 = 280;
+}
+
 export class VatRates {
   public static readonly coffee = 0.15;
   public static readonly standard = 0.25;

@@ -28,6 +28,10 @@
       <mat-icon>reorder</mat-icon>
       <a [routerLink]="['/products']">Produkter</a>
     </button>
+    <button mat-menu-item *ngIf="isSignedIn">
+      <mat-icon>reorder</mat-icon>
+      <a [routerLink]="['/coffees']">Kaffen</a>
+    </button>
     <button mat-menu-item>
       <mat-icon>account_circle</mat-icon>
       <a [routerLink]="['/my-account']">Min konto</a>

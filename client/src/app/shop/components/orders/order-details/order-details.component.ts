@@ -1,19 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Order, OrderItem } from 'src/app/shop/models/order.model';
-import { VatRates } from 'src/app/constants';
+import { Component, OnInit, Input } from "@angular/core";
+import { Order, CoffeeItem } from "src/app/shop/models/order.model";
+import { VatRates } from "src/app/constants";
+import { resolveCoffeeVariation } from "../coffee-variations";
 
 @Component({
-  selector: 'app-order-details',
-  templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.scss']
+  selector: "app-order-details",
+  templateUrl: "./order-details.component.html",
+  styleUrls: ["./order-details.component.scss"]
 })
 export class OrderDetailsComponent implements OnInit {
-
   _order: Order;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   get order() {
     return this._order;
@@ -25,21 +25,19 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   get getTotalPrice(): number {
-    if (!this.order.items) { return 0; }
+    if (!this.order.coffeeItems) {
+      return 0;
+    }
 
     let total = 0;
-    this.order.items.forEach(i => {
-      total += i.productVariation.price * i.quantity;
+    this.order.coffeeItems.forEach(i => {
+      total += resolveCoffeeVariation(i.variationId).price * i.quantity;
     });
     return total;
   }
 
-  getVatFromItem(item: OrderItem) {
-    if (item.product.vatGroup == 'coffee') {
-      return VatRates.coffee * 100;
-    }
-
-    return VatRates.standard * 100;
+  getVatFromItem(item: CoffeeItem) {
+    return VatRates.coffee * 100;
   }
 
   get getTotalVatCoffee(): number {
@@ -54,35 +52,33 @@ export class OrderDetailsComponent implements OnInit {
     return this.order.id > 0;
   }
 
-  removeItem(item: OrderItem) {
-    // TODO; Remove stash does not work
-
-    const index = this.order.items.findIndex(i => {
-      if (item.product.category === 'stash') {
-        return i.productVariation.name == item.productVariation.name &&
-          i.productVariation.price == item.price;
-
-      } else {
-        return i.product.id === item.product.id &&
-          i.productVariation.name == item.productVariation.name &&
-          i.productVariation.price == item.price;
-      }
+  removeItem(item: CoffeeItem) {
+    const index = this.order.coffeeItems.findIndex(i => {
+      return (
+        i.coffee.id === item.coffee.id && i.variationId == item.variationId
+      );
     });
 
     if (index >= 0) {
-      this.order.items.splice(index, 1);
+      this.order.coffeeItems.splice(index, 1);
     }
   }
 
-  private calculateTotalVat(vatGroup: string) {
-    if (!this.order.items) { return 0; }
+  getProductNameString(item: CoffeeItem) {
+    return `${item.coffee.code} ${
+      resolveCoffeeVariation(item.variationId).name
+    }`;
+  }
 
-    let rate = vatGroup === "coffee" ? VatRates.coffee : VatRates.standard;
+  private calculateTotalVat(vatGroup: string) {
+    if (!this.order.coffeeItems) return 0;
+
     let total = 0;
-    this.order.items.forEach(i => {
-      if (i.product.vatGroup === vatGroup) {
-        total += (i.productVariation.price * i.quantity) * rate;
-      }
+    this.order.coffeeItems.forEach(i => {
+      total +=
+        resolveCoffeeVariation(i.variationId).price *
+        i.quantity *
+        VatRates.coffee;
     });
 
     return total;

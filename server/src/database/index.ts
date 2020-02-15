@@ -7,32 +7,40 @@ import GiftSubscriptionModel from "./models/gift-subscription-model";
 import ProductModel from "./models/product-model";
 import StatsModel from "./models/stats-model";
 import BusinessSubscriptionModel from "./models/business-subscription-model";
+import CoffeeModel from "./models/coffee-model";
+import MbOrderModel from "./models/mb-order-model";
 
 // Run this to create / update database tables
 
 const createTables = () => {
   console.log(`Creating/Alter tables in ${process.env.DATABASE_URL}`);
 
-  UserModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing UserModel")
+  // UserModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing UserModel")
+  // );
+  // OrderModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing OrderModel")
+  // );
+  // CustomerModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing CustomerModel")
+  // );
+  // GiftSubscriptionModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing GiftSubscriptionModel")
+  // );
+  // ProductModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing ProductModel")
+  // );
+  // BusinessSubscriptionModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing BusinessSubscriptionModel")
+  // );
+  // StatsModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing StatsModel")
+  // );
+  CoffeeModel.sync({ force: false, alter: true }).then(() =>
+    console.log("Done syncing CoffeeModel")
   );
-  OrderModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing OrderModel")
-  );
-  CustomerModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing CustomerModel")
-  );
-  GiftSubscriptionModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing GiftSubscriptionModel")
-  );
-  ProductModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing ProductModel")
-  );
-  BusinessSubscriptionModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing BusinessSubscriptionModel")
-  );
-  StatsModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing StatsModel")
+  MbOrderModel.sync({ force: false, alter: true }).then(() =>
+    console.log("Done syncing MbOrderModel")
   );
 };
 

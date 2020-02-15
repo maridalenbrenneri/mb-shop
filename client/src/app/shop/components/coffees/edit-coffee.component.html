@@ -1,0 +1,58 @@
+<h1 mat-dialog-title>Legg til / Endre kaffe</h1>
+
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-12">
+      <form #productForm="ngForm">
+        <div class="form-group">
+          <label class="center-block"
+            >Kod <small>(HO, CR, ETN, etc.)</small>
+            <input
+              type="text"
+              required
+              class="form-control"
+              name="code"
+              [(ngModel)]="data.code"
+            />
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="center-block"
+            >Land
+            <input
+              type="text"
+              required
+              class="form-control"
+              name="country"
+              [(ngModel)]="data.country"
+            />
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="center-block"
+            >Navn
+            <input
+              class="form-control"
+              required
+              name="name"
+              [(ngModel)]="data.name"
+            />
+          </label>
+        </div>
+        <div class="form-group">
+          <div mat-dialog-actions>
+            <button mat-button (click)="onNoClick()">Avbryt</button>
+            <button
+              mat-button
+              [mat-dialog-close]="data"
+              cdkFocusInitial
+              [disabled]="!productForm.valid"
+            >
+              Lagre endringer
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

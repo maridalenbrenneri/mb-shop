@@ -1,25 +1,26 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { Order, OrderItem, OrderNote } from "../../../models/order.model";
+import {
+  Order,
+  OrderNote,
+  CoffeeItem,
+  StashItem
+} from "../../../models/order.model";
 import { Customer } from "../../../models/customer.model";
-import { Product, ProductVariation } from "../../../models/product.model";
+import { ProductVariation } from "../../../models/product.model";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { SubscriptionData } from "src/app/shop/models/subscription-data.model";
+import { Coffee } from "src/app/shop/models/coffee.model";
+import {
+  getCoffeeVariations,
+  resolveCoffeeVariation
+} from "../coffee-variations";
 
 export interface OrderData {
   order: Order;
   customers: Array<Customer>;
-  products: Array<Product>;
+  coffees: Array<Coffee>;
+  stash: Array<any>;
 }
-
-const small = new ProductVariation();
-small.name = "250gr";
-small.price = 70.0;
-small.weight = 250;
-
-const large = new ProductVariation();
-large.name = "1kg";
-large.price = 280.0;
-large.weight = 1000;
 
 @Component({
   selector: "app-order-edit",
@@ -27,8 +28,8 @@ large.weight = 1000;
   styleUrls: ["./order-edit.component.scss"]
 })
 export class OrderEditComponent implements OnInit {
-  orderItem: OrderItem;
-  stashOrderItem: OrderItem;
+  orderItem: CoffeeItem;
+  stashOrderItem: StashItem;
   order: Order;
   note: OrderNote;
   isSubscriptionParent: boolean;
@@ -41,7 +42,7 @@ export class OrderEditComponent implements OnInit {
 
   ngOnInit() {
     this.initOrder();
-    this.initOrderItem();
+    this.initCoffeeItem();
     this.initStashOrderItem();
     this.note = new OrderNote();
   }
@@ -55,7 +56,7 @@ export class OrderEditComponent implements OnInit {
       this.data.order = new Order();
       this.order = this.data.order;
       this.order.customer = this.data.customers[0];
-      this.order.items = new Array<OrderItem>();
+      this.order.coffeeItems = new Array<CoffeeItem>();
       this.order.notes = new Array<OrderNote>();
       this.isEditMode = false;
     } else {
@@ -64,21 +65,18 @@ export class OrderEditComponent implements OnInit {
     }
   }
 
-  initOrderItem() {
-    this.orderItem = new OrderItem();
-    this.orderItem.product = this.data.products[0];
-    this.orderItem.productVariation = this.getCoffeeProductVariations[0];
+  initCoffeeItem() {
+    this.orderItem = new CoffeeItem();
+    this.orderItem.coffee = this.data.coffees[0];
+    this.orderItem.variationId = 1;
     this.orderItem.quantity = 1;
-    this.orderItem.price = this.orderItem.productVariation.price;
+    this.orderItem.price = resolveCoffeeVariation(
+      this.orderItem.variationId
+    ).price;
   }
 
   initStashOrderItem() {
-    this.stashOrderItem = new OrderItem();
-    this.stashOrderItem.product = new Product();
-    this.stashOrderItem.product.vatGroup = "standard";
-    this.stashOrderItem.product.category = "stash";
-    this.stashOrderItem.productVariation = new ProductVariation();
-    this.stashOrderItem.quantity = 1;
+    this.stashOrderItem = new StashItem();
   }
 
   createSubscriptionData() {
@@ -89,44 +87,36 @@ export class OrderEditComponent implements OnInit {
   }
 
   addCoffee() {
-    let productAdded = this.order.items.find(i => {
+    let productAdded = this.order.coffeeItems.find(i => {
       return (
-        i.product.id === this.orderItem.product.id &&
-        i.productVariation.name == this.orderItem.productVariation.name &&
-        i.productVariation.price == this.orderItem.price
+        i.coffee.id === this.orderItem.coffee.id &&
+        i.variationId === this.orderItem.variationId
       );
     });
 
     if (!productAdded) {
-      // clone and set possibly custom price
-      const json = JSON.stringify(this.orderItem.productVariation);
-      this.orderItem.productVariation = JSON.parse(json);
-      this.orderItem.productVariation.price = this.orderItem.price;
-
-      this.order.items.push(this.orderItem);
+      this.order.coffeeItems.push(this.orderItem);
     } else {
       productAdded.quantity += this.orderItem.quantity;
     }
 
-    this.initOrderItem();
+    this.initCoffeeItem();
   }
 
   addStash() {
-    this.order.items.push(this.stashOrderItem);
-    this.initStashOrderItem();
+    // this.order.items.push(this.stashOrderItem);
+    // this.initStashOrderItem();
   }
 
-  removeOrderItem(item: OrderItem) {
-    const index = this.order.items.findIndex(i => {
+  removeCoffeerItem(item: CoffeeItem) {
+    const index = this.order.coffeeItems.findIndex(i => {
       return (
-        i.product.id === item.product.id &&
-        i.productVariation.name == item.productVariation.name &&
-        i.productVariation.price == item.price
+        i.coffee.id === item.coffee.id && i.variationId === item.variationId
       );
     });
 
     if (index >= 0) {
-      this.order.items.splice(index, 1);
+      this.order.coffeeItems.splice(index, 1);
     }
   }
 
@@ -140,35 +130,30 @@ export class OrderEditComponent implements OnInit {
     this.note = new OrderNote();
   }
 
-  onProductVariationChange(productVariation: ProductVariation) {
-    this.orderItem.price = productVariation.price;
+  onProductVariationChange(variationId: number) {
+    this.orderItem.variationId = variationId;
+    this.orderItem.price = resolveCoffeeVariation(variationId).price;
   }
 
   onIsSubscriptionChanged() {
-    this.order.subscriptionData = this.isSubscriptionParent
-      ? this.createSubscriptionData()
-      : null;
+    // this.order.subscriptionData = this.isSubscriptionParent
+    //   ? this.createSubscriptionData()
+    //   : null;
   }
 
   get getCoffeeProductVariations() {
-    return [small, large];
+    return getCoffeeVariations();
   }
 
   get isOrderValid() {
-    return this.order && this.order.customer && this.order.items.length > 0;
+    return (
+      this.order && this.order.customer && this.order.coffeeItems.length > 0
+    );
   }
 
-  resolveCoffeeProductName(product: Product) {
-    if (!product) {
-      return "";
-    }
-
-    if (product.category === "coffee") {
-      return `${product.data.country} - ${product.data.name} (${
-        product.data.code
-      })`;
-    }
-    return product.data.name;
+  resolveCoffeeProductName(coffee: Coffee) {
+    if (!coffee) return "";
+    return `${coffee.code} - ${coffee.name} - ${coffee.country}`;
   }
 
   resolveProductVariationString(variation: ProductVariation) {

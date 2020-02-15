@@ -1,0 +1,69 @@
+<p></p>
+
+<div class="row">
+  <div class="col-12 col-md-6">
+    <button mat-raised-button (click)="openEditCoffeeDialog(null)">
+      Legg til ny kaffe
+    </button>
+  </div>
+  <div class="col-12 col-md-6">
+    <section>
+      <mat-checkbox [(ngModel)]="showNotActiveCoffees"
+        >Vis deaktiverte kaffen</mat-checkbox
+      >
+    </section>
+  </div>
+</div>
+
+<p></p>
+
+<div class="row">
+  <div class="col-12">Viser {{ coffeeCoffees?.length }} kaffen</div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let coffee of coffeeCoffees">
+          <td>{{ coffee.id }}</td>
+          <td>{{ coffee.name }}</td>
+          <td>{{ coffee.code }}</td>
+          <td>{{ coffee.country }}</td>
+          <td>
+            <button
+              mat-raised-button
+              (click)="openEditCoffeeDialog(coffee)"
+              [disabled]="!coffee.isActive"
+            >
+              Endre
+            </button>
+            <button
+              mat-raised-button
+              (click)="toggleIsActive(coffee, false)"
+              [hidden]="!coffee.isActive"
+            >
+              Deaktiver
+            </button>
+            <button
+              mat-raised-button
+              (click)="toggleIsActive(coffee, true)"
+              [hidden]="coffee.isActive"
+            >
+              Aktiver
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
