@@ -57,7 +57,7 @@ class DashboardService {
     };
   };
 
-  async getDeliveryDays(limit: number = 3) {
+  getDeliveryDays = async (limit: number = 3) => {
     const today = moment();
     const daysAfterToday = DELIVERY_DAYS.filter(d =>
       moment(d.date).isSameOrAfter(today)
@@ -72,20 +72,83 @@ class DashboardService {
     for (let i = 0; i < days.length; i++) {
       days[i].quantities = await this.calculateDeliveryQuantities(
         aboStats,
-        days[i].type
+        days[i].type,
+        i === 0
       );
     }
 
-    return days;
-  }
+    // Only include processing orders for first (next) delivery day
 
-  sumArrayProp = (array: any[], key: string) => {
+    return days;
+  };
+
+  getSubscriptionCoffeeTypesCount = async () => {
+    const aboStats = await StatsModel.getStats();
+    const data = JSON.parse(aboStats.data);
+
+    const monthly = this.countBags(data.bagCounter.monthly);
+    const smallAbo = this.countBags(data.bagCounter.fortnightly);
+    const bigAbo = this.aggregateCoffeeTypeCount(monthly, smallAbo);
+
+    return {
+      bigAbo,
+      smallAbo
+    };
+  };
+
+  private aggregateCoffeeTypeCount = (count1: any, count2: any) => {
+    count1.coffee1 += count2.coffee1;
+    count1.coffee2 += count2.coffee2;
+    count1.coffee3 += count2.coffee3;
+    count1.coffee4 += count2.coffee4;
+    count1.total += count2.total;
+
+    return count1;
+  };
+
+  private countBags = (type: any) => {
+    const coffee1 =
+      type.one +
+      type.two +
+      type.three +
+      type.four +
+      (type.five > 0 ? type.five * 2 : 0) +
+      (type.six > 0 ? type.six * 2 : 0) +
+      (type.seven > 0 ? type.seven * 2 : 0);
+
+    const coffee2 =
+      type.two +
+      type.three +
+      type.four +
+      type.five +
+      (type.six > 0 ? type.six * 2 : 0) +
+      (type.seven > 0 ? type.seven * 2 : 0);
+
+    const coffee3 =
+      type.three +
+      type.four +
+      type.five +
+      (type.six > 0 ? type.six * 2 : 0) +
+      (type.seven > 0 ? type.seven * 2 : 0);
+
+    const coffee4 = type.four + type.five + type.six + type.seven;
+
+    const total = coffee1 + coffee2 + coffee3 + coffee4;
+
+    return { total, coffee1, coffee2, coffee3, coffee4 };
+  };
+
+  private sumArrayProp = (array: any[], key: string) => {
     if (!array || !key) return 0;
 
     return array.reduce((a, b) => a + (b[key] || 0), 0);
   };
 
-  private calculateDeliveryQuantities = async (aboStats: any, type: string) => {
+  private calculateDeliveryQuantities = async (
+    aboStats: any,
+    type: string,
+    isFirst: boolean = false
+  ) => {
     // Woo subscriptions + gabos (only 250g bags)
     const data = JSON.parse(aboStats.data);
     let aboBagCount = 0;
@@ -96,6 +159,22 @@ class DashboardService {
     else if (type === "fortnightly")
       aboBagCount = data.subsciptionsBagsPerFortnightlyCount;
 
+    const aboBagWeight = aboBagCount > 0 ? aboBagCount * 250 : 0;
+
+    if (!isFirst) {
+      return {
+        _250s: {
+          totalCount: aboBagCount
+        },
+        _500s: {
+          totalCount: 0
+        },
+        _1000s: {
+          totalCount: 0
+        },
+        totalWeight: aboBagWeight / 1000
+      };
+    }
     // TODO: get active non subscriptional orders from Woo
 
     // MB Backoffice orders
@@ -116,11 +195,13 @@ class DashboardService {
       "quantity"
     );
 
-    const aboBagWeight = aboBagCount > 0 ? aboBagCount * 250 : 0;
-
     const quantities = {
       _250s: {
         totalCount: _250bagCount + aboBagCount
+      },
+      _250s_company: {
+        // TODO: fix until we can connect mb-order coffees to abo type (coffee1,2 etc)
+        totalCount: _250bagCount
       },
       _500s: {
         totalCount: _500bagCount

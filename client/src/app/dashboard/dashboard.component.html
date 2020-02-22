@@ -4,35 +4,80 @@
   </div>
 </div>
 
-<div class="row" *ngIf="stats && orderStats && deliveryDays">
+<div
+  class="row"
+  *ngIf="stats && orderStats && deliveryDays && subscriptionCoffeeTypeCounter"
+>
   <div class="col-12">
     <mat-card class="product-card">
-      <mat-card-header>
-        <mat-card-title>#pakkekos</mat-card-title>
-      </mat-card-header>
       <mat-card-content>
+        <h2>
+          Neste levering: {{ deliveryDays[0].date | date: "EEEE d. MMMM" }} -
+          {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
+          {{ deliveryDays[0].quantities.totalWeight }}kg
+        </h2>
+
+        <h4>Bedrifts-bestillinger</h4>
+        <div>
+          <small>
+            P.t. vises ikke fordeling av kaffe-typ, allt blir <em>ANY</em>
+          </small>
+        </div>
         <table class="table">
           <thead>
             <tr>
-              <th>Dato</th>
-              <th>Type</th>
-              <th>Totalt</th>
+              <th>Kaffe</th>
               <th>250g</th>
               <th>500g</th>
-              <th>1kg</th>
+              <th>Kilo</th>
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let day of deliveryDays">
+            <ng-container *ngFor="let day of deliveryDays.slice(0, 1)">
               <tr>
-                <td>{{ day.date | date: "EEE d. MMM" }}</td>
-                <td>{{ resolveDeliveryTypeString(day.type) }}</td>
-                <td>{{ day.quantities.totalWeight }}kg</td>
-                <td>{{ day.quantities._250s.totalCount }}</td>
+                <td>ANY</td>
+                <td>{{ day.quantities._250s_company.totalCount }}</td>
                 <td>{{ day.quantities._500s.totalCount }}</td>
                 <td>{{ day.quantities._1000s.totalCount }}</td>
               </tr>
             </ng-container>
+          </tbody>
+        </table>
+
+        <h4>Fordeling av kaffe for aboabo</h4>
+        <div>
+          <small>
+            Viser fordeling for abos og gabos. Viser antall poser (250g) / kg.
+          </small>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Totalt</th>
+              <th>Kaffe 1</th>
+              <th>Kaffe 2</th>
+              <th>Kaffe 3</th>
+              <th>Kaffe 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Stor-abo</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "total") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee1") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee2") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee3") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee4") }}</td>
+            </tr>
+            <tr>
+              <td>Lill-abo</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "total") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee1") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee2") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee3") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee4") }}</td>
+            </tr>
           </tbody>
         </table>
       </mat-card-content>
@@ -59,10 +104,12 @@
           stats.subscriptionMonthlyCount + stats.giftSubscriptionMonthlyCount
         }}
         månedlig
+        <br />
+        {{ stats.giftSubscriptionCount }} gabos
       </p>
 
       <mat-card-content>
-        <p>
+        <!-- <p>
           Antall poser 1. tirsdag:
           <strong>
             {{
@@ -74,9 +121,9 @@
 
           Antall poser 3. tirsdag:
           <strong> {{ stats.subsciptionsBagsPerFortnightlyCount }} </strong>
-        </p>
+        </p> -->
 
-        <p>
+        <!-- <p>
           Antall poser totalt per måned:
           <strong>{{ stats.subsciptionsBagsPerMonthCount }}</strong> <br />
 
@@ -91,7 +138,7 @@
           Abos på pause: {{ stats.subscriptionOnHoldCount }} <br />
 
           Gabos: {{ stats.giftSubscriptionCount }}
-        </p>
+        </p> -->
 
         <table class="table">
           <thead>
@@ -199,10 +246,10 @@
     </mat-card>
   </div>
 
-  <div class="col-12">
+  <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#current coffees</mat-card-title>
+        <mat-card-title>#aktive kaffe</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <ng-container *ngFor="let coffee of coffees">
@@ -210,6 +257,7 @@
             {{ coffee.code }} - {{ coffee.name }} - {{ coffee.country }}
           </div>
         </ng-container>
+        <div><a [routerLink]="['/coffees']">Endre</a></div>
       </mat-card-content>
     </mat-card>
   </div>
@@ -217,7 +265,35 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#privatorders (woo nettbutikk)</mat-card-title>
+        <mat-card-title>#kommende leveringer</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Type</th>
+              <th>Kg (abos, estimert)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let day of deliveryDays.slice(1)">
+              <tr class="future_delivery">
+                <td>{{ day.date | date: "EEEE d. MMMM" }}</td>
+                <td>{{ resolveDeliveryTypeString(day.type) }}</td>
+                <td>{{ day.quantities.totalWeight }}kg</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <mat-card class="product-card">
+      <mat-card-header>
+        <mat-card-title>#privat (woo)</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>
@@ -233,7 +309,7 @@
   <div class="col-12  col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#bedriftsorders (backoffice)</mat-card-title>
+        <mat-card-title>#bedrift (backoffice)</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <p>

@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   orderStats: any;
   deliveryDays: any[];
   coffees: any[];
+  subscriptionCoffeeTypeCounter: any;
 
   constructor(private http: HttpClient) {}
 
@@ -44,12 +45,26 @@ export class DashboardComponent implements OnInit {
       .subscribe(res => {
         this.deliveryDays = res;
       });
+
+    this.http
+      .get<any>(
+        environment.mbApiBaseUrl + "stats/subscriptionCoffeeTypeCounter"
+      )
+      .subscribe(res => {
+        this.subscriptionCoffeeTypeCounter = res;
+      });
   }
 
   resolveDeliveryTypeString(type) {
-    if (type === "monthly") return "STOR-ABO";
-    if (type === "fortnightly") return "lill-abo";
-    return "normal";
+    if (type === "monthly") return "Stor-abo";
+    if (type === "fortnightly") return "Lill-abo";
+    return "Normal";
+  }
+
+  resolveCoffeTypeCountString(type: string, coffeeKey: string) {
+    const count = this.subscriptionCoffeeTypeCounter[type][coffeeKey];
+    const kg = (count * 250) / 1000;
+    return `${count} / ${kg}kg`;
   }
 
   updateStats() {

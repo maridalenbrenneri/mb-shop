@@ -80,6 +80,10 @@ app.get("/api/aboabo/import", dashboardController.importAboaboStats);
 app.get("/api/stats/orders", dashboardController.getOrderStats);
 app.get("/api/stats/coffees", dashboardController.getCurrentCoffees);
 app.get("/api/stats/deliverydays", dashboardController.getNextDeliveryDays);
+app.get(
+  "/api/stats/subscriptionCoffeeTypeCounter",
+  dashboardController.getSubscriptionCoffeeTypeCounter
+);
 
 // User and auth
 app.post("/api/authenticate", authController.authenticate);

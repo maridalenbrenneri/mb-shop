@@ -6,3 +6,9 @@ mat-card {
   padding-left: 0;
   padding-bottom: 0;
 }
+
+tr.future_delivery {
+  td {
+    font-style: italic;
+  }
+}

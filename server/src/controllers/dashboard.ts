@@ -39,6 +39,14 @@ class DashboardController {
     const days = await dashboardService.getDeliveryDays(3);
     res.send(days);
   };
+
+  getSubscriptionCoffeeTypeCounter = async function(
+    _req: Request,
+    res: Response
+  ) {
+    const counter = await dashboardService.getSubscriptionCoffeeTypesCount();
+    res.send(counter);
+  };
 }
 
 export default new DashboardController();
