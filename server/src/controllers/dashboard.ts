@@ -25,19 +25,19 @@ class DashboardController {
     }
   };
 
+  getCurrentCoffees = async function(_req: Request, res: Response) {
+    const coffees = await dashboardService.getCurrentCoffees();
+    res.send(coffees);
+  };
+
   getOrderStats = async function(_req: Request, res: Response) {
     const stats = await dashboardService.getOrderStats();
     res.send(stats);
   };
 
   getNextDeliveryDays = async function(_req: Request, res: Response) {
-    const days = await dashboardService.getNextDeliveryDays(3);
+    const days = await dashboardService.getDeliveryDays(3);
     res.send(days);
-  };
-
-  calculateDeliveryQuantities = async function(req: Request, res: Response) {
-    const quantities = dashboardService.calculateDeliveryQuantities(req.body);
-    res.send(quantities);
   };
 }
 

@@ -5,7 +5,41 @@
 </div>
 
 <div class="row" *ngIf="stats && orderStats && deliveryDays">
-  <div class="col-12 col-lg-6">
+  <div class="col-12">
+    <mat-card class="product-card">
+      <mat-card-header>
+        <mat-card-title>#pakkekos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Type</th>
+              <th>Totalt</th>
+              <th>250g</th>
+              <th>500g</th>
+              <th>1kg</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let day of deliveryDays">
+              <tr>
+                <td>{{ day.date | date: "EEE d. MMM" }}</td>
+                <td>{{ resolveDeliveryTypeString(day.type) }}</td>
+                <td>{{ day.quantities.totalWeight }}kg</td>
+                <td>{{ day.quantities._250s.totalCount }}</td>
+                <td>{{ day.quantities._500s.totalCount }}</td>
+                <td>{{ day.quantities._1000s.totalCount }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-12">
     <mat-card class="product-card">
       <mat-card-header>
         <mat-card-title>#aboabo</mat-card-title>
@@ -165,6 +199,21 @@
     </mat-card>
   </div>
 
+  <div class="col-12">
+    <mat-card class="product-card">
+      <mat-card-header>
+        <mat-card-title>#current coffees</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngFor="let coffee of coffees">
+          <div>
+            {{ coffee.code }} - {{ coffee.name }} - {{ coffee.country }}
+          </div>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
@@ -181,7 +230,7 @@
     </mat-card>
   </div>
 
-  <div class="col-12">
+  <div class="col-12  col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
         <mat-card-title>#bedriftsorders (backoffice)</mat-card-title>
@@ -190,34 +239,6 @@
         <p>
           Processing: <strong>{{ orderStats.activeOrderCount }}</strong> <br />
         </p>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div class="col-12">
-    <mat-card class="product-card">
-      <mat-card-header>
-        <mat-card-title>#pakkekos</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Dato</th>
-              <th>Type</th>
-              <!-- <th></th> -->
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let day of deliveryDays">
-              <tr>
-                <td>{{ day.date | date: "EEE d. MMM" }}</td>
-                <td>{{ resolveDeliveryTypeString(day.type) }}</td>
-                <!-- <td>{{ resolveDeliveryQuantities(day) }}</td> -->
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
       </mat-card-content>
     </mat-card>
   </div>

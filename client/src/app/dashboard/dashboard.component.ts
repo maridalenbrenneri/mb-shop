@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   isUpdating: boolean = false;
   orderStats: any;
   deliveryDays: any[];
+  coffees: any[];
 
   constructor(private http: HttpClient) {}
 
@@ -24,6 +25,12 @@ export class DashboardComponent implements OnInit {
       .subscribe(stats => {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;
+      });
+
+    this.http
+      .get<any>(environment.mbApiBaseUrl + "stats/coffees")
+      .subscribe(res => {
+        this.coffees = res;
       });
 
     this.http
@@ -43,12 +50,6 @@ export class DashboardComponent implements OnInit {
     if (type === "monthly") return "STOR-ABO";
     if (type === "fortnightly") return "lill-abo";
     return "normal";
-  }
-
-  resolveDeliveryQuantities(day) {
-    if (!day.quantities) return "-";
-
-    return (day.quantities.bags250 * 250) / 1000 + "kg";
   }
 
   updateStats() {

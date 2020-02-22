@@ -49,13 +49,10 @@ class MbOrderService {
     });
   }
 
-  getOrders(res: Response, filter = {}) {
+  async getOrders(filter = {}) {
     let self = this;
-    return MbOrderModel.getMbOrders(filter).then(dbMbOrders => {
-      return res.send(
-        dbMbOrders.map(mbOrder => self.mapToClientModel(mbOrder))
-      );
-    });
+    const orders = await MbOrderModel.getMbOrders(filter);
+    return orders.map(mbOrder => self.mapToClientModel(mbOrder));
   }
 
   updateOrderStatus(mbOrderId: number, newStatus: string, res: Response) {

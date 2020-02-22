@@ -16,8 +16,9 @@ class OrderController {
   /**
    * GET /orders
    */
-  getOrders(req: Request, res: Response) {
-    return orderService.getOrders(res);
+  async getOrders(_req: Request, res: Response) {
+    const orders = await orderService.getOrders();
+    return res.send(orders);
   }
 
   /**

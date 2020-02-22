@@ -78,11 +78,8 @@ import shippingController from "./controllers/shipping";
 app.get("/api/aboabo/stats", dashboardController.getAboaboStats);
 app.get("/api/aboabo/import", dashboardController.importAboaboStats);
 app.get("/api/stats/orders", dashboardController.getOrderStats);
+app.get("/api/stats/coffees", dashboardController.getCurrentCoffees);
 app.get("/api/stats/deliverydays", dashboardController.getNextDeliveryDays);
-app.get(
-  "/api/stats/quanitites",
-  dashboardController.calculateDeliveryQuantities
-);
 
 // User and auth
 app.post("/api/authenticate", authController.authenticate);

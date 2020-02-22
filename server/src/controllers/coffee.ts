@@ -12,8 +12,9 @@ class CoffeeController {
   /**
    * GET /coffees
    */
-  getCoffees = function(req: Request, res: Response) {
-    return coffeeService.getCoffees(res);
+  getCoffees = async function(_req: Request, res: Response) {
+    const coffees = await coffeeService.getCoffees();
+    res.send(coffees);
   };
 
   /**

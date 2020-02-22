@@ -23,21 +23,12 @@ class CoffeeService {
       });
   };
 
-  getCoffees = function(res: Response) {
+  getCoffees = async function() {
     let self = this;
-    let filter = {};
+    let filter = { isActive: true };
 
-    return CoffeeModel.getCoffees(filter)
-      .then(coffees => {
-        let clientCoffees = coffees.map(p => self.mapToClientModel(p));
-        return res.send(clientCoffees);
-      })
-      .catch(function(err) {
-        logger.error(err);
-        return res.status(500).send({
-          error: "An error occured when getting the coffees: " + err
-        });
-      });
+    const coffees = await CoffeeModel.getCoffees(filter);
+    return coffees.map(p => self.mapToClientModel(p));
   };
 
   createCoffee = function(coffee: any, res: Response) {
