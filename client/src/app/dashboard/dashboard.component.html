@@ -250,7 +250,7 @@
         <mat-card-title>#aktive kaffen (i butikk)</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <ng-container *ngFor="let coffee of coffees">
+        <ng-container *ngFor="let coffee of activeCoffees()">
           <div>
             {{ coffee.code }} - {{ coffee.name }} - {{ coffee.country }}
           </div>

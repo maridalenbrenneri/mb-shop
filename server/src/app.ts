@@ -65,7 +65,6 @@ app.use(function(req: Request, res: Response, next: any) {
 import dashboardController from "./controllers/dashboard";
 import authController from "./controllers/auth";
 import customerController from "./controllers/customer";
-import productController from "./controllers/product";
 import coffeeController from "./controllers/coffee";
 import orderController from "./controllers/order";
 import giftSubscriptionController from "./controllers/gift-subscription";
@@ -122,16 +121,6 @@ app.put(
 
 // Customers
 app.get("/api/customers", customerController.getCustomers);
-
-// Products
-app.get("/api/products", productController.getProducts);
-app.get("/api/products/:id", productController.getProduct);
-app.post("/api/products", isUserInSuperuser, productController.createProduct);
-app.put(
-  "/api/products/:id",
-  isUserInSuperuser,
-  productController.updateProduct
-);
 
 // Delivery days
 app.get("/api/deliverydays", deliveryDaysController.getDeliveryDays);

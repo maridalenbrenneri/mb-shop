@@ -173,6 +173,11 @@ export class DashboardComponent implements OnInit {
     return "Normal";
   }
 
+  activeCoffees() {
+    if (!this.coffees) return [];
+    return this.coffees.filter(c => c.id > 1); // exclude ANY
+  }
+
   resolveCoffeTypeCountString(type: string, coffeeKey: string) {
     const count = this.subscriptionCoffeeTypeCounter[type][coffeeKey];
     const kg = (count * 250) / 1000;
