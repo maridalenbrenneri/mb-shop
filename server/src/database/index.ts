@@ -43,9 +43,9 @@ const createTables = () => {
   // MbOrderModel.sync({ force: false, alter: true }).then(() =>
   //   console.log("Done syncing MbOrderModel")
   // );
-  DeliveryDayModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing DeliveryDayModel")
-  );
+  // DeliveryDayModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing DeliveryDayModel")
+  // );
 };
 
 createTables();

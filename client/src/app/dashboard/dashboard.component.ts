@@ -151,8 +151,8 @@ export class DashboardComponent implements OnInit {
     const aggregated250 = abo250count + mbOrders250.quantity;
 
     const totalWeight =
-      aggregated250.quantity > 0
-        ? aggregated250.quantity * 250
+      aggregated250 > 0
+        ? aggregated250 * 250
         : 0 + mbOrders500.quantity > 0
         ? mbOrders500.quantity * 500
         : 0 + mbOrders1000.quantity > 0
