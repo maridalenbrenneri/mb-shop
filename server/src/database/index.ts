@@ -9,6 +9,7 @@ import StatsModel from "./models/stats-model";
 import BusinessSubscriptionModel from "./models/business-subscription-model";
 import CoffeeModel from "./models/coffee-model";
 import MbOrderModel from "./models/mb-order-model";
+import DeliveryDayModel from "./models/delivery-day-model";
 
 // Run this to create / update database tables
 
@@ -36,11 +37,14 @@ const createTables = () => {
   // StatsModel.sync({ force: false, alter: true }).then(() =>
   //   console.log("Done syncing StatsModel")
   // );
-  CoffeeModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing CoffeeModel")
-  );
-  MbOrderModel.sync({ force: false, alter: true }).then(() =>
-    console.log("Done syncing MbOrderModel")
+  // CoffeeModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing CoffeeModel")
+  // );
+  // MbOrderModel.sync({ force: false, alter: true }).then(() =>
+  //   console.log("Done syncing MbOrderModel")
+  // );
+  DeliveryDayModel.sync({ force: false, alter: true }).then(() =>
+    console.log("Done syncing DeliveryDayModel")
   );
 };
 

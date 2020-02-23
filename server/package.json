@@ -12,7 +12,8 @@
     "postinstall": "npm run build",
     "start": "nodemon ./dist/server.js",
     "test": "mocha -r ts-node/register test/**/*test.ts",
-    "database": "ts-node ./src/database/index.ts"
+    "database": "ts-node ./src/database/index.ts",
+    "add-delivery-days": "ts-node ./src/jobs/add-delivery-days.ts"
   },
   "nodemonConfig": {
     "ignore": [

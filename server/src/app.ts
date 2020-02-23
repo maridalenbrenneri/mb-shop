@@ -70,6 +70,7 @@ import coffeeController from "./controllers/coffee";
 import orderController from "./controllers/order";
 import giftSubscriptionController from "./controllers/gift-subscription";
 import shippingController from "./controllers/shipping";
+import deliveryDaysController from "./controllers/deliveryDay";
 
 /*** API ***/
 
@@ -130,6 +131,20 @@ app.put(
   "/api/products/:id",
   isUserInSuperuser,
   productController.updateProduct
+);
+
+// Delivery days
+app.get("/api/deliverydays", deliveryDaysController.getDeliveryDay);
+app.get("/api/deliverydays/:id", deliveryDaysController.getDeliveryDay);
+app.post(
+  "/api/deliverydays",
+  isUserInSuperuser,
+  deliveryDaysController.createDeliveryDay
+);
+app.put(
+  "/api/deliverydays/:id",
+  isUserInSuperuser,
+  deliveryDaysController.updateDeliveryDay
 );
 
 // Coffees

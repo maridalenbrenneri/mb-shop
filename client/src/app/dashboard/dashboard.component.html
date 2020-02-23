@@ -1,4 +1,13 @@
-<div class="row" *ngIf="!stats || !orderStats || !deliveryDays">
+<div
+  class="row"
+  *ngIf="
+    !stats ||
+    !coffees ||
+    !orderStats ||
+    !deliveryDays ||
+    !subscriptionCoffeeTypeCounter
+  "
+>
   <div class="col-12">
     <h3>Loading MB Dashboard...</h3>
   </div>
@@ -6,78 +15,81 @@
 
 <div
   class="row"
-  *ngIf="stats && orderStats && deliveryDays && subscriptionCoffeeTypeCounter"
+  *ngIf="
+    stats &&
+    coffees &&
+    orderStats &&
+    deliveryDays &&
+    subscriptionCoffeeTypeCounter
+  "
 >
   <div class="col-12">
     <mat-card class="product-card">
       <mat-card-content>
         <h2>
-          Neste levering: {{ deliveryDays[0].date | date: "EEEE d. MMMM" }} -
+          Neste levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
           {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
           {{ deliveryDays[0].quantities.totalWeight }}kg
         </h2>
 
-        <h4>Bedrifts-bestillinger</h4>
-        <div>
+        <div *ngIf="!hasNextDeliveryDayCoffeesSet()">
+          All coffees (1-4) must be set to enable quantity preview
+        </div>
+
+        <div *ngIf="hasNextDeliveryDayCoffeesSet()">
           <small>
-            P.t. vises ikke fordeling av kaffe-typ, allt blir <em>ANY</em>
+            Viser fordeling av abos og aktive backoffice-bestillinger.
+            Enkeltorders i Woo er IKKE inkludert p.t.
           </small>
         </div>
-        <table class="table">
+        <table *ngIf="hasNextDeliveryDayCoffeesSet()" class="table">
           <thead>
             <tr>
               <th>Kaffe</th>
+              <th>Totalt (kg)</th>
               <th>250g</th>
               <th>500g</th>
-              <th>Kilo</th>
+              <th>1000g</th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngFor="let day of deliveryDays.slice(0, 1)">
               <tr>
                 <td>ANY</td>
-                <td>{{ day.quantities._250s_company.totalCount }}</td>
-                <td>{{ day.quantities._500s.totalCount }}</td>
-                <td>{{ day.quantities._1000s.totalCount }}</td>
+                <td>{{ resolveCoffeeANY(day).total }}</td>
+                <td>{{ resolveCoffeeANY(day).count250 }}</td>
+                <td>{{ resolveCoffeeANY(day).count500 }}</td>
+                <td>{{ resolveCoffeeANY(day).count1000 }}</td>
+              </tr>
+              <tr>
+                <td>Kaffe 1 - {{ resolveCoffeeCodeFromId(day.coffee1) }}</td>
+                <td>{{ resolveCoffee(day, "coffee1").total }}</td>
+                <td>{{ resolveCoffee(day, "coffee1").count250 }}</td>
+                <td>{{ resolveCoffee(day, "coffee1").count500 }}</td>
+                <td>{{ resolveCoffee(day, "coffee1").count1000 }}</td>
+              </tr>
+              <tr>
+                <td>Kaffe 2 - {{ resolveCoffeeCodeFromId(day.coffee2) }}</td>
+                <td>{{ resolveCoffee(day, "coffee2").total }}</td>
+                <td>{{ resolveCoffee(day, "coffee2").count250 }}</td>
+                <td>{{ resolveCoffee(day, "coffee2").count500 }}</td>
+                <td>{{ resolveCoffee(day, "coffee2").count1000 }}</td>
+              </tr>
+              <tr>
+                <td>Kaffe 3 - {{ resolveCoffeeCodeFromId(day.coffee3) }}</td>
+                <td>{{ resolveCoffee(day, "coffee3").total }}</td>
+                <td>{{ resolveCoffee(day, "coffee3").count250 }}</td>
+                <td>{{ resolveCoffee(day, "coffee3").count500 }}</td>
+                <td>{{ resolveCoffee(day, "coffee3").count1000 }}</td>
+              </tr>
+              <tr>
+                <td>Kaffe 4 - {{ resolveCoffeeCodeFromId(day.coffee4) }}</td>
+                <td>{{ resolveCoffee(day, "coffee4").total }}</td>
+                <td>{{ resolveCoffee(day, "coffee4").count250 }}</td>
+                <td>{{ resolveCoffee(day, "coffee4").count500 }}</td>
+                <td>{{ resolveCoffee(day, "coffee4").count1000 }}</td>
               </tr>
             </ng-container>
-          </tbody>
-        </table>
-
-        <h4>Fordeling av kaffe for aboabo</h4>
-        <div>
-          <small>
-            Viser fordeling for abos og gabos. Viser antall poser (250g) / kg.
-          </small>
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Totalt</th>
-              <th>Kaffe 1</th>
-              <th>Kaffe 2</th>
-              <th>Kaffe 3</th>
-              <th>Kaffe 4</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Stor-abo</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "total") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee1") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee2") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee3") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee4") }}</td>
-            </tr>
-            <tr>
-              <td>Lill-abo</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "total") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee1") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee2") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee3") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee4") }}</td>
-            </tr>
           </tbody>
         </table>
       </mat-card-content>
@@ -239,6 +251,42 @@
                     stats.bagCounter.monthly.seven
                 }}
               </td>
+            </tr>
+          </tbody>
+        </table>
+        <h4>Fordeling av kaffe per type</h4>
+        <div>
+          <small>
+            Viser antall poser (250g) / kg.
+          </small>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Totalt</th>
+              <th>Kaffe 1</th>
+              <th>Kaffe 2</th>
+              <th>Kaffe 3</th>
+              <th>Kaffe 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Stor-abo</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "total") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee1") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee2") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee3") }}</td>
+              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee4") }}</td>
+            </tr>
+            <tr>
+              <td>Lill-abo</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "total") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee1") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee2") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee3") }}</td>
+              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee4") }}</td>
             </tr>
           </tbody>
         </table>

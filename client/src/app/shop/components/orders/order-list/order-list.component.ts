@@ -217,7 +217,6 @@ export class OrderListComponent {
   }
 
   getArticlesShort(order: Order) {
-    console.log("HELLO", order.coffeeItems);
     const arr = order.coffeeItems.map(item => {
       let name = "";
 
@@ -246,8 +245,6 @@ export class OrderListComponent {
       str = str.substr(0, 37);
       str = str.concat("...");
     }
-
-    console.log("getArticlesShort", str);
 
     return str;
   }

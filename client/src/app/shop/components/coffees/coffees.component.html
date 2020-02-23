@@ -43,14 +43,14 @@
             <button
               mat-raised-button
               (click)="openEditCoffeeDialog(coffee)"
-              [disabled]="!coffee.isActive"
+              [disabled]="!coffee.isActive || coffee.id === 1"
             >
               Endre
             </button>
             <button
               mat-raised-button
               (click)="toggleIsActive(coffee, false)"
-              [hidden]="!coffee.isActive"
+              [disabled]="!coffee.isActive || coffee.id === 1"
             >
               Deaktiver
             </button>
