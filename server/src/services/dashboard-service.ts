@@ -26,7 +26,7 @@ class DashboardService {
 
     const _250s = [];
     const _500s = [];
-    const _1000s = [];
+    const _1200s = [];
     let totalWeight = 0;
 
     const add = (sizeArray, id, quantity) => {
@@ -47,8 +47,8 @@ class DashboardService {
           add(_500s, item.coffee.id, item.quantity);
           totalWeight += 500 * item.quantity;
         } else if (item.variationId === 3) {
-          add(_1000s, item.coffee.id, item.quantity);
-          totalWeight += 1000 * item.quantity;
+          add(_1200s, item.coffee.id, item.quantity);
+          totalWeight += 1200 * item.quantity;
         }
       });
     });
@@ -58,7 +58,7 @@ class DashboardService {
       quantities: {
         _250s,
         _500s,
-        _1000s,
+        _1200s,
         totalWeight: totalWeight
       }
     };
@@ -179,7 +179,7 @@ class DashboardService {
         _500s: {
           totalCount: 0
         },
-        _1000s: {
+        _1200s: {
           totalCount: 0
         },
         totalWeight: aboBagWeight / 1000
@@ -189,38 +189,6 @@ class DashboardService {
 
     // MB Backoffice orders
     const orderStats = await this.getOrderStats();
-
-    // const _250bagCount = this.sumArrayProp(
-    //   orderStats.quantities._250s,
-    //   "quantity"
-    // );
-
-    // const _500bagCount = this.sumArrayProp(
-    //   orderStats.quantities._500s,
-    //   "quantity"
-    // );
-
-    // const _1000bagCount = this.sumArrayProp(
-    //   orderStats.quantities._1000s,
-    //   "quantity"
-    // );
-
-    // const quantities = {
-    //   _250s: {
-    //     totalCount: _250bagCount + aboBagCount
-    //   },
-    //   _250s_company: {
-    //     // TODO: fix until we can connect mb-order coffees to abo type (coffee1,2 etc)
-    //     totalCount: _250bagCount
-    //   },
-    //   _500s: {
-    //     totalCount: _500bagCount
-    //   },
-    //   _1000s: {
-    //     totalCount: _1000bagCount
-    //   },
-    //   totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000
-    // };
 
     const quantities = {
       coffeeItems: orderStats.quantities,

@@ -15,15 +15,15 @@ const _500: CoffeeVariation = {
   size: CoffeeSizes._500
 };
 
-const _1000: CoffeeVariation = {
+const _1200: CoffeeVariation = {
   id: 3,
-  name: "1kg",
-  price: CoffeePrizes._1000,
-  size: CoffeeSizes._1000
+  name: "1.2kg",
+  price: CoffeePrizes._1200,
+  size: CoffeeSizes._1200
 };
 
 export const getCoffeeVariations = () => {
-  return [_250, _500, _1000];
+  return [_250, _500, _1200];
 };
 
 export const resolveCoffeeVariation = (
@@ -31,7 +31,7 @@ export const resolveCoffeeVariation = (
 ): CoffeeVariation => {
   if (variationId === 1) return _250;
   if (variationId === 2) return _500;
-  if (variationId === 3) return _1000;
+  if (variationId === 3) return _1200;
 
   throw new Error("Coffe variation does not exist");
 };

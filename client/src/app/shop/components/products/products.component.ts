@@ -58,7 +58,7 @@ export class ProductsComponent implements OnInit {
       product.data = {};
       product.productVariations = [
         { name: "priceSmallBag", price: 70, weight: 250 },
-        { name: "pricePerKg", price: 280, weight: 1000 }
+        { name: "pricePerKg", price: 336, weight: 1200 }
       ];
     }
 

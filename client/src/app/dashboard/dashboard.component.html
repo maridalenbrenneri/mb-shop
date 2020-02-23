@@ -49,7 +49,7 @@
               <th>Totalt (kg)</th>
               <th>250g</th>
               <th>500g</th>
-              <th>1000g</th>
+              <th>1200g</th>
             </tr>
           </thead>
           <tbody>
@@ -59,35 +59,35 @@
                 <td>{{ resolveCoffeeANY(day).total }}</td>
                 <td>{{ resolveCoffeeANY(day).count250 }}</td>
                 <td>{{ resolveCoffeeANY(day).count500 }}</td>
-                <td>{{ resolveCoffeeANY(day).count1000 }}</td>
+                <td>{{ resolveCoffeeANY(day).count1200 }}</td>
               </tr>
               <tr>
                 <td>Kaffe 1 - {{ resolveCoffeeCodeFromId(day.coffee1) }}</td>
                 <td>{{ resolveCoffee(day, "coffee1").total }}</td>
                 <td>{{ resolveCoffee(day, "coffee1").count250 }}</td>
                 <td>{{ resolveCoffee(day, "coffee1").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee1").count1000 }}</td>
+                <td>{{ resolveCoffee(day, "coffee1").count1200 }}</td>
               </tr>
               <tr>
                 <td>Kaffe 2 - {{ resolveCoffeeCodeFromId(day.coffee2) }}</td>
                 <td>{{ resolveCoffee(day, "coffee2").total }}</td>
                 <td>{{ resolveCoffee(day, "coffee2").count250 }}</td>
                 <td>{{ resolveCoffee(day, "coffee2").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee2").count1000 }}</td>
+                <td>{{ resolveCoffee(day, "coffee2").count1200 }}</td>
               </tr>
               <tr>
                 <td>Kaffe 3 - {{ resolveCoffeeCodeFromId(day.coffee3) }}</td>
                 <td>{{ resolveCoffee(day, "coffee3").total }}</td>
                 <td>{{ resolveCoffee(day, "coffee3").count250 }}</td>
                 <td>{{ resolveCoffee(day, "coffee3").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee3").count1000 }}</td>
+                <td>{{ resolveCoffee(day, "coffee3").count1200 }}</td>
               </tr>
               <tr>
                 <td>Kaffe 4 - {{ resolveCoffeeCodeFromId(day.coffee4) }}</td>
                 <td>{{ resolveCoffee(day, "coffee4").total }}</td>
                 <td>{{ resolveCoffee(day, "coffee4").count250 }}</td>
                 <td>{{ resolveCoffee(day, "coffee4").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee4").count1000 }}</td>
+                <td>{{ resolveCoffee(day, "coffee4").count1200 }}</td>
               </tr>
             </ng-container>
           </tbody>
@@ -156,7 +156,7 @@
           <thead>
             <tr>
               <th colspan="7" class="full-col">
-                Antall poser per utsendelse
+                Antall poser per type
               </th>
             </tr>
             <tr>
@@ -199,62 +199,9 @@
               <td>{{ stats.bagCounter.monthly.six }}</td>
               <td>{{ stats.bagCounter.monthly.seven }}</td>
             </tr>
-            <tr>
-              <td colspan="7" class="full-col">
-                Totalt ({{
-                  stats.subsciptionsBagsPerFortnightlyCount +
-                    stats.subsciptionsBagsPerMonthlyCount
-                }}
-                poser)
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.one +
-                    stats.bagCounter.monthly.one
-                }}
-              </td>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.two +
-                    stats.bagCounter.monthly.two
-                }}
-              </td>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.three +
-                    stats.bagCounter.monthly.three
-                }}
-              </td>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.four +
-                    stats.bagCounter.monthly.four
-                }}
-              </td>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.five +
-                    stats.bagCounter.monthly.five
-                }}
-              </td>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.six +
-                    stats.bagCounter.monthly.six
-                }}
-              </td>
-              <td>
-                {{
-                  stats.bagCounter.fortnightly.seven +
-                    stats.bagCounter.monthly.seven
-                }}
-              </td>
-            </tr>
           </tbody>
         </table>
-        <h4>Fordeling av kaffe per type</h4>
+        <h4>Fordeling av kaffe</h4>
         <div>
           <small>
             Viser antall poser (250g) / kg.

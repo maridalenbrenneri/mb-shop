@@ -227,9 +227,9 @@ export class OrderListComponent {
       )
         name = `${item.coffee.code}500`;
       else if (
-        resolveCoffeeVariation(item.variationId).size === CoffeeSizes._1000
+        resolveCoffeeVariation(item.variationId).size === CoffeeSizes._1200
       )
-        name = `${item.coffee.code}kg`;
+        name = `${item.coffee.code}1.2kg`;
       else name = item.coffee.name;
 
       return `${item.quantity}${name}`;

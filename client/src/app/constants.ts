@@ -7,13 +7,13 @@ export class Constants {
 export class CoffeeSizes {
   public static readonly _250 = 250;
   public static readonly _500 = 500;
-  public static readonly _1000 = 1000;
+  public static readonly _1200 = 1200;
 }
 
 export class CoffeePrizes {
   public static readonly _250 = 70;
   public static readonly _500 = 140;
-  public static readonly _1000 = 280;
+  public static readonly _1200 = 336;
 }
 
 export class VatRates {

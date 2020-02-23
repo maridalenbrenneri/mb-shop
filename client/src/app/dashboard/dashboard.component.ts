@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
       return i.id === coffeeAnyId;
     }) || { quantity: 0 };
 
-    const any1000 = day.quantities.coffeeItems._1000s.find(i => {
+    const any1200 = day.quantities.coffeeItems._1200s.find(i => {
       return i.id === coffeeAnyId;
     }) || { quantity: 0 };
 
@@ -94,14 +94,14 @@ export class DashboardComponent implements OnInit {
         ? any250.quantity * 250
         : 0 + any500.quantity > 0
         ? any500.quantity * 500
-        : 0 + any1000.quantity > 0
-        ? any1000.quantity * 1000
+        : 0 + any1200.quantity > 0
+        ? any1200.quantity * 1200
         : 0;
 
     return {
       count250: any250.quantity,
       count500: any500.quantity,
-      count1000: any1000.quantity,
+      count1200: any1200.quantity,
       total: totalGrams / 1000
     };
   }
@@ -119,7 +119,7 @@ export class DashboardComponent implements OnInit {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
 
-    const mbOrders1000 = day.quantities.coffeeItems._1000s.find(i => {
+    const mbOrders1200 = day.quantities.coffeeItems._1200s.find(i => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
 
@@ -128,15 +128,15 @@ export class DashboardComponent implements OnInit {
         ? mbOrders250.quantity * 250
         : 0 + mbOrders500.quantity > 0
         ? mbOrders500.quantity * 500
-        : 0 + mbOrders1000.quantity > 0
-        ? mbOrders1000.quantity * 1000
+        : 0 + mbOrders1200.quantity > 0
+        ? mbOrders1200.quantity * 1200
         : 0;
 
     if (day.type === "normal") {
       return {
         count250: mbOrders250.quantity,
         count500: mbOrders500.quantity,
-        count1000: mbOrders1000.quantity,
+        count1200: mbOrders1200.quantity,
         total: mbOrdersTotalWeight / 1000
       };
     }
@@ -155,14 +155,14 @@ export class DashboardComponent implements OnInit {
         ? aggregated250 * 250
         : 0 + mbOrders500.quantity > 0
         ? mbOrders500.quantity * 500
-        : 0 + mbOrders1000.quantity > 0
-        ? mbOrders1000.quantity * 1000
+        : 0 + mbOrders1200.quantity > 0
+        ? mbOrders1200.quantity * 1200
         : 0;
 
     return {
       count250: aggregated250,
       count500: mbOrders500.quantity,
-      count1000: mbOrders1000.quantity,
+      count1200: mbOrders1200.quantity,
       total: totalWeight / 1000
     };
   }

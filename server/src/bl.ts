@@ -5,7 +5,7 @@ export const getCoffeeVariationWeight = (id: number) => {
     case 2:
       return 500;
     case 3:
-      return 1000;
+      return 1200;
     default:
       throw new Error("Invalid coffee variation id");
   }
