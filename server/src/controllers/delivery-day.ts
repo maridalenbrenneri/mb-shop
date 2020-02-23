@@ -5,10 +5,10 @@ class DeliveryDayController {
   /**
    * GET /DeliveryDays/:id
    */
-  getDeliveryDay = async function(req: Request, res: Response) {
-    const day = await deliveryDayService.getDeliveryDay(req.body.id);
-    return res.send(day);
-  };
+  // getDeliveryDay = async function(req: Request, res: Response) {
+  //   const day = await deliveryDayService.getDeliveryDay(req.body.id);
+  //   return res.send(day);
+  // };
 
   /**
    * GET /DeliveryDays
@@ -29,7 +29,7 @@ class DeliveryDayController {
    * PUT /DeliveryDays/:id
    */
   updateDeliveryDay = async function(req: Request, res: Response) {
-    const updated = deliveryDayService.updateDeliveryDay(req.body.id);
+    const updated = deliveryDayService.updateDeliveryDay(req.body);
     return res.send(updated);
   };
 }

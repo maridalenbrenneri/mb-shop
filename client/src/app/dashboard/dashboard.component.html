@@ -27,19 +27,21 @@
     <mat-card class="product-card">
       <mat-card-content>
         <h2>
-          Neste levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
+          Neste abo-levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
           {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
           {{ deliveryDays[0].quantities.totalWeight }}kg
         </h2>
 
         <div *ngIf="!hasNextDeliveryDayCoffeesSet()">
-          All coffees (1-4) must be set to enable quantity preview
+          All coffees (1-4) must be set to enable quantity preview.
+          <a [routerLink]="['/delivery-days']">Endre aktive kaffen her</a>
         </div>
 
         <div *ngIf="hasNextDeliveryDayCoffeesSet()">
           <small>
-            Viser fordeling av abos og aktive backoffice-bestillinger.
-            Enkeltorders i Woo er IKKE inkludert p.t.
+            Viser fordeling av abos og aktive backoffice-bestillinger. P.t er
+            enkeltorders i Woo IKKE inkludert og det er kun abo-levering som
+            vises.
           </small>
         </div>
         <table *ngIf="hasNextDeliveryDayCoffeesSet()" class="table">
@@ -92,6 +94,7 @@
             </ng-container>
           </tbody>
         </table>
+        <a [routerLink]="['/delivery-days']">Endre kaffen her</a>
       </mat-card-content>
     </mat-card>
   </div>
@@ -244,7 +247,7 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#aktive kaffe</mat-card-title>
+        <mat-card-title>#aktive kaffen (i butikk)</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <ng-container *ngFor="let coffee of coffees">
@@ -252,7 +255,7 @@
             {{ coffee.code }} - {{ coffee.name }} - {{ coffee.country }}
           </div>
         </ng-container>
-        <div><a [routerLink]="['/coffees']">Endre</a></div>
+        <div><a [routerLink]="['/coffees']">Endre aktive kaffen</a></div>
       </mat-card-content>
     </mat-card>
   </div>
@@ -260,7 +263,7 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#kommende leveringer</mat-card-title>
+        <mat-card-title>#kommende abos</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <table class="table">
@@ -268,13 +271,13 @@
             <tr>
               <th>Dato</th>
               <th>Type</th>
-              <th>Kg (abos, estimert)</th>
+              <th>Kg (estimert)</th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngFor="let day of deliveryDays.slice(1)">
               <tr class="future_delivery">
-                <td>{{ day.date | date: "EEEE d. MMMM" }}</td>
+                <td>{{ day.date | date: "d. MMMM" }}</td>
                 <td>{{ resolveDeliveryTypeString(day.type) }}</td>
                 <td>{{ day.quantities.totalWeight }}kg</td>
               </tr>

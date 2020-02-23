@@ -31,11 +31,6 @@ import { MatIconModule } from "@angular/material/icon";
 
 import { AppComponent } from "./app.component";
 
-import {
-  ProductsComponent,
-  EditProductComponent
-} from "./shop/components/products/products.component";
-
 import { OrdersComponent } from "./shop/components/orders/orders.component";
 import { OrderListComponent } from "./shop/components/orders/order-list/order-list.component";
 import { OrderDetailsComponent } from "./shop/components/orders/order-details/order-details.component";
@@ -55,6 +50,10 @@ import {
   CoffeesComponent,
   EditCoffeeComponent
 } from "./shop/components/coffees/coffees.component";
+import {
+  DeliveryDaysComponent,
+  EditDeliveryDayComponent
+} from "./shop/components/delivery-days/delivery-days.component";
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, "nb");
@@ -65,7 +64,7 @@ const appRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
   { path: "orders", component: OrdersComponent },
   { path: "gift-subscriptions", component: GiftSubscriptionsComponent },
-  { path: "products", component: ProductsComponent },
+  { path: "delivery-days", component: DeliveryDaysComponent },
   { path: "coffees", component: CoffeesComponent },
   { path: "my-account", component: MyAccountComponent }
   // { path: '**', component: PageNotFoundComponent }
@@ -74,14 +73,12 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsComponent,
     CoffeesComponent,
     SignInComponent,
     LoaderComponent,
     MyAccountComponent,
     MyDetailsComponent,
     DashboardComponent,
-    EditProductComponent,
     EditCoffeeComponent,
     OrdersComponent,
     AddressComponent,
@@ -90,12 +87,14 @@ const appRoutes: Routes = [
     AmountFieldComponent,
     GiftSubscriptionsComponent,
     GiftSubscriptionDetailsComponent,
-    OrderEditComponent
+    OrderEditComponent,
+    DeliveryDaysComponent,
+    EditDeliveryDayComponent
   ],
   entryComponents: [
-    EditProductComponent,
     OrderEditComponent,
-    EditCoffeeComponent
+    EditCoffeeComponent,
+    EditDeliveryDayComponent
   ],
   imports: [
     RouterModule.forRoot(

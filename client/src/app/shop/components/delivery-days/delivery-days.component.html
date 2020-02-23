@@ -1,0 +1,38 @@
+<p></p>
+<h2>Leveringer & kaffetyper</h2>
+<div class="row">
+  <div class="col-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>Dato</td>
+          <td>Type</td>
+          <td>Kaffe 1</td>
+          <td>Kaffe 2</td>
+          <td>Kaffe 3</td>
+          <td>Kaffe 4</td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deliveryDay of deliveryDays">
+          <td>{{ deliveryDay.date | date: "d. MMMM" }}</td>
+          <td>{{ resolveDeliveryTypeString(deliveryDay.type) }}</td>
+          <td>{{ resolveCoffeeCodeFromId(deliveryDay.coffee1) }}</td>
+          <td>{{ resolveCoffeeCodeFromId(deliveryDay.coffee2) }}</td>
+          <td>{{ resolveCoffeeCodeFromId(deliveryDay.coffee3) }}</td>
+          <td>{{ resolveCoffeeCodeFromId(deliveryDay.coffee4) }}</td>
+          <td>
+            <button
+              mat-raised-button
+              (click)="openEditDeliveryDayDialog(deliveryDay)"
+              [disabled]="deliveryDay.type === 'normal'"
+            >
+              Endre kaffen
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
