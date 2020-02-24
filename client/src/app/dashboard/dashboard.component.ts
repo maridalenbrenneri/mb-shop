@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import * as moment from "moment";
 
 @Component({
   selector: "app-dashboard",
@@ -10,6 +11,7 @@ import { environment } from "../../environments/environment";
 export class DashboardComponent implements OnInit {
   stats: any;
   statsLastUpdated: Date;
+  dataLastLoaded: Date;
   isUpdating: boolean = false;
   orderStats: any;
   deliveryDays: any[];
@@ -23,38 +25,47 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     console.warn("Environment is PRODUCTION: " + environment.production);
 
-    this.http
+    this.loadData(this);
+
+    // Reload data every 10 minutes
+    setInterval(() => this.loadData(this), 60 * 1000 * 10);
+  }
+
+  loadData(self: DashboardComponent) {
+    self.http
       .get<any>(environment.mbApiBaseUrl + "aboabo/stats")
       .subscribe(stats => {
-        this.stats = stats.data;
-        this.statsLastUpdated = stats.lastUpdated;
+        self.stats = stats.data;
+        self.statsLastUpdated = stats.lastUpdated;
       });
 
-    this.http
+    self.http
       .get<any>(environment.mbApiBaseUrl + "stats/coffees")
       .subscribe(res => {
-        this.coffees = res;
+        self.coffees = res;
       });
 
-    this.http
+    self.http
       .get<any>(environment.mbApiBaseUrl + "stats/orders")
       .subscribe(res => {
         this.orderStats = res;
       });
 
-    this.http
+    self.http
       .get<any>(environment.mbApiBaseUrl + "stats/deliverydays")
       .subscribe(res => {
-        this.deliveryDays = res;
+        self.deliveryDays = res;
       });
 
-    this.http
+    self.http
       .get<any>(
         environment.mbApiBaseUrl + "stats/subscriptionCoffeeTypeCounter"
       )
       .subscribe(res => {
-        this.subscriptionCoffeeTypeCounter = res;
+        self.subscriptionCoffeeTypeCounter = res;
       });
+
+    self.dataLastLoaded = moment().toDate();
   }
 
   hasNextDeliveryDayCoffeesSet = () => {
@@ -191,6 +202,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(stats => {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;
+        this.loadData(this);
         this.isUpdating = false;
       });
   }

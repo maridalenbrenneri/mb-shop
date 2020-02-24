@@ -317,12 +317,17 @@
     </mat-card>
   </div>
 
-  <div class="col-12">
+  <div class="col-6">
     <p>Data from Woo last updated {{ statsLastUpdated | date: "short" }}</p>
-    <p>
+    <div>
       <button mat-raised-button (click)="updateStats()" [disabled]="isUpdating">
         Update now
       </button>
+    </div>
+  </div>
+  <div class="col-6">
+    <p>
+      Data from Backoffice last updated {{ dataLastLoaded | date: "short" }}
     </p>
   </div>
 </div>
