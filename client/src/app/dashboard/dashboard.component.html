@@ -27,7 +27,7 @@
     <mat-card class="product-card">
       <mat-card-content>
         <h2>
-          Neste abo-levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
+          Neste levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
           {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
           {{ deliveryDays[0].quantities.totalWeight }}kg
         </h2>
@@ -274,7 +274,7 @@
   <div class="col-12 col-lg-6">
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>#kommende abos</mat-card-title>
+        <mat-card-title>#kommende leveringer</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <table class="table">

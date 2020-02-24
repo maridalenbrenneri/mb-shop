@@ -3,17 +3,15 @@ require("dotenv").config();
 import DeliveryDayModel from "../database/models/delivery-day-model";
 
 const DELIVERY_DAYS = [
-  { date: new Date("2020-02-24"), type: "normal" }
-  // { date: new Date("2020-03-02"), type: "monthly" },
-  // { date: new Date("2020-03-09"), type: "normal" },
-  // { date: new Date("2020-03-16"), type: "fortnightly" },
-  // { date: new Date("2020-03-23"), type: "normal" },
-  // { date: new Date("2020-03-30"), type: "normal" },
-  // { date: new Date("2020-04-06"), type: "monthly" },
-  // { date: new Date("2020-04-13"), type: "normal" },
-  // { date: new Date("2020-04-20"), type: "fortnightly" },
-  // { date: new Date("2020-04-27"), type: "normal" },
-  // { date: new Date("2020-05-04"), type: "monthly" }
+  // { date: new Date("2020-05-11"), type: "normal" },
+  // { date: new Date("2020-05-18"), type: "fortnightly" },
+  // { date: new Date("2020-05-25"), type: "normal" },
+  // { date: new Date("2020-06-01"), type: "monthly" },
+  // { date: new Date("2020-06-08"), type: "normal" },
+  // { date: new Date("2020-06-15"), type: "fortnightly" },
+  // { date: new Date("2020-05-22"), type: "normal" },
+  // { date: new Date("2020-06-29"), type: "normal" },
+  // { date: new Date("2020-07-06"), type: "monthly" }
 ];
 
 const add = () => {

@@ -181,7 +181,7 @@ export class DashboardComponent implements OnInit {
   resolveDeliveryTypeString(type: string) {
     if (type === "monthly") return "Stor-abo";
     if (type === "fortnightly") return "Lill-abo";
-    return "Normal";
+    return "Kun enkeltordre";
   }
 
   activeCoffees() {
