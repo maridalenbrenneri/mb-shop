@@ -27,8 +27,8 @@ export class DashboardComponent implements OnInit {
 
     this.loadData(this);
 
-    // Reload data every 10 minutes
-    setInterval(() => this.loadData(this), 60 * 1000 * 10);
+    // Reload data every 5 minutes
+    setInterval(() => this.loadData(this), 60 * 1000 * 5);
   }
 
   loadData(self: DashboardComponent) {

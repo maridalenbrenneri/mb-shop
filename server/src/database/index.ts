@@ -31,9 +31,9 @@ const createTables = () => {
   // ProductModel.sync({ force: false, alter: true }).then(() =>
   //   console.log("Done syncing ProductModel")
   // );
-  // BusinessSubscriptionModel.sync({ force: false, alter: true }).then(() =>
-  //   console.log("Done syncing BusinessSubscriptionModel")
-  // );
+  BusinessSubscriptionModel.sync({ force: false, alter: true }).then(() =>
+    console.log("Done syncing BusinessSubscriptionModel")
+  );
   // StatsModel.sync({ force: false, alter: true }).then(() =>
   //   console.log("Done syncing StatsModel")
   // );

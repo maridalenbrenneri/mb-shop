@@ -237,10 +237,6 @@ export class OrderListComponent {
 
     let str = arr.join(", ");
 
-    // if (order.subscriptionData) {
-    //   str = `ABO-${str}`;
-    // }
-
     if (str.length > 40) {
       str = str.substr(0, 37);
       str = str.concat("...");

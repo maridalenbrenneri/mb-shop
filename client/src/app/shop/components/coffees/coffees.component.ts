@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { Coffee } from "../../models/coffee.model";
 import { CoffeeService } from "../../services/coffee.service";
-// import { CoffeeCategories } from "../../../constants";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { ToastrService } from "ngx-toastr";
 
@@ -15,8 +14,6 @@ export class CoffeesComponent implements OnInit {
 
   text: string;
   coffeeCoffees: Array<Coffee>;
-  subscriptionCoffee: Coffee;
-  giftSubscriptionCoffee: Coffee;
 
   private _showNotActiveCoffees: boolean = false;
 
@@ -24,10 +21,7 @@ export class CoffeesComponent implements OnInit {
     private coffeeService: CoffeeService,
     public dialog: MatDialog,
     private toastr: ToastrService
-  ) {
-    this.subscriptionCoffee = new Coffee();
-    this.giftSubscriptionCoffee = new Coffee();
-  }
+  ) {}
 
   ngOnInit() {
     this.loadCoffees();

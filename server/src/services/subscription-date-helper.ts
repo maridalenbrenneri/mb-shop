@@ -1,11 +1,6 @@
 import * as moment from "moment";
 import { Constants, SubscriptionFrequence } from "../constants";
 
-interface IDeliveryDay {
-  date: Date;
-  type: "monthly" | "fortnightly" | "normal";
-}
-
 export default class SubscriptionDateHelper {
   static getNextDeliveryDays(dateCount: number) {
     const dates = [];
@@ -133,20 +128,4 @@ export default class SubscriptionDateHelper {
 
     return dates;
   }
-
-  //   static getNextCreateRenewalDate(
-  //     date: Date,
-  //     daysBeforeDeliveryDate: Number
-  //   ): Date {
-  //     let momentDate = moment(date).add(-daysBeforeDeliveryDate, "d");
-  //     return momentDate.toDate();
-  //   }
-
-  //   static isTodayBeforeDate(date: Date) {
-  //     return moment() < moment(date);
-  //   }
-
-  //   static isSameDate(date1: Date, date2: Date) {
-  //     return moment(date1).date() === moment(date2).date();
-  //   }
 }

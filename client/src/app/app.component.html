@@ -25,6 +25,10 @@
       <a [routerLink]="['/gift-subscriptions']">Gabos</a>
     </button>
     <button mat-menu-item *ngIf="isSignedIn">
+      <mat-icon>business</mat-icon>
+      <a [routerLink]="['/subscriptions']">Bedriftsabos</a>
+    </button>
+    <button mat-menu-item *ngIf="isSignedIn">
       <mat-icon>local_shipping</mat-icon>
       <a [routerLink]="['/delivery-days']">Leveringer</a>
     </button>

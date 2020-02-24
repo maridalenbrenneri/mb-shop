@@ -13,7 +13,8 @@
     "start": "nodemon ./dist/server.js",
     "test": "mocha -r ts-node/register test/**/*test.ts",
     "database": "ts-node ./src/database/index.ts",
-    "add-delivery-days": "ts-node ./src/jobs/add-delivery-days.ts"
+    "add-delivery-days": "ts-node ./src/jobs/add-delivery-days.ts",
+    "add-business-subscriptions": "ts-node ./src/jobs/add-business-subscriptions.ts"
   },
   "nodemonConfig": {
     "ignore": [

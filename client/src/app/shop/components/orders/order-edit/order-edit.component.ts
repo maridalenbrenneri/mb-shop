@@ -8,7 +8,6 @@ import {
 import { Customer } from "../../../models/customer.model";
 import { ProductVariation } from "../../../models/product.model";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { SubscriptionData } from "src/app/shop/models/subscription-data.model";
 import { Coffee } from "src/app/shop/models/coffee.model";
 import {
   getCoffeeVariations,
@@ -79,13 +78,6 @@ export class OrderEditComponent implements OnInit {
     this.stashOrderItem = new StashItem();
   }
 
-  createSubscriptionData() {
-    const data = new SubscriptionData();
-    data.frequence = 1;
-    data.status = "active";
-    return data;
-  }
-
   addCoffee() {
     let productAdded = this.order.coffeeItems.find(i => {
       return (
@@ -133,12 +125,6 @@ export class OrderEditComponent implements OnInit {
   onProductVariationChange(variationId: number) {
     this.orderItem.variationId = variationId;
     this.orderItem.price = resolveCoffeeVariation(variationId).price;
-  }
-
-  onIsSubscriptionChanged() {
-    // this.order.subscriptionData = this.isSubscriptionParent
-    //   ? this.createSubscriptionData()
-    //   : null;
   }
 
   get getCoffeeProductVariations() {

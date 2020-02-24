@@ -54,6 +54,10 @@ import {
   DeliveryDaysComponent,
   EditDeliveryDayComponent
 } from "./shop/components/delivery-days/delivery-days.component";
+import {
+  SubscriptionsComponent,
+  EditSubscriptionComponent
+} from "./shop/components/subscriptions/subscriptions.component";
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeNb, "nb");
@@ -66,6 +70,7 @@ const appRoutes: Routes = [
   { path: "gift-subscriptions", component: GiftSubscriptionsComponent },
   { path: "delivery-days", component: DeliveryDaysComponent },
   { path: "coffees", component: CoffeesComponent },
+  { path: "subscriptions", component: SubscriptionsComponent },
   { path: "my-account", component: MyAccountComponent }
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -89,12 +94,15 @@ const appRoutes: Routes = [
     GiftSubscriptionDetailsComponent,
     OrderEditComponent,
     DeliveryDaysComponent,
-    EditDeliveryDayComponent
+    EditDeliveryDayComponent,
+    SubscriptionsComponent,
+    EditSubscriptionComponent
   ],
   entryComponents: [
     OrderEditComponent,
     EditCoffeeComponent,
-    EditDeliveryDayComponent
+    EditDeliveryDayComponent,
+    EditSubscriptionComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -108,7 +116,6 @@ const appRoutes: Routes = [
     HttpClientModule,
     CommonModule,
     ToastrModule.forRoot(),
-    // NgbModule.forRoot(),
     MatSelectModule,
     MatCheckboxModule,
     MatCardModule,

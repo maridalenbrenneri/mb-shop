@@ -32,69 +32,80 @@
           {{ deliveryDays[0].quantities.totalWeight }}kg
         </h2>
 
-        <div *ngIf="!hasNextDeliveryDayCoffeesSet()">
+        <div
+          *ngIf="
+            !hasNextDeliveryDayCoffeesSet() && deliveryDays[0].type != 'normal'
+          "
+        >
           All coffees (1-4) must be set to enable quantity preview.
           <a [routerLink]="['/delivery-days']">Endre aktive kaffen her</a>
         </div>
 
-        <div *ngIf="hasNextDeliveryDayCoffeesSet()">
-          <small>
-            Viser fordeling av abos og aktive backoffice-bestillinger. P.t er
-            enkeltorders i Woo IKKE inkludert og det er kun abo-levering som
-            vises.
-          </small>
+        <div *ngIf="deliveryDays[0].type == 'normal'">
+          Non abo-delivery days not currently supported in overview. But one day
+          it will!
         </div>
-        <table *ngIf="hasNextDeliveryDayCoffeesSet()" class="table">
-          <thead>
-            <tr>
-              <th>Kaffe</th>
-              <th>Totalt (kg)</th>
-              <th>250g</th>
-              <th>500g</th>
-              <th>1200g</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let day of deliveryDays.slice(0, 1)">
+
+        <div *ngIf="deliveryDays[0].type != 'normal'">
+          <div *ngIf="hasNextDeliveryDayCoffeesSet()">
+            <small>
+              Viser fordeling av abos og aktive backoffice-bestillinger. P.t er
+              enkeltorders i Woo IKKE inkludert og det er kun abo-levering som
+              vises.
+            </small>
+          </div>
+          <table *ngIf="hasNextDeliveryDayCoffeesSet()" class="table">
+            <thead>
               <tr>
-                <td>ANY</td>
-                <td>{{ resolveCoffeeANY(day).total }}</td>
-                <td>{{ resolveCoffeeANY(day).count250 }}</td>
-                <td>{{ resolveCoffeeANY(day).count500 }}</td>
-                <td>{{ resolveCoffeeANY(day).count1200 }}</td>
+                <th>Kaffe</th>
+                <th>Totalt (kg)</th>
+                <th>250g</th>
+                <th>500g</th>
+                <th>1200g</th>
               </tr>
-              <tr>
-                <td>Kaffe 1 - {{ resolveCoffeeCodeFromId(day.coffee1) }}</td>
-                <td>{{ resolveCoffee(day, "coffee1").total }}</td>
-                <td>{{ resolveCoffee(day, "coffee1").count250 }}</td>
-                <td>{{ resolveCoffee(day, "coffee1").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee1").count1200 }}</td>
-              </tr>
-              <tr>
-                <td>Kaffe 2 - {{ resolveCoffeeCodeFromId(day.coffee2) }}</td>
-                <td>{{ resolveCoffee(day, "coffee2").total }}</td>
-                <td>{{ resolveCoffee(day, "coffee2").count250 }}</td>
-                <td>{{ resolveCoffee(day, "coffee2").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee2").count1200 }}</td>
-              </tr>
-              <tr>
-                <td>Kaffe 3 - {{ resolveCoffeeCodeFromId(day.coffee3) }}</td>
-                <td>{{ resolveCoffee(day, "coffee3").total }}</td>
-                <td>{{ resolveCoffee(day, "coffee3").count250 }}</td>
-                <td>{{ resolveCoffee(day, "coffee3").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee3").count1200 }}</td>
-              </tr>
-              <tr>
-                <td>Kaffe 4 - {{ resolveCoffeeCodeFromId(day.coffee4) }}</td>
-                <td>{{ resolveCoffee(day, "coffee4").total }}</td>
-                <td>{{ resolveCoffee(day, "coffee4").count250 }}</td>
-                <td>{{ resolveCoffee(day, "coffee4").count500 }}</td>
-                <td>{{ resolveCoffee(day, "coffee4").count1200 }}</td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-        <a [routerLink]="['/delivery-days']">Endre kaffen her</a>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let day of deliveryDays.slice(0, 1)">
+                <tr>
+                  <td>ANY</td>
+                  <td>{{ resolveCoffeeANY(day).total }}</td>
+                  <td>{{ resolveCoffeeANY(day).count250 }}</td>
+                  <td>{{ resolveCoffeeANY(day).count500 }}</td>
+                  <td>{{ resolveCoffeeANY(day).count1200 }}</td>
+                </tr>
+                <tr>
+                  <td>Kaffe 1 - {{ resolveCoffeeCodeFromId(day.coffee1) }}</td>
+                  <td>{{ resolveCoffee(day, "coffee1").total }}</td>
+                  <td>{{ resolveCoffee(day, "coffee1").count250 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee1").count500 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee1").count1200 }}</td>
+                </tr>
+                <tr>
+                  <td>Kaffe 2 - {{ resolveCoffeeCodeFromId(day.coffee2) }}</td>
+                  <td>{{ resolveCoffee(day, "coffee2").total }}</td>
+                  <td>{{ resolveCoffee(day, "coffee2").count250 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee2").count500 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee2").count1200 }}</td>
+                </tr>
+                <tr>
+                  <td>Kaffe 3 - {{ resolveCoffeeCodeFromId(day.coffee3) }}</td>
+                  <td>{{ resolveCoffee(day, "coffee3").total }}</td>
+                  <td>{{ resolveCoffee(day, "coffee3").count250 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee3").count500 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee3").count1200 }}</td>
+                </tr>
+                <tr>
+                  <td>Kaffe 4 - {{ resolveCoffeeCodeFromId(day.coffee4) }}</td>
+                  <td>{{ resolveCoffee(day, "coffee4").total }}</td>
+                  <td>{{ resolveCoffee(day, "coffee4").count250 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee4").count500 }}</td>
+                  <td>{{ resolveCoffee(day, "coffee4").count1200 }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <a [routerLink]="['/delivery-days']">Endre kaffen her</a>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

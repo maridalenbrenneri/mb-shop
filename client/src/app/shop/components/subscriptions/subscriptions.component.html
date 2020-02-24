@@ -1,0 +1,64 @@
+<p></p>
+
+<div class="row">
+  <div class="col-12 col-md-6">
+    <button
+      mat-raised-button
+      (click)="openEditSubscriptionDialog(null)"
+      disabled
+    >
+      Opprett bedriftsabo
+    </button>
+  </div>
+</div>
+
+<p></p>
+
+<div class="row">
+  <div class="col-12">Viser {{ subscriptions?.length }} bedriftsabos</div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let subscription of subscriptions">
+          <td>{{ subscription.id }}</td>
+          <td>{{ subscription.customerName }}</td>
+          <td>
+            {{
+              subscription.status == "active"
+                ? "Aktiv"
+                : "På pause / Kansellert"
+            }}
+          </td>
+          <td>
+            {{ subscription.frequence == 1 ? "Månedlig" : "Annenhver uke" }}
+          </td>
+          <td>{{ subscription.quantityKg }}kg</td>
+          <td>{{ note }}</td>
+          <td>
+            <button
+              mat-raised-button
+              (click)="openEditSubscriptionDialog(subscription)"
+              disabled
+            >
+              Endre
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

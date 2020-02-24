@@ -65,13 +65,12 @@ class DashboardService {
   };
 
   getDeliveryDays = async (limit: number = 3) => {
-    const today = moment();
+    const today = moment().startOf("day");
 
     const ddays = await deliveryDayService.getDeliveryDays();
 
-    const daysAfterToday = ddays.filter(
-      // For now, we only return abo delivery days
-      (d: any) => d.type !== "normal" && moment(d.date).isSameOrAfter(today)
+    const daysAfterToday = ddays.filter((d: any) =>
+      moment(d.date).isSameOrAfter(today)
     );
 
     if (daysAfterToday.length < 3) throw new Error("OUT OF DELIVERY DAYS");
