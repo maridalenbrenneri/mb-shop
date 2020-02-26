@@ -31,7 +31,7 @@ export class OrderDetailsComponent implements OnInit {
 
     let total = 0;
     this.order.coffeeItems.forEach(i => {
-      total += resolveCoffeeVariation(i.variationId).price * i.quantity;
+      total += i.price * i.quantity;
     });
     return total;
   }
@@ -71,14 +71,13 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   private calculateTotalVat(vatGroup: string) {
+    if (vatGroup != "coffee") return 0; // only coffee supported for now
+
     if (!this.order.coffeeItems) return 0;
 
     let total = 0;
     this.order.coffeeItems.forEach(i => {
-      total +=
-        resolveCoffeeVariation(i.variationId).price *
-        i.quantity *
-        VatRates.coffee;
+      total += i.price * i.quantity * VatRates.coffee;
     });
 
     return total;
