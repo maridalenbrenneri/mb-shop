@@ -4,7 +4,6 @@ import BusinessSubscriptionModel from "../database/models/business-subscription-
 
 const SUBSCRIPTIONS = [
   {
-    orderDate: new Date("2020-03-01"),
     customerId: "10008",
     customerName: "Arundo",
     status: "active",
@@ -12,7 +11,6 @@ const SUBSCRIPTIONS = [
     quantityKg: 2
   },
   {
-    orderDate: new Date("2020-03-01"),
     customerId: "10046",
     customerName: "Corrientes",
     status: "active",
@@ -21,7 +19,6 @@ const SUBSCRIPTIONS = [
     note: "Lokal"
   },
   {
-    orderDate: new Date("2020-03-01"),
     customerId: "10036",
     customerName: "Eco-1",
     status: "active",
@@ -30,7 +27,6 @@ const SUBSCRIPTIONS = [
     note: "Lokal"
   },
   {
-    orderDate: new Date("2020-03-01"),
     customerId: "10037",
     customerName: "Qvartz",
     status: "active",
@@ -38,7 +34,6 @@ const SUBSCRIPTIONS = [
     quantityKg: 3.5
   },
   {
-    orderDate: new Date("2020-03-01"),
     customerId: "10063",
     customerName: "Hent",
     status: "active",
@@ -46,7 +41,6 @@ const SUBSCRIPTIONS = [
     quantityKg: 12
   },
   {
-    orderDate: new Date("2020-03-01"),
     customerId: "10068",
     customerName: "Grådig",
     status: "active",

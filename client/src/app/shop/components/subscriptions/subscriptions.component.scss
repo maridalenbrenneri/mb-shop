@@ -1,26 +1,30 @@
-img { 
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 100%;
+}
+
+.subscription-table {
+  td {
+    width: 50%;
+  }
+}
+
+.product-card {
+  img {
+    margin: 0 0 1em 0;
     width: 100%;
     height: auto;
     display: block;
     max-width: 100%;
-}
-
-.subscription-table {
-    td {
-        width: 50%;
-    }
-}
-
-.product-card {
-    img {
-        margin: 0 0 1em 0;
-        width: 100%;
-        height: auto;
-        display: block;
-        max-width: 100%;
-    }
+  }
 }
 
 .mat-card {
-    margin-top: 1em;
+  margin-top: 1em;
+}
+
+.full-width {
+  width: 100%;
 }

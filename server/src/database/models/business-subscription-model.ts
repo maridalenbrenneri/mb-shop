@@ -14,11 +14,26 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 });
 
 export default class BusinessSubscriptionModel extends Model {
-  public static getSubscriptions = function(filter) {
+  public static getSubscriptions = function(filter: any) {
     filter = filter || {};
     filter.isDeleted = false;
 
     return BusinessSubscriptionModel.findAll({ where: filter });
+  };
+
+  public static createSubscription = function(subscription: any) {
+    return BusinessSubscriptionModel.create(subscription);
+  };
+
+  public static updateSubscription = function(
+    subscriptionId: number,
+    subscription: any
+  ) {
+    return BusinessSubscriptionModel.findByPk(subscriptionId).then(
+      (dbSubscription: any) => {
+        return dbSubscription.update(subscription);
+      }
+    );
   };
 }
 
@@ -27,7 +42,6 @@ BusinessSubscriptionModel.init(
     customerId: { type: STRING, allowNull: false }, // Fiken customer number
     customerName: { type: STRING }, // From Fiken
     status: { type: STRING, allowNull: false },
-    orderDate: { type: DATE, allowNull: false },
     frequence: { type: INTEGER.UNSIGNED, allowNull: false },
     quantityKg: { type: FLOAT.UNSIGNED, allowNull: false, defaultValue: 0 },
     note: { type: STRING },

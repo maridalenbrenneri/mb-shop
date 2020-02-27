@@ -3,6 +3,8 @@ import { Subscription } from "../../models/subscription.model";
 import { SubscriptionService } from "../../services/subscription.service";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { ToastrService } from "ngx-toastr";
+import { Customer } from "../../models/customer.model";
+import { CustomerService } from "../../services/customer.service";
 
 @Component({
   selector: "app-subscriptions",
@@ -11,24 +13,33 @@ import { ToastrService } from "ngx-toastr";
 })
 export class SubscriptionsComponent implements OnInit {
   subscriptions: Array<Subscription>;
+  customers: Array<Customer>;
 
   private _showNotActiveCoffees: boolean = false;
 
   constructor(
     private subscriptionService: SubscriptionService,
+    private customerService: CustomerService,
     public dialog: MatDialog,
     private toastr: ToastrService
   ) {}
 
   ngOnInit() {
+    this.loadCustomers();
     this.loadSubscriptions();
+  }
+
+  loadCustomers() {
+    this.customerService.getCustomers().subscribe(customers => {
+      this.customers = customers;
+    });
   }
 
   loadSubscriptions() {
     this.subscriptionService.getSubscriptions().subscribe(
       subscriptions => {
         if (!this._showNotActiveCoffees) {
-          this.subscriptions = subscriptions.filter(s => s.status === "active");
+          this.subscriptions = subscriptions;
         }
       },
       () => {
@@ -40,14 +51,31 @@ export class SubscriptionsComponent implements OnInit {
   openEditSubscriptionDialog(subscription: Subscription): void {
     if (!subscription) {
       subscription = new Subscription();
+      subscription.frequence = "1";
+      subscription.status = "active";
+      subscription.customerId = "" + this.customers[0].customerNumber;
     }
 
     const dialogRef = this.dialog.open(EditSubscriptionComponent, {
       disableClose: true,
       data: {
-        frequency: subscription.frequency,
+        id: subscription.id,
+        frequence: subscription.frequence,
         quantityKg: subscription.quantityKg,
-        status: subscription.status
+        status: subscription.status,
+        note: subscription.note || "",
+        customerName: subscription.customerName,
+        customerId: subscription.customerId,
+        frequences: [
+          { value: 1, label: "Månedlig" },
+          { value: 2, label: "Annenhver uke" }
+        ],
+        statuses: [
+          { value: "active", label: "Aktiv" },
+          { value: "paused", label: "På pause" },
+          { value: "cancelled", label: "Kansellert" }
+        ],
+        customers: this.customers
       }
     });
 
@@ -56,11 +84,17 @@ export class SubscriptionsComponent implements OnInit {
         return;
       }
 
-      subscription.frequency = result.code;
-      subscription.quantityKg = result.country;
-      subscription.status = result.name;
+      subscription.frequence = result.frequence;
+      subscription.quantityKg = result.quantityKg;
+      subscription.status = result.status;
+      subscription.note = result.note;
+      subscription.customerId = result.customerId;
 
       if (!this.alreadyContainsSubscription(subscription)) {
+        // resolve customer name
+        subscription.customerName = this.customers.find(
+          c => c.customerNumber === result.customerId
+        ).name;
         this.subscriptionService.createSubscription(subscription).subscribe(
           () => {
             this.loadSubscriptions();
@@ -93,9 +127,11 @@ export class SubscriptionsComponent implements OnInit {
 }
 
 export interface EditSubscriptionData {
-  frequency: number;
+  frequence: number;
   quantityKg: number;
   status: string;
+  note: string;
+  customerName: string;
 }
 
 @Component({

@@ -15,7 +15,7 @@ export class CoffeeItem {
   coffee: Coffee;
   quantity: number;
   variationId: number;
-  price: number; // default in variation, but vcan be overriden
+  price: number; // default in variation, but can be overriden
 }
 
 export class StashItem {

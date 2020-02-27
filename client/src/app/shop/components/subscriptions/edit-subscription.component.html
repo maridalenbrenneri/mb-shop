@@ -1,58 +1,86 @@
-<h1 mat-dialog-title>Legg til / Endre bedriftsabo</h1>
+<h1 mat-dialog-title>Bedriftsabo</h1>
 
 <div mat-dialog-content>
   <div class="row">
-    <!-- <div class="col-12">
-      <form #productForm="ngForm">
-        <div class="form-group">
-          <label class="center-block"
-            >Kod <small>(HO, CR, ET, etc.)</small>
+    <div class="col-12">
+      <form #subscriptionForm="ngForm">
+        <p *ngIf="data.id">Kunde: {{ data.customerId }}</p>
+        <p *ngIf="!data.id">
+          <mat-form-field>
+            <mat-label>Kunde</mat-label>
+            <mat-select [(value)]="data.customerId">
+              <mat-option
+                *ngFor="let customer of data.customers"
+                [value]="customer.customerNumber"
+              >
+                {{ customer.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select [(value)]="data.status">
+              <mat-option
+                *ngFor="let status of data.statuses"
+                [value]="status.value"
+              >
+                {{ status.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field>
+            <mat-label>Abotype</mat-label>
+            <mat-select [(value)]="data.frequence">
+              <mat-option
+                *ngFor="let frequence of data.frequences"
+                [value]="frequence.value"
+              >
+                {{ frequence.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>Kaffe kg</mat-label>
             <input
-              type="text"
-              required
-              class="form-control"
-              name="code"
-              [(ngModel)]="data.code"
+              matInput
+              type="number"
+              name="quantityElement"
+              [(ngModel)]="data.quantityKg"
             />
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="center-block"
-            >Land
-            <input
-              type="text"
-              required
-              class="form-control"
-              name="country"
-              [(ngModel)]="data.country"
-            />
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="center-block"
-            >Navn
-            <input
-              class="form-control"
-              required
-              name="name"
-              [(ngModel)]="data.name"
-            />
-          </label>
-        </div>
-        <div class="form-group">
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>Notat</mat-label>
+            <textarea
+              matInput
+              name="noteElement"
+              [(ngModel)]="data.note"
+            ></textarea>
+          </mat-form-field>
+        </p>
+
+        <div>
           <div mat-dialog-actions>
             <button mat-button (click)="onNoClick()">Avbryt</button>
             <button
               mat-button
               [mat-dialog-close]="data"
               cdkFocusInitial
-              [disabled]="!productForm.valid"
+              [disabled]="!subscriptionForm.valid"
             >
-              Lagre endringer
+              <span *ngIf="!data.id">Opprett</span>
+              <span *ngIf="data.id">Lagre endringer</span>
             </button>
           </div>
         </div>
       </form>
-    </div> -->
+    </div>
   </div>
 </div>

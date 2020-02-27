@@ -2,7 +2,7 @@ export class Subscription {
   id: number;
   customerId: string;
   customerName: string;
-  frequency: string;
+  frequence: string;
   quantityKg: string;
   status: string;
   lastOrderDate: Date;

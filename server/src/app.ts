@@ -144,6 +144,16 @@ app.put("/api/coffees/:id", isUserInSuperuser, coffeeController.updateCoffee);
 
 // Business subscriptions
 app.get("/api/subscriptions", subscriptionController.getSubscriptions);
+app.put(
+  "/api/subscriptions/:id",
+  isUserInSuperuser,
+  subscriptionController.updateSubscription
+);
+app.post(
+  "/api/subscriptions",
+  isUserInSuperuser,
+  subscriptionController.createSubscription
+);
 
 // Orders
 app.get("/api/orders", isUserInSuperuser, orderController.getOrders);
@@ -197,7 +207,7 @@ app.get("/*", function(_req, res) {
 /*** END CLIENT ***/
 
 // Error handling
-app.use(function(err, req, res, next) {
+app.use(function(err: any, req: any, res: any, next: any) {
   if (err instanceof ValidationError) {
     return res.status(422).send({ validationError: err.message });
   }
@@ -206,7 +216,7 @@ app.use(function(err, req, res, next) {
   return res.status(500).send({ error: err.message });
 });
 
-// console.log('NODE_ENV: ' + process.env.NODE_ENV);
-//console.log('DATABASE_URL: ' + process.env.DATABASE_URL);
+console.debug("NODE_ENV: " + process.env.NODE_ENV);
+console.debug("DATABASE_URL: " + process.env.DATABASE_URL);
 
 export default app;

@@ -1,6 +1,5 @@
 import { Response, Request } from "express";
 import subscriptionService from "../services/business-subscription-service";
-import orderService from "../services/order-service";
 
 class SubscriptionController {
   /**
@@ -12,9 +11,20 @@ class SubscriptionController {
     return res.send(subscriptions);
   };
 
-  updateSubscription = function(req: Request, res: Response) {};
+  createSubscription = async function(req: Request, res: Response) {
+    const updated = await subscriptionService.createSubscription(req.body);
+    return res.send(updated);
+  };
 
-  createOrderFromSubscription = function(req: Request, res: Response) {};
+  updateSubscription = async function(req: Request, res: Response) {
+    const updated = await subscriptionService.updateSubscription(req.body);
+    return res.send(updated);
+  };
+
+  createOrderFromSubscription = async function(req: Request, res: Response) {
+    const created = await subscriptionService.createSubscription(req.body);
+    return res.send(created);
+  };
 }
 
 export default new SubscriptionController();
