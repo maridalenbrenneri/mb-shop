@@ -4,6 +4,7 @@ import logger from "../utils/logger";
 import wooService from "./woo-service";
 import { GiftSubscriptionValidator } from "../validators/gift-subscription-validator";
 import moment = require("moment");
+import { Op } from "sequelize";
 
 class GiftSubscriptionService {
   getGiftSubscription(giftSubscriptionId: number, res: Response) {
@@ -27,7 +28,10 @@ class GiftSubscriptionService {
 
   async getGiftSubscriptions() {
     let self = this;
-    let filter = {};
+
+    let filter = {
+      [Op.not]: [{ status: "cancelled" }]
+    };
 
     return await GiftSubscriptionModel.getGiftSubscriptions(filter).then(
       giftSubscriptions => {
