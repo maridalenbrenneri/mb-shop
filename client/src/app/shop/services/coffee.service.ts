@@ -35,7 +35,6 @@ export class CoffeeService {
   }
 
   getCoffees(): Observable<Coffee[]> {
-    console.log("getting coffees");
     return this.http.get<Coffee[]>(`${environment.mbApiBaseUrl}coffees`).pipe(
       map(coffees => {
         this.coffees = coffees;
