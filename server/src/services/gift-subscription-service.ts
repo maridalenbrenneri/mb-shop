@@ -108,12 +108,13 @@ class GiftSubscriptionService {
     );
     const wooSubscriptions = await wooService.getActiveGiftSubscriptions();
 
-    for (const wooSubscription of wooSubscriptions) {
+    for (let i = 0; i < wooSubscriptions.length; i++) {
       let sub = giftSubscriptions.find(
-        (s: { wooOrderId: any }) => s.wooOrderId == wooSubscription.wooOrderId
+        (s: { wooOrderId: any }) =>
+          s.wooOrderId === wooSubscriptions[i].wooOrderId
       );
       if (!sub) {
-        await GiftSubscriptionModel.createGiftSubscription(wooSubscription);
+        await GiftSubscriptionModel.createGiftSubscription(wooSubscriptions[i]);
         importedCount++;
       }
     }

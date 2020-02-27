@@ -127,11 +127,14 @@ export class SubscriptionsComponent implements OnInit {
 }
 
 export interface EditSubscriptionData {
+  id: number;
   frequence: number;
   quantityKg: number;
   status: string;
   note: string;
   customerName: string;
+  frequences: [];
+  statuses: [];
 }
 
 @Component({
