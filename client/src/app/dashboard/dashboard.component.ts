@@ -171,6 +171,10 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  getTotalKgs() {
+    return Math.round(this.deliveryDays[0].quantities.totalWeight);
+  }
+
   resolveDeliveryTypeString(type: string) {
     if (type === "monthly") return "Stor-abo";
     if (type === "fortnightly") return "Lill-abo";

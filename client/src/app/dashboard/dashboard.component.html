@@ -29,7 +29,7 @@
         <h2>
           Neste levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
           {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
-          {{ deliveryDays[0].quantities.totalWeight }}kg
+          {{ getTotalKgs() }}kg
         </h2>
 
         <div
@@ -49,7 +49,7 @@
         <div *ngIf="deliveryDays[0].type != 'normal'">
           <div *ngIf="hasNextDeliveryDayCoffeesSet()">
             <small>
-              Viser fordeling av abos og aktive backoffice-bestillinger. P.t er
+              Viser oversikt av abos og aktive backoffice-bestillinger. P.t er
               enkeltorders i Woo IKKE inkludert og det er kun abo-levering som
               vises.
             </small>
