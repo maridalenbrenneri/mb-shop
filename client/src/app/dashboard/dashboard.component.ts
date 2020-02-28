@@ -120,6 +120,7 @@ export class DashboardComponent implements OnInit {
   resolveCoffee(day: any, coffeeField: string) {
     if (!day[coffeeField]) {
       // TODO: do something smart...
+      console.log("WARNING - coffe is not set on delivery day");
     }
 
     const mbOrders250 = day.quantities.coffeeItems._250s.find(i => {
@@ -135,13 +136,9 @@ export class DashboardComponent implements OnInit {
     }) || { quantity: 0 };
 
     const mbOrdersTotalWeight =
-      mbOrders250.quantity > 0
-        ? mbOrders250.quantity * 250
-        : 0 + mbOrders500.quantity > 0
-        ? mbOrders500.quantity * 500
-        : 0 + mbOrders1200.quantity > 0
-        ? mbOrders1200.quantity * 1200
-        : 0;
+      (mbOrders250.quantity > 0 ? mbOrders250.quantity * 250 : 0) +
+      (mbOrders500.quantity > 0 ? mbOrders500.quantity * 500 : 0) +
+      (mbOrders1200.quantity > 0 ? mbOrders1200.quantity * 1200 : 0);
 
     if (day.type === "normal") {
       return {
@@ -162,13 +159,9 @@ export class DashboardComponent implements OnInit {
     const aggregated250 = abo250count + mbOrders250.quantity;
 
     const totalWeight =
-      aggregated250 > 0
-        ? aggregated250 * 250
-        : 0 + mbOrders500.quantity > 0
-        ? mbOrders500.quantity * 500
-        : 0 + mbOrders1200.quantity > 0
-        ? mbOrders1200.quantity * 1200
-        : 0;
+      (aggregated250 > 0 ? aggregated250 * 250 : 0) +
+      (mbOrders500.quantity > 0 ? mbOrders500.quantity * 500 : 0) +
+      (mbOrders1200.quantity > 0 ? mbOrders1200.quantity * 1200 : 0);
 
     return {
       count250: aggregated250,
