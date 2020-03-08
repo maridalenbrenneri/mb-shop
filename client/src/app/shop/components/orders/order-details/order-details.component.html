@@ -56,24 +56,21 @@
         <td>
           <app-amount-field [amount]="order.freight"></app-amount-field>
         </td>
-        <td>25%</td>
+        <td>15%</td>
         <td colspan="2">
           <app-amount-field [amount]="order.freight"></app-amount-field>
         </td>
       </tr>
-      <tr>
-        <td colspan="7"></td>
-      </tr>
-      <tr>
+      <tr class="distance">
+        <td>Moms 15%</td>
         <td colspan="4"></td>
-        <td>15%</td>
         <td>
           <strong>
             <app-amount-field [amount]="getTotalVatCoffee"></app-amount-field>
           </strong>
         </td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td colspan="4"></td>
         <td>25%</td>
         <td>
@@ -81,24 +78,24 @@
             <app-amount-field [amount]="getTotalVatStandard"></app-amount-field>
           </strong>
         </td>
-      </tr>
+      </tr> -->
       <tr>
-        <td colspan="5"></td>
+        <td>Total eks MVA</td>
+        <td colspan="4"></td>
         <td>
           <strong>
-            <app-amount-field [amount]="getTotalPrice"></app-amount-field> Eks
-            MVA
+            <app-amount-field [amount]="getTotalPrice"></app-amount-field>
           </strong>
         </td>
       </tr>
       <tr>
-        <td colspan="5"></td>
+        <td>Total inkl MVA</td>
+        <td colspan="4"></td>
         <td>
           <strong>
             <app-amount-field
               [amount]="getTotalPrice + getTotalVatCoffee + getTotalVatStandard"
             ></app-amount-field>
-            Inkl MVA
           </strong>
         </td>
       </tr>

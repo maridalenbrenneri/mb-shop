@@ -72,10 +72,7 @@ export class OrderDetailsComponent implements OnInit {
 
   private calculateTotalVat(vatGroup: string) {
     if (vatGroup != "coffee") {
-      // return freight, if any. TODO: handle stash (when available)
-      return this.order.freight > 0
-        ? this.order.freight * VatRates.standard
-        : 0;
+      return 0; // only coffee supported for now;
     }
 
     if (!this.order.coffeeItems) return 0;
@@ -84,6 +81,8 @@ export class OrderDetailsComponent implements OnInit {
     this.order.coffeeItems.forEach(i => {
       total += i.price * i.quantity * VatRates.coffee;
     });
+
+    total += this.order.freight || 0;
 
     return total;
   }

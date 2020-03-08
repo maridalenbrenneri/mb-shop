@@ -1,5 +1,20 @@
 .table-order-details {
-    tr {
-        background: transparent !important;
+  h5 {
+    margin-top: 1rem;
+  }
+
+  tr {
+    background: transparent !important;
+
+    &.distance {
+      border-top: 2px solid darkgray;
     }
+
+    td {
+      padding: 0.5rem;
+      button {
+        line-height: 22px;
+      }
+    }
+  }
 }
