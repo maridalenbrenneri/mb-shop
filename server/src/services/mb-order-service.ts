@@ -73,29 +73,6 @@ class MbOrderService {
       });
   }
 
-  addOrderNote(mbOrderNote: any, res: any): any {
-    let self = this;
-
-    // MbOrderValidator.validateMbOrderNote(mbOrderNote);
-
-    return MbOrderModel.getMbOrder(mbOrderNote.mbOrderId)
-      .then(mbOrder => {
-        let clientMbOrder = this.mapToClientModel(mbOrder);
-
-        clientMbOrder.notes.push(mbOrderNote);
-
-        return MbOrderModel.addMbOrderNote(
-          mbOrder.id,
-          JSON.stringify(clientMbOrder.notes)
-        ).then(updatedMbOrder => {
-          return res.send(self.mapToClientModel(updatedMbOrder));
-        });
-      })
-      .catch(function(err) {
-        self.handleError(err, res);
-      });
-  }
-
   handleError(err: any, res: Response) {
     if (err instanceof ValidationError) {
       return res.status(422).send({ validationError: err.message });
@@ -116,7 +93,7 @@ class MbOrderService {
       customer: JSON.stringify(mbOrder.customer),
       coffeeItems: JSON.stringify(mbOrder.coffeeItems),
       // stashItems: JSON.stringify(mbOrder.stashItems),
-      notes: JSON.stringify(mbOrder.notes || [])
+      notes: mbOrder.notes
     };
   };
 
@@ -128,10 +105,7 @@ class MbOrderService {
       status: mbOrder.status,
       customer: JSON.parse(mbOrder.customer),
       coffeeItems: JSON.parse(mbOrder.coffeeItems),
-      notes: JSON.parse(mbOrder.notes),
-      customerNotes: mbOrder.customerNotes
-        ? JSON.parse(mbOrder.customerNotes)
-        : []
+      notes: mbOrder.notes
       //subscriptionParentMbOrderId: mbOrder.subscriptionParentMbOrderId, // if set, mbOrder is a subscription renewal (refers to another id)
       //subscriptionData: JSON.parse(mbOrder.subscriptionData) // if set, mbOrder is a subscription parent
     };

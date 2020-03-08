@@ -37,14 +37,6 @@ export default class MbOrderModel extends Model {
       });
     });
   };
-
-  public static addMbOrderNote = function(orderId: number, orderNotes: string) {
-    return MbOrderModel.findByPk(orderId).then(order => {
-      return order.update({
-        notes: orderNotes
-      });
-    });
-  };
 }
 
 MbOrderModel.init(

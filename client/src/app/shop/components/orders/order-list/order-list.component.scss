@@ -1,7 +1,17 @@
 table {
-    width: 100%;
+  width: 100%;
 
-    tr.clickable {
-        cursor: pointer;
+  tr.clickable {
+    cursor: pointer;
+  }
+
+  .no-border {
+    td {
+      border: none;
     }
+  }
+}
+
+button.open-order-btn {
+  margin-left: 1rem;
 }

@@ -56,20 +56,6 @@ class OrderController_Old {
   }
 
   /**
-   * POST /orders/:id/notes
-   */
-  addOrderNote(req: Request, res: Response, next: any) {
-    return orderService.addOrderNote(req.body, res);
-  }
-
-  /**
-   * POST /orders/:id/customernotes
-   */
-  addCustomerOrderNote(req: Request, res: Response, next: any) {
-    return orderService.addCustomerOrderNote(req.body, res);
-  }
-
-  /**
    * POST /orders/:id/invoice
    */
   createInvoice = function(req: Request, res: Response) {

@@ -47,7 +47,7 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  openEditProductDialog(order: Order): void {
+  openEditOrderDialog(order: Order): void {
     const self = this;
 
     const dialogRef = this.dialog.open(OrderEditComponent, {
@@ -138,12 +138,6 @@ export class OrdersComponent implements OnInit {
       this.loadOrders();
     });
   }
-
-  // onAddedNote(note: OrderNote) {
-  //   this.orderService.addOrderNote(note).subscribe(() => {
-  //     this.loadOrders();
-  //   });
-  // }
 
   onCreatedInvoice(order: Order) {
     this.orderService.createInvoice(order).subscribe(() => {

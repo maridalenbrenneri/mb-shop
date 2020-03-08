@@ -106,8 +106,9 @@
           <div class="form-group row">
             <div class="col-12">
               <button
+                mat-stroked-button
                 type="submit"
-                class="btn btn-primary float-right"
+                class="float-right"
                 [disabled]="!coffeeForm.valid"
               >
                 Legg til kaffe
@@ -116,101 +117,25 @@
           </div>
         </form>
       </div>
+    </div>
 
-      <!-- <div class="col-12 col-lg-4">
-        <form #stashForm="ngForm" (ngSubmit)="addStash()">
+    <hr />
+
+    <div class="row">
+      <div class="col-12">
+        <form>
           <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Stash</label>
-            <div class="col-sm-10">
-              <input
-                type="text"
-                required
-                class="form-control"
-                name="stashName"
-                [(ngModel)]="stashOrderItem.productVariation.name"
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Pris</label>
-            <div class="col-sm-10">
-              <input
-                type="number"
-                min="1"
-                max="99999"
-                required
-                class="form-control"
-                name="stashPrice"
-                [(ngModel)]="stashOrderItem.productVariation.price"
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label"
-              >Vekt (g)</label
-            >
-            <div class="col-sm-10">
-              <input
-                type="number"
-                min="100"
-                max="99999"
-                required
-                class="form-control"
-                name="stashWeight"
-                [(ngModel)]="stashOrderItem.productVariation.weight"
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Antall</label>
-            <div class="col-sm-10">
-              <input
-                type="number"
-                min="1"
-                max="999"
-                required
-                class="form-control"
-                name="stashQuantity"
-                [(ngModel)]="stashOrderItem.quantity"
-              />
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <div class="col-12">
-               <button class="btn btn-primary float-right" [disabled]="!stashForm.valid">Legg til stash</button>
-            </div>
-          </div>
-        </form>
-      </div> -->
-
-      <div class="col-12 col-lg-4">
-        <!-- <form #addNoteForm="ngForm" (ngSubmit)="addNote()">
-          <div class=" form-group row">
-            <label for="customer" class="col-sm-2 col-form-label">Notat</label>
-            <div class="col-sm-10">
+            <label for="note" class="col-2 col-form-label">Notat</label>
+            <div class="col-10">
               <textarea
                 style="width:100%"
+                rows="3"
                 name="note"
-                [(ngModel)]="note.note"
+                [(ngModel)]="order.notes"
               ></textarea>
             </div>
           </div>
-
-          <div class="form-group row">
-            <div class="col-12">
-              <button
-                class="btn btn-primary float-right"
-                [disabled]="!isOrderValid"
-              >
-                Legg til notat
-              </button>
-            </div>
-          </div>
-        </form> -->
+        </form>
       </div>
     </div>
 
@@ -224,10 +149,14 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button (click)="onNoClick()">Avbryt</button>
-    <button mat-button [mat-dialog-close]="data" [disabled]="!isOrderValid">
-      <span *ngIf="isEditMode">Oppdater bestilling</span>
-      <span *ngIf="!isEditMode">Lag bestilling</span>
+    <button mat-stroked-button (click)="onNoClick()">Avbryt</button>
+    <button
+      mat-stroked-button
+      [mat-dialog-close]="data"
+      [disabled]="!isOrderValid"
+    >
+      <span *ngIf="isEditMode">Lagre</span>
+      <span *ngIf="!isEditMode">Opprett</span>
     </button>
   </mat-dialog-actions>
 </div>

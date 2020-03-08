@@ -176,11 +176,6 @@ app.post(
   orderController.processOrder
 );
 app.post(
-  "/api/orders/:id/notes",
-  isUserInSuperuser,
-  orderController.addOrderNote
-);
-app.post(
   "/api/orders/:id/invoice",
   isUserInSuperuser,
   orderController.createInvoice

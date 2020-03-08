@@ -1,10 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import {
-  Order,
-  OrderNote,
-  CoffeeItem,
-  StashItem
-} from "../../../models/order.model";
+import { Order, CoffeeItem, StashItem } from "../../../models/order.model";
 import { Customer } from "../../../models/customer.model";
 import { ProductVariation } from "../../../models/product.model";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
@@ -30,7 +25,6 @@ export class OrderEditComponent implements OnInit {
   orderItem: CoffeeItem;
   stashOrderItem: StashItem;
   order: Order;
-  note: OrderNote;
   isSubscriptionParent: boolean;
   isEditMode: Boolean; // edit or new order
 
@@ -43,7 +37,6 @@ export class OrderEditComponent implements OnInit {
     this.initOrder();
     this.initCoffeeItem();
     this.initStashOrderItem();
-    this.note = new OrderNote();
   }
 
   onNoClick(): void {
@@ -56,7 +49,7 @@ export class OrderEditComponent implements OnInit {
       this.order = this.data.order;
       this.order.customer = this.data.customers[0];
       this.order.coffeeItems = new Array<CoffeeItem>();
-      this.order.notes = new Array<OrderNote>();
+      this.order.notes = "";
       this.isEditMode = false;
     } else {
       this.order = this.data.order;
@@ -110,16 +103,6 @@ export class OrderEditComponent implements OnInit {
     if (index >= 0) {
       this.order.coffeeItems.splice(index, 1);
     }
-  }
-
-  addNote() {
-    const newNote = new OrderNote();
-    newNote.date = new Date();
-    newNote.note = this.note.note;
-
-    this.order.notes.push(newNote);
-
-    this.note = new OrderNote();
   }
 
   onProductVariationChange(variationId: number) {

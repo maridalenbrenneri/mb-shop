@@ -1,5 +1,5 @@
 import { Component, Input, EventEmitter, Output } from "@angular/core";
-import { Order, OrderNote } from "src/app/shop/models/order.model";
+import { Order } from "src/app/shop/models/order.model";
 import {
   animate,
   state,
@@ -62,7 +62,6 @@ export class OrderListComponent {
   @Output() completedAndShipped = new EventEmitter<Order>();
   @Output() canceled = new EventEmitter<number>();
   @Output() processed = new EventEmitter<number>();
-  @Output() addedNote = new EventEmitter<OrderNote>();
   @Output() createdInvoice = new EventEmitter<Order>();
   @Output() updated = new EventEmitter<Order>();
 
@@ -166,7 +165,7 @@ export class OrderListComponent {
     return data.customer.id.toString() === filter;
   }
 
-  openEditProductDialog(order: Order): void {
+  openEditOrderDialog(order: Order): void {
     const self = this;
 
     if (!order) {

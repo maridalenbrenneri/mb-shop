@@ -8,7 +8,7 @@ export class Order {
   customer: Customer;
   coffeeItems: Array<CoffeeItem>;
   stashItems: Array<StashItem>;
-  notes: Array<OrderNote>;
+  notes: string;
 }
 
 export class CoffeeItem {
@@ -30,11 +30,4 @@ export class SubscriptionProductOptions {
   quantity: number;
   firstDelivery: Date;
   immediateDelivery: boolean;
-}
-
-export class OrderNote {
-  orderId: number;
-  date: Date;
-  note: string;
-  user: string;
 }
