@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 import UserModel from "./models/user-model";
-import OrderModel from "./models/order-model";
 import CustomerModel from "./models/customer-model";
 import GiftSubscriptionModel from "./models/gift-subscription-model";
 import ProductModel from "./models/product-model";
@@ -18,9 +17,6 @@ const createTables = () => {
 
   // UserModel.sync({ force: false, alter: true }).then(() =>
   //   console.log("Done syncing UserModel")
-  // );
-  // OrderModel.sync({ force: false, alter: true }).then(() =>
-  //   console.log("Done syncing OrderModel")
   // );
   // CustomerModel.sync({ force: false, alter: true }).then(() =>
   //   console.log("Done syncing CustomerModel")
