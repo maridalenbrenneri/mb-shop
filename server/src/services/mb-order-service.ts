@@ -92,7 +92,7 @@ class MbOrderService {
       externalCustomerNumber: mbOrder.customer.customerNumber,
       customer: JSON.stringify(mbOrder.customer),
       coffeeItems: JSON.stringify(mbOrder.coffeeItems),
-      // stashItems: JSON.stringify(mbOrder.stashItems),
+      freight: mbOrder.freight,
       notes: mbOrder.notes
     };
   };
@@ -105,9 +105,8 @@ class MbOrderService {
       status: mbOrder.status,
       customer: JSON.parse(mbOrder.customer),
       coffeeItems: JSON.parse(mbOrder.coffeeItems),
+      freight: mbOrder.freight,
       notes: mbOrder.notes
-      //subscriptionParentMbOrderId: mbOrder.subscriptionParentMbOrderId, // if set, mbOrder is a subscription renewal (refers to another id)
-      //subscriptionData: JSON.parse(mbOrder.subscriptionData) // if set, mbOrder is a subscription parent
     };
   };
 }

@@ -1,4 +1,12 @@
-import { Sequelize, Model, STRING, BOOLEAN, TEXT, DATE } from "sequelize";
+import {
+  Sequelize,
+  Model,
+  STRING,
+  BOOLEAN,
+  TEXT,
+  DATE,
+  INTEGER
+} from "sequelize";
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "mysql",
@@ -25,8 +33,8 @@ export default class MbOrderModel extends Model {
   };
 
   public static updateMbOrder = function(orderId, order) {
-    return MbOrderModel.findByPk(orderId).then(dbMbOrder => {
-      return dbMbOrder.update(order);
+    return MbOrderModel.findByPk(orderId).then(dbOrder => {
+      return dbOrder.update(order);
     });
   };
 
@@ -49,6 +57,7 @@ MbOrderModel.init(
     coffeeItems: { type: TEXT },
     stashItems: { type: TEXT },
     notes: { type: TEXT },
+    freight: { type: INTEGER, allowNull: false, defaultValue: 0 },
     isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
   },
   {

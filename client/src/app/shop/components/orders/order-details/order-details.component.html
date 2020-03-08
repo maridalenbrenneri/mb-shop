@@ -39,9 +39,26 @@
         </td>
 
         <td>
-          <button mat-button (click)="removeItem(item)" title="Fjern linje">
-            <i class="material-icons">remove_circle_outline</i>
+          <button
+            mat-stroked-button
+            (click)="removeItem(item)"
+            title="Fjern linje"
+          >
+            <i class="material-icons">delete_forever</i>
           </button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>Frakt</span>
+        </td>
+        <td>1</td>
+        <td>
+          <app-amount-field [amount]="order.freight"></app-amount-field>
+        </td>
+        <td>25%</td>
+        <td colspan="2">
+          <app-amount-field [amount]="order.freight"></app-amount-field>
         </td>
       </tr>
       <tr>
@@ -85,18 +102,13 @@
           </strong>
         </td>
       </tr>
-      <!-- <tr>
-        <td colspan="6">
-          Bestillingsdato: {{order.orderDate}} Leveringsdato: {{order.deliveryDate}}
-        </td>
-      </tr> -->
       <tr>
         <td colspan="2">
           <h5>Adresse</h5>
           <app-address [address]="order.customer?.address"></app-address>
         </td>
         <td colspan="4">
-          <h5>Notat (internt)</h5>
+          <h5>Notat</h5>
           <div>{{ order.notes }}</div>
         </td>
       </tr>

@@ -123,15 +123,40 @@
 
     <div class="row">
       <div class="col-12">
+        <form #freightForm="ngForm">
+          <div class="form-group row">
+            <label for="freight" class="col-2 col-form-label">Frakt</label>
+            <div class="col-10">
+              <input
+                type="number"
+                min="0"
+                max="10000"
+                style="width:100%"
+                name="freight"
+                class="form-control"
+                required
+                [(ngModel)]="order.freight"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-12">
         <form>
           <div class="form-group row">
             <label for="note" class="col-2 col-form-label">Notat</label>
             <div class="col-10">
               <textarea
                 style="width:100%"
-                rows="3"
+                rows="2"
                 name="note"
                 [(ngModel)]="order.notes"
+                class="form-control"
               ></textarea>
             </div>
           </div>

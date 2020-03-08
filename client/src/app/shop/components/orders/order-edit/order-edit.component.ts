@@ -50,6 +50,7 @@ export class OrderEditComponent implements OnInit {
       this.order.customer = this.data.customers[0];
       this.order.coffeeItems = new Array<CoffeeItem>();
       this.order.notes = "";
+      this.order.freight = 0;
       this.isEditMode = false;
     } else {
       this.order = this.data.order;

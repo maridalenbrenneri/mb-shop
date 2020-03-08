@@ -9,6 +9,7 @@ export class Order {
   coffeeItems: Array<CoffeeItem>;
   stashItems: Array<StashItem>;
   notes: string;
+  freight: number;
 }
 
 export class CoffeeItem {
