@@ -305,7 +305,13 @@
         <mat-card-title>#cargonizer</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <pre>{{ getCargonizerProfile() }}</pre>
+        <p>
+          Name: <strong>{{ getCargonizerProfile().name }}</strong> <br />
+          Limit: <strong>{{ getCargonizerProfile().item_limit }}</strong>
+          <br />
+          Counter: <strong>{{ getCargonizerProfile().item_counter }}</strong>
+          <br />
+        </p>
       </mat-card-content>
     </mat-card>
   </div>

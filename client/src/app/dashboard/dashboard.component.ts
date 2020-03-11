@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(stats => {
         self.stats = stats.data;
         self.statsLastUpdated = stats.lastUpdated;
+        console.log("Cargonizer profile", stats.data.cargonizerProfile);
       });
 
     self.http
@@ -172,10 +173,10 @@ export class DashboardComponent implements OnInit {
   }
 
   getCargonizerProfile() {
-    if (!this.stats.cargonizerProfile) return "N/A";
-    return JSON.stringify(
-      this.stats.cargonizerProfile.user.managerships.managership.sender.plan
-    );
+    if (!this.stats.cargonizerProfile) return {};
+
+    return this.stats.cargonizerProfile.user.managerships.managership.sender
+      .plan;
   }
 
   getTotalKgs() {
