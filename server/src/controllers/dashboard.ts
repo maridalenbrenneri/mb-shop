@@ -2,10 +2,16 @@ import { Response, Request } from "express";
 import logger from "../utils/logger";
 import aboaboStatsService from "../services/aboabo-stats-service";
 import dashboardService from "../services/dashboard-service";
+import { CargonizerService } from "../services/cargonizer-service";
 
 class DashboardController {
   getAboaboStats = async function(_req: Request, res: Response) {
     const stats = await aboaboStatsService.getStats();
+
+    // TODO: move to own endpoint
+    const cargonizer = new CargonizerService();
+    stats.data.cargonizerProfile = await cargonizer.fetchProfile();
+
     res.send(stats);
   };
 

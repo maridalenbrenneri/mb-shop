@@ -171,6 +171,13 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  getCargonizerProfile() {
+    if (!this.stats.cargonizerProfile) return "N/A";
+    return JSON.stringify(
+      this.stats.cargonizerProfile.user.managerships.managership.sender.plan
+    );
+  }
+
   getTotalKgs() {
     return Math.round(this.deliveryDays[0].quantities.totalWeight);
   }

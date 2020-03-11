@@ -21,14 +21,15 @@ export class Consignment {
 }
 
 export class CargonizerService {
-  private prod_consignment_url =
-    "https://cargonizer.no/consignments.xml";
+  private prod_consignment_url = "https://cargonizer.no/consignments.xml";
   private prod_service_partners_url =
     "https://cargonizer.no/service_partners.xml";
   private sandbox_consignment_url =
     "https://sandbox.cargonizer.no/consignments.xml";
   private sandbox_service_partners_url =
     "https://cargonizer.no/service_partners.xml"; // use prod, sandbox doesn't work (read only anyway)
+
+  private prod_profile_url = "https://cargonizer.no/profile.xml";
 
   private printer_normal_id = 1057;
   private printer_rfid_id = 1698;
@@ -52,7 +53,7 @@ export class CargonizerService {
     this.service_partners_url = useSandbox
       ? this.sandbox_service_partners_url
       : this.prod_service_partners_url;
-    this.print_url = 'https://cargonizer.no/consignments/label_direct';
+    this.print_url = "https://cargonizer.no/consignments/label_direct";
 
     this.api_key = useSandbox
       ? process.env.CARGONIZER_SANDBOX_API_KEY
@@ -70,6 +71,39 @@ export class CargonizerService {
     return await this.createConsignment(xml);
   }
 
+  public async fetchProfile() {
+    const parser = require("fast-xml-parser");
+
+    const url = `${this.prod_profile_url}`;
+
+    const options = {
+      url: url,
+      method: "GET",
+      headers: {
+        "X-Cargonizer-Key": this.api_key,
+        "X-Cargonizer-Sender": this.sender_id
+      }
+    };
+
+    return new Promise<any>(function(resolve, reject) {
+      const request = require("request");
+
+      request(options, function(error: any, response: any) {
+        if (error) {
+          return reject(error);
+        }
+
+        if (response.statusCode != 200) {
+          return reject(response.body);
+        }
+
+        const profile = parser.parse(response.body);
+
+        return resolve(profile);
+      });
+    });
+  }
+
   private async createConsignment(xml: string) {
     const self = this;
     let options = {
@@ -83,10 +117,10 @@ export class CargonizerService {
       body: xml
     };
 
-    return new Promise<any>(function (resolve, reject) {
+    return new Promise<any>(function(resolve, reject) {
       const request = require("request");
 
-      request(options, function (error: any, response: any) {
+      request(options, function(error: any, response: any) {
         if (error) {
           return reject(error);
         }
@@ -96,7 +130,7 @@ export class CargonizerService {
           return reject(response.body);
         }
 
-        require("xml2js").parseString(response.body, function (
+        require("xml2js").parseString(response.body, function(
           parseError: any,
           result: any
         ) {
@@ -104,13 +138,17 @@ export class CargonizerService {
             return reject(parseError);
           }
 
-          if (result.consignments &&
+          if (
+            result.consignments &&
             result.consignments.consignment &&
-            result.consignments.consignment.length > 0) {
+            result.consignments.consignment.length > 0
+          ) {
             const id = result.consignments.consignment[0].id[0]._;
 
             // todo: product is not correctly retrieved
-            const useRfidPrinter = result.consignments.consignment[0].product[0].identifier[0] === self.product_private;
+            const useRfidPrinter =
+              result.consignments.consignment[0].product[0].identifier[0] ===
+              self.product_private;
 
             self.printLabel(useRfidPrinter, id);
           }
@@ -129,14 +167,14 @@ export class CargonizerService {
       "&postcode=" +
       $postcode;
 
-    return new Promise<any>(function (resolve, reject) {
+    return new Promise<any>(function(resolve, reject) {
       const request = require("request");
-      request(url, function (error: any, response: { body: any }) {
+      request(url, function(error: any, response: { body: any }) {
         if (error) {
           return reject(error);
         }
 
-        require("xml2js").parseString(response.body, function (
+        require("xml2js").parseString(response.body, function(
           parseError: any,
           result: any
         ) {
@@ -236,7 +274,9 @@ export class CargonizerService {
   }
 
   private printLabel(useRfidPrinter: boolean, consignmentId: number) {
-    const printerId = useRfidPrinter ? this.printer_rfid_id : this.printer_normal_id;
+    const printerId = useRfidPrinter
+      ? this.printer_rfid_id
+      : this.printer_normal_id;
 
     let url = `${this.print_url}?printer_id=${printerId}&consignment_ids[]=${consignmentId}`;
 
@@ -245,14 +285,14 @@ export class CargonizerService {
       method: "POST",
       headers: {
         "X-Cargonizer-Key": this.api_key,
-        "X-Cargonizer-Sender": this.sender_id,
-      },
+        "X-Cargonizer-Sender": this.sender_id
+      }
     };
 
-    return new Promise<any>(function (resolve, reject) {
+    return new Promise<any>(function(resolve, reject) {
       const request = require("request");
 
-      request(options, function (error: any, response: any) {
+      request(options, function(error: any, response: any) {
         if (error) {
           return reject(error);
         }
@@ -261,13 +301,12 @@ export class CargonizerService {
           return reject(response.body);
         }
 
-        return resolve('OK');
+        return resolve("OK");
       });
     });
   }
 
   private ShippingTypeToProduct(shippingType: number): string {
-
     if (process.env.CARGONIZER_USE_SANDBOX) {
       return "bring_pa_doren";
     }

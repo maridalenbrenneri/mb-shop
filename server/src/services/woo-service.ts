@@ -1,5 +1,4 @@
 import * as moment from "moment";
-import * as https from "https";
 import { SubscriptionFrequence } from "../constants";
 import SubscriptionDateHelper from "./subscription-date-helper";
 
