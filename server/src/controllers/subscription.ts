@@ -22,8 +22,15 @@ class SubscriptionController {
   };
 
   createOrderFromSubscription = async function(req: Request, res: Response) {
-    const created = await subscriptionService.createSubscription(req.body);
-    return res.send(created);
+    try {
+      const order = await subscriptionService.createOrderForSubscription(
+        req.body.subscription,
+        req.body.customer
+      );
+      return res.send(order);
+    } catch (e) {
+      return res.status(400).send(`${e.message}`);
+    }
   };
 }
 

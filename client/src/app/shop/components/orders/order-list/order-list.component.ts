@@ -10,8 +10,8 @@ import {
 import { MatDialog } from "@angular/material";
 import { Customer } from "src/app/shop/models/customer.model";
 import { TableDataSource } from "src/app/shop/core/table-data-source";
-import { OrderStatus, CoffeeSizes } from "src/app/constants";
-import { Product } from "../../..//models/product.model";
+import { OrderStatus } from "src/app/constants";
+import { CoffeeSizes } from "../../../../../../../shared/constants";
 import { OrderEditComponent } from "../order-edit/order-edit.component";
 import { Utils } from "../../../../utils";
 import { resolveCoffeeVariation } from "../coffee-variations";

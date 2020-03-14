@@ -154,6 +154,11 @@ app.post(
   isUserInSuperuser,
   subscriptionController.createSubscription
 );
+app.post(
+  "/api/subscriptions/createorder",
+  isUserInSuperuser,
+  subscriptionController.createOrderFromSubscription
+);
 
 // Orders
 app.get("/api/orders", isUserInSuperuser, orderController.getOrders);

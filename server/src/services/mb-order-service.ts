@@ -1,87 +1,37 @@
-import { Response } from "express";
 import MbOrderModel from "../database/models/mb-order-model";
-// import { MbOrderValidator } from "../validators/mb-order-validator";
-import { ValidationError } from "../models/validation-error";
 import { OrderStatus } from "../constants";
-import logger from "../utils/logger";
 
 class MbOrderService {
-  createOrder(mbOrder: any, res: Response) {
-    let self = this;
-    // MbOrderValidator.validate(mbOrder);
-
+  async createOrder(mbOrder: any) {
     mbOrder.status = OrderStatus.processing;
-
-    return MbOrderModel.createMbOrder(self.mapToDbModel(mbOrder))
-      .then(dbMbOrder => {
-        let clientMbOrder = self.mapToClientModel(dbMbOrder);
-
-        return res.send(clientMbOrder);
-      })
-      .catch(function(err) {
-        self.handleError(err, res);
-      });
+    const order = await MbOrderModel.createMbOrder(this.mapToDbModel(mbOrder));
+    return this.mapToClientModel(order);
   }
 
-  updateOrder(mbOrder: any, res: Response) {
-    let self = this;
-    // MbOrderValidator.validate(mbOrder);
-
-    const mbOrderToUpdate = self.mapToDbModel(mbOrder);
-    return MbOrderModel.updateMbOrder(mbOrder.id, mbOrderToUpdate)
-      .then(updatedMbOrder => {
-        return res.send(self.mapToClientModel(updatedMbOrder));
-      })
-      .catch(function(err) {
-        self.handleError(err, res);
-      });
+  async updateOrder(mbOrder: any) {
+    const mbOrderToUpdate = this.mapToDbModel(mbOrder);
+    const order = MbOrderModel.updateMbOrder(mbOrder.id, mbOrderToUpdate);
+    return this.mapToClientModel(order);
   }
 
-  getOrder(mbOrderId: number, res: Response) {
-    let self = this;
-    return MbOrderModel.getMbOrder(mbOrderId).then(dbMbOrder => {
-      if (!dbMbOrder) {
-        return res
-          .status(404)
-          .send("Order was not found, order id: " + mbOrderId);
-      }
-      return res.send(self.mapToClientModel(dbMbOrder));
-    });
+  async getOrder(mbOrderId: number) {
+    const order = await MbOrderModel.getMbOrder(mbOrderId);
+    return this.mapToClientModel(order);
   }
 
   async getOrders(filter = {}) {
-    let self = this;
     const orders = await MbOrderModel.getMbOrders(filter);
-    return orders.map(mbOrder => self.mapToClientModel(mbOrder));
+    return orders.map(mbOrder => this.mapToClientModel(mbOrder));
   }
 
-  updateOrderStatus(mbOrderId: number, newStatus: string, res: Response) {
-    let self = this;
-
-    return MbOrderModel.getMbOrder(mbOrderId)
-      .then(function(mbOrder) {
-        // MbOrderValidator.validateStatus(mbOrder.status, newStatus);
-
-        return MbOrderModel.updateMbOrderStatus(mbOrderId, newStatus).then(
-          updatedMbOrder => {
-            return res.send(self.mapToClientModel(updatedMbOrder));
-          }
-        );
-      })
-      .catch(function(err) {
-        self.handleError(err, res);
-      });
-  }
-
-  handleError(err: any, res: Response) {
-    if (err instanceof ValidationError) {
-      return res.status(422).send({ validationError: err.message });
-    }
-
-    logger.error(err);
-    return res
-      .status(500)
-      .send({ error: "An error occured when updating the mbOrder: " + err });
+  async updateOrderStatus(mbOrderId: number, newStatus: string) {
+    const order = await MbOrderModel.getMbOrder(mbOrderId);
+    if (!order) return null;
+    const updatedOrder = await MbOrderModel.updateMbOrderStatus(
+      order.id,
+      newStatus
+    );
+    return this.mapToClientModel(updatedOrder);
   }
 
   mapToDbModel = function(mbOrder: any) {
@@ -93,7 +43,8 @@ class MbOrderService {
       customer: JSON.stringify(mbOrder.customer),
       coffeeItems: JSON.stringify(mbOrder.coffeeItems),
       freight: mbOrder.freight,
-      notes: mbOrder.notes
+      notes: mbOrder.notes,
+      subscriptionId: mbOrder.subscriptionId
     };
   };
 
@@ -106,7 +57,8 @@ class MbOrderService {
       customer: JSON.parse(mbOrder.customer),
       coffeeItems: JSON.parse(mbOrder.coffeeItems),
       freight: mbOrder.freight,
-      notes: mbOrder.notes
+      notes: mbOrder.notes,
+      subscriptionId: mbOrder.subscriptionId
     };
   };
 }

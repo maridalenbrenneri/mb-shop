@@ -7,11 +7,10 @@ class OrderController {
   /**
    * GET /orders/:id
    */
-  getOrder = function(req: Request, res: Response, next: any) {
-    orderService.getOrder(req.params.id, res).then(order => {
-      return res.send(order);
-    });
-  };
+  async getOrder(req: Request, res: Response) {
+    const order = await orderService.getOrder(req.params.id);
+    return res.send(order);
+  }
 
   /**
    * GET /orders
@@ -24,36 +23,41 @@ class OrderController {
   /**
    * POST /orders
    */
-  createOrder(req: Request, res: Response) {
-    return orderService.createOrder(req.body, res);
+  async createOrder(req: Request, res: Response) {
+    const order = await orderService.createOrder(req.body);
+    return res.send(order);
   }
 
   /**
    * PUT /orders/:id
    */
-  updateOrder(req: Request, res: Response) {
-    return orderService.updateOrder(req.body, res);
+  async updateOrder(req: Request, res: Response) {
+    const order = await orderService.updateOrder(req.body);
+    return res.send(order);
   }
 
   /**
    * POST /orders/:id/complete
    */
-  completeOrder(req: Request, res: Response, next: any) {
-    return orderService.updateOrderStatus(req.params.id, "completed", res);
+  completeOrder(req: Request, res: Response) {
+    const order = orderService.updateOrderStatus(req.params.id, "completed");
+    return res.send(order);
   }
 
   /**
    * POST /orders/:id/cancel
    */
-  cancelOrder(req: Request, res: Response, next: any) {
-    return orderService.updateOrderStatus(req.params.id, "canceled", res);
+  cancelOrder(req: Request, res: Response) {
+    const order = orderService.updateOrderStatus(req.params.id, "canceled");
+    return res.send(order);
   }
 
   /**
    * POST /orders/:id/process
    */
-  processOrder(req: Request, res: Response, next: any) {
-    return orderService.updateOrderStatus(req.params.id, "processing", res);
+  processOrder(req: Request, res: Response) {
+    const order = orderService.updateOrderStatus(req.params.id, "processing");
+    return res.send(order);
   }
 
   /**

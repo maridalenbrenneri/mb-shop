@@ -46,12 +46,34 @@
         </p>
         <p>
           <mat-form-field class="full-width">
-            <mat-label>Kaffe kg</mat-label>
+            <mat-label>Antall 250g</mat-label>
             <input
               matInput
               type="number"
               name="quantityElement"
-              [(ngModel)]="data.quantityKg"
+              [(ngModel)]="data.quantity250"
+            />
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>Antall 500g</mat-label>
+            <input
+              matInput
+              type="number"
+              name="quantity500Element"
+              [(ngModel)]="data.quantity500"
+            />
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="full-width">
+            <mat-label>Antall 1.2kg</mat-label>
+            <input
+              matInput
+              type="number"
+              name="quantity1200Element"
+              [(ngModel)]="data.quantity1200"
             />
           </mat-form-field>
         </p>

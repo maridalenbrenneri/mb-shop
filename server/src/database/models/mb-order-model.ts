@@ -58,6 +58,7 @@ MbOrderModel.init(
     stashItems: { type: TEXT },
     notes: { type: TEXT },
     freight: { type: INTEGER, allowNull: false, defaultValue: 0 },
+    subscriptionId: { type: INTEGER }, // set if created from subscription
     isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
   },
   {

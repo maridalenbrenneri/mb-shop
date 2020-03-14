@@ -20,6 +20,14 @@ class DeliveryDayService {
     return deliveryDays.map(p => self.mapToClientModel(p));
   };
 
+  getNextDeliveryDay = async function() {
+    let self = this;
+
+    return DeliveryDayModel.getNextDeliveryDay().then(deliveryDay => {
+      return self.mapToClientModel(deliveryDay);
+    });
+  };
+
   updateDeliveryDay = async function(deliveryDay: any) {
     let self = this;
 

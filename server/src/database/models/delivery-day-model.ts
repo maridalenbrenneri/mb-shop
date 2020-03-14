@@ -1,4 +1,13 @@
-import { Sequelize, Model, STRING, BOOLEAN, DATE, INTEGER } from "sequelize";
+import {
+  Sequelize,
+  Model,
+  STRING,
+  BOOLEAN,
+  DATE,
+  INTEGER,
+  Op
+} from "sequelize";
+import moment = require("moment");
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "mysql",
@@ -20,6 +29,23 @@ export default class DeliveryDayModel extends Model {
   public static updateDeliveryDay = function(id, deliveryDay) {
     return DeliveryDayModel.findByPk(id).then(dbDeliveryDay => {
       return dbDeliveryDay.update(deliveryDay);
+    });
+  };
+
+  public static getNextDeliveryDay = function() {
+    return DeliveryDayModel.findOne({
+      where: {
+        date: {
+          [Op.or]: {
+            [Op.gte]: moment()
+              .subtract(6, "days")
+              .toDate(),
+            [Op.lt]: moment()
+              .add(6, "days")
+              .toDate()
+          }
+        }
+      }
     });
   };
 }

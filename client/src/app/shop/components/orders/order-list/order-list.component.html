@@ -32,6 +32,7 @@
         <tr>
           <th>Id</th>
           <th>Status</th>
+          <th>Abo id</th>
           <th>Dato</th>
           <th>Artikler</th>
           <th>Kunde</th>
@@ -53,6 +54,7 @@
                 <i class="material-icons">cancel_presentation</i>
               </span>
             </td>
+            <td>{{ order.subscriptionId }}</td>
             <td>{{ order.orderDate | date: "short" }}</td>
             <td>{{ getArticlesShort(order) }}</td>
             <td>{{ order.customer.name }}</td>

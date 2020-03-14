@@ -10,6 +10,9 @@ import { Constants } from "../constants";
 import { getCoffeeVariationWeight } from "../bl";
 
 class ShippingController {
+  /*
+   * POST /api/shipping/ship-business-order
+   */
   CreateConsignmentForBusinessOrder = async function(
     req: Request,
     res: Response
@@ -46,11 +49,7 @@ class ShippingController {
 
       return res.send({ success: true });
     } catch (e) {
-      return ControllerHelper.handleError(
-        res,
-        e,
-        "Error when creating consignment in Cargonizer"
-      );
+      return res.status(400).send(`${e.message}`);
     }
   };
 

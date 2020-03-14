@@ -18,7 +18,10 @@ export default class BusinessSubscriptionModel extends Model {
     filter = filter || {};
     filter.isDeleted = false;
 
-    return BusinessSubscriptionModel.findAll({ where: filter });
+    return BusinessSubscriptionModel.findAll({
+      where: filter,
+      order: [["customerName", "asc"]]
+    });
   };
 
   public static createSubscription = function(subscription: any) {
@@ -43,9 +46,16 @@ BusinessSubscriptionModel.init(
     customerName: { type: STRING }, // From Fiken
     status: { type: STRING, allowNull: false },
     frequence: { type: INTEGER.UNSIGNED, allowNull: false },
-    quantityKg: { type: FLOAT.UNSIGNED, allowNull: false, defaultValue: 0 },
+
+    quantityKg: { type: FLOAT.UNSIGNED, allowNull: false, defaultValue: 0 }, // Obsolete
+
+    quantity250: { type: INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
+    quantity500: { type: INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
+    quantity1200: { type: INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
+
     note: { type: STRING },
     lastOrderCreated: { type: DATE },
+    lastOrderId: { type: INTEGER },
     isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
   },
   {

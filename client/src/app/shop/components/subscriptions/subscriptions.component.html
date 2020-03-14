@@ -19,11 +19,13 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>Id</td>
+          <td>Kunde</td>
+          <td>Status</td>
+          <td>Type</td>
+          <td>Kaffe</td>
+          <td>Siste order id/dato</td>
+          <td>Notat</td>
           <td></td>
           <td></td>
         </tr>
@@ -38,7 +40,11 @@
           <td>
             {{ subscription.frequence == 1 ? "Månedlig" : "Annenhver uke" }}
           </td>
-          <td>{{ subscription.quantityKg }}kg</td>
+          <td>{{ resolveQuantityString(subscription) }}</td>
+          <td>
+            {{ subscription.lastOrderId }} -
+            {{ subscription.lastOrderCreated | date: "short" }}
+          </td>
           <td>{{ subscription.note }}</td>
           <td>
             <button
@@ -46,6 +52,11 @@
               (click)="openEditSubscriptionDialog(subscription)"
             >
               Endre
+            </button>
+          </td>
+          <td>
+            <button mat-raised-button (click)="createOrder(subscription)">
+              Ny bestilling
             </button>
           </td>
         </tr>

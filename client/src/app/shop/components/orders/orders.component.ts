@@ -117,12 +117,24 @@ export class OrdersComponent implements OnInit {
   }
 
   onCompletedAndShipped(order: Order) {
-    this.orderService.completeOrder(order.id).subscribe(() => {
-      this.orderService.shipBusinessOrder(order).subscribe(() => {
-        this.toastr.success(`Order ${order.id} was completed and shipped`);
-        this.loadOrders();
-      });
-    });
+    this.orderService.completeOrder(order.id).subscribe(
+      () => {
+        this.orderService.shipBusinessOrder(order).subscribe(
+          () => {
+            this.toastr.success(`Order ${order.id} was completed and shipped`);
+            this.loadOrders();
+          },
+          e => {
+            console.error("Error", e);
+            this.toastr.error(e.error);
+          }
+        );
+      },
+      e => {
+        console.error("Error", e);
+        this.toastr.error(e.error);
+      }
+    );
   }
 
   onCanceled(orderId: number) {

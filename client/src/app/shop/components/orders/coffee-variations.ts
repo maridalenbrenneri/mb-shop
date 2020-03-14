@@ -1,5 +1,5 @@
 import { CoffeeVariation } from "../../models/coffee.model";
-import { CoffeePrizes, CoffeeSizes } from "src/app/constants";
+import { CoffeePrizes, CoffeeSizes } from "../../../../../../shared/constants";
 
 const _250: CoffeeVariation = {
   id: 1,

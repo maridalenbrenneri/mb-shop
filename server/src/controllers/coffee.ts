@@ -5,8 +5,9 @@ class CoffeeController {
   /**
    * GET /coffees/:id
    */
-  getCoffee = function(req: Request, res: Response) {
-    return coffeeService.getCoffee(req.body.id, res);
+  getCoffee = async function(req: Request, res: Response) {
+    const coffee = await coffeeService.getCoffee(req.body.id);
+    return res.send(coffee);
   };
 
   /**

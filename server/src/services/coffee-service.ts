@@ -4,23 +4,13 @@ import logger from "../utils/logger";
 // import { CoffeeValidator } from "../validators/coffee-validator";
 
 class CoffeeService {
-  getCoffee = function(coffeeId: number, res: Response) {
+  getCoffee = async function(coffeeId: number) {
     let self = this;
 
-    return CoffeeModel.getCoffee(coffeeId)
-      .then(coffee => {
-        if (!coffee) {
-          return res.status(404).send();
-        }
-
-        return res.send(self.mapToClientModel(coffee));
-      })
-      .catch(function(err) {
-        logger.error(err);
-        return res
-          .status(500)
-          .send({ error: "An error occured when getting the coffee" });
-      });
+    return await CoffeeModel.getCoffee(coffeeId).then(coffee => {
+      if (!coffee) return null;
+      return self.mapToClientModel(coffee);
+    });
   };
 
   getCoffees = async function() {
