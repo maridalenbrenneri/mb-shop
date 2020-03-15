@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
 
   resolveCoffee(day: any, coffeeField: string) {
     if (!day[coffeeField]) {
-      // TODO: do something smart...
+      // TODO: do something smart
       console.log("WARNING - coffe is not set on delivery day");
     }
 
