@@ -19,11 +19,20 @@ export default class MbOrderModel extends Model {
     return MbOrderModel.findByPk(orderId as any);
   };
 
-  public static getMbOrders = function(status: string = null) {
-    // TODO: handel status input filter (nneds to be done from client down)
-    status = status || OrderStatus.processing;
-
+  public static getMbOrders = function() {
     const filter = {
+      isDeleted: false
+    };
+
+    return MbOrderModel.findAll({
+      where: filter,
+      order: [["createdAt", "DESC"]]
+    });
+  };
+
+  public static getMbOrdersProcessing = function() {
+    const filter = {
+      status: OrderStatus.processing,
       isDeleted: false
     };
 

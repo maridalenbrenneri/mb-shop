@@ -19,7 +19,7 @@ class DashboardService {
   };
 
   getOrderStats = async () => {
-    const dbOrders = await MbOrderModel.getMbOrders();
+    const dbOrders = await MbOrderModel.getMbOrdersProcessing();
     const orders = dbOrders.map((order: MbOrderModel) =>
       mbOrderService.mapToClientModel(order)
     );
