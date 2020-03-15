@@ -77,7 +77,11 @@ import subscriptionController from "./controllers/subscription";
 // Dashboard / Stats routes
 // app.get("/api/admin/create-tables", isUserInAdmin, adminController.createTable);
 app.get("/api/aboabo/stats", dashboardController.getAboaboStats);
-app.get("/api/aboabo/import", dashboardController.importAboaboStats);
+app.get(
+  "/api/aboabo/import",
+  isUserInAdmin,
+  dashboardController.importAboaboStats
+);
 app.get("/api/stats/orders", dashboardController.getOrderStats);
 app.get("/api/stats/coffees", dashboardController.getCurrentCoffees);
 app.get("/api/stats/deliverydays", dashboardController.getNextDeliveryDays);
@@ -153,6 +157,11 @@ app.post(
   "/api/subscriptions",
   isUserInSuperuser,
   subscriptionController.createSubscription
+);
+app.post(
+  "/api/subscriptions/createorder",
+  isUserInSuperuser,
+  subscriptionController.createOrderFromSubscription
 );
 
 // Orders

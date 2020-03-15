@@ -1,18 +1,7 @@
 export class Constants {
   static readonly deliveryDay = 1; // Monday
-  static readonly subscriptionRenewalPaymentDaysBeforeDelivery = 14;
   static readonly minPasswordLength = 5;
   static readonly smallBagFreightWeight = 300;
-}
-
-export class TaxRates {
-  static readonly coffee = 0.15;
-  static readonly standard = 0.25;
-}
-
-export class FreightRates {
-  static readonly standard = 40;
-  static readonly standard_subscription = 30;
 }
 
 export class ProductCategories {
@@ -24,13 +13,6 @@ export class ProductCategories {
 export class OrderTypes {
   static readonly normal = "normal";
   static readonly renewal = "renewal";
-}
-
-export class OrderStatus {
-  static readonly created = "created";
-  static readonly processing = "processing";
-  static readonly completed = "completed";
-  static readonly canceled = "canceled";
 }
 
 export class SubscriptionFrequence {

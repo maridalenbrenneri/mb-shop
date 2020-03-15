@@ -48,4 +48,17 @@ export class SubscriptionService {
         })
       );
   }
+
+  createOrderForSubscription(
+    subscription: Subscription,
+    customer: any
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${environment.mbApiBaseUrl}subscriptions/createorder`,
+      {
+        subscription,
+        customer
+      }
+    );
+  }
 }

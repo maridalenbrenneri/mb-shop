@@ -1,36 +1,28 @@
-import { Response } from "express";
 import DeliveryDayModel from "../database/models/delivery-day-model";
-import logger from "../utils/logger";
 
 class DeliveryDayService {
   getDeliveryDay = async function(deliveryDayId: number) {
-    let self = this;
-
-    return DeliveryDayModel.getDeliveryDay(deliveryDayId).then(deliveryDay => {
-      return self.mapToClientModel(deliveryDay);
-    });
+    const deliveryDay = await DeliveryDayModel.getDeliveryDay(deliveryDayId);
+    return this.mapToClientModel(deliveryDay);
   };
 
   getDeliveryDays = async function() {
-    let self = this;
-    let filter = {};
+    const deliveryDays = await DeliveryDayModel.getDeliveryDays();
+    return deliveryDays.map(day => this.mapToClientModel(day));
+  };
 
-    const deliveryDays = await DeliveryDayModel.getDeliveryDays(filter);
-
-    return deliveryDays.map(p => self.mapToClientModel(p));
+  getNextDeliveryDay = async function() {
+    const deliveryDay = await DeliveryDayModel.getNextDeliveryDay();
+    return this.mapToClientModel(deliveryDay);
   };
 
   updateDeliveryDay = async function(deliveryDay: any) {
-    let self = this;
-
-    let dbDeliveryDay = self.mapToDbModel(deliveryDay);
-
-    return DeliveryDayModel.updateDeliveryDay(
+    const dbDeliveryDay = this.mapToDbModel(deliveryDay);
+    const updated = await DeliveryDayModel.updateDeliveryDay(
       dbDeliveryDay.id,
       dbDeliveryDay
-    ).then(updatedDeliveryDay => {
-      return self.mapToClientModel(updatedDeliveryDay);
-    });
+    );
+    return this.mapToClientModel(updated);
   };
 
   mapToDbModel = function(deliveryDay) {

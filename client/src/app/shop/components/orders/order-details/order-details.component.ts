@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Order, CoffeeItem } from "src/app/shop/models/order.model";
-import { VatRates } from "src/app/constants";
+import { VatRates } from "../../../../../../../shared/constants";
 import { resolveCoffeeVariation } from "../coffee-variations";
 
 @Component({

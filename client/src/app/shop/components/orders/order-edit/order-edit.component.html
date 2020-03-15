@@ -12,6 +12,7 @@
             <label for="customer" class="col-2 col-form-label">Kunde</label>
             <div class="col-10">
               <select
+                *ngIf="!isEditMode"
                 class="form-control"
                 id="customerElement"
                 name="customerElement"
@@ -24,6 +25,9 @@
                   >{{ customer.name }}</option
                 >
               </select>
+              <span *ngIf="isEditMode" class="form-control">{{
+                order.customer.name
+              }}</span>
             </div>
           </div>
         </form>
