@@ -39,18 +39,6 @@ export class OrderStatus {
   public static readonly canceled = "canceled";
 }
 
-// SERVER
-export class ProductCategories {
-  static readonly coffee = "coffee";
-  static readonly coffeeSubscription = "coffee-subscription";
-  static readonly coffeeGiftSubscription = "coffee-gift-subscription";
-}
-
-export class OrderTypes {
-  static readonly normal = "normal";
-  static readonly renewal = "renewal";
-}
-
 export class SubscriptionFrequence {
   static readonly monthly = 1;
   static readonly fortnightly = 2;

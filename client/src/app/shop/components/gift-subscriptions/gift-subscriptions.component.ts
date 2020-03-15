@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { GiftSubscription } from "../../models/gift-subscription.model";
 import { GiftSubscriptionService } from "../../services/gift-subscription.service";
 import { ToastrService } from "ngx-toastr";
-import { SubscriptionFrequence } from "../../../constants";
+import { SubscriptionFrequence } from "../../../../constants";
 import * as moment from "moment";
 
 @Component({

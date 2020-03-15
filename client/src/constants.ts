@@ -37,3 +37,15 @@ export class OrderStatus {
   public static readonly completed = "completed";
   public static readonly canceled = "canceled";
 }
+
+export class SubscriptionFrequence {
+  public static readonly monthly = 1;
+  public static readonly fortnightly = 2;
+}
+
+export class SubscriptionStatus {
+  static readonly active = "active";
+  static readonly onHold = "on-hold";
+  static readonly pendingCancel = "pending-cancel";
+  static readonly cancelled = "cancelled";
+}
