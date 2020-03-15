@@ -19,7 +19,7 @@ export default class MbOrderModel extends Model {
     return MbOrderModel.findByPk(orderId as any);
   };
 
-  public static getMbOrders = function(status: string) {
+  public static getMbOrders = function(status: string = null) {
     // TODO: handel status input filter (nneds to be done from client down)
     status = status || OrderStatus.processing;
 
