@@ -3,7 +3,7 @@ import { Op } from "sequelize";
 import deliveryDayService from "./delivery-day-service";
 import coffeeService from "./coffee-service";
 import mbOrderService from "./mb-order-service";
-import { CoffeePrizes } from "../../../shared/constants";
+import { CoffeePrizes } from "../constants";
 
 interface ICoffee {
   id: number;

@@ -7,7 +7,7 @@ import {
   DATE,
   INTEGER
 } from "sequelize";
-import { OrderStatus } from "../../../../shared/constants";
+import { OrderStatus } from "../../constants";
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "mysql",

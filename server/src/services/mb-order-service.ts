@@ -1,5 +1,5 @@
 import MbOrderModel from "../database/models/mb-order-model";
-import { OrderStatus } from "../../../shared/constants";
+import { OrderStatus } from "../constants";
 
 class MbOrderService {
   async createOrder(mbOrder: any) {
