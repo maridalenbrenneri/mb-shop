@@ -20,7 +20,7 @@ class MbOrderService {
   }
 
   async getOrders(status: string = "") {
-    const orders = await MbOrderModel.getMbOrders(status);
+    const orders = await MbOrderModel.getMbOrders();
     return orders.map(mbOrder => this.mapToClientModel(mbOrder));
   }
 
