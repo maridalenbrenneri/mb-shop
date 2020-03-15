@@ -15,8 +15,6 @@ export class SubscriptionsComponent implements OnInit {
   subscriptions: Array<Subscription>;
   customers: Array<Customer>;
 
-  private _showNotActiveCoffees: boolean = false;
-
   constructor(
     private subscriptionService: SubscriptionService,
     private customerService: CustomerService,
@@ -38,9 +36,7 @@ export class SubscriptionsComponent implements OnInit {
   loadSubscriptions() {
     this.subscriptionService.getSubscriptions().subscribe(
       subscriptions => {
-        if (!this._showNotActiveCoffees) {
-          this.subscriptions = subscriptions;
-        }
+        this.subscriptions = subscriptions;
       },
       e => {
         console.error("Error", e);

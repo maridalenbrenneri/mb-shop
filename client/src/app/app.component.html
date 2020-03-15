@@ -12,7 +12,7 @@
   </div>
 
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>
+    <button mat-menu-item *ngIf="isSignedIn">
       <mat-icon>dashboard</mat-icon>
       <a [routerLink]="['/dashboard']">Dashboard</a>
     </button>

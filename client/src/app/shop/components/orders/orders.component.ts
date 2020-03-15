@@ -103,17 +103,29 @@ export class OrdersComponent implements OnInit {
   }
 
   onOrderUpdated(order: Order) {
-    this.orderService.updateOrder(order).subscribe(order => {
-      this.toastr.success(`Order ${order.id} was updated`);
-      this.loadOrders();
-    });
+    this.orderService.updateOrder(order).subscribe(
+      order => {
+        this.toastr.success(`Order ${order.id} was updated`);
+        this.loadOrders();
+      },
+      e => {
+        console.error("Error", e);
+        this.toastr.error("Error when trying to update order");
+      }
+    );
   }
 
   onCompleted(orderId: number) {
-    this.orderService.completeOrder(orderId).subscribe(() => {
-      this.toastr.success(`Order ${orderId} was completed`);
-      this.loadOrders();
-    });
+    this.orderService.completeOrder(orderId).subscribe(
+      () => {
+        this.toastr.success(`Order ${orderId} was completed`);
+        this.loadOrders();
+      },
+      e => {
+        console.error("Error", e);
+        this.toastr.error("Error when trying to update order status");
+      }
+    );
   }
 
   onCompletedAndShipped(order: Order) {
@@ -138,17 +150,29 @@ export class OrdersComponent implements OnInit {
   }
 
   onCanceled(orderId: number) {
-    this.orderService.cancelOrder(orderId).subscribe(() => {
-      this.toastr.success(`Order ${orderId} was canceled`);
-      this.loadOrders();
-    });
+    this.orderService.cancelOrder(orderId).subscribe(
+      () => {
+        this.toastr.success(`Order ${orderId} was canceled`);
+        this.loadOrders();
+      },
+      e => {
+        console.error("Error", e);
+        this.toastr.error("Error when trying to update order status");
+      }
+    );
   }
 
   onProcessed(orderId: number) {
-    this.orderService.processOrder(orderId).subscribe(() => {
-      this.toastr.success(`Order ${orderId} was set in process`);
-      this.loadOrders();
-    });
+    this.orderService.processOrder(orderId).subscribe(
+      () => {
+        this.toastr.success(`Order ${orderId} was set in process`);
+        this.loadOrders();
+      },
+      e => {
+        console.error("Error", e);
+        this.toastr.error("Error when trying to update order status");
+      }
+    );
   }
 
   onCreatedInvoice(order: Order) {

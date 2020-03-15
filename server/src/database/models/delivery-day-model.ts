@@ -33,16 +33,21 @@ export default class DeliveryDayModel extends Model {
   };
 
   public static getNextDeliveryDay = function() {
+    const fromDate = moment()
+      .startOf("day")
+      .subtract(1, "days")
+      .toDate();
+    const toDate = moment()
+      .startOf("day")
+      .add(6, "days")
+      .toDate();
+
     return DeliveryDayModel.findOne({
       where: {
         date: {
-          [Op.or]: {
-            [Op.gte]: moment()
-              .subtract(6, "days")
-              .toDate(),
-            [Op.lt]: moment()
-              .add(6, "days")
-              .toDate()
+          [Op.and]: {
+            [Op.gte]: fromDate,
+            [Op.lt]: toDate
           }
         }
       }

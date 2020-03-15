@@ -7,6 +7,7 @@ import {
   DATE,
   INTEGER
 } from "sequelize";
+import { OrderStatus } from "../../../../shared/constants";
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "mysql",
@@ -18,9 +19,13 @@ export default class MbOrderModel extends Model {
     return MbOrderModel.findByPk(orderId as any);
   };
 
-  public static getMbOrders = function(filter: any) {
-    filter = filter || {};
-    filter.isDeleted = false;
+  public static getMbOrders = function(status: string) {
+    // TODO: handel status input filter (nneds to be done from client down)
+    status = status || OrderStatus.processing;
+
+    const filter = {
+      isDeleted: false
+    };
 
     return MbOrderModel.findAll({
       where: filter,

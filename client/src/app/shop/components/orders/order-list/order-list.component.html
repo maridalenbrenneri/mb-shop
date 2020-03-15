@@ -34,9 +34,7 @@
           <th>Status</th>
           <th>Abo id</th>
           <th>Dato</th>
-          <th>Artikler</th>
           <th>Kunde</th>
-          <th>Notat</th>
         </tr>
       </thead>
       <tbody>
@@ -45,24 +43,30 @@
             <td>{{ order.id }}</td>
             <td>
               <span *ngIf="order.status == 'processing'">
-                <i class="material-icons">refresh</i>
+                <i class="material-icons">play_arrow</i>
               </span>
               <span *ngIf="order.status == 'completed'">
                 <i class="material-icons">done</i>
               </span>
               <span *ngIf="order.status == 'canceled'">
-                <i class="material-icons">cancel_presentation</i>
+                <i class="material-icons">cancel</i>
               </span>
             </td>
             <td>{{ order.subscriptionId }}</td>
             <td>{{ order.orderDate | date: "short" }}</td>
-            <td>{{ getArticlesShort(order) }}</td>
             <td>{{ order.customer.name }}</td>
-            <td>{{ order.notes }}</td>
           </tr>
           <tr class="no-border">
-            <td colspan="6">
-              <div class="float-left">
+            <td colspan="5">
+              <strong>Artikler:</strong> {{ getArticlesShort(order) }}
+            </td>
+          </tr>
+          <tr *ngIf="hasNotes(order)" class="no-border">
+            <td colspan="5"><strong>Notat: </strong>{{ order.notes }}</td>
+          </tr>
+          <tr class="no-border">
+            <td colspan="5">
+              <div class="float-right">
                 <button
                   mat-raised-button
                   (click)="completeOrder(order)"
@@ -86,7 +90,7 @@
                   [disabled]="order.status === 'processing'"
                   title="Sett status behandles"
                 >
-                  <i class="material-icons">refresh</i>
+                  <i class="material-icons">play_arrow</i>
                 </button>
                 <button
                   mat-raised-button
@@ -94,7 +98,7 @@
                   [disabled]="order.status !== 'processing'"
                   title="Kanseller bestilling"
                 >
-                  <i class="material-icons">cancel_presentation</i>
+                  <i class="material-icons">cancel</i>
                 </button>
                 <button
                   mat-raised-button

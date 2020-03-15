@@ -66,17 +66,23 @@ class BusinessSubscriptionService {
       externalCustomerNumber: subscription.customerId,
       customer: customer,
       coffeeItems: undefined,
-      notes: "",
+      notes: subscription.note,
       subscriptionId: subscription.id,
       freight: 0
     };
 
     const day = await deliveryDayService.getNextDeliveryDay();
 
-    if (!day.coffee1 || !day.coffee2 || !day.coffee3 || !day.coffee4)
+    if (day.type === "normal") {
       throw new Error(
-        "Cannot create order from subscription because coffees was not set for next deliveryDay"
+        "Cannot create order because next delivery day is not a subscription delivery day"
       );
+    }
+    if (!day.coffee1 || !day.coffee2 || !day.coffee3 || !day.coffee4) {
+      throw new Error(
+        "Cannot create order from subscription because coffees was not set for next subscription delivery day"
+      );
+    }
 
     const coffee1 = await coffeeService.getCoffee(day.coffee1);
     const coffee2 = await coffeeService.getCoffee(day.coffee2);

@@ -10,8 +10,10 @@ import {
 import { MatDialog } from "@angular/material";
 import { Customer } from "src/app/shop/models/customer.model";
 import { TableDataSource } from "src/app/shop/core/table-data-source";
-import { OrderStatus } from "src/app/constants";
-import { CoffeeSizes } from "../../../../../../../shared/constants";
+import {
+  CoffeeSizes,
+  OrderStatus
+} from "../../../../../../../shared/constants";
 import { OrderEditComponent } from "../order-edit/order-edit.component";
 import { Utils } from "../../../../utils";
 import { resolveCoffeeVariation } from "../coffee-variations";
@@ -215,6 +217,10 @@ export class OrderListComponent {
     console.log("viewInvoice not yet implemented...");
   }
 
+  hasNotes(order: Order) {
+    return order.notes && order.notes.trim().length > 0;
+  }
+
   getArticlesShort(order: Order) {
     const arr = order.coffeeItems.map(item => {
       let name = "";
@@ -236,10 +242,10 @@ export class OrderListComponent {
 
     let str = arr.join(", ");
 
-    if (str.length > 40) {
-      str = str.substr(0, 37);
-      str = str.concat("...");
-    }
+    // if (str.length > 40) {
+    //   str = str.substr(0, 37);
+    //   str = str.concat("...");
+    // }
 
     return str;
   }

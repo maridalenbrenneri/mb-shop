@@ -39,24 +39,33 @@ class OrderController {
   /**
    * POST /orders/:id/complete
    */
-  completeOrder(req: Request, res: Response) {
-    const order = orderService.updateOrderStatus(req.params.id, "completed");
+  async completeOrder(req: Request, res: Response) {
+    const order = await orderService.updateOrderStatus(
+      req.params.id,
+      "completed"
+    );
     return res.send(order);
   }
 
   /**
    * POST /orders/:id/cancel
    */
-  cancelOrder(req: Request, res: Response) {
-    const order = orderService.updateOrderStatus(req.params.id, "canceled");
+  async cancelOrder(req: Request, res: Response) {
+    const order = await orderService.updateOrderStatus(
+      req.params.id,
+      "canceled"
+    );
     return res.send(order);
   }
 
   /**
    * POST /orders/:id/process
    */
-  processOrder(req: Request, res: Response) {
-    const order = orderService.updateOrderStatus(req.params.id, "processing");
+  async processOrder(req: Request, res: Response) {
+    const order = await orderService.updateOrderStatus(
+      req.params.id,
+      "processing"
+    );
     return res.send(order);
   }
 

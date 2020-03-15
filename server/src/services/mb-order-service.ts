@@ -1,5 +1,5 @@
 import MbOrderModel from "../database/models/mb-order-model";
-import { OrderStatus } from "../constants";
+import { OrderStatus } from "../../../shared/constants";
 
 class MbOrderService {
   async createOrder(mbOrder: any) {
@@ -10,7 +10,7 @@ class MbOrderService {
 
   async updateOrder(mbOrder: any) {
     const mbOrderToUpdate = this.mapToDbModel(mbOrder);
-    const order = MbOrderModel.updateMbOrder(mbOrder.id, mbOrderToUpdate);
+    const order = await MbOrderModel.updateMbOrder(mbOrder.id, mbOrderToUpdate);
     return this.mapToClientModel(order);
   }
 
@@ -19,8 +19,8 @@ class MbOrderService {
     return this.mapToClientModel(order);
   }
 
-  async getOrders(filter = {}) {
-    const orders = await MbOrderModel.getMbOrders(filter);
+  async getOrders(status: string = "") {
+    const orders = await MbOrderModel.getMbOrders(status);
     return orders.map(mbOrder => this.mapToClientModel(mbOrder));
   }
 
