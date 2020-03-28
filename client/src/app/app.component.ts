@@ -1,18 +1,23 @@
-import { Component } from '@angular/core';
-import { AuthService } from './shop/services/auth.service';
+import { Component } from "@angular/core";
+import { AuthService } from "./shop/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  title = 'Maridalen Brenneri';
+  title = "Maridalen Brenneri";
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit() { 
+  ngOnInit() {
     this.authService.trySignInFromStoredCredentials();
+
+    if (!this.isSignedIn) {
+      this.router.navigate(["/my-account"]);
+    }
   }
 
   get isSignedIn() {

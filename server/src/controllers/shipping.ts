@@ -88,11 +88,7 @@ class ShippingController {
 
       return res.send(updatedGiftSubscription);
     } catch (e) {
-      return ControllerHelper.handleError(
-        res,
-        e,
-        "Error when creating consignment in Cargonizer"
-      );
+      return res.status(400).send(`${e.message}`);
     }
   };
 }
