@@ -28,9 +28,12 @@ class GiftSubscriptionController {
   /**
    * POST /giftsubscriptions
    */
-  createGiftSubscription = function(req: Request, res: Response) {
-    return giftSubscriptionService.createGiftSubscription(req.body, res);
-  };
+  async createGiftSubscription(req: Request, res: Response) {
+    const subscription = await giftSubscriptionService.createGiftSubscription(
+      req.body
+    );
+    return res.send(subscription);
+  }
 
   /**
    * PUT /giftsubscriptions/:id/first-delivery-date

@@ -49,23 +49,16 @@ class GiftSubscriptionService {
     );
   }
 
-  createGiftSubscription(giftSubscription: any, res: Response) {
-    let self = this;
-
+  async createGiftSubscription(giftSubscription: any) {
     GiftSubscriptionValidator.validate(giftSubscription);
 
-    let dbGiftSubscription = self.mapToDbModel(giftSubscription);
+    const dbGiftSubscription = this.mapToDbModel(giftSubscription);
 
-    return GiftSubscriptionModel.createGiftSubscription(dbGiftSubscription)
-      .then(createdGiftSubscription => {
-        return res.send(self.mapToClientModel(createdGiftSubscription));
-      })
-      .catch(function(err) {
-        logger.error(err);
-        return res.status(500).send({
-          error: "An error occured when creating the gift subscription: " + err
-        });
-      });
+    const subscription = await GiftSubscriptionModel.createGiftSubscription(
+      dbGiftSubscription
+    );
+
+    return this.mapToClientModel(subscription);
   }
 
   updateGiftSubscription(giftSubscription: any, res: Response) {
@@ -107,17 +100,17 @@ class GiftSubscriptionService {
   async import() {
     let importedCount = 0;
 
-    const giftSubscriptions = await GiftSubscriptionModel.getGiftSubscriptions(
-      {}
-    );
     const wooSubscriptions = await wooService.getActiveGiftSubscriptions();
 
     for (let i = 0; i < wooSubscriptions.length; i++) {
-      let sub = giftSubscriptions.find(
-        (s: { wooOrderId: any }) =>
-          s.wooOrderId === wooSubscriptions[i].wooOrderId
+      const wooSubscription = wooSubscriptions[i];
+
+      const mbSubscription = await GiftSubscriptionModel.getGiftSubscriptionByWoo(
+        wooSubscription.wooOrderNumber,
+        wooSubscription.recipient_name
       );
-      if (!sub) {
+
+      if (!mbSubscription) {
         await GiftSubscriptionModel.createGiftSubscription(wooSubscriptions[i]);
         importedCount++;
       }
