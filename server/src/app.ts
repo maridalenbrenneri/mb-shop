@@ -15,13 +15,13 @@ function isAuthenticated(req: Request, res: Response, next: any): Boolean {
     return res.status(401).send();
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+  jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
     if (err || !decoded) {
       return res.status(401).send();
     }
 
     req.user = {
-      id: decoded.id
+      id: decoded.id,
     };
 
     return next();
@@ -46,7 +46,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set allowed origin
-app.use(function(req: Request, res: Response, next: any) {
+app.use(function (req: Request, res: Response, next: any) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   // res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
   // res.setHeader('Access-Control-Allow-Origin', "http://localhost:4200");
@@ -57,7 +57,7 @@ app.use(function(req: Request, res: Response, next: any) {
   );
   res.setHeader("Access-Control-Allow-Headers", [
     "content-type",
-    "x-access-token"
+    "x-access-token",
   ]);
   next();
 });
@@ -71,6 +71,7 @@ import giftSubscriptionController from "./controllers/gift-subscription";
 import shippingController from "./controllers/shipping";
 import deliveryDaysController from "./controllers/delivery-day";
 import subscriptionController from "./controllers/subscription";
+import wooController from "./controllers/woo";
 
 /*** API ***/
 
@@ -95,6 +96,11 @@ app.get(
   isUserInAdmin,
   dashboardController.getSubscriptionCoffeeTypeCounter
 );
+
+// Woo
+// NOTE: import must be "open" for scheduled heroku job (TODO: should be triggered in some other way)
+app.get("/api/woo/import", wooController.importWooData);
+app.get("/api/woo/data", wooController.getWooData);
 
 // User and auth
 app.post("/api/authenticate", authController.authenticate);
@@ -196,7 +202,7 @@ app.post(
   orderController.createInvoice
 );
 
-app.get("/api", function(_req: Request, res: Response) {
+app.get("/api", function (_req: Request, res: Response) {
   res.send("Maridalen Brenneri Backoffice API");
 });
 
@@ -206,18 +212,18 @@ app.get("/api", function(_req: Request, res: Response) {
 
 app.use(express.static(__dirname + "/../../client/dist/mb-shop"));
 
-app.get("/", function(_req, res) {
+app.get("/", function (_req, res) {
   res.sendFile(__dirname + "/../../client/dist/mb-shop/index.html");
 });
 
-app.get("/*", function(_req, res) {
+app.get("/*", function (_req, res) {
   res.redirect("/");
 });
 
 /*** END CLIENT ***/
 
 // Error handling
-app.use(function(err: any, req: any, res: any, next: any) {
+app.use(function (err: any, req: any, res: any, next: any) {
   if (err instanceof ValidationError) {
     return res.status(422).send({ validationError: err.message });
   }
