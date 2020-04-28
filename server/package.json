@@ -2,6 +2,7 @@
   "name": "mb-shop-api",
   "version": "1.0.0",
   "description": "Maridalen Brenneri Api",
+  "license": "ISC",
   "engines": {
     "node": "10.15.3"
   },

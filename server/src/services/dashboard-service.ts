@@ -10,7 +10,7 @@ const DELIVERY_DAYS = [
   { date: new Date("2020-03-09"), type: "normal", quantities: {} },
   { date: new Date("2020-03-16"), type: "fortnightly", quantities: {} },
   { date: new Date("2020-03-23"), type: "normal", quantities: {} },
-  { date: new Date("2020-03-30"), type: "normal", quantities: {} }
+  { date: new Date("2020-03-30"), type: "normal", quantities: {} },
 ];
 
 class DashboardService {
@@ -30,7 +30,7 @@ class DashboardService {
     let totalWeight = 0;
 
     const add = (sizeArray, id, quantity) => {
-      const index = sizeArray.findIndex(i => {
+      const index = sizeArray.findIndex((i) => {
         return i.id === id;
       });
 
@@ -39,7 +39,7 @@ class DashboardService {
     };
 
     orders.map((o: { coffeeItems: any[] }) => {
-      o.coffeeItems.map(item => {
+      o.coffeeItems.map((item) => {
         if (item.variationId === 1) {
           add(_250s, item.coffee.id, item.quantity);
           totalWeight += 250 * item.quantity;
@@ -59,8 +59,8 @@ class DashboardService {
         _250s,
         _500s,
         _1200s,
-        totalWeight: totalWeight
-      }
+        totalWeight: totalWeight,
+      },
     };
   };
 
@@ -100,9 +100,12 @@ class DashboardService {
     const smallAbo = this.countBags(data.bagCounter.fortnightly);
     const bigAbo = this.aggregateCoffeeTypeCount(monthly, smallAbo);
 
+    // TODO: add non-subscription orders
+    // const nonAbo = this
+
     return {
       bigAbo,
-      smallAbo
+      smallAbo,
     };
   };
 
@@ -174,15 +177,15 @@ class DashboardService {
     if (!isFirst) {
       return {
         _250s: {
-          totalCount: aboBagCount
+          totalCount: aboBagCount,
         },
         _500s: {
-          totalCount: 0
+          totalCount: 0,
         },
         _1200s: {
-          totalCount: 0
+          totalCount: 0,
         },
-        totalWeight: aboBagWeight / 1000
+        totalWeight: aboBagWeight / 1000,
       };
     }
     // TODO: get active non subscriptional orders from Woo
@@ -192,7 +195,7 @@ class DashboardService {
 
     const quantities = {
       coffeeItems: orderStats.quantities,
-      totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000 // Weight of mb orders and abos/gabos
+      totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000, // Weight of mb orders and abos/gabos
     };
     return quantities;
   };

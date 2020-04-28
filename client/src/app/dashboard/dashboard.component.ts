@@ -6,7 +6,7 @@ import * as moment from "moment";
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"]
+  styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
   stats: any;
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   loadData(self: DashboardComponent) {
     self.http
       .get<any>(environment.mbApiBaseUrl + "aboabo/stats")
-      .subscribe(stats => {
+      .subscribe((stats) => {
         self.stats = stats.data;
         self.statsLastUpdated = stats.lastUpdated;
         console.log("Cargonizer profile", stats.data.cargonizerProfile);
@@ -42,19 +42,19 @@ export class DashboardComponent implements OnInit {
 
     self.http
       .get<any>(environment.mbApiBaseUrl + "stats/coffees")
-      .subscribe(res => {
+      .subscribe((res) => {
         self.coffees = res;
       });
 
     self.http
       .get<any>(environment.mbApiBaseUrl + "stats/orders")
-      .subscribe(res => {
+      .subscribe((res) => {
         this.orderStats = res;
       });
 
     self.http
       .get<any>(environment.mbApiBaseUrl + "stats/deliverydays")
-      .subscribe(res => {
+      .subscribe((res) => {
         self.deliveryDays = res;
       });
 
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
       .get<any>(
         environment.mbApiBaseUrl + "stats/subscriptionCoffeeTypeCounter"
       )
-      .subscribe(res => {
+      .subscribe((res) => {
         self.subscriptionCoffeeTypeCounter = res;
       });
 
@@ -80,8 +80,8 @@ export class DashboardComponent implements OnInit {
     );
   };
 
-  resolveCoffeeCodeFromId = id => {
-    const coffee = this.coffees.find(c => c.id === id);
+  resolveCoffeeCodeFromId = (id) => {
+    const coffee = this.coffees.find((c) => c.id === id);
     if (!coffee) return "Not set";
     return coffee.code;
   };
@@ -89,15 +89,15 @@ export class DashboardComponent implements OnInit {
   resolveCoffeeANY(day: any) {
     const coffeeAnyId = 1;
 
-    const any250 = day.quantities.coffeeItems._250s.find(i => {
+    const any250 = day.quantities.coffeeItems._250s.find((i) => {
       return i.id === coffeeAnyId;
     }) || { quantity: 0 };
 
-    const any500 = day.quantities.coffeeItems._500s.find(i => {
+    const any500 = day.quantities.coffeeItems._500s.find((i) => {
       return i.id === coffeeAnyId;
     }) || { quantity: 0 };
 
-    const any1200 = day.quantities.coffeeItems._1200s.find(i => {
+    const any1200 = day.quantities.coffeeItems._1200s.find((i) => {
       return i.id === coffeeAnyId;
     }) || { quantity: 0 };
 
@@ -114,25 +114,25 @@ export class DashboardComponent implements OnInit {
       count250: any250.quantity,
       count500: any500.quantity,
       count1200: any1200.quantity,
-      total: totalGrams / 1000
+      total: totalGrams / 1000,
     };
   }
 
   resolveCoffee(day: any, coffeeField: string) {
     if (!day[coffeeField]) {
       // TODO: do something smart
-      console.log("WARNING - coffe is not set on delivery day");
+      console.log("WARNING - coffee is not set on delivery day");
     }
 
-    const mbOrders250 = day.quantities.coffeeItems._250s.find(i => {
+    const mbOrders250 = day.quantities.coffeeItems._250s.find((i) => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
 
-    const mbOrders500 = day.quantities.coffeeItems._500s.find(i => {
+    const mbOrders500 = day.quantities.coffeeItems._500s.find((i) => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
 
-    const mbOrders1200 = day.quantities.coffeeItems._1200s.find(i => {
+    const mbOrders1200 = day.quantities.coffeeItems._1200s.find((i) => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
 
@@ -142,11 +142,13 @@ export class DashboardComponent implements OnInit {
       (mbOrders1200.quantity > 0 ? mbOrders1200.quantity * 1200 : 0);
 
     if (day.type === "normal") {
+      // TODO: add non-subscription orders
+
       return {
         count250: mbOrders250.quantity,
         count500: mbOrders500.quantity,
         count1200: mbOrders1200.quantity,
-        total: mbOrdersTotalWeight / 1000
+        total: mbOrdersTotalWeight / 1000,
       };
     }
 
@@ -168,7 +170,7 @@ export class DashboardComponent implements OnInit {
       count250: aggregated250,
       count500: mbOrders500.quantity,
       count1200: mbOrders1200.quantity,
-      total: totalWeight / 1000
+      total: totalWeight / 1000,
     };
   }
 
@@ -191,7 +193,7 @@ export class DashboardComponent implements OnInit {
 
   activeCoffees() {
     if (!this.coffees) return [];
-    return this.coffees.filter(c => c.id > 1); // exclude ANY
+    return this.coffees.filter((c) => c.id > 1); // exclude ANY
   }
 
   resolveCoffeTypeCountString(type: string, coffeeKey: string) {
@@ -204,7 +206,7 @@ export class DashboardComponent implements OnInit {
     this.isUpdating = true;
     this.http
       .get<any>(environment.mbApiBaseUrl + "aboabo/import")
-      .subscribe(stats => {
+      .subscribe((stats) => {
         this.stats = stats.data;
         this.statsLastUpdated = stats.lastUpdated;
         this.loadData(this);
