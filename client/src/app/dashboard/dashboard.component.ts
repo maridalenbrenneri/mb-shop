@@ -210,7 +210,7 @@ export class DashboardComponent implements OnInit {
   }
 
   resolveCoffeesInActiveOrdersString() {
-    return JSON.stringify(this.wooData?.coffeesInActiveOrders);
+    return JSON.stringify(this.wooData.coffeesInActiveOrders);
   }
 
   updateStats() {

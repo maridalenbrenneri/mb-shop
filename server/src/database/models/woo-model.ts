@@ -17,9 +17,6 @@ export default class WooModel extends Model {
   };
 
   public static updateWooData = async function (wooData: IWooData) {
-    // return WooModel.create({
-    //   coffeesInActiveOrders: JSON.stringify(wooData.coffeesInActiveOrders),
-    // });
     const data = await WooModel.findByPk(WOO_ID);
     return await data.update({
       importedAt: new Date(),

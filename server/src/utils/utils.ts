@@ -3,7 +3,6 @@ export function getSubstringInsideParentheses(str: string) {
   const matches = regExp.exec(str);
 
   //matches[1] contains the value between the parentheses
-  console.log(matches[1]);
 
   if (!matches || matches.length < 2) return null;
 
