@@ -1,7 +1,8 @@
 import axios from "axios";
 
-import WooModel from "../database/models/woo-model";
-import { getSubstringInsideParentheses } from "../utils/utils";
+import WooModel from "../../database/models/woo-model";
+import { getSubstringInsideParentheses } from "../../utils/utils";
+import { WOO_API_BASE_URL } from "./settings";
 
 interface WooCoffee {
   wooProductId: number;
@@ -9,25 +10,7 @@ interface WooCoffee {
   quantity: number;
 }
 
-const WOO_API_BASE_URL = "https://maridalenbrenneri.no/wp-json/wc/v3/";
-
-export async function getWooData() {
-  const result = await WooModel.getWooData();
-  return mapToClientModel(result);
-}
-
-export async function getActiveOrders() {
-  return await fetchActiveOrders();
-}
-
-export async function importWooData() {
-  const orders = await fetchActiveOrders();
-  const result = await resolveAndUpdateActiveCoffeesInOrders(orders);
-
-  return mapToClientModel(result);
-}
-
-async function resolveAndUpdateActiveCoffeesInOrders(orders: any[]) {
+export async function resolveAndUpdateActiveCoffeesInOrders(orders: any[]) {
   let lineItems = [];
 
   orders.map((order) => {
@@ -52,7 +35,7 @@ async function resolveAndUpdateActiveCoffeesInOrders(orders: any[]) {
   return await WooModel.updateWooData({ coffeesInActiveOrders: dic });
 }
 
-async function fetchActiveOrders() {
+export async function fetchActiveOrders() {
   let ordersInProcess = [];
   let page = 1;
   do {

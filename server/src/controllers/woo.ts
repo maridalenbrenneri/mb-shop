@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 
-import * as woo from "../services/woo-data";
+import * as woo from "../services/woo";
 
 class WooController {
   getWooData = async function (_req: Request, res: Response) {

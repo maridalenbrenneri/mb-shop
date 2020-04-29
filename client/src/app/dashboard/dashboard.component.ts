@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   subscriptionCoffeeTypeCounter: any;
   coffeesNotSet: any[] = [];
   coffeeIsNotSet: boolean = false;
+  wooData: any; // non-subscription orders
 
   constructor(private http: HttpClient) {}
 
@@ -38,6 +39,12 @@ export class DashboardComponent implements OnInit {
         self.stats = stats.data;
         self.statsLastUpdated = stats.lastUpdated;
         console.log("Cargonizer profile", stats.data.cargonizerProfile);
+      });
+
+    self.http
+      .get<any>(environment.mbApiBaseUrl + "woo/data")
+      .subscribe((res) => {
+        self.wooData = res;
       });
 
     self.http
@@ -200,6 +207,10 @@ export class DashboardComponent implements OnInit {
     const count = this.subscriptionCoffeeTypeCounter[type][coffeeKey];
     const kg = (count * 250) / 1000;
     return `${count} / ${kg}kg`;
+  }
+
+  resolveCoffeesInActiveOrdersString() {
+    return JSON.stringify(this.wooData.coffeesInActiveOrders);
   }
 
   updateStats() {

@@ -104,6 +104,10 @@
               </ng-container>
             </tbody>
           </table>
+          <p>
+            Kaffen fra aktive enkeltorders (ikke inkludert i oversikten):
+            {{ resolveCoffeesInActiveOrdersString() }}
+          </p>
           <a [routerLink]="['/delivery-days']">Endre kaffen her</a>
         </div>
       </mat-card-content>
@@ -299,7 +303,7 @@
     </mat-card>
   </div>
 
-  <div class="col-12  col-lg-4">
+  <div class="col-12 col-lg-4">
     <mat-card class="product-card">
       <mat-card-header>
         <mat-card-title>#cargonizer</mat-card-title>
@@ -332,7 +336,7 @@
     </mat-card>
   </div>
 
-  <div class="col-12  col-lg-4">
+  <div class="col-12 col-lg-4">
     <mat-card class="product-card">
       <mat-card-header>
         <mat-card-title>#bedrift (backoffice)</mat-card-title>
