@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   subscriptionCoffeeTypeCounter: any;
   coffeesNotSet: any[] = [];
   coffeeIsNotSet: boolean = false;
-  wooData: any; // non-subscription orders
+  wooData: any = {}; // non-subscription orders
 
   constructor(private http: HttpClient) {}
 
@@ -210,7 +210,7 @@ export class DashboardComponent implements OnInit {
   }
 
   resolveCoffeesInActiveOrdersString() {
-    return JSON.stringify(this.wooData.coffeesInActiveOrders);
+    return JSON.stringify(this.wooData?.coffeesInActiveOrders);
   }
 
   updateStats() {
