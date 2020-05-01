@@ -4,6 +4,7 @@ import axios from "axios";
 import { WOO_API_BASE_URL, WOO_GABO_PRODUCT_ID } from "./settings";
 import { SubscriptionFrequence } from "../../constants";
 import SubscriptionDateHelper from "../subscription-date-helper";
+import GiftSubscriptionModel from "../../database/models/gift-subscription-model";
 
 export async function fetchActiveGabos() {
   let gabos = [];
@@ -19,9 +20,23 @@ export async function fetchActiveGabos() {
 }
 
 export async function importGabos(wooGaboOrders: any) {
-  // TODO: not implemented - move functionality to here from gift-subscription-service
+  let importedCount = 0;
 
-  return 0;
+  for (let i = 0; i < wooGaboOrders.length; i++) {
+    const wooSubscription = wooGaboOrders[i];
+
+    const mbSubscription = await GiftSubscriptionModel.getGiftSubscriptionByWoo(
+      wooSubscription.wooOrderNumber,
+      wooSubscription.recipient_name
+    );
+
+    if (!mbSubscription) {
+      await GiftSubscriptionModel.createGiftSubscription(wooGaboOrders[i]);
+      importedCount++;
+    }
+  }
+
+  return importedCount;
 }
 
 async function _fetchGabos(page: number = 1) {

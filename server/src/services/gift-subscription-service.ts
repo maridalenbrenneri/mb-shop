@@ -1,27 +1,27 @@
 import { Response } from "express";
-import GiftSubscriptionModel from "../database/models/gift-subscription-model";
-import logger from "../utils/logger";
-import wooService from "./woo-service";
-import { GiftSubscriptionValidator } from "../validators/gift-subscription-validator";
 import moment = require("moment");
 import { Op } from "sequelize";
+
+import GiftSubscriptionModel from "../database/models/gift-subscription-model";
+import logger from "../utils/logger";
+import { GiftSubscriptionValidator } from "../validators/gift-subscription-validator";
 
 class GiftSubscriptionService {
   getGiftSubscription(giftSubscriptionId: number, res: Response) {
     let self = this;
 
     return GiftSubscriptionModel.getGiftSubscription(giftSubscriptionId)
-      .then(giftSubscription => {
+      .then((giftSubscription) => {
         if (!giftSubscription) {
           return res.status(404).send();
         }
 
         return res.send(self.mapToClientModel(giftSubscription));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         logger.error(err);
         return res.status(500).send({
-          error: "An error occured when getting the gift subscription"
+          error: "An error occured when getting the gift subscription",
         });
       });
   }
@@ -30,15 +30,15 @@ class GiftSubscriptionService {
     let self = this;
 
     let filter = {
-      [Op.not]: [{ status: "cancelled" }]
+      [Op.not]: [{ status: "cancelled" }],
     };
 
     return await GiftSubscriptionModel.getGiftSubscriptions(filter).then(
-      giftSubscriptions => {
+      (giftSubscriptions) => {
         const active = [];
         const today = moment().startOf("day");
 
-        giftSubscriptions.forEach(item => {
+        giftSubscriptions.forEach((item) => {
           if (today <= moment(item.lastDeliveryDate)) {
             active.push(self.mapToClientModel(item));
           }
@@ -72,20 +72,20 @@ class GiftSubscriptionService {
       dbGiftSubscription.id,
       dbGiftSubscription
     )
-      .then(updatedGiftSubscription => {
+      .then((updatedGiftSubscription) => {
         return res.send(self.mapToClientModel(updatedGiftSubscription));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         logger.error(err);
         return res.status(500).send({
-          error: "An error occured when updating the gift subscription: " + err
+          error: "An error occured when updating the gift subscription: " + err,
         });
       });
   }
 
   setLastOrderCreated(giftSubscriptionId: number): any {
     return GiftSubscriptionModel.updateGiftSubscription(giftSubscriptionId, {
-      lastOrderCreated: moment().toDate()
+      lastOrderCreated: moment().toDate(),
     });
   }
 
@@ -93,33 +93,11 @@ class GiftSubscriptionService {
     GiftSubscriptionValidator.validateFirstDeliveryDate(date);
 
     return GiftSubscriptionModel.updateGiftSubscription(giftSubscriptionId, {
-      firstDeliveryDate: date
+      firstDeliveryDate: date,
     });
   }
 
-  async import() {
-    let importedCount = 0;
-
-    const wooSubscriptions = await wooService.getActiveGiftSubscriptions();
-
-    for (let i = 0; i < wooSubscriptions.length; i++) {
-      const wooSubscription = wooSubscriptions[i];
-
-      const mbSubscription = await GiftSubscriptionModel.getGiftSubscriptionByWoo(
-        wooSubscription.wooOrderNumber,
-        wooSubscription.recipient_name
-      );
-
-      if (!mbSubscription) {
-        await GiftSubscriptionModel.createGiftSubscription(wooSubscriptions[i]);
-        importedCount++;
-      }
-    }
-
-    return { count: importedCount };
-  }
-
-  mapToDbModel = function(giftSubscription) {
+  mapToDbModel = function (giftSubscription) {
     return {
       id: giftSubscription.id,
       wooOrderId: giftSubscription.wooOrderId,
@@ -138,11 +116,11 @@ class GiftSubscriptionService {
       recipient_address: JSON.stringify(giftSubscription.recipient_address),
       message_to_recipient: giftSubscription.message_to_recipient,
       note: giftSubscription.note,
-      lastOrderCreated: giftSubscription.lastOrderCreated
+      lastOrderCreated: giftSubscription.lastOrderCreated,
     };
   };
 
-  mapToClientModel = function(giftSubscription) {
+  mapToClientModel = function (giftSubscription) {
     return {
       id: giftSubscription.id,
       wooOrderId: giftSubscription.wooOrderId,
@@ -161,7 +139,7 @@ class GiftSubscriptionService {
       recipient_address: JSON.parse(giftSubscription.recipient_address),
       message_to_recipient: giftSubscription.message_to_recipient,
       note: giftSubscription.note,
-      lastOrderCreated: giftSubscription.lastOrderCreated
+      lastOrderCreated: giftSubscription.lastOrderCreated,
     };
   };
 }

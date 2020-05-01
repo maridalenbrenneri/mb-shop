@@ -17,7 +17,7 @@ export function resolveCoffeesInOrders(orders: any[]) {
   let lineItems = [];
 
   orders.map((order) => {
-    const items = excludeNonCoffeeProducts(order.line_items);
+    const items = excludeNonCoffeeAndAboProducts(order.line_items);
     lineItems = lineItems.concat(items);
   });
 
@@ -42,20 +42,54 @@ export function resolveCoffeesInOrders(orders: any[]) {
 
 export async function fetchActiveOrders() {
   let ordersInProcess = [];
+  let ordersOnHold = [];
   let page = 1;
   do {
-    const result = await fetchOrdersInProcess(page);
+    const result = await _fetchOrders(page, "processing");
     page = result.nextPage;
     ordersInProcess = ordersInProcess.concat(result.orders);
   } while (page);
 
-  const ordersOnHold = await fetchOrdersOnHold();
+  page = 1;
+  do {
+    const result = await _fetchOrders(page, "on-hold");
+    page = result.nextPage;
+    ordersOnHold = ordersOnHold.concat(result.orders);
+  } while (page);
 
   return ordersInProcess.concat(ordersOnHold);
 }
 
-function excludeNonCoffeeProducts(lineItems) {
-  return lineItems.filter((item) => {
+export async function fetchPendingOrders() {
+  let ordersPendingPayment = [];
+  let page = 1;
+  do {
+    const result = await _fetchOrders(page, "pending");
+    page = result.nextPage;
+    ordersPendingPayment = ordersPendingPayment.concat(result.orders);
+  } while (page);
+
+  return ordersPendingPayment;
+}
+
+export function resolveOrderData(
+  activeOrders: any[] = [],
+  pendingOrders: any[] = []
+) {
+  return {
+    activeOrderCount: activeOrders.length,
+    pendingOrderCount: pendingOrders.length,
+  };
+}
+
+function excludeNonCoffeeAndAboProducts(lineItems) {
+  // Exclude gabo and all subscriptions items
+
+  const nonAboItems = lineItems.filter(
+    (o: { created_via: string }) => o.created_via !== "subscription"
+  );
+
+  return nonAboItems.filter((item) => {
     return (
       item.product_id !== WOO_GABO_PRODUCT_ID &&
       item.product_id !== WOO_ABO_PRODUCT_ID
@@ -63,45 +97,16 @@ function excludeNonCoffeeProducts(lineItems) {
   });
 }
 
-// TODO: Handling paging (max 100 returned)
-async function fetchOrdersOnHold() {
-  const page = 1;
-  const url = `${WOO_API_BASE_URL}orders?page=${page}&per_page=100&status=on-hold&${process.env.WOO_SECRET_PARAM}`;
+async function _fetchOrders(page: number = 1, status: string) {
+  const url = `${WOO_API_BASE_URL}orders?page=${page}&per_page=100&status=${status}&${process.env.WOO_SECRET_PARAM}`;
 
   const response = await axios.get(url);
-  return response.data;
-}
 
-// TODO: Use axios instead of Request
-function fetchOrdersInProcess(page: number = 1) {
-  const url = `${WOO_API_BASE_URL}orders?page=${page}&per_page=30&status=processing&${process.env.WOO_SECRET_PARAM}`;
+  const nextPage =
+    response.headers["x-wp-totalpages"] === `${page}` ? null : page + 1;
 
-  return new Promise<any>(function (resolve, reject) {
-    const request = require("request");
-    request(url, function (error: any, response: any) {
-      if (error) {
-        return reject(error);
-      }
-
-      if (response.statusCode !== 200) return reject(response.body);
-
-      const orders = JSON.parse(response.body);
-
-      const nonSubscriptionOrders = orders.filter(
-        (o: { created_via: string }) => o.created_via !== "subscription"
-      );
-
-      if (response.headers["x-wp-totalpages"] === `${page}`) {
-        return resolve({
-          nextPage: null,
-          orders: nonSubscriptionOrders,
-        });
-      }
-
-      return resolve({
-        nextPage: page + 1,
-        orders: nonSubscriptionOrders,
-      });
-    });
-  });
+  return {
+    nextPage,
+    orders: response.data,
+  };
 }

@@ -6,7 +6,7 @@ class GiftSubscriptionController {
   /**
    * GET /giftsubscriptions/:id
    */
-  getGiftSubscription = function(req: Request, res: Response) {
+  getGiftSubscription = function (req: Request, res: Response) {
     return giftSubscriptionService.getGiftSubscription(req.body.id, res);
   };
 
@@ -51,21 +51,6 @@ class GiftSubscriptionController {
         res,
         e,
         "An error occured when updating the gift subscription"
-      );
-    }
-  }
-
-  /**
-   * POST /giftsubscriptions/import
-   */
-  async importGiftSubscriptions(_req: Request, res: Response) {
-    try {
-      return res.send(await giftSubscriptionService.import());
-    } catch (e) {
-      return ControllerHelper.handleError(
-        res,
-        e,
-        "An error occured when importing gift subscriptions"
       );
     }
   }

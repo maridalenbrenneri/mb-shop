@@ -1,5 +1,10 @@
 import WooModel from "../../database/models/woo-model";
-import { fetchActiveOrders, resolveCoffeesInOrders } from "./orders";
+import {
+  fetchActiveOrders,
+  resolveCoffeesInOrders,
+  fetchPendingOrders,
+  resolveOrderData,
+} from "./orders";
 import { fetchActiveGabos, importGabos } from "./gabos";
 import { fetchAbos, resolveAboData } from "./abos";
 
@@ -16,15 +21,17 @@ export async function importWooData() {
   // Enkeltordre
   const orders = await fetchActiveOrders();
   const coffeesInActiveOrders = resolveCoffeesInOrders(orders);
+  const pendingOrders = await fetchPendingOrders();
+  const orderData = resolveOrderData(orders, pendingOrders);
 
   console.log("Fetched coffeesInActiveOrders", coffeesInActiveOrders);
 
   // Gabos
   const gabos = await fetchActiveGabos();
-  const importedGaboCount = await importGabos(gabos);
-  const gaboData = { lastImportedCount: importedGaboCount };
+  const lastImportedCount = await importGabos(gabos);
+  const gaboData = { lastImportedCount };
 
-  console.log("Fetched gabo data", gaboData);
+  console.log("Fetched and imported gabo data", gaboData);
 
   // Abos
   const abos = await fetchAbos();
@@ -35,6 +42,7 @@ export async function importWooData() {
   // Update database
   const updatedData = await WooModel.updateWooData({
     coffeesInActiveOrders,
+    orderData,
     aboData,
     gaboData,
   });
@@ -44,9 +52,10 @@ export async function importWooData() {
 
 function mapToClientModel(data) {
   return {
-    coffeesInActiveOrders: JSON.parse(data.coffeesInActiveOrders),
     aboData: JSON.parse(data.aboData),
     gaboData: JSON.parse(data.gaboData),
+    orderData: JSON.parse(data.orderData),
+    coffeesInActiveNonAboOrders: JSON.parse(data.coffeesInActiveOrders),
     importedAt: data.importedAt,
   };
 }

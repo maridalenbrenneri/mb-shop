@@ -35,12 +35,13 @@
     </select>
   </div>
 
-  <div class="col-12 col-md-4">
-    <button mat-raised-button class="float-right" (click)="import()">
-      Importer fra Woo
-    </button>
+  <div class="col-12" colmd-4>
+    <small
+      >Importert fra Woo: {{ lastImported | date: "short" }} ({{
+        lastImportedCount
+      }})</small
+    >
   </div>
-
   <div class="col-12">
     <P> Viser {{ subscriptions.length }} gabos </P>
 

@@ -2,6 +2,7 @@ import { Sequelize, Model, DATE, TEXT } from "sequelize";
 
 interface IWooData {
   coffeesInActiveOrders: any;
+  orderData: any;
   aboData: any;
   gaboData: any;
 }
@@ -25,6 +26,7 @@ export default class WooModel extends Model {
       coffeesInActiveOrders: JSON.stringify(wooData.coffeesInActiveOrders),
       aboData: JSON.stringify(wooData.aboData),
       gaboData: JSON.stringify(wooData.gaboData),
+      orderData: JSON.stringify(wooData.orderData),
     });
   };
 }
@@ -33,6 +35,7 @@ WooModel.init(
   {
     importedAt: { type: DATE, allowNull: false },
     coffeesInActiveOrders: { type: TEXT, allowNull: false },
+    orderData: { type: TEXT, allowNull: true },
     aboData: { type: TEXT, allowNull: true },
     gaboData: { type: TEXT, allowNull: true },
   },

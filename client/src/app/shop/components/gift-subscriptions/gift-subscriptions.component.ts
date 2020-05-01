@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../../environments/environment";
 import { GiftSubscription } from "../../models/gift-subscription.model";
 import { GiftSubscriptionService } from "../../services/gift-subscription.service";
 import { ToastrService } from "ngx-toastr";
@@ -8,7 +10,7 @@ import * as moment from "moment";
 @Component({
   selector: "app-gift-subscriptions",
   templateUrl: "./gift-subscriptions.component.html",
-  styleUrls: ["./gift-subscriptions.component.scss"]
+  styleUrls: ["./gift-subscriptions.component.scss"],
 })
 export class GiftSubscriptionsComponent implements OnInit {
   displayedColumns: string[] = [
@@ -18,7 +20,7 @@ export class GiftSubscriptionsComponent implements OnInit {
     "endDate",
     "frequency",
     "quantity",
-    "recipient_name"
+    "recipient_name",
   ];
   isExpansionDetailRow = (i: number, row: Object) =>
     row.hasOwnProperty("detailRow");
@@ -33,10 +35,13 @@ export class GiftSubscriptionsComponent implements OnInit {
   private _showOnlyNew: boolean = false;
   private _showOnlyNotSentToday: boolean = false;
   private _showOnlyStarted: boolean = true;
+  private lastImported: Date = new Date();
+  private lastImportedCount: number = 0;
 
   constructor(
     private giftSubscriptionService: GiftSubscriptionService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private http: HttpClient
   ) {
     this._quantities.push({ quantity: 0, label: "Alle" });
     this._quantities.push({ quantity: 1, label: "1 pose" });
@@ -47,13 +52,23 @@ export class GiftSubscriptionsComponent implements OnInit {
 
   ngOnInit() {
     this.loadSubscriptions();
+
+    const self = this;
+    this.http
+      .get<any>(environment.mbApiBaseUrl + "woo/data")
+      .subscribe((res) => {
+        self.lastImported = res.importedAt;
+        self.lastImportedCount = res.gaboData.lastImportedCount;
+      });
   }
 
   loadSubscriptions() {
-    this.giftSubscriptionService.getSubscriptions().subscribe(subscriptions => {
-      this.subscriptions = subscriptions;
-      this.applyFilter();
-    });
+    this.giftSubscriptionService
+      .getSubscriptions()
+      .subscribe((subscriptions) => {
+        this.subscriptions = subscriptions;
+        this.applyFilter();
+      });
   }
 
   set subscriptions(subscriptions: Array<GiftSubscription>) {
@@ -124,18 +139,11 @@ export class GiftSubscriptionsComponent implements OnInit {
   }
 
   createOrder(subscription: GiftSubscription) {
-    this.giftSubscriptionService.createOrder(subscription).subscribe(s => {
+    this.giftSubscriptionService.createOrder(subscription).subscribe((s) => {
       this.loadSubscriptions();
       this.toastr.success(
         "Oppdrag for #" + subscription.wooOrderNumber + " lagt til i Cargonizer"
       );
-    });
-  }
-
-  import() {
-    this.giftSubscriptionService.import().subscribe(result => {
-      this.loadSubscriptions();
-      this.toastr.success("Importert " + result.count + " gabos fra Woo");
     });
   }
 
@@ -144,32 +152,32 @@ export class GiftSubscriptionsComponent implements OnInit {
       this._filteredSubscriptions = this._subscriptions;
     } else {
       this._filteredSubscriptions = this._subscriptions.filter(
-        s => s.quantity === this._selectedQuantity.quantity
+        (s) => s.quantity === this._selectedQuantity.quantity
       );
     }
 
     if (!this._showMonthly) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(
-        s => s.frequence !== SubscriptionFrequence.monthly
+        (s) => s.frequence !== SubscriptionFrequence.monthly
       );
     }
 
     if (!this._showFortnightly) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(
-        s => s.frequence !== SubscriptionFrequence.fortnightly
+        (s) => s.frequence !== SubscriptionFrequence.fortnightly
       );
     }
 
     if (this.showOnlyNew) {
       this._filteredSubscriptions = this._filteredSubscriptions.filter(
-        s => !s.lastOrderCreated
+        (s) => !s.lastOrderCreated
       );
     }
 
     if (this.showOnlyNotSentToday) {
       const today = moment();
       this._filteredSubscriptions = this._filteredSubscriptions.filter(
-        s => !moment(s.lastOrderCreated).isSame(today, "d")
+        (s) => !moment(s.lastOrderCreated).isSame(today, "d")
       );
     }
 
@@ -177,7 +185,7 @@ export class GiftSubscriptionsComponent implements OnInit {
       let startdate = moment();
       startdate = startdate.add(7, "days");
 
-      this._filteredSubscriptions = this._filteredSubscriptions.filter(s =>
+      this._filteredSubscriptions = this._filteredSubscriptions.filter((s) =>
         moment(s.firstDeliveryDate).isSameOrBefore(startdate, "d")
       );
     }

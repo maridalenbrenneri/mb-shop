@@ -42,16 +42,14 @@
         </div>
 
         <div *ngIf="deliveryDays[0].type == 'normal'">
-          Non abo-delivery days not currently supported in overview. But one day
-          it will!
+          Non abo-delivery days not currently supported in overview.
         </div>
 
         <div *ngIf="deliveryDays[0].type != 'normal'">
           <div *ngIf="hasNextDeliveryDayCoffeesSet()">
             <small>
               Viser oversikt av abos og aktive backoffice-bestillinger. P.t er
-              enkeltorders i Woo IKKE inkludert og det er kun abo-levering som
-              vises.
+              enkeltordre i Woo IKKE inkludert.
             </small>
           </div>
           <table *ngIf="hasNextDeliveryDayCoffeesSet()" class="table">
@@ -105,9 +103,10 @@
             </tbody>
           </table>
           <p>
-            Kaffen fra aktive enkeltorders (ikke inkludert i oversikten):
+            Kaffen fra aktive enkeltordre (ikke inkludert i oversikten over):
             {{ resolveCoffeesInActiveOrdersString() }}
           </p>
+
           <a [routerLink]="['/delivery-days']">Endre kaffen her</a>
         </div>
       </mat-card-content>

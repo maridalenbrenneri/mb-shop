@@ -125,11 +125,6 @@ app.get(
   isUserInSuperuser,
   giftSubscriptionController.getGiftSubscriptions
 );
-app.post(
-  "/api/giftsubscriptions/import",
-  isUserInSuperuser,
-  giftSubscriptionController.importGiftSubscriptions
-);
 app.put(
   "/api/giftsubscriptions/:id/first-delivery-date",
   isUserInSuperuser,
