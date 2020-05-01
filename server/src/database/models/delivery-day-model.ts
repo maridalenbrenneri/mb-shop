@@ -5,52 +5,46 @@ import {
   BOOLEAN,
   DATE,
   INTEGER,
-  Op
+  Op,
 } from "sequelize";
-import moment = require("moment");
+import * as moment from "moment";
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "mysql",
-  dialectOptions: {}
+  dialectOptions: {},
 });
 
 export default class DeliveryDayModel extends Model {
-  public static getDeliveryDay = function(id: Number) {
+  public static getDeliveryDay = function (id: Number) {
     return DeliveryDayModel.findByPk(id as any);
   };
 
-  public static getDeliveryDays = function(filter: any = null) {
+  public static getDeliveryDays = function (filter: any = null) {
     filter = filter || {};
     filter.isDeleted = false;
 
     return DeliveryDayModel.findAll({ where: filter, order: ["date"] });
   };
 
-  public static updateDeliveryDay = function(id, deliveryDay) {
-    return DeliveryDayModel.findByPk(id).then(dbDeliveryDay => {
+  public static updateDeliveryDay = function (id, deliveryDay) {
+    return DeliveryDayModel.findByPk(id).then((dbDeliveryDay) => {
       return dbDeliveryDay.update(deliveryDay);
     });
   };
 
-  public static getNextDeliveryDay = function() {
-    const fromDate = moment()
-      .startOf("day")
-      .subtract(1, "days")
-      .toDate();
-    const toDate = moment()
-      .startOf("day")
-      .add(6, "days")
-      .toDate();
+  public static getNextDeliveryDay = function () {
+    const fromDate = moment().startOf("day").subtract(1, "days").toDate();
+    const toDate = moment().startOf("day").add(6, "days").toDate();
 
     return DeliveryDayModel.findOne({
       where: {
         date: {
           [Op.and]: {
             [Op.gte]: fromDate,
-            [Op.lt]: toDate
-          }
-        }
-      }
+            [Op.lt]: toDate,
+          },
+        },
+      },
     });
   };
 }
@@ -63,10 +57,10 @@ DeliveryDayModel.init(
     coffee2: { type: INTEGER, allowNull: true },
     coffee3: { type: INTEGER, allowNull: true },
     coffee4: { type: INTEGER, allowNull: true },
-    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
+    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false },
   },
   {
     sequelize,
-    modelName: "deliveryDay"
+    modelName: "deliveryDay",
   }
 );

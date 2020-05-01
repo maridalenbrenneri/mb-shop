@@ -2,7 +2,7 @@ import StatsModel from "../database/models/stats-model";
 import mbOrderService from "./mb-order-service";
 import MbOrderModel from "../database/models/mb-order-model";
 import coffeeService from "./coffee-service";
-import moment = require("moment");
+import * as moment from "moment";
 import deliveryDayService from "./delivery-day-service";
 
 const DELIVERY_DAYS = [
