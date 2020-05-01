@@ -14,6 +14,12 @@ class ArrayUtils {
       return 0;
     });
   }
+
+  sumArrayProp(array: any[], key: string) {
+    if (!array || !key) return 0;
+
+    return array.reduce((a, b) => a + (b[key] || 0), 0);
+  }
 }
 
 export default new ArrayUtils();

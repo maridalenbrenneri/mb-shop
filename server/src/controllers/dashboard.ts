@@ -1,34 +1,22 @@
 import { Response, Request } from "express";
-import logger from "../utils/logger";
-import aboaboStatsService from "../services/aboabo-stats-service";
+
 import dashboardService from "../services/dashboard-service";
 import { CargonizerService } from "../services/cargonizer-service";
+import { getData } from "../services/stats";
 
 class DashboardController {
-  getAboaboStats = async function (_req: Request, res: Response) {
-    const stats = await aboaboStatsService.getStats();
+  getData = async function (_req: Request, res: Response) {
+    const data = await getData();
 
-    // TODO: move to own endpoint
     const cargonizer = new CargonizerService();
-    stats.data.cargonizerProfile = await cargonizer.fetchProfile();
+    const cargonizerProfile = await cargonizer.fetchProfile();
+
+    const stats = {
+      ...data,
+      cargonizerProfile,
+    };
 
     res.send(stats);
-  };
-
-  importAboaboStats = async function (_req: Request, res: Response) {
-    try {
-      const stats = await aboaboStatsService.importStats();
-      res.send(stats);
-    } catch (err) {
-      logger.error(err);
-      res.status(500).send({
-        error:
-          "An error occured when importing data. Error: " +
-          err +
-          " - " +
-          err.msg,
-      });
-    }
   };
 
   getCurrentCoffees = async function (_req: Request, res: Response) {

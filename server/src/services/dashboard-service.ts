@@ -1,23 +1,17 @@
+import moment = require("moment");
+
 import StatsModel from "../database/models/stats-model";
 import mbOrderService from "./mb-order-service";
 import MbOrderModel from "../database/models/mb-order-model";
 import coffeeService from "./coffee-service";
-import moment = require("moment");
 import deliveryDayService from "./delivery-day-service";
-
-const DELIVERY_DAYS = [
-  { date: new Date("2020-03-02"), type: "monthly", quantities: {} },
-  { date: new Date("2020-03-09"), type: "normal", quantities: {} },
-  { date: new Date("2020-03-16"), type: "fortnightly", quantities: {} },
-  { date: new Date("2020-03-23"), type: "normal", quantities: {} },
-  { date: new Date("2020-03-30"), type: "normal", quantities: {} },
-];
 
 class DashboardService {
   getCurrentCoffees = async () => {
     return await coffeeService.getCoffees();
   };
 
+  // MB orders
   getOrderStats = async () => {
     const dbOrders = await MbOrderModel.getMbOrdersProcessing();
     const orders = dbOrders.map((order: MbOrderModel) =>
@@ -100,9 +94,6 @@ class DashboardService {
     const smallAbo = this.countBags(data.bagCounter.fortnightly);
     const bigAbo = this.aggregateCoffeeTypeCount(monthly, smallAbo);
 
-    // TODO: add non-subscription orders
-    // const nonAbo = this
-
     return {
       bigAbo,
       smallAbo,
@@ -149,12 +140,6 @@ class DashboardService {
     const total = coffee1 + coffee2 + coffee3 + coffee4;
 
     return { total, coffee1, coffee2, coffee3, coffee4 };
-  };
-
-  private sumArrayProp = (array: any[], key: string) => {
-    if (!array || !key) return 0;
-
-    return array.reduce((a, b) => a + (b[key] || 0), 0);
   };
 
   private calculateDeliveryQuantities = async (

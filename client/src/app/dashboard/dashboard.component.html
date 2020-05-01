@@ -1,7 +1,7 @@
 <div
   class="row"
   *ngIf="
-    !stats ||
+    !statsData ||
     !coffees ||
     !orderStats ||
     !deliveryDays ||
@@ -16,7 +16,7 @@
 <div
   class="row"
   *ngIf="
-    stats &&
+    statsData &&
     coffees &&
     orderStats &&
     deliveryDays &&
@@ -119,56 +119,24 @@
         <mat-card-title>#aboabo</mat-card-title>
       </mat-card-header>
       <h1>
-        {{ stats.subscriptionActiveCount + stats.giftSubscriptionCount }} aktive
-        abos
+        {{
+          statsData.aboData.monthlyCount +
+            statsData.aboData.fortnightlyCount +
+            statsData.aboData.gaboCount
+        }}
+        aktive abos
       </h1>
 
       <p>
-        {{
-          stats.subscriptionFortnightlyCount +
-            stats.giftSubscriptionFortnightlyCount
-        }}
+        {{ statsData.aboData.fortnightlyCount }}
         annenhver uke,
-        {{
-          stats.subscriptionMonthlyCount + stats.giftSubscriptionMonthlyCount
-        }}
+        {{ statsData.aboData.monthlyCount }}
         månedlig
         <br />
-        {{ stats.giftSubscriptionCount }} gabos
+        {{ statsData.aboData.gaboCount }} gabos
       </p>
 
       <mat-card-content>
-        <!-- <p>
-          Antall poser 1. tirsdag:
-          <strong>
-            {{
-              stats.subsciptionsBagsPerMonthlyCount +
-                stats.subsciptionsBagsPerFortnightlyCount
-            }}
-          </strong>
-          <br />
-
-          Antall poser 3. tirsdag:
-          <strong> {{ stats.subsciptionsBagsPerFortnightlyCount }} </strong>
-        </p> -->
-
-        <!-- <p>
-          Antall poser totalt per måned:
-          <strong>{{ stats.subsciptionsBagsPerMonthCount }}</strong> <br />
-
-          Gyldne abosnittet:
-          <strong>{{
-            stats.subsciptionsBagsPerMonthCount /
-              (stats.subscriptionActiveCount + stats.giftSubscriptionCount)
-              | number: "1.1-1"
-          }}</strong>
-          <br />
-
-          Abos på pause: {{ stats.subscriptionOnHoldCount }} <br />
-
-          Gabos: {{ stats.giftSubscriptionCount }}
-        </p> -->
-
         <table class="table">
           <thead>
             <tr>
@@ -189,32 +157,35 @@
           <tbody>
             <tr>
               <td colspan="7" class="full-col">
-                Annenhver uke ({{ stats.subsciptionsBagsPerFortnightlyCount }}
+                Annenhver uke ({{ statsData.aboData.bagsFortnightlyCount }}
                 poser)
               </td>
             </tr>
             <tr>
-              <td>{{ stats.bagCounter.fortnightly.one }}</td>
-              <td>{{ stats.bagCounter.fortnightly.two }}</td>
-              <td>{{ stats.bagCounter.fortnightly.three }}</td>
-              <td>{{ stats.bagCounter.fortnightly.four }}</td>
-              <td>{{ stats.bagCounter.fortnightly.five }}</td>
-              <td>{{ stats.bagCounter.fortnightly.six }}</td>
-              <td>{{ stats.bagCounter.fortnightly.seven }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.one }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.two }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.three }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.four }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.five }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.six }}</td>
+              <td>{{ statsData.aboData.bagCounter.fortnightly.seven }}</td>
             </tr>
             <tr>
               <td colspan="7" class="full-col">
-                Månedlig ({{ stats.subsciptionsBagsPerMonthlyCount }} poser)
+                Månedlig ({{
+                  statsData.aboData.subsciptionsBagsPerMonthlyCount
+                }}
+                poser)
               </td>
             </tr>
             <tr>
-              <td>{{ stats.bagCounter.monthly.one }}</td>
-              <td>{{ stats.bagCounter.monthly.two }}</td>
-              <td>{{ stats.bagCounter.monthly.three }}</td>
-              <td>{{ stats.bagCounter.monthly.four }}</td>
-              <td>{{ stats.bagCounter.monthly.five }}</td>
-              <td>{{ stats.bagCounter.monthly.six }}</td>
-              <td>{{ stats.bagCounter.monthly.seven }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.one }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.two }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.three }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.four }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.five }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.six }}</td>
+              <td>{{ statsData.aboData.bagCounter.monthly.seven }}</td>
             </tr>
           </tbody>
         </table>
@@ -326,10 +297,10 @@
       </mat-card-header>
       <mat-card-content>
         <p>
-          Processing: <strong>{{ stats.orderProcessingCount }}</strong> <br />
-          On hold: <strong>{{ stats.orderOnHoldCount }}</strong> <br />
+          Processing/On-hold:
+          <strong>{{ statsData.wooOrderData.activeOrderCount }}</strong> <br />
           Pending payment:
-          <strong>{{ stats.orderPendingPaymentCount }}</strong> <br />
+          <strong>{{ statsData.wooOrderData.pendingOrderCount }}</strong> <br />
         </p>
       </mat-card-content>
     </mat-card>
@@ -349,11 +320,27 @@
   </div>
 
   <div class="col-6">
-    <p>Data from Woo last updated {{ statsLastUpdated | date: "short" }}</p>
+    <p>
+      Data from Woo last updated
+      {{ statsData.dataFromWooLastUpdated | date: "short" }}
+    </p>
     <div>
       <button mat-raised-button (click)="updateStats()" [disabled]="isUpdating">
         Update now
       </button>
+      <p>
+        <a
+          href="https://mb-backoffice.herokuapp.com/api/woo/data"
+          target="_blank"
+          ><small>Woo data</small></a
+        >
+        <br />
+        <a
+          href="https://mb-backoffice.herokuapp.com/api/stats/data"
+          target="_blank"
+          ><small>Stats data</small></a
+        >
+      </p>
     </div>
   </div>
   <div class="col-6">

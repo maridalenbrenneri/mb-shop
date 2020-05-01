@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   subscriptionCoffeeTypeCounter: any;
   coffeesNotSet: any[] = [];
   coffeeIsNotSet: boolean = false;
-  wooData: any = {}; // non-subscription orders
+  statsData: any;
 
   constructor(private http: HttpClient) {}
 
@@ -34,17 +34,9 @@ export class DashboardComponent implements OnInit {
 
   loadData(self: DashboardComponent) {
     self.http
-      .get<any>(environment.mbApiBaseUrl + "aboabo/stats")
-      .subscribe((stats) => {
-        self.stats = stats.data;
-        self.statsLastUpdated = stats.lastUpdated;
-        console.log("Cargonizer profile", stats.data.cargonizerProfile);
-      });
-
-    self.http
-      .get<any>(environment.mbApiBaseUrl + "woo/data")
+      .get<any>(environment.mbApiBaseUrl + "stats/data")
       .subscribe((res) => {
-        self.wooData = res;
+        self.statsData = res;
       });
 
     self.http
@@ -182,9 +174,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getCargonizerProfile() {
-    if (!this.stats.cargonizerProfile) return {};
+    if (!this.statsData.cargonizerProfile) return {};
 
-    return this.stats.cargonizerProfile.user.managerships.managership.sender
+    return this.statsData.cargonizerProfile.user.managerships.managership.sender
       .plan;
   }
 
@@ -210,16 +202,14 @@ export class DashboardComponent implements OnInit {
   }
 
   resolveCoffeesInActiveOrdersString() {
-    return JSON.stringify(this.wooData.coffeesInActiveNonAboOrders);
+    return JSON.stringify(this.statsData.coffeesInActiveNonAboOrders);
   }
 
   updateStats() {
     this.isUpdating = true;
     this.http
-      .get<any>(environment.mbApiBaseUrl + "aboabo/import")
-      .subscribe((stats) => {
-        this.stats = stats.data;
-        this.statsLastUpdated = stats.lastUpdated;
+      .get<any>(environment.mbApiBaseUrl + "woo/import")
+      .subscribe(() => {
         this.loadData(this);
         this.isUpdating = false;
       });

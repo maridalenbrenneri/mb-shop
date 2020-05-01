@@ -75,12 +75,15 @@ import wooController from "./controllers/woo";
 
 /*** API ***/
 
-// Dashboard / Stats routes
-// app.get("/api/admin/create-tables", isUserInAdmin, adminController.createTable);
-app.get("/api/aboabo/stats", isUserInAdmin, dashboardController.getAboaboStats);
-// NOTE: import must be "open" for scheduled heroku job (TODO: should be triggered in some other way)
-app.get("/api/aboabo/import", dashboardController.importAboaboStats);
+// Dashboard/Stats routes
+
+app.get("/api/stats/data", dashboardController.getData);
 app.get("/api/stats/orders", isUserInAdmin, dashboardController.getOrderStats);
+app.get(
+  "/api/stats/subscriptionCoffeeTypeCounter",
+  isUserInAdmin,
+  dashboardController.getSubscriptionCoffeeTypeCounter
+);
 app.get(
   "/api/stats/coffees",
   isUserInAdmin,
@@ -90,11 +93,6 @@ app.get(
   "/api/stats/deliverydays",
   isUserInAdmin,
   dashboardController.getNextDeliveryDays
-);
-app.get(
-  "/api/stats/subscriptionCoffeeTypeCounter",
-  isUserInAdmin,
-  dashboardController.getSubscriptionCoffeeTypeCounter
 );
 
 // Woo

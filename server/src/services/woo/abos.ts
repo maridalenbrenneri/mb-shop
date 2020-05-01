@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { WOO_SUBSCRIPTION_API_BASE_URL } from "./settings";
 
-interface Counter {
+export interface Counter {
   one: number;
   two: number;
   three: number;
@@ -13,7 +13,7 @@ interface Counter {
   eight: number;
 }
 
-interface BagCounter {
+export interface BagCounter {
   fortnightly: Counter;
   monthly: Counter;
 }
