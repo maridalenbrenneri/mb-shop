@@ -2,7 +2,7 @@ import axios from "axios";
 
 import WooModel from "../../database/models/woo-model";
 import { getSubstringInsideParentheses } from "../../utils/utils";
-import { WOO_API_BASE_URL } from "./settings";
+import { WOO_API_BASE_URL, WOO_GABO_PRODUCT_ID } from "./settings";
 
 interface WooCoffee {
   wooProductId: number;
@@ -14,10 +14,12 @@ export async function resolveAndUpdateActiveCoffeesInOrders(orders: any[]) {
   let lineItems = [];
 
   orders.map((order) => {
-    lineItems = lineItems.concat(order.line_items);
+    const items = excludeNonCoffeeProducts(order.line_items);
+    lineItems = lineItems.concat(items);
   });
 
   const coffees: Array<WooCoffee> = [];
+
   lineItems.map((item) => {
     coffees.push({
       wooProductId: item.product_id,
@@ -47,6 +49,12 @@ export async function fetchActiveOrders() {
   const ordersOnHold = await fetchOrdersOnHold();
 
   return ordersInProcess.concat(ordersOnHold);
+}
+
+function excludeNonCoffeeProducts(lineItems) {
+  return lineItems.filter((item) => {
+    return item.product_id !== WOO_GABO_PRODUCT_ID;
+  });
 }
 
 // TODO: Handling paging (max 100 returned)
@@ -90,11 +98,4 @@ function fetchOrdersInProcess(page: number = 1) {
       });
     });
   });
-}
-
-function mapToClientModel(dbModel) {
-  return {
-    coffeesInActiveOrders: dbModel.coffeesInActiveOrders,
-    importedAt: dbModel.importedAt,
-  };
 }
