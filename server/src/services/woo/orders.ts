@@ -1,8 +1,11 @@
 import axios from "axios";
 
-import WooModel from "../../database/models/woo-model";
 import { getSubstringInsideParentheses } from "../../utils/utils";
-import { WOO_API_BASE_URL, WOO_GABO_PRODUCT_ID } from "./settings";
+import {
+  WOO_API_BASE_URL,
+  WOO_GABO_PRODUCT_ID,
+  WOO_ABO_PRODUCT_ID,
+} from "./settings";
 
 interface WooCoffee {
   wooProductId: number;
@@ -10,7 +13,7 @@ interface WooCoffee {
   quantity: number;
 }
 
-export async function resolveAndUpdateActiveCoffeesInOrders(orders: any[]) {
+export function resolveCoffeesInOrders(orders: any[]) {
   let lineItems = [];
 
   orders.map((order) => {
@@ -34,7 +37,7 @@ export async function resolveAndUpdateActiveCoffeesInOrders(orders: any[]) {
     else dic[c.code] += c.quantity;
   });
 
-  return await WooModel.updateWooData({ coffeesInActiveOrders: dic });
+  return dic;
 }
 
 export async function fetchActiveOrders() {
@@ -53,7 +56,10 @@ export async function fetchActiveOrders() {
 
 function excludeNonCoffeeProducts(lineItems) {
   return lineItems.filter((item) => {
-    return item.product_id !== WOO_GABO_PRODUCT_ID;
+    return (
+      item.product_id !== WOO_GABO_PRODUCT_ID &&
+      item.product_id !== WOO_ABO_PRODUCT_ID
+    );
   });
 }
 
