@@ -35,8 +35,8 @@ export class GiftSubscriptionsComponent implements OnInit {
   private _showOnlyNew: boolean = false;
   private _showOnlyNotSentToday: boolean = false;
   private _showOnlyStarted: boolean = true;
-  private lastImported: Date = new Date();
-  private lastImportedCount: number = 0;
+  private _lastImported: Date = new Date();
+  private _lastImportedCount: number = 0;
 
   constructor(
     private giftSubscriptionService: GiftSubscriptionService,
@@ -57,8 +57,8 @@ export class GiftSubscriptionsComponent implements OnInit {
     this.http
       .get<any>(environment.mbApiBaseUrl + "woo/data")
       .subscribe((res) => {
-        self.lastImported = res.importedAt;
-        self.lastImportedCount = res.gaboData.lastImportedCount;
+        self._lastImported = res.importedAt;
+        self._lastImportedCount = res.gaboData.lastImportedCount;
       });
   }
 
@@ -136,6 +136,14 @@ export class GiftSubscriptionsComponent implements OnInit {
 
   get quantities(): Array<any> {
     return this._quantities;
+  }
+
+  get lastImported() {
+    return this._lastImported;
+  }
+
+  get lastImportedCount() {
+    return this._lastImportedCount;
   }
 
   createOrder(subscription: GiftSubscription) {
