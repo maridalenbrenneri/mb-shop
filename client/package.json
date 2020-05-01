@@ -48,7 +48,7 @@
     "express": "^4.17.1",
     "jquery": "^3.4.1",
     "material-design-icons": "^3.0.1",
-    "moment": "^2.24.0",
+    "moment": "^2.25.0",
     "ng": "0.0.0",
     "ngx-cookie-service": "^2.2.0",
     "ngx-toastr": "^10.2.0",
