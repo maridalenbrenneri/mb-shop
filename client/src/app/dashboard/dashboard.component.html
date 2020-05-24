@@ -102,13 +102,13 @@
               </ng-container>
             </tbody>
           </table>
-          <p>
-            Kaffen fra aktive enkeltordre (ikke inkludert i oversikten over):
-            {{ resolveCoffeesInActiveOrdersString() }}
-          </p>
 
           <a [routerLink]="['/delivery-days']">Endre kaffen her</a>
         </div>
+        <p>
+          Kaffen fra aktive enkeltordre (ikke inkludert i oversikten over):
+          {{ resolveCoffeesInActiveOrdersString() }}
+        </p>
       </mat-card-content>
     </mat-card>
   </div>
