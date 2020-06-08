@@ -30,7 +30,7 @@ class DashboardController {
   };
 
   getNextDeliveryDays = async function (_req: Request, res: Response) {
-    const days = await dashboardService.getDeliveryDays(3);
+    const days = await dashboardService.getDeliveryDaysForDashboard(3);
     res.send(days);
   };
 

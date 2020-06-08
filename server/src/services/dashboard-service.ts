@@ -1,23 +1,25 @@
 import moment = require("moment");
 
-import StatsModel from "../database/models/stats-model";
 import mbOrderService from "./mb-order-service";
 import MbOrderModel from "../database/models/mb-order-model";
 import coffeeService from "./coffee-service";
-import deliveryDayService from "./delivery-day-service";
+import { getDeliveryDays } from "./delivery-day";
+import { getData } from "./stats";
+
+class IAddableCoffeeItem {
+  variationId: number;
+  coffee: any;
+  quantity: number;
+}
 
 class DashboardService {
   getCurrentCoffees = async () => {
     return await coffeeService.getCoffees();
   };
 
-  // MB orders
-  getOrderStats = async () => {
-    const dbOrders = await MbOrderModel.getMbOrdersProcessing();
-    const orders = dbOrders.map((order: MbOrderModel) =>
-      mbOrderService.mapToClientModel(order)
-    );
+  getQuantitiesForMbOrdersAndWooNonAbo = () => {};
 
+  calculateQuantities = (items: IAddableCoffeeItem[]) => {
     const _250s = [];
     const _500s = [];
     const _1200s = [];
@@ -32,23 +34,20 @@ class DashboardService {
       else sizeArray.push({ id, quantity });
     };
 
-    orders.map((o: { coffeeItems: any[] }) => {
-      o.coffeeItems.map((item) => {
-        if (item.variationId === 1) {
-          add(_250s, item.coffee.id, item.quantity);
-          totalWeight += 250 * item.quantity;
-        } else if (item.variationId === 2) {
-          add(_500s, item.coffee.id, item.quantity);
-          totalWeight += 500 * item.quantity;
-        } else if (item.variationId === 3) {
-          add(_1200s, item.coffee.id, item.quantity);
-          totalWeight += 1200 * item.quantity;
-        }
-      });
+    items.map((item) => {
+      if (item.variationId === 1) {
+        add(_250s, item.coffee.id, item.quantity);
+        totalWeight += 250 * item.quantity;
+      } else if (item.variationId === 2) {
+        add(_500s, item.coffee.id, item.quantity);
+        totalWeight += 500 * item.quantity;
+      } else if (item.variationId === 3) {
+        add(_1200s, item.coffee.id, item.quantity);
+        totalWeight += 1200 * item.quantity;
+      }
     });
 
     return {
-      activeOrderCount: orders.length,
       quantities: {
         _250s,
         _500s,
@@ -58,10 +57,31 @@ class DashboardService {
     };
   };
 
-  getDeliveryDays = async (limit: number = 3) => {
+  // MB orders
+  getOrderStats = async () => {
+    const dbOrders = await MbOrderModel.getMbOrdersProcessing();
+    const orders = dbOrders.map((order: MbOrderModel) =>
+      mbOrderService.mapToClientModel(order)
+    );
+
+    let items = [];
+
+    orders.map((o: { coffeeItems: any[] }) => {
+      items = items.concat(o.coffeeItems);
+    });
+
+    const m = this.merge(items);
+
+    return {
+      activeOrderCount: orders.length,
+      ...m,
+    };
+  };
+
+  getDeliveryDaysForDashboard = async (limit: number = 3) => {
     const today = moment().startOf("day");
 
-    const ddays = await deliveryDayService.getDeliveryDays();
+    const ddays = await getDeliveryDays();
 
     const daysAfterToday = ddays.filter((d: any) =>
       moment(d.date).isSameOrAfter(today)
@@ -71,27 +91,24 @@ class DashboardService {
 
     const days = daysAfterToday.slice(0, limit);
 
-    const aboStats = await StatsModel.getStats();
+    const statsData = await getData();
 
     for (let i = 0; i < days.length; i++) {
       days[i].quantities = await this.calculateDeliveryQuantities(
-        aboStats,
+        statsData,
         days[i].type,
-        i === 0
+        i === 0 // // Only include processing orders for first (next) delivery day
       );
     }
-
-    // Only include processing orders for first (next) delivery day
 
     return days;
   };
 
   getSubscriptionCoffeeTypesCount = async () => {
-    const aboStats = await StatsModel.getStats();
-    const data = JSON.parse(aboStats.data);
+    const statsData = await getData();
 
-    const monthly = this.countBags(data.bagCounter.monthly);
-    const smallAbo = this.countBags(data.bagCounter.fortnightly);
+    const monthly = this.countBags(statsData.aboData.bagCounter.monthly);
+    const smallAbo = this.countBags(statsData.aboData.bagCounter.fortnightly);
     const bigAbo = this.aggregateCoffeeTypeCount(monthly, smallAbo);
 
     return {
@@ -143,46 +160,65 @@ class DashboardService {
   };
 
   private calculateDeliveryQuantities = async (
-    aboStats: any,
+    statsData: any,
     type: string,
     isFirst: boolean = false
   ) => {
-    // Woo subscriptions + gabos (only 250g bags)
-    const data = JSON.parse(aboStats.data);
     let aboBagCount = 0;
     if (type === "monthly")
       aboBagCount =
-        data.subsciptionsBagsPerMonthlyCount +
-        data.subsciptionsBagsPerFortnightlyCount;
+        statsData.aboData.bagsMonthlyCount +
+        statsData.aboData.bagsFortnightlyCount;
     else if (type === "fortnightly")
-      aboBagCount = data.subsciptionsBagsPerFortnightlyCount;
+      aboBagCount = statsData.aboData.bagsFortnightlyCount;
 
     const aboBagWeight = aboBagCount > 0 ? aboBagCount * 250 : 0;
 
+    // Only calculate full quantity overview for the next (first) delivery day, for future
+    // delivery days we can only predict abo's
     if (!isFirst) {
       return {
-        _250s: {
-          totalCount: aboBagCount,
-        },
-        _500s: {
-          totalCount: 0,
-        },
-        _1200s: {
-          totalCount: 0,
-        },
+        _250s: { totalCount: aboBagCount },
+        _500s: { totalCount: 0 },
+        _1200s: { totalCount: 0 },
         totalWeight: aboBagWeight / 1000,
       };
     }
-    // TODO: get active non subscriptional orders from Woo
+
+    const coffees = await coffeeService.getCoffees();
+    let count = 0;
+    const items: IAddableCoffeeItem[] = [];
+
+    Object.keys(statsData.coffeesInActiveNonAboOrders).map((key) => {
+      const coffee = coffees.find((c) => c.code === key);
+      if (coffee) {
+        items.push({
+          variationId: 1,
+          coffee,
+          quantity: statsData.coffeesInActiveNonAboOrders[key],
+        });
+      }
+    });
+    const activeNonAboWeight = count * 250;
+
+    console.log(
+      "statsData.coffeesInActiveNonAboOrders",
+      statsData.coffeesInActiveNonAboOrders,
+      count
+    );
 
     // MB Backoffice orders
-    const orderStats = await this.getOrderStats();
+    const orderStats = await this.getQuantitiesForMbOrdersAndWooNonAbo();
 
-    const quantities = {
+    // Weight of coffees in mb orders, abos/gabos and woo non-abo orders
+    const totalWeight =
+      (orderStats.quantities.totalWeight + aboBagWeight + activeNonAboWeight) /
+      1000;
+
+    return {
       coffeeItems: orderStats.quantities,
-      totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000, // Weight of mb orders and abos/gabos
+      totalWeight,
     };
-    return quantities;
   };
 }
 

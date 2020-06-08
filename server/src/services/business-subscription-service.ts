@@ -1,6 +1,6 @@
 import BusinessSubscriptionModel from "../database/models/business-subscription-model";
 import { Op } from "sequelize";
-import deliveryDayService from "./delivery-day-service";
+import { getNextDeliveryDay } from "./delivery-day";
 import coffeeService from "./coffee-service";
 import mbOrderService from "./mb-order-service";
 import { CoffeePrizes } from "../constants";
@@ -23,10 +23,10 @@ interface IItem {
 }
 
 class BusinessSubscriptionService {
-  getSubscriptions = async function() {
+  getSubscriptions = async function () {
     let self = this;
     let filter = {
-      [Op.or]: [{ status: "active" }, { status: "paused" }]
+      [Op.or]: [{ status: "active" }, { status: "paused" }],
     };
 
     const subscriptions = await BusinessSubscriptionModel.getSubscriptions(
@@ -35,7 +35,7 @@ class BusinessSubscriptionService {
     return subscriptions.map((c: any) => self.mapToClientModel(c));
   };
 
-  updateSubscription = async function(subscription: any) {
+  updateSubscription = async function (subscription: any) {
     let self = this;
     let dbSubscription = self.mapToDbModel(subscription);
 
@@ -47,7 +47,7 @@ class BusinessSubscriptionService {
     });
   };
 
-  createSubscription = async function(subscription: any) {
+  createSubscription = async function (subscription: any) {
     let self = this;
     let dbSubscription = self.mapToDbModel(subscription);
 
@@ -58,7 +58,7 @@ class BusinessSubscriptionService {
     );
   };
 
-  createOrderForSubscription = async function(
+  createOrderForSubscription = async function (
     subscription: any,
     customer: any
   ) {
@@ -68,10 +68,10 @@ class BusinessSubscriptionService {
       coffeeItems: undefined,
       notes: subscription.note,
       subscriptionId: subscription.id,
-      freight: 0
+      freight: 0,
     };
 
-    const day = await deliveryDayService.getNextDeliveryDay();
+    const day = await getNextDeliveryDay();
 
     if (day.type === "normal") {
       throw new Error(
@@ -139,7 +139,7 @@ class BusinessSubscriptionService {
     return newOrder;
   };
 
-  resolveCoffeeItems = function(
+  resolveCoffeeItems = function (
     variationId: number,
     quantity: number,
     coffee1: any,
@@ -187,34 +187,34 @@ class BusinessSubscriptionService {
         coffee: coffee1,
         quantity: coffee1count,
         variationId,
-        price
+        price,
       });
     if (coffee2count > 0)
       items.push({
         coffee: coffee2,
         quantity: coffee2count,
         variationId,
-        price
+        price,
       });
     if (coffee3count > 0)
       items.push({
         coffee: coffee3,
         quantity: coffee3count,
         variationId,
-        price
+        price,
       });
     if (coffee4count > 0)
       items.push({
         coffee: coffee4,
         quantity: coffee4count,
         variationId,
-        price
+        price,
       });
 
     return items;
   };
 
-  mapToClientModel = function(subscription: any) {
+  mapToClientModel = function (subscription: any) {
     return {
       id: subscription.id,
       customerId: subscription.customerId,
@@ -228,11 +228,11 @@ class BusinessSubscriptionService {
       quantity1200: subscription.quantity1200,
       lastOrderCreated: subscription.lastOrderCreated,
       lastOrderId: subscription.lastOrderId,
-      note: subscription.note
+      note: subscription.note,
     };
   };
 
-  mapToDbModel = function(subscription: any) {
+  mapToDbModel = function (subscription: any) {
     return {
       id: subscription.id,
       customerId: subscription.customerId,
@@ -246,7 +246,7 @@ class BusinessSubscriptionService {
       quantity1200: subscription.quantity1200,
       lastOrderCreated: subscription.lastOrderCreated,
       lastOrderId: subscription.lastOrderId,
-      note: subscription.note
+      note: subscription.note,
     };
   };
 }

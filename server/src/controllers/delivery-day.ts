@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import deliveryDayService from "../services/delivery-day-service";
+import * as deliveryDayService from "../services/delivery-day";
 
 class DeliveryDayController {
   /**
@@ -13,7 +13,7 @@ class DeliveryDayController {
   /**
    * GET /DeliveryDays
    */
-  getDeliveryDays = async function(_req: Request, res: Response) {
+  getDeliveryDays = async function (_req: Request, res: Response) {
     const days = await deliveryDayService.getDeliveryDays();
     res.send(days);
   };
@@ -21,14 +21,14 @@ class DeliveryDayController {
   /**
    * POST /DeliveryDays
    */
-  createDeliveryDay = async function(req: Request, res: Response) {
+  createDeliveryDay = async function (req: Request, res: Response) {
     throw new Error("Not implemented");
   };
 
   /**
    * PUT /DeliveryDays/:id
    */
-  updateDeliveryDay = async function(req: Request, res: Response) {
+  updateDeliveryDay = async function (req: Request, res: Response) {
     const updated = deliveryDayService.updateDeliveryDay(req.body);
     return res.send(updated);
   };

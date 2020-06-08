@@ -89,11 +89,7 @@ app.get(
   isUserInAdmin,
   dashboardController.getCurrentCoffees
 );
-app.get(
-  "/api/stats/deliverydays",
-  isUserInAdmin,
-  dashboardController.getNextDeliveryDays
-);
+app.get("/api/stats/deliverydays", dashboardController.getNextDeliveryDays);
 
 // Woo
 // NOTE: import must be "open" for scheduled heroku job (TODO: should be triggered in some other way)
