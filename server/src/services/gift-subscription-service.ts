@@ -121,6 +121,19 @@ class GiftSubscriptionService {
   };
 
   mapToClientModel = function (giftSubscription) {
+    let address = null;
+
+    try {
+      address = JSON.parse(giftSubscription.recipient_address);
+    } catch (err) {
+      console.log(
+        "ADDRESS PARSE FAILED FOR GABO",
+        giftSubscription.id,
+        giftSubscription.recipient_address
+      );
+      throw err;
+    }
+
     return {
       id: giftSubscription.id,
       wooOrderId: giftSubscription.wooOrderId,
@@ -136,7 +149,7 @@ class GiftSubscriptionService {
       customerName: giftSubscription.customerName,
       recipient_name: giftSubscription.recipient_name,
       recipient_email: giftSubscription.recipient_email,
-      recipient_address: JSON.parse(giftSubscription.recipient_address),
+      recipient_address: address,
       message_to_recipient: giftSubscription.message_to_recipient,
       note: giftSubscription.note,
       lastOrderCreated: giftSubscription.lastOrderCreated,
