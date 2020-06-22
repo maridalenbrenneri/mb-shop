@@ -13,7 +13,7 @@ import { Coffee, CoffeeVariation } from "../../models/coffee.model";
 @Component({
   selector: "app-orders",
   templateUrl: "./orders.component.html",
-  styleUrls: ["./orders.component.scss"]
+  styleUrls: ["./orders.component.scss"],
 })
 export class OrdersComponent implements OnInit {
   vatCoffee = 15;
@@ -38,12 +38,14 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     this.loadOrders();
 
-    this.customerService.getCustomers().subscribe(customers => {
+    this.customerService.getCustomers().subscribe((customers) => {
       this.customers = customers;
     });
 
-    this.coffeesService.getCoffees().subscribe(products => {
-      this.coffees = products.filter(product => product.isActive);
+    this.coffeesService.getCoffees().subscribe((products) => {
+      this.coffees = products.filter(
+        (product) => product.isActive && product.id !== 1
+      ); // exclude ANY
     });
   }
 
@@ -55,11 +57,11 @@ export class OrdersComponent implements OnInit {
       data: {
         order: Utils.clone(order),
         customers: self.customers,
-        coffees: self.coffees
-      }
+        coffees: self.coffees,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
         return;
       }
@@ -72,11 +74,11 @@ export class OrdersComponent implements OnInit {
     var self = this;
 
     this.orderService.createOrder(order).subscribe(
-      order => {
+      (order) => {
         this.toastr.success(`Order ${order.id} was created`);
         self.loadOrders();
       },
-      err => {
+      (err) => {
         this.toastr.error(`Error when creating order. ${err.message}`);
       }
     );
@@ -84,10 +86,10 @@ export class OrdersComponent implements OnInit {
 
   loadOrders() {
     this.orderService.getOrders().subscribe(
-      orders => {
+      (orders) => {
         this.orders = orders;
       },
-      err => {
+      (err) => {
         this.toastr.error(`Error when fetching orders. ${err.message}`);
       }
     );
@@ -98,17 +100,17 @@ export class OrdersComponent implements OnInit {
   }
 
   alreadyContainsOrder(order: Order) {
-    const items = this.orders.filter(p => p.id && p.id === order.id);
+    const items = this.orders.filter((p) => p.id && p.id === order.id);
     return items.length > 0;
   }
 
   onOrderUpdated(order: Order) {
     this.orderService.updateOrder(order).subscribe(
-      order => {
+      (order) => {
         this.toastr.success(`Order ${order.id} was updated`);
         this.loadOrders();
       },
-      e => {
+      (e) => {
         console.error("Error", e);
         this.toastr.error("Error when trying to update order");
       }
@@ -121,7 +123,7 @@ export class OrdersComponent implements OnInit {
         this.toastr.success(`Order ${orderId} was completed`);
         this.loadOrders();
       },
-      e => {
+      (e) => {
         console.error("Error", e);
         this.toastr.error("Error when trying to update order status");
       }
@@ -136,13 +138,13 @@ export class OrdersComponent implements OnInit {
             this.toastr.success(`Order ${order.id} was completed and shipped`);
             this.loadOrders();
           },
-          e => {
+          (e) => {
             console.error("Error", e);
             this.toastr.error(e.error);
           }
         );
       },
-      e => {
+      (e) => {
         console.error("Error", e);
         this.toastr.error(e.error);
       }
@@ -155,7 +157,7 @@ export class OrdersComponent implements OnInit {
         this.toastr.success(`Order ${orderId} was canceled`);
         this.loadOrders();
       },
-      e => {
+      (e) => {
         console.error("Error", e);
         this.toastr.error("Error when trying to update order status");
       }
@@ -168,7 +170,7 @@ export class OrdersComponent implements OnInit {
         this.toastr.success(`Order ${orderId} was set in process`);
         this.loadOrders();
       },
-      e => {
+      (e) => {
         console.error("Error", e);
         this.toastr.error("Error when trying to update order status");
       }
