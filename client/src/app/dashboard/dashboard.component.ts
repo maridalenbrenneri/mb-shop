@@ -85,36 +85,43 @@ export class DashboardComponent implements OnInit {
     return coffee.code;
   };
 
-  resolveCoffeeANY(day: any) {
-    const coffeeAnyId = 1;
+  resolveCoffeesForNonAboDay() {
+    const result = [];
 
-    const any250 = day.quantities.coffeeItems._250s.find((i) => {
-      return i.id === coffeeAnyId;
-    }) || { quantity: 0 };
+    this.coffees.map((coffee) => {
+      const mbOrders250 = this.orderStats.quantities._250s.find((i) => {
+        return i.id === coffee.id;
+      }) || { quantity: 0 };
 
-    const any500 = day.quantities.coffeeItems._500s.find((i) => {
-      return i.id === coffeeAnyId;
-    }) || { quantity: 0 };
+      const mbOrders500 = this.orderStats.quantities._500s.find((i) => {
+        return i.id === coffee.id;
+      }) || { quantity: 0 };
 
-    const any1200 = day.quantities.coffeeItems._1200s.find((i) => {
-      return i.id === coffeeAnyId;
-    }) || { quantity: 0 };
+      const mbOrders1200 = this.orderStats.quantities._1200s.find((i) => {
+        return i.id === coffee.id;
+      }) || { quantity: 0 };
 
-    const totalGrams =
-      any250.quantity > 0
-        ? any250.quantity * 250
-        : 0 + any500.quantity > 0
-        ? any500.quantity * 500
-        : 0 + any1200.quantity > 0
-        ? any1200.quantity * 1200
-        : 0;
+      const mbOrdersTotalWeight =
+        (mbOrders250.quantity > 0 ? mbOrders250.quantity * 250 : 0) +
+        (mbOrders500.quantity > 0 ? mbOrders500.quantity * 500 : 0) +
+        (mbOrders1200.quantity > 0 ? mbOrders1200.quantity * 1200 : 0);
 
-    return {
-      count250: any250.quantity,
-      count500: any500.quantity,
-      count1200: any1200.quantity,
-      total: totalGrams / 1000,
-    };
+      let count250 = 0;
+      const c = this.statsData.coffeesInActiveNonAboOrders[coffee.code];
+      if (c) {
+        count250 += this.statsData.coffeesInActiveNonAboOrders[coffee.code];
+      }
+
+      result.push({
+        code: coffee.code,
+        count250: count250 + mbOrders250.quantity,
+        count500: mbOrders500.quantity,
+        count1200: mbOrders1200.quantity,
+        total: (count250 * 250 + mbOrdersTotalWeight) / 1000,
+      });
+    });
+
+    return result;
   }
 
   resolveCoffee(day: any, coffeeField: string) {
