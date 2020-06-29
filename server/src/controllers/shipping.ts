@@ -2,18 +2,17 @@ import { Response, Request } from "express";
 import {
   CargonizerService,
   Consignment,
-  ShippingType
+  ShippingType,
 } from "../services/cargonizer-service";
 import giftSubscriptionService from "../services/gift-subscription-service";
-import { ControllerHelper } from "./controller-base";
 import { Constants } from "../constants";
-import { getCoffeeVariationWeight } from "../bl";
+import { getCoffeeVariationWeight, getCoffeeVariationSizeLabel } from "../bl";
 
 class ShippingController {
   /*
    * POST /api/shipping/ship-business-order
    */
-  CreateConsignmentForBusinessOrder = async function(
+  CreateConsignmentForBusinessOrder = async function (
     req: Request,
     res: Response
   ) {
@@ -23,15 +22,19 @@ class ShippingController {
       const order = req.body;
 
       let weight = 0;
-      order.coffeeItems.forEach(item => {
+      let reference = "";
+
+      order.coffeeItems.forEach((item) => {
         const itemWeight = getCoffeeVariationWeight(item.variationId);
+        const itemSizeLabel = getCoffeeVariationSizeLabel(item.variationId);
         weight += itemWeight * item.quantity;
+        reference = `${reference}${item.quantity}${item.coffee?.code}${itemSizeLabel} `;
       });
 
       const consignment: Consignment = {
         shippingType: ShippingType.standard_business,
         weight: weight,
-        reference: "#" + order.id,
+        reference,
         customer: {
           email: order.customer.email,
           phone: order.customer.phone,
@@ -41,8 +44,8 @@ class ShippingController {
           zipCode: order.customer.address.zipCode,
           place: order.customer.address.place,
           country: "NO",
-          contactPerson: order.customer.contactPerson
-        }
+          contactPerson: order.customer.contactPerson,
+        },
       };
 
       await cargonizer.requestConsignment(consignment);
@@ -53,7 +56,7 @@ class ShippingController {
     }
   };
 
-  CreateConsignmentForGiftSubscription = async function(
+  CreateConsignmentForGiftSubscription = async function (
     req: Request,
     res: Response,
     _next: any
@@ -76,8 +79,8 @@ class ShippingController {
           zipCode: sub.recipient_address.zipCode,
           place: sub.recipient_address.place,
           country: "NO",
-          contactPerson: sub.recipient_name
-        }
+          contactPerson: sub.recipient_name,
+        },
       };
 
       await cargonizer.requestConsignment(consignment);
