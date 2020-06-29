@@ -112,6 +112,7 @@ function resolveLastDeliveryDate(
   numberOfMonths: number,
   frequence: number
 ) {
+  // TODO: this doesnt always gets right (one month too much). Use delivery days service instead of date helper (obsolete)
   const date = moment(firstDeliveryDate).add(numberOfMonths - 1, "M");
   return SubscriptionDateHelper.resolveNextDeliveryDate(
     date.toDate(),
