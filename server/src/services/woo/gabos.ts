@@ -51,6 +51,14 @@ async function _fetchGabos(page: number = 1) {
     "&after=" +
     fromCreatedDate.toISOString();
   const response = await axios.get(url);
+
+  if (!response.data || response.data.length === 0) {
+    return {
+      nextPage: null,
+      gabos: [],
+    };
+  }
+
   const nextPage =
     response.headers["x-wp-totalpages"] === `${page}` ? null : page + 1;
   return {

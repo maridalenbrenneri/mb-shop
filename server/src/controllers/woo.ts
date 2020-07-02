@@ -9,8 +9,13 @@ class WooController {
   };
 
   importWooData = async function (_req: Request, res: Response) {
-    const importedData = await woo.importWooData();
-    res.send(importedData);
+    try {
+      const importedData = await woo.importWooData();
+      res.send(importedData);
+    } catch (err) {
+      console.log("ERROR when calling woo.importWooData()", err);
+      throw err;
+    }
   };
 }
 

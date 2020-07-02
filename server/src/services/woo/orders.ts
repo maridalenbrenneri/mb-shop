@@ -50,12 +50,16 @@ export async function fetchActiveOrders() {
     ordersInProcess = ordersInProcess.concat(result.orders);
   } while (page);
 
+  console.debug("FETCH ORDERS PROCESSING DONE");
+
   page = 1;
   do {
     const result = await _fetchOrders(page, "on-hold");
     page = result.nextPage;
     ordersOnHold = ordersOnHold.concat(result.orders);
   } while (page);
+
+  console.debug("FETCH ORDERS ON-HOLD DONE");
 
   return ordersInProcess.concat(ordersOnHold);
 }
@@ -68,6 +72,8 @@ export async function fetchPendingOrders() {
     page = result.nextPage;
     ordersPendingPayment = ordersPendingPayment.concat(result.orders);
   } while (page);
+
+  console.debug("FETCH ORDERS PENDING PAYMENT DONE");
 
   return ordersPendingPayment;
 }
@@ -98,9 +104,16 @@ function excludeNonCoffeeAndAboProducts(lineItems) {
 }
 
 async function _fetchOrders(page: number = 1, status: string) {
-  const url = `${WOO_API_BASE_URL}orders?page=${page}&per_page=100&status=${status}&${process.env.WOO_SECRET_PARAM}`;
+  const url = `${WOO_API_BASE_URL}orders?page=${page}&per_page=30&status=${status}&${process.env.WOO_SECRET_PARAM}`;
 
   const response = await axios.get(url);
+
+  if (!response.data || response.data.length === 0) {
+    return {
+      nextPage: null,
+      orders: [],
+    };
+  }
 
   const nextPage =
     response.headers["x-wp-totalpages"] === `${page}` ? null : page + 1;

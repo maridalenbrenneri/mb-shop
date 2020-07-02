@@ -73,6 +73,14 @@ async function _fetchAbos(page: number = 1) {
   const url = `${WOO_SUBSCRIPTION_API_BASE_URL}subscriptions?page=${page}&per_page=30&${process.env.WOO_SECRET_PARAM}`;
 
   const response = await axios.get(url);
+
+  if (!response.data || response.data.length === 0) {
+    return {
+      nextPage: null,
+      abos: [],
+    };
+  }
+
   const nextPage =
     response.headers["x-wp-totalpages"] === `${page}` ? null : page + 1;
   return {
