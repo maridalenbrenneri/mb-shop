@@ -33,37 +33,56 @@ export class DashboardComponent implements OnInit {
   }
 
   loadData(self: DashboardComponent) {
-    self.http
-      .get<any>(environment.mbApiBaseUrl + "stats/data")
-      .subscribe((res) => {
+    self.http.get<any>(environment.mbApiBaseUrl + "stats/data").subscribe(
+      (res) => {
         self.statsData = res;
-      });
+      },
+      (error) => {
+        self.statsData = {};
+      }
+    );
 
-    self.http
-      .get<any>(environment.mbApiBaseUrl + "stats/coffees")
-      .subscribe((res) => {
+    self.http.get<any>(environment.mbApiBaseUrl + "stats/coffees").subscribe(
+      (res) => {
         self.coffees = res;
-      });
+      },
+      (error) => {
+        self.coffees = [];
+      }
+    );
 
-    self.http
-      .get<any>(environment.mbApiBaseUrl + "stats/orders")
-      .subscribe((res) => {
+    self.http.get<any>(environment.mbApiBaseUrl + "stats/orders").subscribe(
+      (res) => {
         this.orderStats = res;
-      });
+      },
+      (error) => {
+        self.orderStats = {};
+      }
+    );
 
     self.http
       .get<any>(environment.mbApiBaseUrl + "stats/deliverydays")
-      .subscribe((res) => {
-        self.deliveryDays = res;
-      });
+      .subscribe(
+        (res) => {
+          self.deliveryDays = res;
+        },
+        (error) => {
+          self.deliveryDays = [];
+        }
+      );
 
     self.http
       .get<any>(
         environment.mbApiBaseUrl + "stats/subscriptionCoffeeTypeCounter"
       )
-      .subscribe((res) => {
-        self.subscriptionCoffeeTypeCounter = res;
-      });
+      .subscribe(
+        (res) => {
+          self.subscriptionCoffeeTypeCounter = res;
+        },
+        (error) => {
+          self.subscriptionCoffeeTypeCounter = {};
+        }
+      );
 
     self.dataLastLoaded = moment().toDate();
   }
@@ -206,5 +225,20 @@ export class DashboardComponent implements OnInit {
         this.loadData(this);
         this.isUpdating = false;
       });
+  }
+
+  isWooUpdated() {
+    const lastUpdated = this.statsData.dataFromWooLastUpdated;
+    if (!lastUpdated) return false;
+    return moment().diff(lastUpdated, "hours") < 12;
+  }
+
+  isCargonizerItemOk() {
+    const WARN_ON_ITEMS_LEFT = 1000;
+    const itemsLeft =
+      this.getCargonizerProfile().item_limit -
+      this.getCargonizerProfile().item_counter;
+
+    return itemsLeft > WARN_ON_ITEMS_LEFT;
   }
 }

@@ -23,6 +23,23 @@
     subscriptionCoffeeTypeCounter
   "
 >
+  <div class="col-12" *ngIf="!isWooUpdated()">
+    <div class="warning-box">
+      WARNING: DATA FROM WOO HAS NOT BEEN UPDATED SINCE
+      <strong>{{ statsData.dataFromWooLastUpdated | date: "short" }}</strong>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="!isCargonizerItemOk()">
+    <div class="warning-box">
+      WARNING: ONLY
+      <strong>{{
+        getCargonizerProfile().item_limit - getCargonizerProfile().item_counter
+      }}</strong>
+      ITEMS LEFT IN OUR CARGONIZER AGREEMENT
+    </div>
+  </div>
+
   <div class="col-12">
     <mat-card class="product-card">
       <mat-card-content>

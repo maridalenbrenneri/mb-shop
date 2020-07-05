@@ -75,124 +75,171 @@ import wooController from "./controllers/woo";
 
 /*** API ***/
 
+const asyncMiddleware = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch((err) => {
+    if (err instanceof ValidationError) {
+      return res.status(422).send({ validationError: err.message });
+    }
+
+    logger.error(err.message);
+
+    return res.status(500).send(err.message);
+  });
+};
+
 // Dashboard/Stats routes
 
-app.get("/api/stats/data", dashboardController.getData);
-app.get("/api/stats/orders", isUserInAdmin, dashboardController.getOrderStats);
+app.get("/api/stats/data", asyncMiddleware(dashboardController.getData));
+app.get(
+  "/api/stats/orders",
+  isUserInAdmin,
+  asyncMiddleware(dashboardController.getOrderStats)
+);
 app.get(
   "/api/stats/subscriptionCoffeeTypeCounter",
   isUserInAdmin,
-  dashboardController.getSubscriptionCoffeeTypeCounter
+  asyncMiddleware(dashboardController.getSubscriptionCoffeeTypeCounter)
 );
 app.get(
   "/api/stats/coffees",
   isUserInAdmin,
-  dashboardController.getCurrentCoffees
+  asyncMiddleware(dashboardController.getCurrentCoffees)
 );
 app.get(
   "/api/stats/deliverydays",
   isUserInAdmin,
-  dashboardController.getNextDeliveryDays
+  asyncMiddleware(dashboardController.getNextDeliveryDays)
 );
 
 // Woo
 // NOTE: import must be "open" for scheduled heroku job (TODO: should be triggered in some other way)
-app.get("/api/woo/import", wooController.importWooData);
-app.get("/api/woo/data", wooController.getWooData);
+app.get("/api/woo/import", asyncMiddleware(wooController.importWooData));
+app.get("/api/woo/data", asyncMiddleware(wooController.getWooData));
 
 // User and auth
-app.post("/api/authenticate", authController.authenticate);
-app.get("/api/users/me", isAuthenticated, authController.getMe);
-app.get("/api/users", isUserInAdmin, authController.getUsers);
+app.post("/api/authenticate", asyncMiddleware(authController.authenticate));
+app.get(
+  "/api/users/me",
+  isAuthenticated,
+  asyncMiddleware(authController.getMe)
+);
+app.get("/api/users", isUserInAdmin, asyncMiddleware(authController.getUsers));
 
 // Shipping (Integration with Cargonizer)
 app.post(
   "/api/shipping/ship-business-order",
   isUserInSuperuser,
-  shippingController.CreateConsignmentForBusinessOrder
+  asyncMiddleware(shippingController.CreateConsignmentForBusinessOrder)
 );
 app.post(
   "/api/shipping/ship-gift-subscription",
   isUserInSuperuser,
-  shippingController.CreateConsignmentForGiftSubscription
+  asyncMiddleware(shippingController.CreateConsignmentForGiftSubscription)
 );
 
 // Gift subscriptions (Integration with Woo)
 app.get(
   "/api/giftsubscriptions",
   isUserInSuperuser,
-  giftSubscriptionController.getGiftSubscriptions
+  asyncMiddleware(giftSubscriptionController.getGiftSubscriptions)
 );
 app.put(
   "/api/giftsubscriptions/:id/first-delivery-date",
   isUserInSuperuser,
-  giftSubscriptionController.setFirstDeliveryDate
+  asyncMiddleware(giftSubscriptionController.setFirstDeliveryDate)
 );
 
 // Customers
-app.get("/api/customers", customerController.getCustomers);
+app.get("/api/customers", asyncMiddleware(customerController.getCustomers));
 
 // Delivery days
-app.get("/api/deliverydays", deliveryDaysController.getDeliveryDays);
+app.get(
+  "/api/deliverydays",
+  asyncMiddleware(deliveryDaysController.getDeliveryDays)
+);
 app.post(
   "/api/deliverydays",
   isUserInSuperuser,
-  deliveryDaysController.createDeliveryDay
+  asyncMiddleware(deliveryDaysController.createDeliveryDay)
 );
 app.put(
   "/api/deliverydays/:id",
   isUserInSuperuser,
-  deliveryDaysController.updateDeliveryDay
+  asyncMiddleware(deliveryDaysController.updateDeliveryDay)
 );
 
 // Coffees
-app.get("/api/coffees", coffeeController.getCoffees);
-app.get("/api/coffees/:id", coffeeController.getCoffee);
-app.post("/api/coffees", isUserInSuperuser, coffeeController.createCoffee);
-app.put("/api/coffees/:id", isUserInSuperuser, coffeeController.updateCoffee);
+app.get("/api/coffees", asyncMiddleware(coffeeController.getCoffees));
+app.get("/api/coffees/:id", asyncMiddleware(coffeeController.getCoffee));
+app.post(
+  "/api/coffees",
+  isUserInSuperuser,
+  asyncMiddleware(coffeeController.createCoffee)
+);
+app.put(
+  "/api/coffees/:id",
+  isUserInSuperuser,
+  asyncMiddleware(coffeeController.updateCoffee)
+);
 
 // Business subscriptions
 app.get("/api/subscriptions", subscriptionController.getSubscriptions);
 app.put(
   "/api/subscriptions/:id",
   isUserInSuperuser,
-  subscriptionController.updateSubscription
+  asyncMiddleware(subscriptionController.updateSubscription)
 );
 app.post(
   "/api/subscriptions",
   isUserInSuperuser,
-  subscriptionController.createSubscription
+  asyncMiddleware(subscriptionController.createSubscription)
 );
 app.post(
   "/api/subscriptions/createorder",
   isUserInSuperuser,
-  subscriptionController.createOrderFromSubscription
+  asyncMiddleware(subscriptionController.createOrderFromSubscription)
 );
 
 // Orders
-app.get("/api/orders", isUserInSuperuser, orderController.getOrders);
-app.put("/api/orders/:id", isUserInSuperuser, orderController.updateOrder);
-app.get("/api/orders/:id", isAuthenticated, orderController.getOrders);
-app.post("/api/orders", isUserInSuperuser, orderController.createOrder);
+app.get(
+  "/api/orders",
+  isUserInSuperuser,
+  asyncMiddleware(orderController.getOrders)
+);
+app.put(
+  "/api/orders/:id",
+  isUserInSuperuser,
+  asyncMiddleware(orderController.updateOrder)
+);
+app.get(
+  "/api/orders/:id",
+  isAuthenticated,
+  asyncMiddleware(orderController.getOrders)
+);
+app.post(
+  "/api/orders",
+  isUserInSuperuser,
+  asyncMiddleware(orderController.createOrder)
+);
 app.post(
   "/api/orders/:id/complete",
   isUserInSuperuser,
-  orderController.completeOrder
+  asyncMiddleware(orderController.completeOrder)
 );
 app.post(
   "/api/orders/:id/cancel",
   isUserInSuperuser,
-  orderController.cancelOrder
+  asyncMiddleware(orderController.cancelOrder)
 );
 app.post(
   "/api/orders/:id/process",
   isUserInSuperuser,
-  orderController.processOrder
+  asyncMiddleware(orderController.processOrder)
 );
 app.post(
   "/api/orders/:id/invoice",
   isUserInSuperuser,
-  orderController.createInvoice
+  asyncMiddleware(orderController.createInvoice)
 );
 
 app.get("/api", function (_req: Request, res: Response) {
@@ -215,7 +262,7 @@ app.get("/*", function (_req, res) {
 
 /*** END CLIENT ***/
 
-// Error handling
+// Error handling - IS THIS IN USE? DONT THINK SO...
 app.use(function (err: any, req: any, res: any, next: any) {
   if (err instanceof ValidationError) {
     return res.status(422).send({ validationError: err.message });
