@@ -25,7 +25,7 @@ function aggregateGaboData(gabos, wooData) {
 
   for (const gabo of gabos) {
     const bags = gabo.quantity;
-    const isFortnighlty = gabo.type == 2;
+    const isFortnighlty = gabo.frequence === 2;
     updateBagCounterForGabos(bagCounter, bags, isFortnighlty);
 
     if (isFortnighlty) {

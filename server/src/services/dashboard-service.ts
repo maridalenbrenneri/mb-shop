@@ -1,10 +1,10 @@
 import moment = require("moment");
 
-import StatsModel from "../database/models/stats-model";
 import mbOrderService from "./mb-order-service";
 import MbOrderModel from "../database/models/mb-order-model";
 import coffeeService from "./coffee-service";
 import deliveryDayService from "./delivery-day-service";
+import { getData } from "../services/stats";
 
 class DashboardService {
   getCurrentCoffees = async () => {
@@ -71,11 +71,11 @@ class DashboardService {
 
     const days = daysAfterToday.slice(0, limit);
 
-    const aboStats = await StatsModel.getStats();
+    const stats = await getData();
 
     for (let i = 0; i < days.length; i++) {
       days[i].quantities = await this.calculateDeliveryQuantities(
-        aboStats,
+        stats.aboData,
         days[i].type,
         i === 0
       );
@@ -86,12 +86,56 @@ class DashboardService {
     return days;
   };
 
-  getSubscriptionCoffeeTypesCount = async () => {
-    const aboStats = await StatsModel.getStats();
-    const data = JSON.parse(aboStats.data);
+  private calculateDeliveryQuantities = async (
+    data: any,
+    type: string,
+    isFirst: boolean = false
+  ) => {
+    // Woo subscriptions + gabos (only 250g bags)
+    let aboBagCount = 0;
+    if (type === "monthly")
+      aboBagCount =
+        data.subsciptionsBagsPerMonthlyCount +
+        data.subsciptionsBagsPerFortnightlyCount;
+    else if (type === "fortnightly")
+      aboBagCount = data.subsciptionsBagsPerFortnightlyCount;
 
-    const monthly = this.countBags(data.bagCounter.monthly);
-    const smallAbo = this.countBags(data.bagCounter.fortnightly);
+    const aboBagWeight = aboBagCount > 0 ? aboBagCount * 250 : 0;
+
+    if (!isFirst) {
+      return {
+        _250s: {
+          totalCount: aboBagCount,
+        },
+        _500s: {
+          totalCount: 0,
+        },
+        _1200s: {
+          totalCount: 0,
+        },
+        totalWeight: aboBagWeight / 1000,
+      };
+    }
+    // TODO: get active non subscriptional orders from Woo
+
+    // MB Backoffice orders
+    const orderStats = await this.getOrderStats();
+
+    const quantities = {
+      coffeeItems: orderStats.quantities,
+      totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000, // Weight of mb orders and abos/gabos
+    };
+    return quantities;
+  };
+
+  //
+  // COFFEE ROAST AND PACKING OVERVIEW - MAYBE MOVE TO OWN CONTROLLER / SERVICE ?
+  //
+  getSubscriptionCoffeeTypesCount = async () => {
+    const stats = await getData();
+
+    const monthly = this.countBags(stats.aboData.bagCounter.monthly);
+    const smallAbo = this.countBags(stats.aboData.bagCounter.fortnightly);
     const bigAbo = this.aggregateCoffeeTypeCount(monthly, smallAbo);
 
     return {
@@ -141,49 +185,7 @@ class DashboardService {
 
     return { total, coffee1, coffee2, coffee3, coffee4 };
   };
-
-  private calculateDeliveryQuantities = async (
-    aboStats: any,
-    type: string,
-    isFirst: boolean = false
-  ) => {
-    // Woo subscriptions + gabos (only 250g bags)
-    const data = JSON.parse(aboStats.data);
-    let aboBagCount = 0;
-    if (type === "monthly")
-      aboBagCount =
-        data.subsciptionsBagsPerMonthlyCount +
-        data.subsciptionsBagsPerFortnightlyCount;
-    else if (type === "fortnightly")
-      aboBagCount = data.subsciptionsBagsPerFortnightlyCount;
-
-    const aboBagWeight = aboBagCount > 0 ? aboBagCount * 250 : 0;
-
-    if (!isFirst) {
-      return {
-        _250s: {
-          totalCount: aboBagCount,
-        },
-        _500s: {
-          totalCount: 0,
-        },
-        _1200s: {
-          totalCount: 0,
-        },
-        totalWeight: aboBagWeight / 1000,
-      };
-    }
-    // TODO: get active non subscriptional orders from Woo
-
-    // MB Backoffice orders
-    const orderStats = await this.getOrderStats();
-
-    const quantities = {
-      coffeeItems: orderStats.quantities,
-      totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000, // Weight of mb orders and abos/gabos
-    };
-    return quantities;
-  };
+  // END COFFEE ROAST AND PACKING OVERVIEW
 }
 
 export default new DashboardService();

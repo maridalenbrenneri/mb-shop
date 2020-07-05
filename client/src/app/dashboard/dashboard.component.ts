@@ -130,6 +130,10 @@ export class DashboardComponent implements OnInit {
       console.log("WARNING - coffee is not set on delivery day");
     }
 
+    // This is only for abo delivery days
+
+    if (day.type === "normal") return null;
+
     const mbOrders250 = day.quantities.coffeeItems._250s.find((i) => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
@@ -141,24 +145,6 @@ export class DashboardComponent implements OnInit {
     const mbOrders1200 = day.quantities.coffeeItems._1200s.find((i) => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
-
-    const mbOrdersTotalWeight =
-      (mbOrders250.quantity > 0 ? mbOrders250.quantity * 250 : 0) +
-      (mbOrders500.quantity > 0 ? mbOrders500.quantity * 500 : 0) +
-      (mbOrders1200.quantity > 0 ? mbOrders1200.quantity * 1200 : 0);
-
-    if (day.type === "normal") {
-      // TODO: add non-subscription orders
-
-      return {
-        count250: mbOrders250.quantity,
-        count500: mbOrders500.quantity,
-        count1200: mbOrders1200.quantity,
-        total: mbOrdersTotalWeight / 1000,
-      };
-    }
-
-    // If abo delivery day, add all abo small bags
 
     const abo250count =
       day.type === "monthly"

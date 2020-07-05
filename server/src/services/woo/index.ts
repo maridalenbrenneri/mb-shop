@@ -37,8 +37,6 @@ export async function importWooData() {
   const abos = await fetchAbos();
   const aboData = resolveAboData(abos);
 
-  console.log("Fetched abo data", aboData);
-
   // Update database
   const updatedData = await WooModel.updateWooData({
     coffeesInActiveOrders,
