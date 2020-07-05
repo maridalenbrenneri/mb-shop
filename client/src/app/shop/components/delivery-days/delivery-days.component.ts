@@ -9,7 +9,7 @@ import { Coffee } from "../../models/coffee.model";
 @Component({
   selector: "app-delivery-days",
   templateUrl: "./delivery-days.component.html",
-  styleUrls: ["./delivery-days.component.scss"]
+  styleUrls: ["./delivery-days.component.scss"],
 })
 export class DeliveryDaysComponent implements OnInit {
   deliveryDays: Array<DeliveryDay>;
@@ -28,9 +28,9 @@ export class DeliveryDaysComponent implements OnInit {
   }
 
   loadCoffees() {
-    this.coffeeService.getCoffees().subscribe(
-      coffees => {
-        this.coffees = coffees.filter(c => c.id > 1); // exclude ANY
+    this.coffeeService.getCoffees(true).subscribe(
+      (coffees) => {
+        this.coffees = coffees.filter((c) => c.id > 1); // exclude ANY
       },
       () => {
         this.toastr.error("Error when loading coffees");
@@ -40,7 +40,7 @@ export class DeliveryDaysComponent implements OnInit {
 
   loadDeliveryDays() {
     this.deliveryDayService.getDeliveryDays().subscribe(
-      deliveryDays => {
+      (deliveryDays) => {
         this.deliveryDays = deliveryDays;
       },
       () => {
@@ -49,9 +49,9 @@ export class DeliveryDaysComponent implements OnInit {
     );
   }
 
-  resolveCoffeeCodeFromId = id => {
+  resolveCoffeeCodeFromId = (id) => {
     if (!this.coffees) return "";
-    const coffee = this.coffees.find(c => c.id === id);
+    const coffee = this.coffees.find((c) => c.id === id);
     if (!coffee) return "";
     return coffee.code;
   };
@@ -67,11 +67,11 @@ export class DeliveryDaysComponent implements OnInit {
       disableClose: true,
       data: {
         coffees: this.coffees,
-        deliveryDay: deliveryDay
-      }
+        deliveryDay: deliveryDay,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
         return;
       }
@@ -86,7 +86,7 @@ export class DeliveryDaysComponent implements OnInit {
           this.loadDeliveryDays();
           this.toastr.success("Delivery day was updated");
         },
-        err => {
+        (err) => {
           this.toastr.error("Error when updating delivery day");
         }
       );
@@ -101,7 +101,7 @@ export interface EditDeliveryDayData {
 
 @Component({
   selector: "edit-delivery-day.component",
-  templateUrl: "edit-delivery-day.component.html"
+  templateUrl: "edit-delivery-day.component.html",
 })
 export class EditDeliveryDayComponent {
   constructor(

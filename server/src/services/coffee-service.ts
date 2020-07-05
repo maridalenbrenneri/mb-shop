@@ -4,24 +4,24 @@ import logger from "../utils/logger";
 // import { CoffeeValidator } from "../validators/coffee-validator";
 
 class CoffeeService {
-  getCoffee = async function(coffeeId: number) {
+  getCoffee = async function (coffeeId: number) {
     let self = this;
 
-    return await CoffeeModel.getCoffee(coffeeId).then(coffee => {
+    return await CoffeeModel.getCoffee(coffeeId).then((coffee) => {
       if (!coffee) return null;
       return self.mapToClientModel(coffee);
     });
   };
 
-  getCoffees = async function() {
+  getCoffees = async function (includeInactive: boolean = false) {
     let self = this;
-    let filter = { isActive: true };
+    let filter = !includeInactive ? { isActive: true } : null;
 
     const coffees = await CoffeeModel.getCoffees(filter);
-    return coffees.map(p => self.mapToClientModel(p));
+    return coffees.map((p) => self.mapToClientModel(p));
   };
 
-  createCoffee = function(coffee: any, res: Response) {
+  createCoffee = function (coffee: any, res: Response) {
     let self = this;
 
     // CoffeeValidator.validate(coffee);
@@ -29,18 +29,18 @@ class CoffeeService {
     let dbCoffee = self.mapToDbModel(coffee);
 
     return CoffeeModel.createCoffee(dbCoffee)
-      .then(createdCoffee => {
+      .then((createdCoffee) => {
         return res.send(self.mapToClientModel(createdCoffee));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         logger.error(err);
         return res.status(500).send({
-          error: "An error occured when creating the coffee: " + err
+          error: "An error occured when creating the coffee: " + err,
         });
       });
   };
 
-  updateCoffee = function(coffee: any, res: Response) {
+  updateCoffee = function (coffee: any, res: Response) {
     let self = this;
 
     // CoffeeValidator.validate(coffee);
@@ -48,36 +48,36 @@ class CoffeeService {
     let dbCoffee = self.mapToDbModel(coffee);
 
     return CoffeeModel.updateCoffee(dbCoffee.id, dbCoffee)
-      .then(updatedCoffee => {
+      .then((updatedCoffee) => {
         return res.send(self.mapToClientModel(updatedCoffee));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         logger.error(err);
         return res.status(500).send({
-          error: "An error occured when updating the coffee: " + err
+          error: "An error occured when updating the coffee: " + err,
         });
       });
   };
 
-  mapToDbModel = function(coffee) {
+  mapToDbModel = function (coffee) {
     return {
       id: coffee.id,
       code: coffee.code,
       name: coffee.name,
       country: coffee.country,
       isActive: coffee.isActive,
-      isInStock: coffee.isInStock
+      isInStock: coffee.isInStock,
     };
   };
 
-  mapToClientModel = function(coffee) {
+  mapToClientModel = function (coffee) {
     return {
       id: coffee.id,
       code: coffee.code,
       name: coffee.name,
       country: coffee.country,
       isActive: coffee.isActive,
-      isInStock: coffee.isInStock
+      isInStock: coffee.isInStock,
     };
   };
 }

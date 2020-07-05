@@ -7,7 +7,7 @@ import { Coffee } from "../models/coffee.model";
 import { environment } from "../../../environments/environment";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CoffeeService {
   coffees: Array<Coffee> = [];
@@ -26,7 +26,7 @@ export class CoffeeService {
   }
 
   getCoffee(id: number): Observable<Coffee> {
-    const coffee = this.coffees.find(p => p.id === id);
+    const coffee = this.coffees.find((p) => p.id === id);
     if (!coffee) {
       return of(coffee);
     }
@@ -34,12 +34,16 @@ export class CoffeeService {
     return this.http.get<Coffee>(`${environment.mbApiBaseUrl}coffees/${id}`);
   }
 
-  getCoffees(): Observable<Coffee[]> {
-    return this.http.get<Coffee[]>(`${environment.mbApiBaseUrl}coffees`).pipe(
-      map(coffees => {
-        this.coffees = coffees;
-        return this.coffees;
-      })
-    );
+  getCoffees(includeInactive: boolean = false): Observable<Coffee[]> {
+    return this.http
+      .get<Coffee[]>(
+        `${environment.mbApiBaseUrl}coffees?includeInactive=${includeInactive}`
+      )
+      .pipe(
+        map((coffees) => {
+          this.coffees = coffees;
+          return this.coffees;
+        })
+      );
   }
 }

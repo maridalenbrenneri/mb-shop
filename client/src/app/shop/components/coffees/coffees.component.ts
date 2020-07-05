@@ -7,7 +7,7 @@ import { ToastrService } from "ngx-toastr";
 @Component({
   selector: "app-coffees",
   templateUrl: "./coffees.component.html",
-  styleUrls: ["./coffees.component.scss"]
+  styleUrls: ["./coffees.component.scss"],
 })
 export class CoffeesComponent implements OnInit {
   vatCoffee = 15;
@@ -28,11 +28,9 @@ export class CoffeesComponent implements OnInit {
   }
 
   loadCoffees() {
-    this.coffeeService.getCoffees().subscribe(
-      coffees => {
-        if (!this._showNotActiveCoffees) {
-          this.coffeeCoffees = coffees.filter(coffee => coffee.isActive);
-        }
+    this.coffeeService.getCoffees(this._showNotActiveCoffees).subscribe(
+      (coffees) => {
+        this.coffeeCoffees = coffees;
       },
       () => {
         this.toastr.error("Error when loading coffees");
@@ -50,11 +48,11 @@ export class CoffeesComponent implements OnInit {
       data: {
         code: coffee.code,
         country: coffee.country,
-        name: coffee.name
-      }
+        name: coffee.name,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
         return;
       }
@@ -72,7 +70,7 @@ export class CoffeesComponent implements OnInit {
             this.loadCoffees();
             this.toastr.success("Coffee created");
           },
-          err => {
+          (err) => {
             this.toastr.error("Error when creating coffee");
           }
         );
@@ -82,7 +80,7 @@ export class CoffeesComponent implements OnInit {
             this.loadCoffees();
             this.toastr.success("Coffee updated");
           },
-          err => {
+          (err) => {
             this.toastr.error("Error when updating coffee");
           }
         );
@@ -96,7 +94,7 @@ export class CoffeesComponent implements OnInit {
       () => {
         this.loadCoffees();
       },
-      err => {
+      (err) => {
         this.toastr.error("Error when updating coffee");
       }
     );
@@ -108,7 +106,7 @@ export class CoffeesComponent implements OnInit {
   }
 
   alreadyContainsCoffee(coffee: Coffee) {
-    const items = this.coffeeCoffees.filter(p => p.id && p.id === coffee.id);
+    const items = this.coffeeCoffees.filter((p) => p.id && p.id === coffee.id);
     return items.length > 0;
   }
 }
@@ -121,7 +119,7 @@ export interface EditCoffeeCoffeeData {
 
 @Component({
   selector: "edit-coffee.component",
-  templateUrl: "edit-coffee.component.html"
+  templateUrl: "edit-coffee.component.html",
 })
 export class EditCoffeeComponent {
   constructor(
