@@ -34,8 +34,8 @@ export class CargonizerService {
   private printer_normal_id = 1057;
   private printer_rfid_id = 1698;
 
-  private product_business = "bring_bedr_dor_dor";
-  private product_private = "bring_pose_pa_doren_rfid";
+  private product_business = "bring2_business_parcel";
+  private product_private = "bring2_small_parcel_a_no_rfid";
 
   private api_key: string;
   private sender_id: string;
@@ -81,14 +81,14 @@ export class CargonizerService {
       method: "GET",
       headers: {
         "X-Cargonizer-Key": this.api_key,
-        "X-Cargonizer-Sender": this.sender_id
-      }
+        "X-Cargonizer-Sender": this.sender_id,
+      },
     };
 
-    return new Promise<any>(function(resolve, reject) {
+    return new Promise<any>(function (resolve, reject) {
       const request = require("request");
 
-      request(options, function(error: any, response: any) {
+      request(options, function (error: any, response: any) {
         if (error) {
           return reject(error);
         }
@@ -112,15 +112,15 @@ export class CargonizerService {
       headers: {
         "X-Cargonizer-Key": this.api_key,
         "X-Cargonizer-Sender": this.sender_id,
-        "Content-length": xml.length
+        "Content-length": xml.length,
       },
-      body: xml
+      body: xml,
     };
 
-    return new Promise<any>(function(resolve, reject) {
+    return new Promise<any>(function (resolve, reject) {
       const request = require("request");
 
-      request(options, function(error: any, response: any) {
+      request(options, function (error: any, response: any) {
         if (error) {
           return reject(error);
         }
@@ -130,7 +130,7 @@ export class CargonizerService {
           return reject(response.body);
         }
 
-        require("xml2js").parseString(response.body, function(
+        require("xml2js").parseString(response.body, function (
           parseError: any,
           result: any
         ) {
@@ -167,14 +167,14 @@ export class CargonizerService {
       "&postcode=" +
       $postcode;
 
-    return new Promise<any>(function(resolve, reject) {
+    return new Promise<any>(function (resolve, reject) {
       const request = require("request");
-      request(url, function(error: any, response: { body: any }) {
+      request(url, function (error: any, response: { body: any }) {
         if (error) {
           return reject(error);
         }
 
-        require("xml2js").parseString(response.body, function(
+        require("xml2js").parseString(response.body, function (
           parseError: any,
           result: any
         ) {
@@ -193,8 +193,8 @@ export class CargonizerService {
               address2: partner.address2[0],
               postcode: partner.postcode[0],
               city: partner.city[0],
-              country: partner.country[0]
-            }
+              country: partner.country[0],
+            },
           };
 
           return resolve(servicePartner);
@@ -220,7 +220,7 @@ export class CargonizerService {
         consignment: {
           $: {
             transport_agreement: this.transport_agreement,
-            print: false
+            print: false,
           },
           product: product,
           parts: {
@@ -231,7 +231,7 @@ export class CargonizerService {
               postcode: consignment.customer.zipCode,
               city: consignment.customer.place,
               country: consignment.customer.country,
-              email: consignment.customer.email
+              email: consignment.customer.email,
             },
             service_partner: {
               number: service_partner.service_partner_number,
@@ -240,17 +240,17 @@ export class CargonizerService {
               address2: service_partner.address.address2,
               postcode: service_partner.address.zipCode,
               city: service_partner.address.city,
-              country: service_partner.address.country
-            }
+              country: service_partner.address.country,
+            },
           },
           items: {
             item: {
               $: {
                 type: "package",
                 amount: 1,
-                weight: weight
-              }
-            }
+                weight: weight,
+              },
+            },
           },
           services: {},
           references: { consignor: consignment.reference },
@@ -259,15 +259,15 @@ export class CargonizerService {
             address1: "Sørbråtveien 36",
             postcode: "0891",
             city: "Oslo",
-            country: "NO"
-          }
-        }
-      }
+            country: "NO",
+          },
+        },
+      },
     };
 
     const builder = new xml2js.Builder({
       renderOpts: { pretty: false },
-      headless: true
+      headless: true,
     });
 
     return builder.buildObject(obj);
@@ -285,14 +285,14 @@ export class CargonizerService {
       method: "POST",
       headers: {
         "X-Cargonizer-Key": this.api_key,
-        "X-Cargonizer-Sender": this.sender_id
-      }
+        "X-Cargonizer-Sender": this.sender_id,
+      },
     };
 
-    return new Promise<any>(function(resolve, reject) {
+    return new Promise<any>(function (resolve, reject) {
       const request = require("request");
 
-      request(options, function(error: any, response: any) {
+      request(options, function (error: any, response: any) {
         if (error) {
           return reject(error);
         }
