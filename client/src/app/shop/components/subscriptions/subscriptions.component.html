@@ -38,7 +38,9 @@
             {{ subscription.status == "active" ? "Aktiv" : "På pause" }}
           </td>
           <td>
-            {{ subscription.frequence == 1 ? "Månedlig" : "Annenhver uke" }}
+            {{
+              subscription.frequence == 1 ? "Månedlig" : "To ganger i månaden"
+            }}
           </td>
           <td>{{ resolveQuantityString(subscription) }}</td>
           <td>

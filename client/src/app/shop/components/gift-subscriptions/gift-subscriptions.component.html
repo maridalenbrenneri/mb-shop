@@ -5,7 +5,7 @@
         >Månedlig</mat-checkbox
       >
       <mat-checkbox [(ngModel)]="showFortnightly" (checked)="(true)"
-        >Annenhver uke</mat-checkbox
+        >To ganger i månaden</mat-checkbox
       >
     </section>
     <section>
@@ -29,9 +29,9 @@
       name="quantityElement"
       [(ngModel)]="selectedQuantity"
     >
-      <option *ngFor="let quantity of quantities" [ngValue]="quantity">{{
-        quantity.label
-      }}</option>
+      <option *ngFor="let quantity of quantities" [ngValue]="quantity">
+        {{ quantity.label }}
+      </option>
     </select>
   </div>
 
@@ -70,7 +70,9 @@
             <td>{{ subscription.lastOrderCreated | date: "short" }}</td>
             <td>{{ subscription.quantity }}</td>
             <td>
-              {{ subscription.frequence == 1 ? "Månedlig" : "Annenhver uke" }}
+              {{
+                subscription.frequence == 1 ? "Månedlig" : "To ganger i månaden"
+              }}
             </td>
             <td>{{ subscription.recipient_name }}</td>
             <td>

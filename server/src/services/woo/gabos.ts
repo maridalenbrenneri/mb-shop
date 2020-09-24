@@ -131,7 +131,7 @@ function resolveLastDeliveryDate(
 function mapFromWooToDbModel(orderItem: any) {
   const df = resolveMetadataValue(orderItem.meta_data, "levering");
   const frequence =
-    df && df.includes("Annenhver uke")
+    df && (df.includes("To ganger") || df.includes("Annenhver uke"))
       ? SubscriptionFrequence.fortnightly
       : SubscriptionFrequence.monthly;
 

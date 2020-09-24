@@ -34,9 +34,9 @@ class WooService {
       "&after=" +
       fromCreatedDate.toISOString();
 
-    return new Promise<any>(function(resolve, reject) {
+    return new Promise<any>(function (resolve, reject) {
       const request = require("request");
-      request({ url: url, timeout: 60 * 5 * 1000 }, function(
+      request({ url: url, timeout: 60 * 5 * 1000 }, function (
         error: any,
         response: { body: any; headers: any }
       ) {
@@ -93,7 +93,7 @@ class WooService {
 
       const orderId = order.id;
       const orderNumber = +order.meta_data.find(
-        data => data.key == "_order_number"
+        (data) => data.key == "_order_number"
       ).value;
       const orderNote = order.customer_note;
       const orderDate = order.date_created;
@@ -121,14 +121,14 @@ class WooService {
   }
 
   private resolveMetadataValue(meta_data: Array<any>, key: string) {
-    const res = meta_data.find(data => data.key === key);
+    const res = meta_data.find((data) => data.key === key);
     return !res ? null : res.value;
   }
 
   private mapFromWooToDbModel(orderItem: any) {
     const df = this.resolveMetadataValue(orderItem.meta_data, "levering");
     const frequence =
-      df && df.includes("Annenhver uke")
+      df && (df.includes("To ganger") || df.includes("Annenhver uke"))
         ? SubscriptionFrequence.fortnightly
         : SubscriptionFrequence.monthly;
 
@@ -191,13 +191,13 @@ class WooService {
         street1: this.resolveMetadataValue(orderItem.meta_data, "abo_address1"),
         street2: this.resolveMetadataValue(orderItem.meta_data, "abo_address2"),
         zipCode: this.resolveMetadataValue(orderItem.meta_data, "abo_zip"),
-        place: this.resolveMetadataValue(orderItem.meta_data, "city")
+        place: this.resolveMetadataValue(orderItem.meta_data, "city"),
       }),
       message_to_recipient: this.resolveMetadataValue(
         orderItem.meta_data,
         "abo_msg_retriever"
       ),
-      note: orderItem.orderNote
+      note: orderItem.orderNote,
     };
 
     return model;

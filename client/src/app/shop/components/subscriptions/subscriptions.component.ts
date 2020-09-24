@@ -9,7 +9,7 @@ import { CustomerService } from "../../services/customer.service";
 @Component({
   selector: "app-subscriptions",
   templateUrl: "./subscriptions.component.html",
-  styleUrls: ["./subscriptions.component.scss"]
+  styleUrls: ["./subscriptions.component.scss"],
 })
 export class SubscriptionsComponent implements OnInit {
   subscriptions: Array<Subscription>;
@@ -28,17 +28,17 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   loadCustomers() {
-    this.customerService.getCustomers().subscribe(customers => {
+    this.customerService.getCustomers().subscribe((customers) => {
       this.customers = customers;
     });
   }
 
   loadSubscriptions() {
     this.subscriptionService.getSubscriptions().subscribe(
-      subscriptions => {
+      (subscriptions) => {
         this.subscriptions = subscriptions;
       },
-      e => {
+      (e) => {
         console.error("Error", e);
         this.toastr.error("Error when loading subscriptions");
       }
@@ -47,7 +47,7 @@ export class SubscriptionsComponent implements OnInit {
 
   createOrder(subscription: Subscription) {
     const customer = this.customers.find(
-      c => c.customerNumber.toString() === subscription.customerId
+      (c) => c.customerNumber.toString() === subscription.customerId
     );
 
     if (!customer) {
@@ -58,11 +58,11 @@ export class SubscriptionsComponent implements OnInit {
     this.subscriptionService
       .createOrderForSubscription(subscription, customer)
       .subscribe(
-        order => {
+        (order) => {
           this.toastr.success(`Order ${order.id} was created`);
           this.loadSubscriptions();
         },
-        e => {
+        (e) => {
           console.error("Error", e);
           this.toastr.error(e.error);
         }
@@ -91,18 +91,18 @@ export class SubscriptionsComponent implements OnInit {
         customerId: subscription.customerId,
         frequences: [
           { value: 1, label: "Månedlig" },
-          { value: 2, label: "Annenhver uke" }
+          { value: 2, label: "To ganger i månaden" },
         ],
         statuses: [
           { value: "active", label: "Aktiv" },
           { value: "paused", label: "På pause" },
-          { value: "cancelled", label: "Kansellert" }
+          { value: "cancelled", label: "Kansellert" },
         ],
-        customers: this.customers
-      }
+        customers: this.customers,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
         return;
       }
@@ -118,14 +118,14 @@ export class SubscriptionsComponent implements OnInit {
       if (!this.alreadyContainsSubscription(subscription)) {
         // resolve customer name
         subscription.customerName = this.customers.find(
-          c => c.customerNumber === result.customerId
+          (c) => c.customerNumber === result.customerId
         ).name;
         this.subscriptionService.createSubscription(subscription).subscribe(
           () => {
             this.loadSubscriptions();
             this.toastr.success("Subscription created");
           },
-          err => {
+          (err) => {
             console.error("Error", err);
             this.toastr.error("Error when creating subscription");
           }
@@ -136,7 +136,7 @@ export class SubscriptionsComponent implements OnInit {
             this.loadSubscriptions();
             this.toastr.success("Subscription updated");
           },
-          err => {
+          (err) => {
             console.error("Error", err);
             this.toastr.error("Error when updating subscription");
           }
@@ -147,7 +147,7 @@ export class SubscriptionsComponent implements OnInit {
 
   alreadyContainsSubscription(subscription: Subscription) {
     const items = this.subscriptions.filter(
-      p => p.id && p.id === subscription.id
+      (p) => p.id && p.id === subscription.id
     );
     return items.length > 0;
   }
@@ -182,7 +182,7 @@ export interface EditSubscriptionData {
 
 @Component({
   selector: "edit-subscription.component",
-  templateUrl: "edit-subscription.component.html"
+  templateUrl: "edit-subscription.component.html",
 })
 export class EditSubscriptionComponent {
   constructor(

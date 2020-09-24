@@ -9,3 +9,10 @@ develop
 ## jobs
 
 npm run add-delivery-days
+
+- Before deploying, make sure build works:
+  ./server/$yarn build
+    ./client/$ng build --aot --prod
+- Commit to "master" branch
+- Trrigger Deploy to heroku:
+  \$sudo git push heroku master

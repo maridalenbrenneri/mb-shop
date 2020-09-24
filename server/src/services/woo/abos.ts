@@ -49,7 +49,10 @@ export function resolveAboData(wooAbos: any) {
     }
     const item = abo.line_items[0];
 
-    if (item.name.includes("Annenhver uke")) {
+    if (
+      item.name.includes("To ganger") ||
+      item.name.includes("Annenhver uke")
+    ) {
       fortnightlyCount++;
       bagsFortnightlyCount += resolveNumberOfBags(bagCounter, item.name, true);
     } else {
