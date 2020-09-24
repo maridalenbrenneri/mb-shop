@@ -28,9 +28,9 @@ export class DeliveryDaysComponent implements OnInit {
   }
 
   loadCoffees() {
-    this.coffeeService.getCoffees(false).subscribe(
+    this.coffeeService.getCoffees(true).subscribe(
       (coffees) => {
-        this.coffees = coffees.filter((c) => c.id > 1); // exclude ANY
+        this.coffees = coffees;
       },
       () => {
         this.toastr.error("Error when loading coffees");
@@ -66,7 +66,7 @@ export class DeliveryDaysComponent implements OnInit {
     const dialogRef = this.dialog.open(EditDeliveryDayComponent, {
       disableClose: true,
       data: {
-        coffees: this.coffees,
+        coffees: this.coffees.filter((c) => c.isActive),
         deliveryDay: deliveryDay,
       },
     });
