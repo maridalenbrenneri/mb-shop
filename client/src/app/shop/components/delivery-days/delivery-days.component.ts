@@ -28,7 +28,7 @@ export class DeliveryDaysComponent implements OnInit {
   }
 
   loadCoffees() {
-    this.coffeeService.getCoffees(true).subscribe(
+    this.coffeeService.getCoffees(false).subscribe(
       (coffees) => {
         this.coffees = coffees.filter((c) => c.id > 1); // exclude ANY
       },
