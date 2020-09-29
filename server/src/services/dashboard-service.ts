@@ -94,11 +94,8 @@ class DashboardService {
     // Woo subscriptions + gabos (only 250g bags)
     let aboBagCount = 0;
     if (type === "monthly")
-      aboBagCount =
-        data.subsciptionsBagsPerMonthlyCount +
-        data.subsciptionsBagsPerFortnightlyCount;
-    else if (type === "fortnightly")
-      aboBagCount = data.subsciptionsBagsPerFortnightlyCount;
+      aboBagCount = data.bagsMonthlyCount + data.bagsFortnightlyCount;
+    else if (type === "fortnightly") aboBagCount = data.bagsFortnightlyCount;
 
     const aboBagWeight = aboBagCount > 0 ? aboBagCount * 250 : 0;
 
@@ -125,6 +122,7 @@ class DashboardService {
       coffeeItems: orderStats.quantities,
       totalWeight: (orderStats.quantities.totalWeight + aboBagWeight) / 1000, // Weight of mb orders and abos/gabos
     };
+
     return quantities;
   };
 
