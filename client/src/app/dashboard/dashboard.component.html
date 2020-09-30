@@ -46,7 +46,8 @@
         <h2>
           Neste levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
           {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
-          {{ getTotalKgs() }}kg
+          <em>{{ getTotalKgs() }}</em
+          >kg
         </h2>
 
         <div

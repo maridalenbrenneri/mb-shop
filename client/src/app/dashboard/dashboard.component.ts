@@ -153,6 +153,19 @@ export class DashboardComponent implements OnInit {
 
     if (day.type === "normal") return null;
 
+    // NOTE: Fix for solving issue with quantity added multiple times when same coffee set more than once (useally as coffe1 and coffee4).
+    //  This will ONLY work when coffee4 is same as one of the others
+    let coffeIdIsAlreadyInUse = false;
+    if (coffeeField === "coffee4") {
+      const coffeeId = day.coffee4.id;
+      coffeIdIsAlreadyInUse =
+        day.coffee1.id === coffeeId ||
+        day.coffee2.id === coffeeId ||
+        day.coffee3.id === coffeeId
+          ? true
+          : false;
+    }
+
     const mbOrders250 = day.quantities.coffeeItems._250s.find((i) => {
       return i.id === day[coffeeField];
     }) || { quantity: 0 };
@@ -170,17 +183,29 @@ export class DashboardComponent implements OnInit {
         ? this.subscriptionCoffeeTypeCounter.bigAbo[coffeeField]
         : this.subscriptionCoffeeTypeCounter.smallAbo[coffeeField];
 
-    const aggregated250 = abo250count + mbOrders250.quantity;
+    const aggregated250 = coffeIdIsAlreadyInUse
+      ? abo250count
+      : abo250count + mbOrders250.quantity;
+
+    const quantity500 =
+      mbOrders500.quantity > 0 && !coffeIdIsAlreadyInUse
+        ? mbOrders500.quantity
+        : 0;
+
+    const quantity1200 =
+      mbOrders1200.quantity > 0 && !coffeIdIsAlreadyInUse
+        ? mbOrders1200.quantity
+        : 0;
 
     const totalWeight =
       (aggregated250 > 0 ? aggregated250 * 250 : 0) +
-      (mbOrders500.quantity > 0 ? mbOrders500.quantity * 500 : 0) +
-      (mbOrders1200.quantity > 0 ? mbOrders1200.quantity * 1200 : 0);
+      quantity500 * 500 +
+      quantity1200 * 1200;
 
     return {
       count250: aggregated250,
-      count500: mbOrders500.quantity,
-      count1200: mbOrders1200.quantity,
+      count500: quantity500,
+      count1200: quantity1200,
       total: totalWeight / 1000,
     };
   }
