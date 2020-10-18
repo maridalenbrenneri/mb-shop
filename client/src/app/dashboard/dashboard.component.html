@@ -26,7 +26,7 @@
   <div class="col-12" *ngIf="!isWooUpdated()">
     <div class="warning-box">
       WARNING: DATA FROM WOO HAS NOT BEEN UPDATED SINCE
-      <strong>{{ statsData.dataFromWooLastUpdated | date: "short" }}</strong>
+      <strong>{{ statsData.dataFromWooLastUpdated | date: 'short' }}</strong>
     </div>
   </div>
 
@@ -44,7 +44,7 @@
     <mat-card class="product-card">
       <mat-card-content>
         <h2>
-          Neste levering: {{ deliveryDays[0].date | date: "d. MMMM" }} -
+          Neste levering: {{ deliveryDays[0].date | date: 'd. MMMM' }} -
           {{ resolveDeliveryTypeString(deliveryDays[0].type) }} -
           <em>{{ getTotalKgs() }}</em
           >kg
@@ -56,7 +56,6 @@
           "
         >
           All coffees (1-4) must be set to enable quantity preview.
-          <a [routerLink]="['/delivery-days']">Endre aktive kaffen her</a>
         </div>
 
         <div *ngIf="deliveryDays[0].type == 'normal'">
@@ -105,31 +104,31 @@
               <ng-container *ngFor="let day of deliveryDays.slice(0, 1)">
                 <tr>
                   <td>Kaffe 1 - {{ resolveCoffeeCodeFromId(day.coffee1) }}</td>
-                  <td>{{ resolveCoffee(day, "coffee1").total }}</td>
-                  <td>{{ resolveCoffee(day, "coffee1").count250 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee1").count500 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee1").count1200 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee1').total }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee1').count250 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee1').count500 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee1').count1200 }}</td>
                 </tr>
                 <tr>
                   <td>Kaffe 2 - {{ resolveCoffeeCodeFromId(day.coffee2) }}</td>
-                  <td>{{ resolveCoffee(day, "coffee2").total }}</td>
-                  <td>{{ resolveCoffee(day, "coffee2").count250 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee2").count500 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee2").count1200 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee2').total }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee2').count250 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee2').count500 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee2').count1200 }}</td>
                 </tr>
                 <tr>
                   <td>Kaffe 3 - {{ resolveCoffeeCodeFromId(day.coffee3) }}</td>
-                  <td>{{ resolveCoffee(day, "coffee3").total }}</td>
-                  <td>{{ resolveCoffee(day, "coffee3").count250 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee3").count500 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee3").count1200 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee3').total }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee3').count250 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee3').count500 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee3').count1200 }}</td>
                 </tr>
                 <tr>
                   <td>Kaffe 4 - {{ resolveCoffeeCodeFromId(day.coffee4) }}</td>
-                  <td>{{ resolveCoffee(day, "coffee4").total }}</td>
-                  <td>{{ resolveCoffee(day, "coffee4").count250 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee4").count500 }}</td>
-                  <td>{{ resolveCoffee(day, "coffee4").count1200 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee4').total }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee4').count250 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee4').count500 }}</td>
+                  <td>{{ resolveCoffee(day, 'coffee4').count1200 }}</td>
                 </tr>
               </ng-container>
             </tbody>
@@ -237,19 +236,19 @@
           <tbody>
             <tr>
               <td>Stor-abo</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "total") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee1") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee2") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee3") }}</td>
-              <td>{{ resolveCoffeTypeCountString("bigAbo", "coffee4") }}</td>
+              <td>{{ resolveCoffeTypeCountString('bigAbo', 'total') }}</td>
+              <td>{{ resolveCoffeTypeCountString('bigAbo', 'coffee1') }}</td>
+              <td>{{ resolveCoffeTypeCountString('bigAbo', 'coffee2') }}</td>
+              <td>{{ resolveCoffeTypeCountString('bigAbo', 'coffee3') }}</td>
+              <td>{{ resolveCoffeTypeCountString('bigAbo', 'coffee4') }}</td>
             </tr>
             <tr>
               <td>Lill-abo</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "total") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee1") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee2") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee3") }}</td>
-              <td>{{ resolveCoffeTypeCountString("smallAbo", "coffee4") }}</td>
+              <td>{{ resolveCoffeTypeCountString('smallAbo', 'total') }}</td>
+              <td>{{ resolveCoffeTypeCountString('smallAbo', 'coffee1') }}</td>
+              <td>{{ resolveCoffeTypeCountString('smallAbo', 'coffee2') }}</td>
+              <td>{{ resolveCoffeTypeCountString('smallAbo', 'coffee3') }}</td>
+              <td>{{ resolveCoffeTypeCountString('smallAbo', 'coffee4') }}</td>
             </tr>
           </tbody>
         </table>
@@ -290,7 +289,7 @@
           <tbody>
             <ng-container *ngFor="let day of deliveryDays.slice(1)">
               <tr class="future_delivery">
-                <td>{{ day.date | date: "d. MMMM" }}</td>
+                <td>{{ day.date | date: 'd. MMMM' }}</td>
                 <td>{{ resolveDeliveryTypeString(day.type) }}</td>
                 <td>{{ day.quantities.totalWeight }}kg</td>
               </tr>
@@ -350,7 +349,7 @@
   <div class="col-6">
     <p>
       Data from Woo last updated
-      {{ statsData.dataFromWooLastUpdated | date: "short" }}
+      {{ statsData.dataFromWooLastUpdated | date: 'short' }}
     </p>
     <div>
       <button mat-raised-button (click)="updateStats()" [disabled]="isUpdating">
@@ -373,7 +372,7 @@
   </div>
   <div class="col-6">
     <p>
-      Data from Backoffice last updated {{ dataLastLoaded | date: "short" }}
+      Data from Backoffice last updated {{ dataLastLoaded | date: 'short' }}
     </p>
   </div>
 </div>

@@ -21,21 +21,22 @@ export class Consignment {
 }
 
 export class CargonizerService {
-  private prod_consignment_url = "https://cargonizer.no/consignments.xml";
+  private prod_consignment_url = 'https://cargonizer.no/consignments.xml';
   private prod_service_partners_url =
-    "https://cargonizer.no/service_partners.xml";
+    'https://cargonizer.no/service_partners.xml';
   private sandbox_consignment_url =
-    "https://sandbox.cargonizer.no/consignments.xml";
+    'https://sandbox.cargonizer.no/consignments.xml';
   private sandbox_service_partners_url =
-    "https://cargonizer.no/service_partners.xml"; // use prod, sandbox doesn't work (read only anyway)
+    'https://cargonizer.no/service_partners.xml'; // use prod, sandbox doesn't work (read only anyway)
 
-  private prod_profile_url = "https://cargonizer.no/profile.xml";
+  private prod_profile_url = 'https://cargonizer.no/profile.xml';
 
   private printer_normal_id = 1057;
   private printer_rfid_id = 1698;
 
-  private product_business = "bring2_business_parcel";
-  private product_private = "bring2_small_parcel_a_no_rfid";
+  private product_business = 'bring2_business_parcel';
+  private product_private = 'bring2_small_parcel_a_no_rfid';
+  private product_private_service = 'bring2_delivery_to_door_handle';
 
   private api_key: string;
   private sender_id: string;
@@ -53,7 +54,7 @@ export class CargonizerService {
     this.service_partners_url = useSandbox
       ? this.sandbox_service_partners_url
       : this.prod_service_partners_url;
-    this.print_url = "https://cargonizer.no/consignments/label_direct";
+    this.print_url = 'https://cargonizer.no/consignments/label_direct';
 
     this.api_key = useSandbox
       ? process.env.CARGONIZER_SANDBOX_API_KEY
@@ -72,21 +73,21 @@ export class CargonizerService {
   }
 
   public async fetchProfile() {
-    const parser = require("fast-xml-parser");
+    const parser = require('fast-xml-parser');
 
     const url = `${this.prod_profile_url}`;
 
     const options = {
       url: url,
-      method: "GET",
+      method: 'GET',
       headers: {
-        "X-Cargonizer-Key": this.api_key,
-        "X-Cargonizer-Sender": this.sender_id,
+        'X-Cargonizer-Key': this.api_key,
+        'X-Cargonizer-Sender': this.sender_id,
       },
     };
 
     return new Promise<any>(function (resolve, reject) {
-      const request = require("request");
+      const request = require('request');
 
       request(options, function (error: any, response: any) {
         if (error) {
@@ -108,17 +109,17 @@ export class CargonizerService {
     const self = this;
     let options = {
       url: this.url,
-      method: "POST",
+      method: 'POST',
       headers: {
-        "X-Cargonizer-Key": this.api_key,
-        "X-Cargonizer-Sender": this.sender_id,
-        "Content-length": xml.length,
+        'X-Cargonizer-Key': this.api_key,
+        'X-Cargonizer-Sender': this.sender_id,
+        'Content-length': xml.length,
       },
       body: xml,
     };
 
     return new Promise<any>(function (resolve, reject) {
-      const request = require("request");
+      const request = require('request');
 
       request(options, function (error: any, response: any) {
         if (error) {
@@ -130,7 +131,7 @@ export class CargonizerService {
           return reject(response.body);
         }
 
-        require("xml2js").parseString(response.body, function (
+        require('xml2js').parseString(response.body, function (
           parseError: any,
           result: any
         ) {
@@ -145,12 +146,7 @@ export class CargonizerService {
           ) {
             const id = result.consignments.consignment[0].id[0]._;
 
-            // todo: product is not correctly retrieved
-            const useRfidPrinter =
-              result.consignments.consignment[0].product[0].identifier[0] ===
-              self.product_private;
-
-            self.printLabel(useRfidPrinter, id);
+            self.printLabel(false, id);
           }
 
           return resolve(result);
@@ -162,19 +158,19 @@ export class CargonizerService {
   private async requestServicePartners($country, $postcode) {
     const url =
       this.service_partners_url +
-      "?country=" +
+      '?country=' +
       $country +
-      "&postcode=" +
+      '&postcode=' +
       $postcode;
 
     return new Promise<any>(function (resolve, reject) {
-      const request = require("request");
+      const request = require('request');
       request(url, function (error: any, response: { body: any }) {
         if (error) {
           return reject(error);
         }
 
-        require("xml2js").parseString(response.body, function (
+        require('xml2js').parseString(response.body, function (
           parseError: any,
           result: any
         ) {
@@ -182,8 +178,8 @@ export class CargonizerService {
             return reject(parseError);
           }
 
-          const partners = result.results["service-partners"][0];
-          const partner = partners["service-partner"][0];
+          const partners = result.results['service-partners'][0];
+          const partner = partners['service-partner'][0];
 
           let servicePartner = {
             service_partner_number: partner.number[0],
@@ -204,16 +200,20 @@ export class CargonizerService {
   }
 
   private async createConsignmentXml(consignment: Consignment) {
-    let xml2js = require("xml2js");
+    let xml2js = require('xml2js');
 
     const weight = consignment.weight / 1000; // cargonizer wants kilogram
 
     const service_partner = await this.requestServicePartners(
-      "NO",
+      'NO',
       consignment.customer.zipCode
     );
 
     const product = this.ShippingTypeToProduct(consignment.shippingType);
+    const services =
+      product === this.product_private
+        ? { service: this.product_private_service }
+        : {};
 
     const obj = {
       consignments: {
@@ -246,20 +246,20 @@ export class CargonizerService {
           items: {
             item: {
               $: {
-                type: "package",
+                type: 'package',
                 amount: 1,
                 weight: weight,
               },
             },
           },
-          services: {},
+          services: services,
           references: { consignor: consignment.reference },
           return_address: {
-            name: "Maridalen Brenneri AS",
-            address1: "Sørbråtveien 36",
-            postcode: "0891",
-            city: "Oslo",
-            country: "NO",
+            name: 'Maridalen Brenneri AS',
+            address1: 'Sørbråtveien 36',
+            postcode: '0891',
+            city: 'Oslo',
+            country: 'NO',
           },
         },
       },
@@ -282,15 +282,15 @@ export class CargonizerService {
 
     let options = {
       url: url,
-      method: "POST",
+      method: 'POST',
       headers: {
-        "X-Cargonizer-Key": this.api_key,
-        "X-Cargonizer-Sender": this.sender_id,
+        'X-Cargonizer-Key': this.api_key,
+        'X-Cargonizer-Sender': this.sender_id,
       },
     };
 
     return new Promise<any>(function (resolve, reject) {
-      const request = require("request");
+      const request = require('request');
 
       request(options, function (error: any, response: any) {
         if (error) {
@@ -301,14 +301,14 @@ export class CargonizerService {
           return reject(response.body);
         }
 
-        return resolve("OK");
+        return resolve('OK');
       });
     });
   }
 
   private ShippingTypeToProduct(shippingType: number): string {
     if (process.env.CARGONIZER_USE_SANDBOX) {
-      return "bring_pa_doren";
+      return 'bring_pa_doren';
     }
 
     if (shippingType == ShippingType.standard_business) {
