@@ -1,13 +1,16 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { Coffee } from "../../models/coffee.model";
-import { CoffeeService } from "../../services/coffee.service";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { ToastrService } from "ngx-toastr";
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+
+import { Coffee } from '../../models/coffee.model';
+import { CoffeeService } from '../../services/coffee.service';
 
 @Component({
-  selector: "app-coffees",
-  templateUrl: "./coffees.component.html",
-  styleUrls: ["./coffees.component.scss"],
+  selector: 'app-coffees',
+  templateUrl: './coffees.component.html',
+  styleUrls: ['./coffees.component.scss'],
 })
 export class CoffeesComponent implements OnInit {
   vatCoffee = 15;
@@ -33,7 +36,7 @@ export class CoffeesComponent implements OnInit {
         this.coffeeCoffees = coffees;
       },
       () => {
-        this.toastr.error("Error when loading coffees");
+        this.toastr.error('Error when loading coffees');
       }
     );
   }
@@ -68,20 +71,20 @@ export class CoffeesComponent implements OnInit {
         this.coffeeService.createCoffee(coffee).subscribe(
           () => {
             this.loadCoffees();
-            this.toastr.success("Coffee created");
+            this.toastr.success('Coffee created');
           },
           (err) => {
-            this.toastr.error("Error when creating coffee");
+            this.toastr.error('Error when creating coffee');
           }
         );
       } else {
         this.coffeeService.updateCoffee(coffee).subscribe(
           () => {
             this.loadCoffees();
-            this.toastr.success("Coffee updated");
+            this.toastr.success('Coffee updated');
           },
           (err) => {
-            this.toastr.error("Error when updating coffee");
+            this.toastr.error('Error when updating coffee');
           }
         );
       }
@@ -95,7 +98,7 @@ export class CoffeesComponent implements OnInit {
         this.loadCoffees();
       },
       (err) => {
-        this.toastr.error("Error when updating coffee");
+        this.toastr.error('Error when updating coffee');
       }
     );
   }
@@ -118,8 +121,8 @@ export interface EditCoffeeCoffeeData {
 }
 
 @Component({
-  selector: "edit-coffee.component",
-  templateUrl: "edit-coffee.component.html",
+  selector: 'edit-coffee.component',
+  templateUrl: 'edit-coffee.component.html',
 })
 export class EditCoffeeComponent {
   constructor(

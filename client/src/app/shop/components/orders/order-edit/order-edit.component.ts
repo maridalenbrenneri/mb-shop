@@ -1,13 +1,16 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { Order, CoffeeItem, StashItem } from "../../../models/order.model";
-import { Customer } from "../../../models/customer.model";
-import { ProductVariation } from "../../../models/product.model";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { Coffee } from "src/app/shop/models/coffee.model";
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+import { Order, CoffeeItem, StashItem } from '../../../models/order.model';
+import { Customer } from '../../../models/customer.model';
+import { ProductVariation } from '../../../models/product.model';
+import { Coffee } from '../../..//models/coffee.model';
+
 import {
   getCoffeeVariations,
-  resolveCoffeeVariation
-} from "../coffee-variations";
+  resolveCoffeeVariation,
+} from '../coffee-variations';
 
 export interface OrderData {
   order: Order;
@@ -17,9 +20,9 @@ export interface OrderData {
 }
 
 @Component({
-  selector: "app-order-edit",
-  templateUrl: "./order-edit.component.html",
-  styleUrls: ["./order-edit.component.scss"]
+  selector: 'app-order-edit',
+  templateUrl: './order-edit.component.html',
+  styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnInit {
   orderItem: CoffeeItem;
@@ -49,7 +52,7 @@ export class OrderEditComponent implements OnInit {
       this.order = this.data.order;
       this.order.customer = this.data.customers[0];
       this.order.coffeeItems = new Array<CoffeeItem>();
-      this.order.notes = "";
+      this.order.notes = '';
       this.order.freight = 0;
       this.isEditMode = false;
     } else {
@@ -73,7 +76,7 @@ export class OrderEditComponent implements OnInit {
   }
 
   addCoffee() {
-    let productAdded = this.order.coffeeItems.find(i => {
+    let productAdded = this.order.coffeeItems.find((i) => {
       return (
         i.coffee.id === this.orderItem.coffee.id &&
         i.variationId === this.orderItem.variationId
@@ -95,7 +98,7 @@ export class OrderEditComponent implements OnInit {
   }
 
   removeCoffeerItem(item: CoffeeItem) {
-    const index = this.order.coffeeItems.findIndex(i => {
+    const index = this.order.coffeeItems.findIndex((i) => {
       return (
         i.coffee.id === item.coffee.id && i.variationId === item.variationId
       );
@@ -122,13 +125,13 @@ export class OrderEditComponent implements OnInit {
   }
 
   resolveCoffeeProductName(coffee: Coffee) {
-    if (!coffee) return "";
+    if (!coffee) return '';
     return `${coffee.code} - ${coffee.name} - ${coffee.country}`;
   }
 
   resolveProductVariationString(variation: ProductVariation) {
     return !variation
-      ? ""
-      : variation.name + " - Normalpris: " + variation.price + " kr";
+      ? ''
+      : variation.name + ' - Normalpris: ' + variation.price + ' kr';
   }
 }

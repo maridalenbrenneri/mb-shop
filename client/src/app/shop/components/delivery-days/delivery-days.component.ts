@@ -1,15 +1,18 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { DeliveryDay } from "../../models/delivery-day.model";
-import { DeliveryDayService } from "../../services/delivery-day.service";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { ToastrService } from "ngx-toastr";
-import { CoffeeService } from "../../services/coffee.service";
-import { Coffee } from "../../models/coffee.model";
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+
+import { DeliveryDay } from '../../models/delivery-day.model';
+import { DeliveryDayService } from '../../services/delivery-day.service';
+import { CoffeeService } from '../../services/coffee.service';
+import { Coffee } from '../../models/coffee.model';
 
 @Component({
-  selector: "app-delivery-days",
-  templateUrl: "./delivery-days.component.html",
-  styleUrls: ["./delivery-days.component.scss"],
+  selector: 'app-delivery-days',
+  templateUrl: './delivery-days.component.html',
+  styleUrls: ['./delivery-days.component.scss'],
 })
 export class DeliveryDaysComponent implements OnInit {
   deliveryDays: Array<DeliveryDay>;
@@ -33,7 +36,7 @@ export class DeliveryDaysComponent implements OnInit {
         this.coffees = coffees;
       },
       () => {
-        this.toastr.error("Error when loading coffees");
+        this.toastr.error('Error when loading coffees');
       }
     );
   }
@@ -44,22 +47,22 @@ export class DeliveryDaysComponent implements OnInit {
         this.deliveryDays = deliveryDays;
       },
       () => {
-        this.toastr.error("Error when loading delivery days");
+        this.toastr.error('Error when loading delivery days');
       }
     );
   }
 
   resolveCoffeeCodeFromId = (id) => {
-    if (!this.coffees) return "";
+    if (!this.coffees) return '';
     const coffee = this.coffees.find((c) => c.id === id);
-    if (!coffee) return "";
+    if (!coffee) return '';
     return coffee.code;
   };
 
   resolveDeliveryTypeString(type: string) {
-    if (type === "monthly") return "Stor-abo";
-    if (type === "fortnightly") return "Lill-abo";
-    return "Kun enkeltordre";
+    if (type === 'monthly') return 'Stor-abo';
+    if (type === 'fortnightly') return 'Lill-abo';
+    return 'Kun enkeltordre';
   }
 
   openEditDeliveryDayDialog(deliveryDay: DeliveryDay): void {
@@ -84,10 +87,10 @@ export class DeliveryDaysComponent implements OnInit {
       this.deliveryDayService.updateDeliveryDay(deliveryDay).subscribe(
         () => {
           this.loadDeliveryDays();
-          this.toastr.success("Delivery day was updated");
+          this.toastr.success('Delivery day was updated');
         },
         (err) => {
-          this.toastr.error("Error when updating delivery day");
+          this.toastr.error('Error when updating delivery day');
         }
       );
     });
@@ -100,8 +103,8 @@ export interface EditDeliveryDayData {
 }
 
 @Component({
-  selector: "edit-delivery-day.component",
-  templateUrl: "edit-delivery-day.component.html",
+  selector: 'edit-delivery-day.component',
+  templateUrl: 'edit-delivery-day.component.html',
 })
 export class EditDeliveryDayComponent {
   constructor(

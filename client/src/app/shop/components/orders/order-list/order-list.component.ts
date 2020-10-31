@@ -1,50 +1,51 @@
-import { Component, Input, EventEmitter, Output } from "@angular/core";
-import { Order } from "src/app/shop/models/order.model";
+import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Order } from 'src/app/shop/models/order.model';
 import {
   animate,
   state,
   style,
   transition,
-  trigger
-} from "@angular/animations";
-import { MatDialog } from "@angular/material";
-import { Customer } from "src/app/shop/models/customer.model";
-import { TableDataSource } from "src/app/shop/core/table-data-source";
-import { CoffeeSizes, OrderStatus } from "../../../../../constants";
-import { OrderEditComponent } from "../order-edit/order-edit.component";
-import { Utils } from "../../../../utils";
-import { resolveCoffeeVariation } from "../coffee-variations";
-import { Coffee } from "src/app/shop/models/coffee.model";
+  trigger,
+} from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
+
+import { Customer } from 'src/app/shop/models/customer.model';
+import { TableDataSource } from 'src/app/shop/core/table-data-source';
+import { CoffeeSizes, OrderStatus } from '../../../../../constants';
+import { OrderEditComponent } from '../order-edit/order-edit.component';
+import { Utils } from '../../../../utils';
+import { resolveCoffeeVariation } from '../coffee-variations';
+import { Coffee } from '../../../models/coffee.model';
 
 @Component({
-  selector: "app-order-list",
-  templateUrl: "./order-list.component.html",
-  styleUrls: ["./order-list.component.scss"],
+  selector: 'app-order-list',
+  templateUrl: './order-list.component.html',
+  styleUrls: ['./order-list.component.scss'],
   animations: [
-    trigger("detailExpand", [
+    trigger('detailExpand', [
       state(
-        "collapsed",
-        style({ height: "0px", minHeight: "0", visibility: "hidden" })
+        'collapsed',
+        style({ height: '0px', minHeight: '0', visibility: 'hidden' })
       ),
-      state("expanded", style({ height: "*", visibility: "visible" })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
       transition(
-        "expanded <=> collapsed",
-        animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")
-      )
-    ])
-  ]
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ],
 })
 export class OrderListComponent {
   ordersDataSource: TableDataSource;
   displayedColumns: string[] = [
-    "id",
-    "status",
-    "orderDate",
-    "customerName",
-    "items"
+    'id',
+    'status',
+    'orderDate',
+    'customerName',
+    'items',
   ];
   isExpansionDetailRow = (i: number, row: Object) =>
-    row.hasOwnProperty("detailRow");
+    row.hasOwnProperty('detailRow');
   expandedElement: any;
 
   private _orders: Array<Order> = [];
@@ -84,7 +85,7 @@ export class OrderListComponent {
   set customers(customers: Array<Customer>) {
     this._customers = JSON.parse(JSON.stringify(customers));
     const all = new Customer();
-    all.name = "Alle kunder";
+    all.name = 'Alle kunder';
     all.customerNumber = 0;
     this._customers.unshift(all);
   }
@@ -131,25 +132,26 @@ export class OrderListComponent {
       this._filteredOrders = this._orders;
     } else {
       this._filteredOrders = this._orders.filter(
-        o => o.customer.customerNumber == this._selectedCustomer.customerNumber
+        (o) =>
+          o.customer.customerNumber == this._selectedCustomer.customerNumber
       );
     }
 
     if (!this._showProcessing) {
       this._filteredOrders = this._filteredOrders.filter(
-        o => o.status !== OrderStatus.processing
+        (o) => o.status !== OrderStatus.processing
       );
     }
 
     if (!this._showCompleted) {
       this._filteredOrders = this._filteredOrders.filter(
-        o => o.status !== OrderStatus.completed
+        (o) => o.status !== OrderStatus.completed
       );
     }
 
     if (!this._showCanceled) {
       this._filteredOrders = this._filteredOrders.filter(
-        o => o.status !== OrderStatus.canceled
+        (o) => o.status !== OrderStatus.canceled
       );
     }
 
@@ -168,7 +170,7 @@ export class OrderListComponent {
     const self = this;
 
     if (!order) {
-      console.warn("Order was null, cannot edit");
+      console.warn('Order was null, cannot edit');
       return;
     }
 
@@ -177,11 +179,11 @@ export class OrderListComponent {
       data: {
         order: Utils.clone(order),
         customers: self.customers,
-        coffees: self.coffees
-      }
+        coffees: self.coffees,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
         return;
       }
@@ -211,7 +213,7 @@ export class OrderListComponent {
   }
 
   viewInvoice(order: Order) {
-    console.log("viewInvoice not yet implemented...");
+    console.log('viewInvoice not yet implemented...');
   }
 
   hasNotes(order: Order) {
@@ -219,8 +221,8 @@ export class OrderListComponent {
   }
 
   getArticlesShort(order: Order) {
-    const arr = order.coffeeItems.map(item => {
-      let name = "";
+    const arr = order.coffeeItems.map((item) => {
+      let name = '';
 
       if (resolveCoffeeVariation(item.variationId).size === CoffeeSizes._250)
         name = `${item.coffee.code}`;
@@ -237,7 +239,7 @@ export class OrderListComponent {
       return `${item.quantity}${name}`;
     });
 
-    let str = arr.join(", ");
+    let str = arr.join(', ');
 
     // if (str.length > 40) {
     //   str = str.substr(0, 37);

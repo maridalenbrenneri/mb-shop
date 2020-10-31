@@ -1,15 +1,18 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { Subscription } from "../../models/subscription.model";
-import { SubscriptionService } from "../../services/subscription.service";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
-import { ToastrService } from "ngx-toastr";
-import { Customer } from "../../models/customer.model";
-import { CustomerService } from "../../services/customer.service";
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+
+import { Subscription } from '../../models/subscription.model';
+import { SubscriptionService } from '../../services/subscription.service';
+import { Customer } from '../../models/customer.model';
+import { CustomerService } from '../../services/customer.service';
 
 @Component({
-  selector: "app-subscriptions",
-  templateUrl: "./subscriptions.component.html",
-  styleUrls: ["./subscriptions.component.scss"],
+  selector: 'app-subscriptions',
+  templateUrl: './subscriptions.component.html',
+  styleUrls: ['./subscriptions.component.scss'],
 })
 export class SubscriptionsComponent implements OnInit {
   subscriptions: Array<Subscription>;
@@ -39,8 +42,8 @@ export class SubscriptionsComponent implements OnInit {
         this.subscriptions = subscriptions;
       },
       (e) => {
-        console.error("Error", e);
-        this.toastr.error("Error when loading subscriptions");
+        console.error('Error', e);
+        this.toastr.error('Error when loading subscriptions');
       }
     );
   }
@@ -51,7 +54,7 @@ export class SubscriptionsComponent implements OnInit {
     );
 
     if (!customer) {
-      console.log("Invalid customer", subscription.customerId);
+      console.log('Invalid customer', subscription.customerId);
       return;
     }
 
@@ -63,7 +66,7 @@ export class SubscriptionsComponent implements OnInit {
           this.loadSubscriptions();
         },
         (e) => {
-          console.error("Error", e);
+          console.error('Error', e);
           this.toastr.error(e.error);
         }
       );
@@ -72,9 +75,9 @@ export class SubscriptionsComponent implements OnInit {
   openEditSubscriptionDialog(subscription: Subscription): void {
     if (!subscription) {
       subscription = new Subscription();
-      subscription.frequence = "1";
-      subscription.status = "active";
-      subscription.customerId = "" + this.customers[0].customerNumber;
+      subscription.frequence = '1';
+      subscription.status = 'active';
+      subscription.customerId = '' + this.customers[0].customerNumber;
     }
 
     const dialogRef = this.dialog.open(EditSubscriptionComponent, {
@@ -86,17 +89,17 @@ export class SubscriptionsComponent implements OnInit {
         quantity500: subscription.quantity500,
         quantity1200: subscription.quantity1200,
         status: subscription.status,
-        note: subscription.note || "",
+        note: subscription.note || '',
         customerName: subscription.customerName,
         customerId: subscription.customerId,
         frequences: [
-          { value: 1, label: "Månedlig" },
-          { value: 2, label: "To ganger i månaden" },
+          { value: 1, label: 'Månedlig' },
+          { value: 2, label: 'To ganger i månaden' },
         ],
         statuses: [
-          { value: "active", label: "Aktiv" },
-          { value: "paused", label: "På pause" },
-          { value: "cancelled", label: "Kansellert" },
+          { value: 'active', label: 'Aktiv' },
+          { value: 'paused', label: 'På pause' },
+          { value: 'cancelled', label: 'Kansellert' },
         ],
         customers: this.customers,
       },
@@ -123,22 +126,22 @@ export class SubscriptionsComponent implements OnInit {
         this.subscriptionService.createSubscription(subscription).subscribe(
           () => {
             this.loadSubscriptions();
-            this.toastr.success("Subscription created");
+            this.toastr.success('Subscription created');
           },
           (err) => {
-            console.error("Error", err);
-            this.toastr.error("Error when creating subscription");
+            console.error('Error', err);
+            this.toastr.error('Error when creating subscription');
           }
         );
       } else {
         this.subscriptionService.updateSubscription(subscription).subscribe(
           () => {
             this.loadSubscriptions();
-            this.toastr.success("Subscription updated");
+            this.toastr.success('Subscription updated');
           },
           (err) => {
-            console.error("Error", err);
-            this.toastr.error("Error when updating subscription");
+            console.error('Error', err);
+            this.toastr.error('Error when updating subscription');
           }
         );
       }
@@ -181,8 +184,8 @@ export interface EditSubscriptionData {
 }
 
 @Component({
-  selector: "edit-subscription.component",
-  templateUrl: "edit-subscription.component.html",
+  selector: 'edit-subscription.component',
+  templateUrl: 'edit-subscription.component.html',
 })
 export class EditSubscriptionComponent {
   constructor(

@@ -1,19 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material";
-import { Order, StashItem, CoffeeItem } from "../../models/order.model";
-import { OrderService } from "../../services/order.service";
-import { CustomerService } from "../../services/customer.service";
-import { Customer } from "../../models/customer.model";
-import { OrderEditComponent } from "./order-edit/order-edit.component";
-import { ToastrService } from "ngx-toastr";
-import { Utils } from "../../../utils";
-import { CoffeeService } from "../../services/coffee.service";
-import { Coffee, CoffeeVariation } from "../../models/coffee.model";
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { Order, StashItem, CoffeeItem } from '../../models/order.model';
+import { OrderService } from '../../services/order.service';
+import { CustomerService } from '../../services/customer.service';
+import { Customer } from '../../models/customer.model';
+import { OrderEditComponent } from './order-edit/order-edit.component';
+import { ToastrService } from 'ngx-toastr';
+import { Utils } from '../../../utils';
+import { CoffeeService } from '../../services/coffee.service';
+import { Coffee, CoffeeVariation } from '../../models/coffee.model';
 
 @Component({
-  selector: "app-orders",
-  templateUrl: "./orders.component.html",
-  styleUrls: ["./orders.component.scss"],
+  selector: 'app-orders',
+  templateUrl: './orders.component.html',
+  styleUrls: ['./orders.component.scss'],
 })
 export class OrdersComponent implements OnInit {
   vatCoffee = 15;
@@ -111,8 +112,8 @@ export class OrdersComponent implements OnInit {
         this.loadOrders();
       },
       (e) => {
-        console.error("Error", e);
-        this.toastr.error("Error when trying to update order");
+        console.error('Error', e);
+        this.toastr.error('Error when trying to update order');
       }
     );
   }
@@ -124,8 +125,8 @@ export class OrdersComponent implements OnInit {
         this.loadOrders();
       },
       (e) => {
-        console.error("Error", e);
-        this.toastr.error("Error when trying to update order status");
+        console.error('Error', e);
+        this.toastr.error('Error when trying to update order status');
       }
     );
   }
@@ -139,13 +140,13 @@ export class OrdersComponent implements OnInit {
             this.loadOrders();
           },
           (e) => {
-            console.error("Error", e);
+            console.error('Error', e);
             this.toastr.error(e.error);
           }
         );
       },
       (e) => {
-        console.error("Error", e);
+        console.error('Error', e);
         this.toastr.error(e.error);
       }
     );
@@ -158,8 +159,8 @@ export class OrdersComponent implements OnInit {
         this.loadOrders();
       },
       (e) => {
-        console.error("Error", e);
-        this.toastr.error("Error when trying to update order status");
+        console.error('Error', e);
+        this.toastr.error('Error when trying to update order status');
       }
     );
   }
@@ -171,8 +172,8 @@ export class OrdersComponent implements OnInit {
         this.loadOrders();
       },
       (e) => {
-        console.error("Error", e);
-        this.toastr.error("Error when trying to update order status");
+        console.error('Error', e);
+        this.toastr.error('Error when trying to update order status');
       }
     );
   }
