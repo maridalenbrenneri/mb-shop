@@ -12,7 +12,7 @@ class AuthController {
 
     if (!user) return res.status(401).send();
 
-    if (req.body.password == user.password) {
+    if (req.body.password === user.password) {
       // todo: bcrypt...
 
       let userInfo = {
@@ -26,7 +26,6 @@ class AuthController {
 
       return res.send({
         token: token,
-        givenName: user.givenName,
         email: user.email,
       });
     }
@@ -61,13 +60,6 @@ class AuthController {
     // }).catch(Sequelize.ValidationError, function (err) {
     //     return res.status(422).send(err.errors);
     // });
-  };
-
-  /**
-   * GET /api/users
-   */
-  getUsers = function (_req: Request, res: Response) {
-    return userService.getUsers(res);
   };
 }
 

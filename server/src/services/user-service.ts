@@ -1,24 +1,16 @@
-import UserModel from "../database/models/user-model";
-import { Response } from "express";
+import UserModel from '../database/models/user-model';
+import { Response } from 'express';
 
 class UserService {
   getUser(userId: number, res: Response) {
     let self = this;
 
-    return UserModel.getUser(userId).then(user => {
+    return UserModel.getUser(userId).then((user) => {
       if (!user) {
         return res.status(404).send(`User ${userId} was not found`);
       }
 
       return res.send(self.mapToClientModel(user));
-    });
-  }
-
-  getUsers(res: Response) {
-    let self = this;
-
-    return UserModel.getUsers().then(users => {
-      return res.send(users.map(u => self.mapToClientModel(u)));
     });
   }
 
@@ -32,12 +24,12 @@ class UserService {
   //     };
   // }
 
-  private mapToClientModel = function(user) {
+  private mapToClientModel = function (user) {
     return {
       id: user.id,
       email: user.email,
       role: user.role,
-      isActive: user.isActive
+      isActive: user.isActive,
     };
   };
 }
