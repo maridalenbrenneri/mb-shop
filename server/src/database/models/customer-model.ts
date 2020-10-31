@@ -1,36 +1,36 @@
-import { Sequelize, Model, STRING, BOOLEAN, TEXT } from "sequelize";
+import { Sequelize, Model, STRING, BOOLEAN, TEXT } from 'sequelize';
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "mysql",
-  dialectOptions: {}
+  dialect: 'mysql',
+  dialectOptions: {},
 });
 
 export default class CustomerModel extends Model {
-  public static getCustomer = function(customerId) {
+  public static getCustomer = function (customerId) {
     let customer = CustomerModel.findByPk(customerId);
     return this.mapToClientModel(customer);
   };
 
-  public static getCustomers = function(filter) {
+  public static getCustomers = async function (filter) {
     filter = filter || {};
     filter.isDeleted = false;
 
-    let dbCustomers = CustomerModel.findAll({ where: filter });
+    const dbCustomers = await CustomerModel.findAll({ where: filter });
 
-    return dbCustomers.map(customer => this.mapToClientModel(customer));
+    return dbCustomers.map((customer: any) => this.mapToClientModel(customer));
   };
 
-  public static createCustomer = function(customer) {
+  public static createCustomer = function (customer: any) {
     return CustomerModel.create(this.mapToDbModel(customer));
   };
 
-  public static updateCustomer = function(customerId, customer) {
-    return CustomerModel.findByPk(customerId).then(dbCustomer => {
+  public static updateCustomer = function (customerId: number, customer: any) {
+    return CustomerModel.findByPk(customerId).then((dbCustomer: any) => {
       return dbCustomer.update(CustomerModel.mapToDbModel(customer));
     });
   };
 
-  static mapToDbModel = function(customer) {
+  static mapToDbModel = function (customer: any) {
     return {
       email: customer.email,
       name: customer.name,
@@ -41,11 +41,11 @@ export default class CustomerModel extends Model {
       deliveryAddress: JSON.stringify(customer.deliveryAddress),
       invoiceAddress: JSON.stringify(customer.invoiceAddress),
       note: JSON.stringify(customer.note),
-      type: customer.type
+      type: customer.type,
     };
   };
 
-  static mapToClientModel = function(customer) {
+  static mapToClientModel = function (customer: any) {
     return {
       id: customer.id,
       email: customer.email,
@@ -57,7 +57,7 @@ export default class CustomerModel extends Model {
       deliveryAddress: JSON.parse(customer.deliveryAddress),
       invoiceAddress: JSON.parse(customer.invoiceAddress),
       note: JSON.parse(customer.note),
-      type: customer.type
+      type: customer.type,
     };
   };
 }
@@ -74,10 +74,10 @@ CustomerModel.init(
     note: { type: STRING },
     type: { type: STRING },
     isActive: { type: BOOLEAN, allowNull: false, defaultValue: true },
-    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
+    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false },
   },
   {
     sequelize,
-    modelName: "customer"
+    modelName: 'customer',
   }
 );

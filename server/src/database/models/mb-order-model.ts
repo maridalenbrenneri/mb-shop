@@ -5,60 +5,62 @@ import {
   BOOLEAN,
   TEXT,
   DATE,
-  INTEGER
-} from "sequelize";
-import { OrderStatus } from "../../constants";
+  INTEGER,
+} from 'sequelize';
+import { OrderStatus } from '../../constants';
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "mysql",
-  dialectOptions: {}
+  dialect: 'mysql',
+  dialectOptions: {},
 });
 
 export default class MbOrderModel extends Model {
-  public static getMbOrder = function(orderId: Number) {
+  public static getMbOrder = function (orderId: Number) {
     return MbOrderModel.findByPk(orderId as any);
   };
 
-  public static getMbOrders = function() {
+  public static getMbOrders = function () {
     const filter = {
-      isDeleted: false
+      isDeleted: false,
     };
 
     return MbOrderModel.findAll({
       where: filter,
-      order: [["createdAt", "DESC"]]
+      order: [['createdAt', 'DESC']],
     });
   };
 
-  public static getMbOrdersProcessing = function() {
+  public static getMbOrdersProcessing = function () {
     const filter = {
       status: OrderStatus.processing,
-      isDeleted: false
+      isDeleted: false,
     };
 
     return MbOrderModel.findAll({
       where: filter,
-      order: [["createdAt", "DESC"]]
+      order: [['createdAt', 'DESC']],
     });
   };
 
-  public static createMbOrder = function(order) {
+  public static createMbOrder = function (order) {
     return MbOrderModel.create(order);
   };
 
-  public static updateMbOrder = function(orderId, order) {
-    return MbOrderModel.findByPk(orderId).then(dbOrder => {
+  public static updateMbOrder = function (orderId, order) {
+    return MbOrderModel.findByPk(orderId).then((dbOrder) => {
       return dbOrder.update(order);
     });
   };
 
-  public static updateMbOrderStatus = function(orderId, newStatus) {
-    return MbOrderModel.findByPk(orderId).then(order => {
+  public static updateMbOrderStatus = function (orderId, newStatus) {
+    return MbOrderModel.findByPk(orderId).then((order) => {
       return order.update({
-        status: newStatus
+        status: newStatus,
       });
     });
   };
+
+  public id: number;
 }
 
 MbOrderModel.init(
@@ -73,10 +75,10 @@ MbOrderModel.init(
     notes: { type: TEXT },
     freight: { type: INTEGER, allowNull: false, defaultValue: 0 },
     subscriptionId: { type: INTEGER }, // set if created from subscription
-    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
+    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false },
   },
   {
     sequelize,
-    modelName: "mb-order"
+    modelName: 'mb-order',
   }
 );

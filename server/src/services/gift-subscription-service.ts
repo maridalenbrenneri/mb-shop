@@ -1,10 +1,10 @@
-import { Response } from "express";
-import moment = require("moment");
-import { Op } from "sequelize";
+import { Response } from 'express';
+import moment = require('moment');
+import { Op } from 'sequelize';
 
-import GiftSubscriptionModel from "../database/models/gift-subscription-model";
-import logger from "../utils/logger";
-import { GiftSubscriptionValidator } from "../validators/gift-subscription-validator";
+import GiftSubscriptionModel from '../database/models/gift-subscription-model';
+import logger from '../utils/logger';
+import { GiftSubscriptionValidator } from '../validators/gift-subscription-validator';
 
 class GiftSubscriptionService {
   getGiftSubscription(giftSubscriptionId: number, res: Response) {
@@ -21,7 +21,7 @@ class GiftSubscriptionService {
       .catch(function (err) {
         logger.error(err);
         return res.status(500).send({
-          error: "An error occured when getting the gift subscription",
+          error: 'An error occured when getting the gift subscription',
         });
       });
   }
@@ -30,15 +30,15 @@ class GiftSubscriptionService {
     let self = this;
 
     let filter = {
-      [Op.not]: [{ status: "cancelled" }],
+      [Op.not]: [{ status: 'cancelled' }],
     };
 
     return await GiftSubscriptionModel.getGiftSubscriptions(filter).then(
       (giftSubscriptions) => {
         const active = [];
-        const today = moment().startOf("day");
+        const today = moment().startOf('day');
 
-        giftSubscriptions.forEach((item) => {
+        giftSubscriptions.forEach((item: any) => {
           if (today <= moment(item.lastDeliveryDate)) {
             active.push(self.mapToClientModel(item));
           }
@@ -78,7 +78,7 @@ class GiftSubscriptionService {
       .catch(function (err) {
         logger.error(err);
         return res.status(500).send({
-          error: "An error occured when updating the gift subscription: " + err,
+          error: 'An error occured when updating the gift subscription: ' + err,
         });
       });
   }
@@ -127,7 +127,7 @@ class GiftSubscriptionService {
       address = JSON.parse(giftSubscription.recipient_address);
     } catch (err) {
       console.log(
-        "ADDRESS PARSE FAILED FOR GABO",
+        'ADDRESS PARSE FAILED FOR GABO',
         giftSubscription.id,
         giftSubscription.recipient_address
       );
