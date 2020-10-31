@@ -1,52 +1,48 @@
-import { Response, Request } from "express";
-import * as jwt from "jsonwebtoken";
-import UserModel from "../database/models/user-model";
-import userService from "../services/user-service";
+import { Response, Request } from 'express';
+import * as jwt from 'jsonwebtoken';
+import UserModel from '../database/models/user-model';
+import userService from '../services/user-service';
 
 class AuthController {
   /**
    * AUTH
    */
-  authenticate = function(req: Request, res: Response) {
-    UserModel.getUserByEmail(req.body.email).then(user => {
-      if (!user) {
-        return res.status(401).send();
-      }
+  authenticate = async function (req: Request, res: Response) {
+    const user = await UserModel.getUserByEmail(req.body.email);
 
-      if (req.body.password == user.password) {
-        // todo: bcrypt...
+    if (!user) return res.status(401).send();
 
-        let userInfo = {
-          id: user.id,
-          role: user.role
-        };
+    if (req.body.password == user.password) {
+      // todo: bcrypt...
 
-        let token = jwt.sign(userInfo, process.env.JWT_SECRET, {
-          expiresIn: 86400 * 365 // 1 year
-        });
+      let userInfo = {
+        id: user.id,
+        role: user.role,
+      };
 
-        return res.send({
-          token: token,
-          givenName: user.givenName,
-          email: user.email
-        });
-      }
+      let token = jwt.sign(userInfo, process.env.JWT_SECRET, {
+        expiresIn: 86400 * 365, // 1 year
+      });
 
-      return res.status(401).send();
-    });
+      return res.send({
+        token: token,
+        givenName: user.givenName,
+        email: user.email,
+      });
+    }
   };
 
   /**
    * GET /users/me
    */
-  getMe = function(req: Request, res: Response) {
+  getMe = function (req: Request, res: Response) {
     return userService.getUser(req.user.id, res);
   };
 
   /**
    * POST /api/users
    */
-  registerUser = function(req: Request, res: Response) {
+  registerUser = function (req: Request, res: Response) {
     return res.status(403);
 
     // todo: We do nothing until full user registration is implemented
@@ -70,7 +66,7 @@ class AuthController {
   /**
    * GET /api/users
    */
-  getUsers = function(_req: Request, res: Response) {
+  getUsers = function (_req: Request, res: Response) {
     return userService.getUsers(res);
   };
 }

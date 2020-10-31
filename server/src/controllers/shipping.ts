@@ -1,12 +1,12 @@
-import { Response, Request } from "express";
+import { Response, Request } from 'express';
 import {
   CargonizerService,
   Consignment,
   ShippingType,
-} from "../services/cargonizer-service";
-import giftSubscriptionService from "../services/gift-subscription-service";
-import { Constants } from "../constants";
-import { getCoffeeVariationWeight, getCoffeeVariationSizeLabel } from "../bl";
+} from '../services/cargonizer-service';
+import giftSubscriptionService from '../services/gift-subscription-service';
+import { Constants } from '../constants';
+import { getCoffeeVariationWeight, getCoffeeVariationSizeLabel } from '../bl';
 
 class ShippingController {
   /*
@@ -22,13 +22,13 @@ class ShippingController {
       const order = req.body;
 
       let weight = 0;
-      let reference = "";
+      let reference = '';
 
       order.coffeeItems.forEach((item) => {
         const itemWeight = getCoffeeVariationWeight(item.variationId);
         const itemSizeLabel = getCoffeeVariationSizeLabel(item.variationId);
         weight += itemWeight * item.quantity;
-        reference = `${reference}${item.quantity}${item.coffee?.code}${itemSizeLabel} `;
+        reference = `${reference}${item.quantity}${item.coffee.code}${itemSizeLabel} `;
       });
 
       const consignment: Consignment = {
@@ -43,7 +43,7 @@ class ShippingController {
           street2: order.customer.address.street2,
           zipCode: order.customer.address.zipCode,
           place: order.customer.address.place,
-          country: "NO",
+          country: 'NO',
           contactPerson: order.customer.contactPerson,
         },
       };
@@ -69,7 +69,7 @@ class ShippingController {
       const consignment: Consignment = {
         shippingType: ShippingType.standard_private,
         weight: sub.quantity * Constants.smallBagFreightWeight,
-        reference: "#" + sub.wooOrderNumber + " GABO" + sub.quantity,
+        reference: '#' + sub.wooOrderNumber + ' GABO' + sub.quantity,
         customer: {
           email: sub.recipient_email,
           phone: sub.recipient_phone,
@@ -78,7 +78,7 @@ class ShippingController {
           street2: sub.recipient_address.street2,
           zipCode: sub.recipient_address.zipCode,
           place: sub.recipient_address.place,
-          country: "NO",
+          country: 'NO',
           contactPerson: sub.recipient_name,
         },
       };
