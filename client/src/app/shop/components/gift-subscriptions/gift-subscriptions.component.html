@@ -2,27 +2,29 @@
   <div class="col-12 col-md-4">
     <section>
       <mat-checkbox [(ngModel)]="showMonthly" (checked)="(true)"
-        >Månedlig</mat-checkbox
+        >Monthly</mat-checkbox
       >
       <mat-checkbox [(ngModel)]="showFortnightly" (checked)="(true)"
-        >To ganger i månaden</mat-checkbox
+        >Twice a month</mat-checkbox
       >
     </section>
     <section>
       <mat-checkbox [(ngModel)]="showOnlyNew" (checked)="(false)"
-        >Vis kun nye</mat-checkbox
-      >
-      <mat-checkbox [(ngModel)]="showOnlyNotSentToday" (checked)="(false)"
-        >Ikke sent idag</mat-checkbox
+        >Show only new (no orders sent)</mat-checkbox
       >
       <mat-checkbox [(ngModel)]="showOnlyStarted" (checked)="(true)"
-        >Vis kun startet</mat-checkbox
+        >Show only started</mat-checkbox
+      >
+    </section>
+    <section>
+      <mat-checkbox [(ngModel)]="showOnlyNotSentToday" (checked)="(false)"
+        >Hide those with orders created today</mat-checkbox
       >
     </section>
   </div>
 
   <div class="col-12 col-md-4">
-    <label>Antall poser</label>
+    <label>Quantity</label>
     <select
       class="form-control"
       id="quantityElement"
@@ -37,24 +39,24 @@
 
   <div class="col-12" colmd-4>
     <small
-      >Importert fra Woo: {{ lastImported | date: "short" }} ({{
+      >Imported from Woo: {{ lastImported | date: 'short' }} ({{
         lastImportedCount
       }})</small
     >
   </div>
   <div class="col-12">
-    <P> Viser {{ subscriptions.length }} gabos </P>
+    <P> Showing {{ subscriptions.length }} gabo's </P>
 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Order# (Woo)</th>
-          <th>Antall mån</th>
-          <th>Første levering</th>
-          <th>Siste ordre</th>
-          <th>Poser</th>
+          <th>Woo order #</th>
+          <th>Duration (months)</th>
+          <th>First order</th>
+          <th>Last order</th>
+          <th>Bags</th>
           <th>Type</th>
-          <th>Mottaker</th>
+          <th>Recipient</th>
           <th></th>
         </tr>
       </thead>
@@ -66,13 +68,11 @@
           >
             <td>{{ subscription.wooOrderNumber }}</td>
             <td>{{ subscription.numberOfMonths }}</td>
-            <td>{{ subscription.firstDeliveryDate | date: "shortDate" }}</td>
-            <td>{{ subscription.lastOrderCreated | date: "short" }}</td>
+            <td>{{ subscription.firstDeliveryDate | date: 'shortDate' }}</td>
+            <td>{{ subscription.lastOrderCreated | date: 'short' }}</td>
             <td>{{ subscription.quantity }}</td>
             <td>
-              {{
-                subscription.frequence == 1 ? "Månedlig" : "To ganger i månaden"
-              }}
+              {{ subscription.frequence == 1 ? 'Monthly' : 'Twice a month' }}
             </td>
             <td>{{ subscription.recipient_name }}</td>
             <td>

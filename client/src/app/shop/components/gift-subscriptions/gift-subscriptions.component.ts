@@ -1,29 +1,29 @@
-import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../../environments/environment";
-import { GiftSubscription } from "../../models/gift-subscription.model";
-import { GiftSubscriptionService } from "../../services/gift-subscription.service";
-import { ToastrService } from "ngx-toastr";
-import { SubscriptionFrequence } from "../../../../constants";
-import * as moment from "moment";
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { GiftSubscription } from '../../models/gift-subscription.model';
+import { GiftSubscriptionService } from '../../services/gift-subscription.service';
+import { ToastrService } from 'ngx-toastr';
+import { SubscriptionFrequence } from '../../../../constants';
+import * as moment from 'moment';
 
 @Component({
-  selector: "app-gift-subscriptions",
-  templateUrl: "./gift-subscriptions.component.html",
-  styleUrls: ["./gift-subscriptions.component.scss"],
+  selector: 'app-gift-subscriptions',
+  templateUrl: './gift-subscriptions.component.html',
+  styleUrls: ['./gift-subscriptions.component.scss'],
 })
 export class GiftSubscriptionsComponent implements OnInit {
   displayedColumns: string[] = [
-    "id",
-    "status",
-    "startDate",
-    "endDate",
-    "frequency",
-    "quantity",
-    "recipient_name",
+    'id',
+    'status',
+    'startDate',
+    'endDate',
+    'frequency',
+    'quantity',
+    'recipient_name',
   ];
   isExpansionDetailRow = (i: number, row: Object) =>
-    row.hasOwnProperty("detailRow");
+    row.hasOwnProperty('detailRow');
   expandedElement: any;
 
   private _subscriptions: Array<GiftSubscription> = [];
@@ -43,9 +43,9 @@ export class GiftSubscriptionsComponent implements OnInit {
     private toastr: ToastrService,
     private http: HttpClient
   ) {
-    this._quantities.push({ quantity: 0, label: "Alle" });
-    this._quantities.push({ quantity: 1, label: "1 pose" });
-    this._quantities.push({ quantity: 2, label: "2 poser" });
+    this._quantities.push({ quantity: 0, label: 'Alle' });
+    this._quantities.push({ quantity: 1, label: '1 pose' });
+    this._quantities.push({ quantity: 2, label: '2 poser' });
 
     this._selectedQuantity = this._quantities[0];
   }
@@ -55,7 +55,7 @@ export class GiftSubscriptionsComponent implements OnInit {
 
     const self = this;
     this.http
-      .get<any>(environment.mbApiBaseUrl + "woo/data")
+      .get<any>(environment.mbApiBaseUrl + 'woo/data')
       .subscribe((res) => {
         self._lastImported = res.importedAt;
         self._lastImportedCount = res.gaboData.lastImportedCount;
@@ -150,7 +150,7 @@ export class GiftSubscriptionsComponent implements OnInit {
     this.giftSubscriptionService.createOrder(subscription).subscribe((s) => {
       this.loadSubscriptions();
       this.toastr.success(
-        "Oppdrag for #" + subscription.wooOrderNumber + " lagt til i Cargonizer"
+        'Oppdrag for #' + subscription.wooOrderNumber + ' lagt til i Cargonizer'
       );
     });
   }
@@ -185,16 +185,16 @@ export class GiftSubscriptionsComponent implements OnInit {
     if (this.showOnlyNotSentToday) {
       const today = moment();
       this._filteredSubscriptions = this._filteredSubscriptions.filter(
-        (s) => !moment(s.lastOrderCreated).isSame(today, "d")
+        (s) => !moment(s.lastOrderCreated).isSame(today, 'd')
       );
     }
 
     if (this.showOnlyStarted) {
       let startdate = moment();
-      startdate = startdate.add(7, "days");
+      startdate = startdate.add(7, 'days');
 
       this._filteredSubscriptions = this._filteredSubscriptions.filter((s) =>
-        moment(s.firstDeliveryDate).isSameOrBefore(startdate, "d")
+        moment(s.firstDeliveryDate).isSameOrBefore(startdate, 'd')
       );
     }
   }

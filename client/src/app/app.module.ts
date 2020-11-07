@@ -27,6 +27,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+
 import { AppComponent } from './app.component';
 
 import { OrdersComponent } from './shop/components/orders/orders.component';
@@ -128,6 +130,7 @@ const appRoutes: Routes = [
     MatMomentDateModule,
     MatMenuModule,
     MatIconModule,
+    NgxJsonViewerModule,
   ],
   providers: [
     CookieService,

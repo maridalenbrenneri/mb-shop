@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-6">
     <i>Recipient:</i> {{ subscription.recipient_name }} <br />
-    <i>First:</i> {{ subscription.firstDeliveryDate | date: "shortDate" }}
+    <i>First:</i> {{ subscription.firstDeliveryDate | date: 'shortDate' }}
     <br />
-    <i>Last:</i> {{ subscription.lastDeliveryDate | date: "shortDate" }}
+    <i>Last:</i> {{ subscription.lastDeliveryDate | date: 'shortDate' }}
   </div>
   <div class="col-6">
     <i>Message to recipient:</i> <br />
@@ -14,7 +14,7 @@
     {{ subscription.note }}
   </div>
   <div class="col-12">
-    <a [href]="wooUri" target="_blank">Open in web shop</a>
+    <a [href]="wooUri" target="_blank">Open order in Woo</a>
   </div>
 </div>
 
@@ -22,6 +22,6 @@
 
 <div class="row">
   <div class="col-12">
-    {{ diagnose }}
+    <ngx-json-viewer [json]="subscription" [expanded]="false"></ngx-json-viewer>
   </div>
 </div>
