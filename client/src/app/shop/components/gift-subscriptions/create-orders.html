@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Create renewal orders</h1>
+
+<div mat-dialog-content>
+  Create and send renewal orders for <strong>{{ data.length }}</strong> gift
+  subscriptions?
+</div>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-stroked-button
+    color="primary"
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Create orders
+  </button>
+</div>

@@ -37,63 +37,110 @@
     </select>
   </div>
 
-  <div class="col-12" colmd-4>
+  <div class="col-12">
+    <P> Showing {{ dataSource.data.length }} gabo's </P>
+
+    <p>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="openCreateOrdersDialog()"
+        title="Create and send order"
+        [disabled]="!canCreateOrders()"
+      >
+        <i class="material-icons">local_shipping</i>
+        Create renewal orders for {{ selection.selected.length }} gabos
+      </button>
+    </p>
+
+    <table mat-table [dataSource]="dataSource" class="">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="checkboxLabel()"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="wooOrderNumber">
+        <th mat-header-cell *matHeaderCellDef>Woo order #</th>
+        <td mat-cell *matCellDef="let element">{{ element.wooOrderNumber }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="frequency">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.frequence == 1 ? 'Monthly' : 'Twice a month' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstDelivery">
+        <th mat-header-cell *matHeaderCellDef>First order</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.firstDeliveryDate | date: 'shortDate' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastOrderCreated">
+        <th mat-header-cell *matHeaderCellDef>Last order created</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.lastOrderCreated | date: 'short' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="recipient">
+        <th mat-header-cell *matHeaderCellDef>Recipient</th>
+        <td mat-cell *matCellDef="let element">{{ element.recipient_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef>Duration</th>
+        <td mat-cell *matCellDef="let element">{{ element.numberOfMonths }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="toolBar">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-stroked-button (click)="openEditDialog(element)">
+            View data
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="row.rowExpanded = !row.rowExpanded"
+      ></tr>
+    </table>
+  </div>
+</div>
+
+<div class="row margin-top">
+  <div class="col-12">
     <small
-      >Imported from Woo: {{ lastImported | date: 'short' }} ({{
+      >Last imported from Woo: {{ lastImported | date: 'short' }} ({{
         lastImportedCount
       }})</small
     >
-  </div>
-  <div class="col-12">
-    <P> Showing {{ subscriptions.length }} gabo's </P>
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Woo order #</th>
-          <th>Duration (months)</th>
-          <th>First order</th>
-          <th>Last order</th>
-          <th>Bags</th>
-          <th>Type</th>
-          <th>Recipient</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let subscription of subscriptions">
-          <tr
-            (click)="subscription.rowExpanded = !subscription.rowExpanded"
-            class="clickable"
-          >
-            <td>{{ subscription.wooOrderNumber }}</td>
-            <td>{{ subscription.numberOfMonths }}</td>
-            <td>{{ subscription.firstDeliveryDate | date: 'shortDate' }}</td>
-            <td>{{ subscription.lastOrderCreated | date: 'short' }}</td>
-            <td>{{ subscription.quantity }}</td>
-            <td>
-              {{ subscription.frequence == 1 ? 'Monthly' : 'Twice a month' }}
-            </td>
-            <td>{{ subscription.recipient_name }}</td>
-            <td>
-              <button
-                mat-raised-button
-                (click)="createOrder(subscription)"
-                title="Lag oppdrag i Cargonizer"
-              >
-                <i class="material-icons">local_shipping</i>
-              </button>
-            </td>
-          </tr>
-          <tr *ngIf="subscription.rowExpanded">
-            <td colspan="7">
-              <app-gift-subscription-details
-                [subscription]="subscription"
-              ></app-gift-subscription-details>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
   </div>
 </div>

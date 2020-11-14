@@ -56,40 +56,51 @@ class ShippingController {
     }
   };
 
-  CreateConsignmentForGiftSubscription = async function (
+  CreateConsignmentForGiftSubscriptions = async function (
     req: Request,
     res: Response,
     _next: any
   ) {
     const cargonizer = new CargonizerService();
 
+    // WE TRY TO BE NICE WITH CARGONIZER
+    const sleep = () => {
+      return new Promise((resolve) => setTimeout(resolve, 750));
+    };
+
     try {
-      const sub = req.body;
+      const subscriptions = req.body;
 
-      const consignment: Consignment = {
-        shippingType: ShippingType.standard_private,
-        weight: sub.quantity * Constants.smallBagFreightWeight,
-        reference: '#' + sub.wooOrderNumber + ' GABO' + sub.quantity,
-        customer: {
-          email: sub.recipient_email,
-          phone: sub.recipient_phone,
-          name: sub.recipient_name,
-          street1: sub.recipient_address.street1,
-          street2: sub.recipient_address.street2,
-          zipCode: sub.recipient_address.zipCode,
-          place: sub.recipient_address.place,
-          country: 'NO',
-          contactPerson: sub.recipient_name,
-        },
-      };
+      for (let i = 0; i < subscriptions.length; i++) {
+        const sub = subscriptions[i];
 
-      await cargonizer.requestConsignment(consignment);
+        const consignment: Consignment = {
+          shippingType: ShippingType.standard_private,
+          weight: sub.quantity * Constants.smallBagFreightWeight,
+          reference: '#' + sub.wooOrderNumber + ' GABO' + sub.quantity,
+          customer: {
+            email: sub.recipient_email,
+            phone: sub.recipient_phone,
+            name: sub.recipient_name,
+            street1: sub.recipient_address.street1,
+            street2: sub.recipient_address.street2,
+            zipCode: sub.recipient_address.zipCode,
+            place: sub.recipient_address.place,
+            country: 'NO',
+            contactPerson: sub.recipient_name,
+          },
+        };
 
-      const updatedGiftSubscription = await giftSubscriptionService.setLastOrderCreated(
-        sub.id
-      );
+        //  console.debug('Requesting consignment');
 
-      return res.send(updatedGiftSubscription);
+        await cargonizer.requestConsignment(consignment);
+
+        await giftSubscriptionService.setLastOrderCreated(sub.id);
+
+        await sleep();
+      }
+
+      return res.send(true);
     } catch (e) {
       return res.status(400).send(`${e.message}`);
     }

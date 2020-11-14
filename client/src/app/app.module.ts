@@ -43,7 +43,11 @@ import { MyAccountComponent } from './shop/components/my-account/my-account.comp
 import { MyDetailsComponent } from './shop/components/my-account/my-details/my-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AmountFieldComponent } from './shop/components/util/amount-field/amount-field.component';
-import { GiftSubscriptionsComponent } from './shop/components/gift-subscriptions/gift-subscriptions.component';
+import {
+  CreateGiftSubscriptionOrdersDialog,
+  EditGiftSubscriptionDialog,
+  GiftSubscriptionsComponent,
+} from './shop/components/gift-subscriptions/gift-subscriptions.component';
 import { GiftSubscriptionDetailsComponent } from './shop/components/gift-subscriptions/gift-subscription-details/gift-subscription-details.component';
 import { OrderEditComponent } from './shop/components/orders/order-edit/order-edit.component';
 import {
@@ -97,12 +101,16 @@ const appRoutes: Routes = [
     EditDeliveryDayComponent,
     SubscriptionsComponent,
     EditSubscriptionComponent,
+    EditGiftSubscriptionDialog,
+    CreateGiftSubscriptionOrdersDialog,
   ],
   entryComponents: [
     OrderEditComponent,
     EditCoffeeComponent,
     EditDeliveryDayComponent,
     EditSubscriptionComponent,
+    EditGiftSubscriptionDialog,
+    CreateGiftSubscriptionOrdersDialog,
   ],
   imports: [
     RouterModule.forRoot(

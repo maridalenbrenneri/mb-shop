@@ -131,9 +131,9 @@ app.post(
   asyncMiddleware(shippingController.CreateConsignmentForBusinessOrder)
 );
 app.post(
-  '/api/shipping/ship-gift-subscription',
+  '/api/shipping/ship-gift-subscriptions',
   isUserInSuperuser,
-  asyncMiddleware(shippingController.CreateConsignmentForGiftSubscription)
+  asyncMiddleware(shippingController.CreateConsignmentForGiftSubscriptions)
 );
 
 // Gift subscriptions (Integration with Woo)
