@@ -102,8 +102,8 @@
                   required
                   class="form-control"
                   name="firstDeliveryDate"
-                  disabled
                   [ngModel]="data.firstDeliveryDate | date:'yyyy-MM-dd'"
+                  (ngModelChange)="data.firstDeliveryDate = $event"
                 />
               </div>
             </div>
@@ -117,8 +117,8 @@
                   required
                   class="form-control"
                   name="lastDeliveryDate"
-                  disabled
                   [ngModel]="data.lastDeliveryDate | date:'yyyy-MM-dd'"
+                  (ngModelChange)="data.lastDeliveryDate = $event"
                 />
               </div>
             </div>
