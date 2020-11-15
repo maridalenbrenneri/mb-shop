@@ -1,10 +1,10 @@
-import { getWooData } from "../woo";
-import giftSubscriptionService from "../gift-subscription-service";
-import { BagCounter } from "../woo/abos";
+import { getWooData } from '../woo';
+import { getGiftSubscriptions } from '../gift-subscription';
+import { BagCounter } from '../woo/abos';
 
 export async function getData() {
   const wooData = await getWooData();
-  const gabos = await giftSubscriptionService.getGiftSubscriptions();
+  const gabos = await getGiftSubscriptions();
   const aboData = aggregateGaboData(gabos, wooData);
 
   return {
@@ -71,6 +71,6 @@ function updateBagCounterForGabos(
   }
 
   throw new Error(
-    "Not supported bag count, gabo can currently only have 2 bags"
+    'Not supported bag count, gabo can currently only have 2 bags'
   );
 }

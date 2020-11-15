@@ -48,7 +48,6 @@ import {
   EditGiftSubscriptionDialog,
   GiftSubscriptionsComponent,
 } from './shop/components/gift-subscriptions/gift-subscriptions.component';
-import { GiftSubscriptionDetailsComponent } from './shop/components/gift-subscriptions/gift-subscription-details/gift-subscription-details.component';
 import { OrderEditComponent } from './shop/components/orders/order-edit/order-edit.component';
 import {
   CoffeesComponent,
@@ -95,7 +94,6 @@ const appRoutes: Routes = [
     OrderDetailsComponent,
     AmountFieldComponent,
     GiftSubscriptionsComponent,
-    GiftSubscriptionDetailsComponent,
     OrderEditComponent,
     DeliveryDaysComponent,
     EditDeliveryDayComponent,

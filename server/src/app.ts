@@ -136,16 +136,16 @@ app.post(
   asyncMiddleware(shippingController.CreateConsignmentForGiftSubscriptions)
 );
 
-// Gift subscriptions (Integration with Woo)
+// Gift subscriptions
 app.get(
   '/api/giftsubscriptions',
   isUserInSuperuser,
   asyncMiddleware(giftSubscriptionController.getGiftSubscriptions)
 );
 app.put(
-  '/api/giftsubscriptions/:id/first-delivery-date',
+  '/api/giftsubscriptions/:id',
   isUserInSuperuser,
-  asyncMiddleware(giftSubscriptionController.setFirstDeliveryDate)
+  asyncMiddleware(giftSubscriptionController.updateGiftSubscription)
 );
 
 // Customers

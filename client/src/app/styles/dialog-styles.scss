@@ -1,3 +1,11 @@
 .mat-dialog-content {
   padding-bottom: 1em;
 }
+
+.full-screen-modal .mat-dialog-container {
+  max-width: none;
+}
+
+.mat-tab-body {
+  padding: 1em 0.5em;
+}

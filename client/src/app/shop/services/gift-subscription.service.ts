@@ -22,4 +22,11 @@ export class GiftSubscriptionService {
       subscriptions
     );
   }
+
+  updateSubscription(subscription: GiftSubscription) {
+    return this.http.put<GiftSubscription[]>(
+      environment.mbApiBaseUrl + 'giftsubscriptions/update-gift-subscription',
+      subscription
+    );
+  }
 }

@@ -1,207 +1,209 @@
-import * as moment from "moment";
-import { SubscriptionFrequence } from "../constants";
-import SubscriptionDateHelper from "./subscription-date-helper";
+// import * as moment from 'moment';
+// import { SubscriptionFrequence } from '../constants';
+// import SubscriptionDateHelper from './subscription-date-helper';
 
-const WOO_API_BASE_URL = "https://maridalenbrenneri.no/wp-json/wc/v2/";
-const GIFT_SUBSCRIPTION_GIFT_ID = 968;
+// const WOO_API_BASE_URL = 'https://maridalenbrenneri.no/wp-json/wc/v2/';
+// const GIFT_SUBSCRIPTION_GIFT_ID = 968;
 
-class WooService {
-  activeGiftSubscriptions: any[];
+// // TODO: Is this class in use? Should be replaced by /services/woo/
 
-  async getActiveGiftSubscriptions() {
-    this.activeGiftSubscriptions = [];
-    let page = 1;
-    do {
-      page = await this._getActiveGiftSubscriptions(page);
-    } while (page != 1);
+// class WooService {
+//   activeGiftSubscriptions: any[];
 
-    const filtered = this.filterActiveGiftSubscriptions(
-      this.activeGiftSubscriptions
-    );
-    return filtered;
-  }
+//   async getActiveGiftSubscriptions() {
+//     this.activeGiftSubscriptions = [];
+//     let page = 1;
+//     do {
+//       page = await this._getActiveGiftSubscriptions(page);
+//     } while (page != 1);
 
-  private _getActiveGiftSubscriptions(page: number = 1) {
-    let self = this;
-    const fromCreatedDate = moment().subtract(15, "months");
-    const url =
-      WOO_API_BASE_URL +
-      "orders?" +
-      process.env.WOO_SECRET_PARAM +
-      "&per_page=100" +
-      "&product=" +
-      GIFT_SUBSCRIPTION_GIFT_ID +
-      "&after=" +
-      fromCreatedDate.toISOString();
+//     const filtered = this.filterActiveGiftSubscriptions(
+//       this.activeGiftSubscriptions
+//     );
+//     return filtered;
+//   }
 
-    return new Promise<any>(function (resolve, reject) {
-      const request = require("request");
-      request({ url: url, timeout: 60 * 5 * 1000 }, function (
-        error: any,
-        response: { body: any; headers: any }
-      ) {
-        if (error) {
-          return reject(error);
-        }
+//   private _getActiveGiftSubscriptions(page: number = 1) {
+//     let self = this;
+//     const fromCreatedDate = moment().subtract(15, 'months');
+//     const url =
+//       WOO_API_BASE_URL +
+//       'orders?' +
+//       process.env.WOO_SECRET_PARAM +
+//       '&per_page=100' +
+//       '&product=' +
+//       GIFT_SUBSCRIPTION_GIFT_ID +
+//       '&after=' +
+//       fromCreatedDate.toISOString();
 
-        const fetchedSubscriptions = JSON.parse(response.body);
-        self.activeGiftSubscriptions = self.activeGiftSubscriptions.concat(
-          fetchedSubscriptions
-        );
+//     return new Promise<any>(function (resolve, reject) {
+//       const request = require('request');
+//       request({ url: url, timeout: 60 * 5 * 1000 }, function (
+//         error: any,
+//         response: { body: any; headers: any }
+//       ) {
+//         if (error) {
+//           return reject(error);
+//         }
 
-        if (response.headers["x-wp-totalpages"] === `${page}`) {
-          return resolve(1);
-        } else {
-          console.log(
-            "Not yet done fetching gift subscriptions, " +
-              page +
-              " / " +
-              response.headers["x-wp-totalpages"]
-          );
-          return resolve(page + 1);
-        }
-      });
-    });
-  }
+//         const fetchedSubscriptions = JSON.parse(response.body);
+//         self.activeGiftSubscriptions = self.activeGiftSubscriptions.concat(
+//           fetchedSubscriptions
+//         );
 
-  private resolveLastDeliveryDate(
-    firstDeliveryDate: Date,
-    numberOfMonths: number,
-    frequence: number
-  ) {
-    const date = moment(firstDeliveryDate).add(numberOfMonths - 1, "M");
-    return SubscriptionDateHelper.resolveNextDeliveryDate(
-      date.toDate(),
-      frequence
-    );
-  }
+//         if (response.headers['x-wp-totalpages'] === `${page}`) {
+//           return resolve(1);
+//         } else {
+//           console.log(
+//             'Not yet done fetching gift subscriptions, ' +
+//               page +
+//               ' / ' +
+//               response.headers['x-wp-totalpages']
+//           );
+//           return resolve(page + 1);
+//         }
+//       });
+//     });
+//   }
 
-  private filterActiveGiftSubscriptions(orders: any): Array<any> {
-    const self = this;
-    const today = moment().startOf("day");
+//   private resolveLastDeliveryDate(
+//     firstDeliveryDate: Date,
+//     numberOfMonths: number,
+//     frequence: number
+//   ) {
+//     const date = moment(firstDeliveryDate).add(numberOfMonths - 1, 'M');
+//     return SubscriptionDateHelper.resolveNextDeliveryDate(
+//       date.toDate(),
+//       frequence
+//     );
+//   }
 
-    const activeGiftSubscriptions = new Array<any>();
+//   private filterActiveGiftSubscriptions(orders: any): Array<any> {
+//     const self = this;
+//     const today = moment().startOf('day');
 
-    for (const order of orders) {
-      if (
-        order.status !== "processing" &&
-        order.status !== "on-hold" &&
-        order.status !== "completed"
-      ) {
-        continue;
-      }
+//     const activeGiftSubscriptions = new Array<any>();
 
-      const orderId = order.id;
-      const orderNumber = +order.meta_data.find(
-        (data) => data.key == "_order_number"
-      ).value;
-      const orderNote = order.customer_note;
-      const orderDate = order.date_created;
-      const orderCustomerName =
-        order.billing.first_name + " " + order.billing.last_name;
+//     for (const order of orders) {
+//       if (
+//         order.status !== 'processing' &&
+//         order.status !== 'on-hold' &&
+//         order.status !== 'completed'
+//       ) {
+//         continue;
+//       }
 
-      for (const item of order.line_items) {
-        if (item.product_id === GIFT_SUBSCRIPTION_GIFT_ID) {
-          item.orderId = orderId;
-          item.orderNumber = orderNumber;
-          item.orderDate = orderDate;
-          item.orderNote = orderNote;
-          item.orderCustomerName = orderCustomerName;
+//       const orderId = order.id;
+//       const orderNumber = +order.meta_data.find(
+//         (data) => data.key == '_order_number'
+//       ).value;
+//       const orderNote = order.customer_note;
+//       const orderDate = order.date_created;
+//       const orderCustomerName =
+//         order.billing.first_name + ' ' + order.billing.last_name;
 
-          let dbItem = self.mapFromWooToDbModel(item);
+//       for (const item of order.line_items) {
+//         if (item.product_id === GIFT_SUBSCRIPTION_GIFT_ID) {
+//           item.orderId = orderId;
+//           item.orderNumber = orderNumber;
+//           item.orderDate = orderDate;
+//           item.orderNote = orderNote;
+//           item.orderCustomerName = orderCustomerName;
 
-          if (today <= moment(dbItem.lastDeliveryDate)) {
-            activeGiftSubscriptions.push(dbItem);
-          }
-        }
-      }
-    }
+//           let dbItem = self.mapFromWooToDbModel(item);
 
-    return activeGiftSubscriptions;
-  }
+//           if (today <= moment(dbItem.lastDeliveryDate)) {
+//             activeGiftSubscriptions.push(dbItem);
+//           }
+//         }
+//       }
+//     }
 
-  private resolveMetadataValue(meta_data: Array<any>, key: string) {
-    const res = meta_data.find((data) => data.key === key);
-    return !res ? null : res.value;
-  }
+//     return activeGiftSubscriptions;
+//   }
 
-  private mapFromWooToDbModel(orderItem: any) {
-    const df = this.resolveMetadataValue(orderItem.meta_data, "levering");
-    const frequence =
-      df && (df.includes("To ganger") || df.includes("Annenhver uke"))
-        ? SubscriptionFrequence.fortnightly
-        : SubscriptionFrequence.monthly;
+//   private resolveMetadataValue(meta_data: Array<any>, key: string) {
+//     const res = meta_data.find((data) => data.key === key);
+//     return !res ? null : res.value;
+//   }
 
-    const nrOfMonths = this.resolveMetadataValue(
-      orderItem.meta_data,
-      "antall-maneder"
-    );
+//   private mapFromWooToDbModel(orderItem: any) {
+//     const df = this.resolveMetadataValue(orderItem.meta_data, 'levering');
+//     const frequence =
+//       df && (df.includes('To ganger') || df.includes('Annenhver uke'))
+//         ? SubscriptionFrequence.fortnightly
+//         : SubscriptionFrequence.monthly;
 
-    let startDate = null;
-    let startDateString = this.resolveMetadataValue(
-      orderItem.meta_data,
-      "abo_start"
-    );
+//     const nrOfMonths = this.resolveMetadataValue(
+//       orderItem.meta_data,
+//       'antall-maneder'
+//     );
 
-    if (!startDateString) {
-      startDate = moment(orderItem.orderDate);
-    } else {
-      const regexp = new RegExp("..........");
-      startDate = regexp.test(startDateString)
-        ? moment(startDateString, "DD.MM.YYYY")
-        : moment(startDateString);
-    }
+//     let startDate = null;
+//     let startDateString = this.resolveMetadataValue(
+//       orderItem.meta_data,
+//       'abo_start'
+//     );
 
-    // Check from day before in case the date is an actual delivery date (then next would have been selected).
-    let firstDeliveryDate = SubscriptionDateHelper.resolveNextDeliveryDate(
-      startDate.add(-1, "d").toDate(),
-      frequence
-    );
+//     if (!startDateString) {
+//       startDate = moment(orderItem.orderDate);
+//     } else {
+//       const regexp = new RegExp('..........');
+//       startDate = regexp.test(startDateString)
+//         ? moment(startDateString, 'DD.MM.YYYY')
+//         : moment(startDateString);
+//     }
 
-    if (orderItem.orderId == 3214 || orderItem.orderId == 3398) {
-      // Special special... Orders has incorrect date
-      firstDeliveryDate = moment("2019-01-01", "YYYY-MM-DD").toDate();
-    }
+//     // Check from day before in case the date is an actual delivery date (then next would have been selected).
+//     let firstDeliveryDate = SubscriptionDateHelper.resolveNextDeliveryDate(
+//       startDate.add(-1, 'd').toDate(),
+//       frequence
+//     );
 
-    const model = {
-      wooOrderId: orderItem.orderId,
-      wooOrderNumber: orderItem.orderNumber,
-      status: "n/a",
-      orderDate: orderItem.orderDate,
-      originalFirstDeliveryDate: startDate.toDate(),
-      firstDeliveryDate: firstDeliveryDate,
-      lastDeliveryDate: this.resolveLastDeliveryDate(
-        firstDeliveryDate,
-        nrOfMonths,
-        frequence
-      ),
-      frequence: frequence,
-      numberOfMonths: nrOfMonths,
-      quantity: +this.resolveMetadataValue(orderItem.meta_data, "poser"),
-      customerName: orderItem.orderCustomerName,
-      recipient_name: this.resolveMetadataValue(
-        orderItem.meta_data,
-        "abo_name"
-      ),
-      recipient_email: this.resolveMetadataValue(
-        orderItem.meta_data,
-        "abo_email"
-      ),
-      recipient_address: JSON.stringify({
-        street1: this.resolveMetadataValue(orderItem.meta_data, "abo_address1"),
-        street2: this.resolveMetadataValue(orderItem.meta_data, "abo_address2"),
-        zipCode: this.resolveMetadataValue(orderItem.meta_data, "abo_zip"),
-        place: this.resolveMetadataValue(orderItem.meta_data, "city"),
-      }),
-      message_to_recipient: this.resolveMetadataValue(
-        orderItem.meta_data,
-        "abo_msg_retriever"
-      ),
-      note: orderItem.orderNote,
-    };
+//     if (orderItem.orderId == 3214 || orderItem.orderId == 3398) {
+//       // Special special... Orders has incorrect date
+//       firstDeliveryDate = moment('2019-01-01', 'YYYY-MM-DD').toDate();
+//     }
 
-    return model;
-  }
-}
+//     const model = {
+//       wooOrderId: orderItem.orderId,
+//       wooOrderNumber: orderItem.orderNumber,
+//       status: 'n/a',
+//       orderDate: orderItem.orderDate,
+//       originalFirstDeliveryDate: startDate.toDate(),
+//       firstDeliveryDate: firstDeliveryDate,
+//       lastDeliveryDate: this.resolveLastDeliveryDate(
+//         firstDeliveryDate,
+//         nrOfMonths,
+//         frequence
+//       ),
+//       frequence: frequence,
+//       numberOfMonths: nrOfMonths,
+//       quantity: +this.resolveMetadataValue(orderItem.meta_data, 'poser'),
+//       customerName: orderItem.orderCustomerName,
+//       recipient_name: this.resolveMetadataValue(
+//         orderItem.meta_data,
+//         'abo_name'
+//       ),
+//       recipient_email: this.resolveMetadataValue(
+//         orderItem.meta_data,
+//         'abo_email'
+//       ),
+//       recipient_address: JSON.stringify({
+//         street1: this.resolveMetadataValue(orderItem.meta_data, 'abo_address1'),
+//         street2: this.resolveMetadataValue(orderItem.meta_data, 'abo_address2'),
+//         zipCode: this.resolveMetadataValue(orderItem.meta_data, 'abo_zip'),
+//         place: this.resolveMetadataValue(orderItem.meta_data, 'city'),
+//       }),
+//       message_to_recipient: this.resolveMetadataValue(
+//         orderItem.meta_data,
+//         'abo_msg_retriever'
+//       ),
+//       note: orderItem.orderNote,
+//     };
 
-export default new WooService();
+//     return model;
+//   }
+// }
+
+// export default new WooService();

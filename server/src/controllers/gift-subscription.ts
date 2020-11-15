@@ -1,15 +1,8 @@
-import { Response, Request } from "express";
-import giftSubscriptionService from "../services/gift-subscription-service";
-import { ControllerHelper } from "./controller-base";
+import { Response, Request } from 'express';
+import * as giftSubscriptionService from '../services/gift-subscription';
+import { ControllerHelper } from './controller-base';
 
 class GiftSubscriptionController {
-  /**
-   * GET /giftsubscriptions/:id
-   */
-  getGiftSubscription = function (req: Request, res: Response) {
-    return giftSubscriptionService.getGiftSubscription(req.body.id, res);
-  };
-
   /**
    * GET /giftsubscriptions
    */
@@ -20,39 +13,19 @@ class GiftSubscriptionController {
       return ControllerHelper.handleError(
         res,
         e,
-        "An error occured when getting gift subscriptions"
+        'An error occured when getting gift subscriptions'
       );
     }
   }
 
   /**
-   * POST /giftsubscriptions
+   * PUT /giftsubscriptions/:id
    */
-  async createGiftSubscription(req: Request, res: Response) {
-    const subscription = await giftSubscriptionService.createGiftSubscription(
+  async updateGiftSubscription(req: Request, res: Response) {
+    const subscription = await giftSubscriptionService.updateGiftSubscription(
       req.body
     );
     return res.send(subscription);
-  }
-
-  /**
-   * PUT /giftsubscriptions/:id/first-delivery-date
-   */
-  async setFirstDeliveryDate(req: Request, res: Response) {
-    try {
-      return res.send(
-        await giftSubscriptionService.setFirstDeliveryDate(
-          req.params.id,
-          req.body.firstDeliveryDate
-        )
-      );
-    } catch (e) {
-      return ControllerHelper.handleError(
-        res,
-        e,
-        "An error occured when updating the gift subscription"
-      );
-    }
   }
 }
 

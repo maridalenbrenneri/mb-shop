@@ -2,154 +2,187 @@
   Edit gift subscription {{data.recipient_address.street2}}
 </h1>
 
-<div mat-dialog-content>
-  <!-- <div class="row">
-    <div class="col-12">
-      <form #giftSubscriptionForm="ngForm">
-        <div class="form-group">
-          <label class="center-block"
-            >Recipient
-            <input
-              type="text"
-              required
-              class="form-control"
-              name="recipient_name"
-              [(ngModel)]="data.recipient_name"
-            />
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="center-block"
-            >Recipient email
-            <input
-              type="text"
-              required
-              class="form-control"
-              name="email"
-              [(ngModel)]="data.recipient_email"
-            />
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="center-block"
-            >Address 1
-            <input
-              type="text"
-              required
-              class="form-control"
-              name="street1"
-              [(ngModel)]="data.recipient_address.street1"
-            />
-          </label>
-        </div>
-        <div class="form-group">
-          <label class="center-block"
-            >Address 2
-            <input
-              type="text"
-              class="form-control"
-              name="street2"
-              [(ngModel)]="data.recipient_address.street2"
-            />
-          </label>
-          <label class="center-block"
-            >Zip code
-            <input
-              type="text"
-              required
-              class="form-control"
-              name="zipCode"
-              [(ngModel)]="data.recipient_address.zipCode"
-            />
-          </label>
-          <label class="center-block"
-            >Place
-            <input
-              type="text"
-              required
-              class="form-control"
-              name="place"
-              [(ngModel)]="data.recipient_address.place"
-            />
-          </label>
-          <label class="center-block"
-            >Quantity
-            <input
-              type="number"
-              required
-              min="1"
-              max="2"
-              class="form-control"
-              name="quantity"
-              [(ngModel)]="data.quantity"
-            />
-          </label>
-          <label class="center-block"
-            >Frequence
-            <input
-              type="number"
-              required
-              min="1"
-              max="2"
-              class="form-control"
-              name="frequence"
-              [(ngModel)]="data.frequence"
-            />
-          </label>
-          <label class="center-block"
-            >Duration (months)
-            <input
-              type="number"
-              required
-              class="form-control"
-              name="duration"
-              [(ngModel)]="data.numberOfMonths"
-            />
-          </label>
-          <label class="center-block"
-            >First delivery date
-            <input
-              type="date"
-              required
-              class="form-control"
-              name="firstDeliveryDate"
-              [(ngModel)]="data.firstDeliveryDate"
-            />
-          </label>
-          <label class="center-block"
-            >Last delivery date
-            <input
-              type="date"
-              required
-              class="form-control"
-              name="lastDeliveryDate"
-              [(ngModel)]="data.lastDeliveryDate"
-            />
-          </label>
-        </div>
+<mat-dialog-content>
+  <mat-tab-group mat-align-tabs="start">
+    <mat-tab label="Form">
+      <form #giftSubscriptionForm="ngForm" style="margin-top: 1em">
+        <div class="row">
+          <!-- LEFT COL -->
+          <div class="col-12 col-lg-6">
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Recipient</label
+              >
+              <div class="col-8">
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  name="recipient_name"
+                  [(ngModel)]="data.recipient_name"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label">Email</label>
+              <div class="col-8">
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  name="recipient_email"
+                  [(ngModel)]="data.recipient_email"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Street 1</label
+              >
+              <div class="col-8">
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  name="street1"
+                  [(ngModel)]="data.recipient_address.street1"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Street 2</label
+              >
+              <div class="col-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="street2"
+                  [(ngModel)]="data.recipient_address.street2"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Zip code</label
+              >
+              <div class="col-8">
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  name="zipCode"
+                  [(ngModel)]="data.recipient_address.zipCode"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label">Place</label>
+              <div class="col-8">
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  name="place"
+                  [(ngModel)]="data.recipient_address.place"
+                />
+              </div>
+            </div>
+          </div>
 
-        <div mat-dialog-actions>
-          <button mat-stroked-button (click)="onCancel()">Cancel</button>
-          <button
-            mat-stroked-button
-            color="primary"
-            [mat-dialog-close]="data"
-            cdkFocusInitial
-            [disabled]="!giftSubscriptionForm.valid"
-          >
-            Save
-          </button>
+          <!-- RIGHT COL -->
+          <div class="col-12 col-lg-6">
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Start date</label
+              >
+              <div class="col-8">
+                <input
+                  type="date"
+                  required
+                  class="form-control"
+                  name="firstDeliveryDate"
+                  disabled
+                  [ngModel]="data.firstDeliveryDate | date:'yyyy-MM-dd'"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >End date</label
+              >
+              <div class="col-8">
+                <input
+                  type="date"
+                  required
+                  class="form-control"
+                  name="lastDeliveryDate"
+                  disabled
+                  [ngModel]="data.lastDeliveryDate | date:'yyyy-MM-dd'"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label">Type</label>
+              <div class="col-8">
+                <input
+                  type="number"
+                  required
+                  class="form-control"
+                  name="frequence"
+                  [(ngModel)]="data.frequence"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Quantity</label
+              >
+              <div class="col-8">
+                <input
+                  type="number"
+                  required
+                  class="form-control"
+                  name="quantity"
+                  [(ngModel)]="data.quantity"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="customer" class="col-4 col-form-label"
+                >Duration</label
+              >
+              <div class="col-8">
+                <input
+                  type="number"
+                  required
+                  class="form-control"
+                  name="numberOfMonths"
+                  [(ngModel)]="data.numberOfMonths"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </form>
-    </div>
-  </div> -->
-
-  <div class="row">
-    <div class="col-12">
-      <h3>Data</h3>
+    </mat-tab>
+    <mat-tab label="Data">
       <p>
         <ngx-json-viewer [json]="data" [expanded]="false"></ngx-json-viewer>
       </p>
-    </div>
-  </div>
-</div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-stroked-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-stroked-button
+    color="primary"
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+    [disabled]="!giftSubscriptionForm.valid"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

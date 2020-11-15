@@ -6,56 +6,54 @@ import {
   TEXT,
   INTEGER,
   DATE,
-  Op
-} from "sequelize";
+} from 'sequelize';
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: "mysql",
-  dialectOptions: {}
+  dialect: 'mysql',
+  dialectOptions: {},
 });
 
 export default class GiftSubscriptionModel extends Model {
-  public static getGiftSubscription = async function(giftSubscriptionId) {
+  public static getGiftSubscription = async function (giftSubscriptionId) {
     return await GiftSubscriptionModel.findByPk(giftSubscriptionId);
   };
 
-  public static getGiftSubscriptions = async function(filter) {
+  public static getGiftSubscriptions = async function (filter) {
     filter = filter || {};
     filter.isDeleted = false;
 
     return await GiftSubscriptionModel.findAll({
       where: filter,
-      order: [["wooOrderNumber", "DESC"]]
+      order: [['wooOrderNumber', 'DESC']],
     });
   };
 
   // Get "unique", a woo order can have multiple gift subscription items
   //  so we do query with order number AND recipient name (kind of unique, but not 100%)
-  public static getGiftSubscriptionByWoo = async function(
+  public static getGiftSubscriptionByWoo = async function (
     wooOrderNumber: number,
     recipientName: string
   ) {
     return await GiftSubscriptionModel.findOne({
       where: {
         wooOrderNumber: wooOrderNumber,
-        recipient_name: recipientName
-      }
+        recipient_name: recipientName,
+      },
     });
   };
 
-  public static createGiftSubscription = async function(giftSubscription) {
+  public static createGiftSubscription = async function (giftSubscription) {
     return await GiftSubscriptionModel.create(giftSubscription);
   };
 
-  public static updateGiftSubscription = function(
+  public static updateGiftSubscription = async function (
     giftSubscriptionId,
     giftSubscription
   ) {
-    return GiftSubscriptionModel.findByPk(giftSubscriptionId).then(
-      dbGiftSubscription => {
-        return dbGiftSubscription.update(giftSubscription);
-      }
+    const dbGiftSubscription = await GiftSubscriptionModel.findByPk(
+      giftSubscriptionId
     );
+    return dbGiftSubscription.update(giftSubscription);
   };
 }
 
@@ -79,10 +77,10 @@ GiftSubscriptionModel.init(
     message_to_recipient: { type: TEXT },
     note: { type: STRING },
     lastOrderCreated: { type: DATE },
-    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false }
+    isDeleted: { type: BOOLEAN, allowNull: false, defaultValue: false },
   },
   {
     sequelize,
-    modelName: "gift-subscription"
+    modelName: 'gift-subscription',
   }
 );

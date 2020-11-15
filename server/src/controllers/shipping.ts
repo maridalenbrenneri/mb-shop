@@ -4,7 +4,7 @@ import {
   Consignment,
   ShippingType,
 } from '../services/cargonizer-service';
-import giftSubscriptionService from '../services/gift-subscription-service';
+import { setLastOrderCreated } from '../services/gift-subscription';
 import { Constants } from '../constants';
 import { getCoffeeVariationWeight, getCoffeeVariationSizeLabel } from '../bl';
 
@@ -95,7 +95,7 @@ class ShippingController {
 
         await cargonizer.requestConsignment(consignment);
 
-        await giftSubscriptionService.setLastOrderCreated(sub.id);
+        await setLastOrderCreated(sub.id);
 
         await sleep();
       }

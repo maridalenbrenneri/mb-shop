@@ -108,25 +108,36 @@ export class GiftSubscriptionsComponent implements OnInit {
   }
 
   openEditDialog(subscription: GiftSubscription) {
-    console.log('OPEN EDIT SUBSCRIPTION', subscription);
+    const config = {
+      position: {
+        top: '10px',
+        left: '10px',
+      },
+      height: '98%',
+      width: '100vw',
+      panelClass: 'full-screen-modal',
+    };
+
     const dialogRef = this.dialog.open(EditGiftSubscriptionDialog, {
+      ...config,
       data: subscription,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
 
-      // TODO
-      console.log('UPDATE SUBSCRIPTION');
-      // this.giftSubscriptionService.updateCoffee(coffee).subscribe(
-      //   () => {
-      //     this.toastr.success('Gift subscription updated');
-      //   },
-      //   (err: any) => {
-      //     console.debug(err);
-      //     this.toastr.error('Error when updating gift subscription');
-      //   }
-      // );
+      // TODO: dates does not update
+      // console.log('START DATE', result.firstDeliveryDate);
+
+      this.giftSubscriptionService.updateSubscription(result).subscribe(
+        () => {
+          this.toastr.success('Gift subscription updated');
+        },
+        (err: any) => {
+          console.warn(err);
+          this.toastr.error('Error when updating gift subscription');
+        }
+      );
     });
   }
 
@@ -155,7 +166,7 @@ export class GiftSubscriptionsComponent implements OnInit {
         this._isWorking = false;
       },
       (e: any) => {
-        console.error('Error when creating gift subscripton orders', e);
+        console.warn('Error when creating gift subscripton orders', e);
         this.toastr.error(e.error);
       }
     );
@@ -211,6 +222,9 @@ export class GiftSubscriptionsComponent implements OnInit {
     );
   }
 
+  getWooUri(subscription: GiftSubscription) {
+    return `https://maridalenbrenneri.no/wp-admin/post.php?post=${subscription.wooOrderId}&action=edit`;
+  }
   // PROPS
 
   set subscriptions(subscriptions: Array<GiftSubscription>) {
