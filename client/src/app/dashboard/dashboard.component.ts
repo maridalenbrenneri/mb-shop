@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import * as moment from "moment";
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import * as moment from 'moment';
 
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   stats: any;
@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    console.warn("Environment is PRODUCTION: " + environment.production);
+    console.warn('Environment is PRODUCTION: ' + environment.production);
 
     this.loadData(this);
 
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadData(self: DashboardComponent) {
-    self.http.get<any>(environment.mbApiBaseUrl + "stats/data").subscribe(
+    self.http.get<any>(environment.mbApiBaseUrl + 'stats/data').subscribe(
       (res) => {
         self.statsData = res;
       },
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    self.http.get<any>(environment.mbApiBaseUrl + "stats/coffees").subscribe(
+    self.http.get<any>(environment.mbApiBaseUrl + 'stats/coffees').subscribe(
       (res) => {
         self.coffees = res;
       },
@@ -51,9 +51,9 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    self.http.get<any>(environment.mbApiBaseUrl + "stats/orders").subscribe(
+    self.http.get<any>(environment.mbApiBaseUrl + 'stats/orders').subscribe(
       (res) => {
-        this.orderStats = res;
+        self.orderStats = res;
       },
       (error) => {
         self.orderStats = {};
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
     );
 
     self.http
-      .get<any>(environment.mbApiBaseUrl + "stats/deliverydays")
+      .get<any>(environment.mbApiBaseUrl + 'stats/deliverydays')
       .subscribe(
         (res) => {
           self.deliveryDays = res;
@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
 
     self.http
       .get<any>(
-        environment.mbApiBaseUrl + "stats/subscriptionCoffeeTypeCounter"
+        environment.mbApiBaseUrl + 'stats/subscriptionCoffeeTypeCounter'
       )
       .subscribe(
         (res) => {
@@ -100,7 +100,7 @@ export class DashboardComponent implements OnInit {
 
   resolveCoffeeCodeFromId = (id) => {
     const coffee = this.coffees.find((c) => c.id === id);
-    if (!coffee) return "Not set";
+    if (!coffee) return 'Not set';
     return coffee.code;
   };
 
@@ -146,22 +146,21 @@ export class DashboardComponent implements OnInit {
   resolveCoffee(day: any, coffeeField: string) {
     if (!day[coffeeField]) {
       // TODO: do something smart
-      console.log("WARNING - coffee is not set on delivery day");
+      console.log('WARNING - coffee is not set on delivery day');
     }
 
     // This is only for abo delivery days
 
-    if (day.type === "normal") return null;
+    if (day.type === 'normal') return null;
 
     // NOTE: Fix for solving issue with quantity added multiple times when same coffee set more than once (useally as coffe1 and coffee4).
     //  This will ONLY work when coffee4 is same as one of the others
     let coffeIdIsAlreadyInUse = false;
-    if (coffeeField === "coffee4") {
-      const coffeeId = day.coffee4.id;
+    if (coffeeField === 'coffee4') {
       coffeIdIsAlreadyInUse =
-        day.coffee1.id === coffeeId ||
-        day.coffee2.id === coffeeId ||
-        day.coffee3.id === coffeeId
+        day.coffee1 === day.coffee4 ||
+        day.coffee2 === day.coffee4 ||
+        day.coffee3 === day.coffee4
           ? true
           : false;
     }
@@ -179,7 +178,7 @@ export class DashboardComponent implements OnInit {
     }) || { quantity: 0 };
 
     const abo250count =
-      day.type === "monthly"
+      day.type === 'monthly'
         ? this.subscriptionCoffeeTypeCounter.bigAbo[coffeeField]
         : this.subscriptionCoffeeTypeCounter.smallAbo[coffeeField];
 
@@ -222,9 +221,9 @@ export class DashboardComponent implements OnInit {
   }
 
   resolveDeliveryTypeString(type: string) {
-    if (type === "monthly") return "Stor-abo";
-    if (type === "fortnightly") return "Lill-abo";
-    return "Kun enkeltordre";
+    if (type === 'monthly') return 'Stor-abo';
+    if (type === 'fortnightly') return 'Lill-abo';
+    return 'Kun enkeltordre';
   }
 
   activeCoffees() {
@@ -245,7 +244,7 @@ export class DashboardComponent implements OnInit {
   updateStats() {
     this.isUpdating = true;
     this.http
-      .get<any>(environment.mbApiBaseUrl + "woo/import")
+      .get<any>(environment.mbApiBaseUrl + 'woo/import')
       .subscribe(() => {
         this.loadData(this);
         this.isUpdating = false;
@@ -255,7 +254,7 @@ export class DashboardComponent implements OnInit {
   isWooUpdated() {
     const lastUpdated = this.statsData.dataFromWooLastUpdated;
     if (!lastUpdated) return false;
-    return moment().diff(lastUpdated, "hours") < 12;
+    return moment().diff(lastUpdated, 'hours') < 12;
   }
 
   isCargonizerItemOk() {
