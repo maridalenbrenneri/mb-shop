@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { getSubstringInsideParentheses } from "../../utils/utils";
+import { getSubstringInsideParentheses } from '../../utils/utils';
 import {
   WOO_API_BASE_URL,
   WOO_GABO_PRODUCT_ID,
   WOO_ABO_PRODUCT_ID,
-} from "./settings";
+} from './settings';
 
 interface WooCoffee {
   wooProductId: number;
@@ -45,21 +45,21 @@ export async function fetchActiveOrders() {
   let ordersOnHold = [];
   let page = 1;
   do {
-    const result = await _fetchOrders(page, "processing");
+    const result = await _fetchOrders(page, 'processing');
     page = result.nextPage;
     ordersInProcess = ordersInProcess.concat(result.orders);
   } while (page);
 
-  console.debug("FETCH ORDERS PROCESSING DONE");
+  console.debug('FETCH ORDERS PROCESSING DONE');
 
   page = 1;
   do {
-    const result = await _fetchOrders(page, "on-hold");
+    const result = await _fetchOrders(page, 'on-hold');
     page = result.nextPage;
     ordersOnHold = ordersOnHold.concat(result.orders);
   } while (page);
 
-  console.debug("FETCH ORDERS ON-HOLD DONE");
+  console.debug('FETCH ORDERS ON-HOLD DONE');
 
   return ordersInProcess.concat(ordersOnHold);
 }
@@ -68,12 +68,12 @@ export async function fetchPendingOrders() {
   let ordersPendingPayment = [];
   let page = 1;
   do {
-    const result = await _fetchOrders(page, "pending");
+    const result = await _fetchOrders(page, 'pending');
     page = result.nextPage;
     ordersPendingPayment = ordersPendingPayment.concat(result.orders);
   } while (page);
 
-  console.debug("FETCH ORDERS PENDING PAYMENT DONE");
+  console.debug('FETCH ORDERS PENDING PAYMENT DONE');
 
   return ordersPendingPayment;
 }
@@ -88,11 +88,12 @@ export function resolveOrderData(
   };
 }
 
+// TODO: Only exclude monthly subscription
 function excludeNonCoffeeAndAboProducts(lineItems) {
   // Exclude gabo and all subscriptions items
 
   const nonAboItems = lineItems.filter(
-    (o: { created_via: string }) => o.created_via !== "subscription"
+    (o: { created_via: string }) => o.created_via !== 'subscription'
   );
 
   return nonAboItems.filter((item) => {
@@ -116,7 +117,7 @@ async function _fetchOrders(page: number = 1, status: string) {
   }
 
   const nextPage =
-    response.headers["x-wp-totalpages"] === `${page}` ? null : page + 1;
+    response.headers['x-wp-totalpages'] === `${page}` ? null : page + 1;
 
   return {
     nextPage,

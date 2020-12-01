@@ -58,6 +58,11 @@ export class GiftSubscriptionsComponent implements OnInit {
     this._quantities.push({ quantity: 0, label: 'All' });
     this._quantities.push({ quantity: 1, label: '1 bag' });
     this._quantities.push({ quantity: 2, label: '2 bags' });
+    this._quantities.push({ quantity: 3, label: '3 bags' });
+    this._quantities.push({ quantity: 4, label: '4 bags' });
+    this._quantities.push({ quantity: 5, label: '5 bags' });
+    this._quantities.push({ quantity: 6, label: '6 bags' });
+    this._quantities.push({ quantity: 7, label: '7 bags' });
 
     this._selectedQuantity = this._quantities[0];
   }

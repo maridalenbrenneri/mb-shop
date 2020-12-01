@@ -70,7 +70,35 @@ function updateBagCounterForGabos(
     return 2;
   }
 
+  // fortnightly no longer available (some old gabos with 1 or 2 bags can still have it)
+  if (isFortnigthly) return 0;
+
+  if (bagsToAdd === 3) {
+    bagCounter.monthly.three += 1;
+    return 3;
+  }
+
+  if (bagsToAdd === 4) {
+    bagCounter.monthly.four += 1;
+    return 4;
+  }
+
+  if (bagsToAdd === 5) {
+    bagCounter.monthly.five += 1;
+    return 5;
+  }
+
+  if (bagsToAdd === 6) {
+    bagCounter.monthly.six += 1;
+    return 6;
+  }
+
+  if (bagsToAdd === 7) {
+    bagCounter.monthly.seven += 1;
+    return 7;
+  }
+
   throw new Error(
-    'Not supported bag count, gabo can currently only have 2 bags'
+    'Not supported bag count, gabo can currently maximum have 7 bags'
   );
 }
