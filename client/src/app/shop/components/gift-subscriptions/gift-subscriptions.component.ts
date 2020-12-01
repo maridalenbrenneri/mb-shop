@@ -24,11 +24,10 @@ export class GiftSubscriptionsComponent implements OnInit {
   displayedColumns: string[] = [
     'select',
     'wooOrderNumber',
-    'frequency',
     'quantity',
-    'firstDelivery',
     'lastOrderCreated',
     'recipient',
+    'firstDelivery',
     'duration',
     'toolBar',
   ];
