@@ -183,6 +183,7 @@ function mapFromWooToDbModel(orderItem: any) {
     customerName: orderItem.orderCustomerName,
     recipient_name: resolveMetadataValue(orderItem.meta_data, 'abo_name'),
     recipient_email: resolveMetadataValue(orderItem.meta_data, 'abo_email'),
+    recipient_mobile: resolveMetadataValue(orderItem.meta_data, 'abo_mobile'),
     recipient_address: JSON.stringify({
       street1: resolveMetadataValue(orderItem.meta_data, 'abo_address1'),
       street2: resolveMetadataValue(orderItem.meta_data, 'abo_address2'),

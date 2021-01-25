@@ -14,6 +14,7 @@ export interface GiftSubscription {
   frequence: number;
   recipient_name: string;
   recipient_email: string;
+  recipient_mobile: string;
   recipient_address: Address;
   message_to_recipient: string;
   note: string;

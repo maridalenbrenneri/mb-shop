@@ -9,7 +9,7 @@ export class Consignment {
   reference: string;
   customer: {
     email: string;
-    phone: string;
+    mobile: string;
     name: string;
     street1: string;
     street2: string;
@@ -131,26 +131,26 @@ export class CargonizerService {
           return reject(response.body);
         }
 
-        require('xml2js').parseString(response.body, function (
-          parseError: any,
-          result: any
-        ) {
-          if (parseError) {
-            return reject(parseError);
+        require('xml2js').parseString(
+          response.body,
+          function (parseError: any, result: any) {
+            if (parseError) {
+              return reject(parseError);
+            }
+
+            if (
+              result.consignments &&
+              result.consignments.consignment &&
+              result.consignments.consignment.length > 0
+            ) {
+              const id = result.consignments.consignment[0].id[0]._;
+
+              self.printLabel(false, id);
+            }
+
+            return resolve(result);
           }
-
-          if (
-            result.consignments &&
-            result.consignments.consignment &&
-            result.consignments.consignment.length > 0
-          ) {
-            const id = result.consignments.consignment[0].id[0]._;
-
-            self.printLabel(false, id);
-          }
-
-          return resolve(result);
-        });
+        );
       });
     });
   }
@@ -170,31 +170,31 @@ export class CargonizerService {
           return reject(error);
         }
 
-        require('xml2js').parseString(response.body, function (
-          parseError: any,
-          result: any
-        ) {
-          if (parseError) {
-            return reject(parseError);
+        require('xml2js').parseString(
+          response.body,
+          function (parseError: any, result: any) {
+            if (parseError) {
+              return reject(parseError);
+            }
+
+            const partners = result.results['service-partners'][0];
+            const partner = partners['service-partner'][0];
+
+            let servicePartner = {
+              service_partner_number: partner.number[0],
+              address: {
+                name: partner.name[0],
+                address1: partner.address1[0],
+                address2: partner.address2[0],
+                postcode: partner.postcode[0],
+                city: partner.city[0],
+                country: partner.country[0],
+              },
+            };
+
+            return resolve(servicePartner);
           }
-
-          const partners = result.results['service-partners'][0];
-          const partner = partners['service-partner'][0];
-
-          let servicePartner = {
-            service_partner_number: partner.number[0],
-            address: {
-              name: partner.name[0],
-              address1: partner.address1[0],
-              address2: partner.address2[0],
-              postcode: partner.postcode[0],
-              city: partner.city[0],
-              country: partner.country[0],
-            },
-          };
-
-          return resolve(servicePartner);
-        });
+        );
       });
     });
   }
@@ -232,6 +232,7 @@ export class CargonizerService {
               city: consignment.customer.place,
               country: consignment.customer.country,
               email: consignment.customer.email,
+              mobile: consignment.customer.mobile,
             },
             service_partner: {
               number: service_partner.service_partner_number,

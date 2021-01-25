@@ -16,7 +16,7 @@ prerequisites: node, npm, for deploy:
 
 ## jobs
 
-One time jobs for cleanup / data migration / etc. Used for dvelopment/maintenance, only to be run locally by developers.
+One time jobs for cleanup / data migration / etc. Used for dvelopment/maintenance, only to be run locally by developers. In /server.
 
 \$npm run add-delivery-days
 

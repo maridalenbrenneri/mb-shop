@@ -99,6 +99,6 @@ function updateBagCounterForGabos(
   }
 
   throw new Error(
-    'Not supported bag count, gabo can currently maximum have 7 bags'
+    `Not supported bag count (${bagsToAdd}), gabo can currently maximum have 7 bags`
   );
 }

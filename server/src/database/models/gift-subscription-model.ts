@@ -73,6 +73,7 @@ GiftSubscriptionModel.init(
     customerName: { type: STRING },
     recipient_name: { type: STRING, allowNull: false },
     recipient_email: { type: STRING, allowNull: false },
+    recipient_mobile: { type: STRING },
     recipient_address: { type: TEXT, allowNull: false },
     message_to_recipient: { type: TEXT },
     note: { type: STRING },

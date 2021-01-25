@@ -37,7 +37,7 @@ class ShippingController {
         reference,
         customer: {
           email: order.customer.email,
-          phone: order.customer.phone,
+          mobile: order.customer.mobile,
           name: order.customer.name,
           street1: order.customer.address.street1,
           street2: order.customer.address.street2,
@@ -80,7 +80,7 @@ class ShippingController {
           reference: '#' + sub.wooOrderNumber + ' GABO' + sub.quantity,
           customer: {
             email: sub.recipient_email,
-            phone: sub.recipient_phone,
+            mobile: sub.recipient_mobile,
             name: sub.recipient_name,
             street1: sub.recipient_address.street1,
             street2: sub.recipient_address.street2,
