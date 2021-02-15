@@ -34,6 +34,14 @@ export default class GiftSubscriptionModel extends Model {
     wooOrderNumber: number,
     recipientName: string
   ) {
+    // hack to handle imported gabo without recipient info
+    if (!recipientName || recipientName === '')
+      return await GiftSubscriptionModel.findOne({
+        where: {
+          wooOrderNumber: wooOrderNumber,
+        },
+      });
+
     return await GiftSubscriptionModel.findOne({
       where: {
         wooOrderNumber: wooOrderNumber,
@@ -43,6 +51,13 @@ export default class GiftSubscriptionModel extends Model {
   };
 
   public static createGiftSubscription = async function (giftSubscription) {
+    // hack to handle imported gabo without recipient info
+    if (!giftSubscription.recipient_email)
+      giftSubscription.recipient_email = '';
+    if (!giftSubscription.recipient_address)
+      giftSubscription.recipient_address = '';
+    if (!giftSubscription.recipient_name) giftSubscription.recipient_name = '';
+
     return await GiftSubscriptionModel.create(giftSubscription);
   };
 
@@ -72,7 +87,7 @@ GiftSubscriptionModel.init(
     customerId: { type: INTEGER.UNSIGNED },
     customerName: { type: STRING },
     recipient_name: { type: STRING, allowNull: false },
-    recipient_email: { type: STRING, allowNull: false },
+    recipient_email: { type: STRING },
     recipient_mobile: { type: STRING },
     recipient_address: { type: TEXT, allowNull: false },
     message_to_recipient: { type: TEXT },
