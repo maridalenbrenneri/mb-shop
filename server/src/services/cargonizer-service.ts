@@ -145,7 +145,7 @@ export class CargonizerService {
             ) {
               const id = result.consignments.consignment[0].id[0]._;
 
-              self.printLabel(false, id);
+              self.printLabel(id);
             }
 
             return resolve(result);
@@ -274,10 +274,13 @@ export class CargonizerService {
     return builder.buildObject(obj);
   }
 
-  private printLabel(useRfidPrinter: boolean, consignmentId: number) {
-    const printerId = useRfidPrinter
-      ? this.printer_rfid_id
-      : this.printer_normal_id;
+  private printLabel(consignmentId: number) {
+    // WE ONLY USETH RFID PRINTER NOW, THE OTHER ONE IS DISCONNECTED - 2021-03-23
+    // const printerId = useRfidPrinter
+    //   ? this.printer_rfid_id
+    //   : this.printer_normal_id;
+
+    const printerId = this.printer_rfid_id;
 
     let url = `${this.print_url}?printer_id=${printerId}&consignment_ids[]=${consignmentId}`;
 
