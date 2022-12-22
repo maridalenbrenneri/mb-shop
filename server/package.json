@@ -40,7 +40,7 @@
     "express": "4.17.1",
     "fast-xml-parser": "3.17.4",
     "foreman": "3.0.1",
-    "jsonwebtoken": "8.5.1",
+    "jsonwebtoken": "9.0.0",
     "moment": "2.29.1",
     "mysql2": "^2.2.5",
     "pg": "8.4.2",
